@@ -1,0 +1,6 @@
+{
+    "references": [
+        "ET.YIUIFramework",
+        "Unity.TextMeshPro"
+    ]
+}

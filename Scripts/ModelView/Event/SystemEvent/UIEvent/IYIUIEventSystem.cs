@@ -27,7 +27,8 @@ namespace ET.Client
 
         int ISystemType.GetInstanceQueueIndex()
         {
-            return InstanceQueueIndex.UIEvent;
+            return 0;
+            //return InstanceQueueIndex.UIEvent;
         }
 
         public async ETTask Run(Entity o, A message)

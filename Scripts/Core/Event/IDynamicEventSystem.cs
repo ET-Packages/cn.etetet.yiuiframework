@@ -1,3 +1,4 @@
+/*
 using System;
 
 namespace ET
@@ -37,3 +38,4 @@ namespace ET
         protected abstract ETTask DynamicEvent(T self, A message);
     }
 }
+*/

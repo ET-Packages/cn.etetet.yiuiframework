@@ -123,7 +123,7 @@ namespace ET.Client
             }
             else
             {
-                parentEntity.AddChild(info.UIBase);
+                info.UIBase.SetParent(parentEntity);
             }
 
             self.AddUI(info);

@@ -28,6 +28,7 @@ namespace ET.Client
         //P1 = 消息类型 = 如:YIUIEventPanelOpenBefore
         public static async ETTask UIEvent<P1>(this Fiber fiber, int sceneType, P1 message) where P1 : struct
         {
+            await ETTask.CompletedTask;
             return;
             /*var queue = fiber.EntitySystem.Queues[InstanceQueueIndex.UIEvent];
             int count = queue.Count;

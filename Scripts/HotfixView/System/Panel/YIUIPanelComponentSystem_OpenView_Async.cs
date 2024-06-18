@@ -14,7 +14,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             try
@@ -39,7 +39,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             var p = ParamVo.Get(paramMore);
@@ -68,7 +68,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             try
@@ -93,7 +93,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             try
@@ -118,7 +118,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             try
@@ -143,7 +143,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             try
@@ -169,7 +169,7 @@ namespace ET.Client
 
             var success       = false;
             var component     = (T)view;
-            var viewComponent = component.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>();
+            var viewComponent = component.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>();
             await self.OpenViewBefore(view);
 
             try

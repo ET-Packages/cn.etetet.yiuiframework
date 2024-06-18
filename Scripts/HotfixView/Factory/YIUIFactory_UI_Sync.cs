@@ -26,7 +26,7 @@ namespace ET.Client
             var instance = (T)Create(vo, parentEntity);
             if (instance == null) return null;
 
-            SetParent(instance.GetParent<YIUIComponent>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            SetParent(instance.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
 
             return instance;
         }
@@ -45,7 +45,7 @@ namespace ET.Client
             var instance = Create(vo, parentEntity);
             if (instance == null) return null;
 
-            SetParent(instance.GetParent<YIUIComponent>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            SetParent(instance.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
 
             return instance;
         }

@@ -24,14 +24,14 @@ namespace ET.Client
         public static async ETTask<T> InstantiateAsync<T>(YIUIBindVo vo, Entity parentEntity, Transform parent = null) where T : Entity
         {
             var uiCom = await CreateAsync(vo, parentEntity);
-            SetParent(uiCom.GetParent<YIUIComponent>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            SetParent(uiCom.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
             return (T)uiCom;
         }
 
         public static async ETTask<Entity> InstantiateAsync(YIUIBindVo vo, Entity parentEntity, Transform parent = null)
         {
             var uiCom = await CreateAsync(vo, parentEntity);
-            SetParent(uiCom.GetParent<YIUIComponent>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            SetParent(uiCom.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
             return uiCom;
         }
 

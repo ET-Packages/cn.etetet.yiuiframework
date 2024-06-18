@@ -78,6 +78,7 @@ namespace ET.Client
             return panelInfo?.Name;
         }
 
+        [EnableAccessEntiyChild]
         internal static async ETTask<PanelInfo> OpenPanelStartAsync(this YIUIMgrComponent self, string panelName, Entity parentEntity)
         {
             if (string.IsNullOrEmpty(panelName))
@@ -115,14 +116,14 @@ namespace ET.Client
                     return null;
                 }
 
-                var uiBase = uiCom.GetParent<YIUIComponent>();
+                var uiBase = uiCom.GetParent<YIUIChild>();
                 uiBase.SetActive(false);
                 info.ResetUI(uiBase);
                 info.ResetEntity(uiCom);
             }
             else
             {
-                info.UIBase.SetParent(parentEntity);
+                parentEntity.AddChild(info.UIBase);
             }
 
             self.AddUI(info);

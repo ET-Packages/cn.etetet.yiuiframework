@@ -8,8 +8,8 @@ namespace ${Namespace}
     /// Date    ${CreateDate}
     /// Desc    ${Desc}
     /// </summary>
-	public class ${Name}Component: Entity${Life}
+	public class ${Name}Component : Entity${Life}
 	{
-	
+
 	}
 }

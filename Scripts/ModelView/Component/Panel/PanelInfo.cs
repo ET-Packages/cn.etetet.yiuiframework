@@ -9,9 +9,9 @@ namespace ET.Client
     public class PanelInfo
     {
         //当前UI的 ui信息
-        private EntityRef<YIUIComponent> m_UIBase;
+        private EntityRef<YIUIChild> m_UIBase;
 
-        public YIUIComponent UIBase => m_UIBase;
+        public YIUIChild UIBase => m_UIBase;
 
         public YIUIWindowComponent UIWindow => this.UIBase?.GetComponent<YIUIWindowComponent>();
 
@@ -54,7 +54,7 @@ namespace ET.Client
             BindVo = vo;
         }
 
-        public void ResetUI(YIUIComponent uiBase)
+        public void ResetUI(YIUIChild uiBase)
         {
             m_UIBase = uiBase;
         }

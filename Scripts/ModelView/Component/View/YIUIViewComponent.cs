@@ -11,19 +11,19 @@ namespace ET.Client
     /// <summary>
     /// UI界面组件
     /// </summary>
-    [ComponentOf(typeof(YIUIComponent))]
+    [ComponentOf(typeof(YIUIChild))]
     public partial class YIUIViewComponent : Entity, IAwake, IYIUIInitialize, IDestroy
     {
-        private EntityRef<YIUIComponent> _uiBase;
-        private YIUIComponent            _UIBase => _uiBase;
+        private EntityRef<YIUIChild> _uiBase;
+        private YIUIChild            _UIBase => _uiBase;
 
-        public YIUIComponent UIBase
+        public YIUIChild UIBase
         {
             get
             {
                 if (_UIBase == null)
                 {
-                    _uiBase = this.GetParent<YIUIComponent>();
+                    _uiBase = this.GetParent<YIUIChild>();
                 }
 
                 return _UIBase;

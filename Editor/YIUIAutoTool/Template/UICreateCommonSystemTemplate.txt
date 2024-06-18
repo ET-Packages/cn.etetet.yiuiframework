@@ -22,7 +22,7 @@ namespace ${Namespace}
         private static void Destroy(this ${ResName}Component self)
         {
         }
-        
+
         #region YIUIEvent开始
         #endregion YIUIEvent结束
     }

@@ -4,7 +4,6 @@
 // Data: 2023年2月12日
 //------------------------------------------------------------
 
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using YIUIFramework;
@@ -14,8 +13,8 @@ namespace ET.Client
     /// <summary>
     /// UI主体
     /// </summary>
-    [ChildOf(typeof(YIUIComponent))]
-    public partial class YIUIComponent : Entity, IAwake<YIUIBindVo, GameObject>, IDestroy
+    [ChildOf]
+    public partial class YIUIChild : Entity, IAwake<YIUIBindVo, GameObject>, IDestroy
     {
         /// <summary>
         /// UI的资源包名

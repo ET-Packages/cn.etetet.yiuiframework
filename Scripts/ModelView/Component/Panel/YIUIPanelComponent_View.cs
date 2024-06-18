@@ -25,12 +25,12 @@ namespace ET.Client
         /// <summary>
         /// 外界可判断最后一次打开的view名字
         /// </summary>
-        public string CurrentOpenViewName => CurrentOpenView?.GetParent<YIUIComponent>().UIResName ?? "";
+        public string CurrentOpenViewName => CurrentOpenView?.GetParent<YIUIChild>().UIResName ?? "";
 
         /// <summary>
         /// 由于view是可以自己关闭自己的 所以当前的UI有可能会自己关闭自己 并不是用的通用打开其他被关闭
         /// 所以这里可以判断到他是否被关闭了
         /// </summary>
-        public bool CurrentOpenViewActiveSelf => CurrentOpenView?.GetParent<YIUIComponent>().ActiveSelf ?? false;
+        public bool CurrentOpenViewActiveSelf => CurrentOpenView?.GetParent<YIUIChild>().ActiveSelf ?? false;
     }
 }

@@ -22,7 +22,7 @@ ${UIFriendOf}
         {
             self.UIBind();
         }
-        
+
         private static void UIBind(this ${ResName}Component self)
         {
 ${UIBase}

@@ -13,25 +13,25 @@ namespace ET.Client
     /// <summary>
     /// UI主体
     /// </summary>
-    [FriendOf(typeof(YIUIComponent))]
-    [EntitySystemOf(typeof(YIUIComponent))]
+    [FriendOf(typeof(YIUIChild))]
+    [EntitySystemOf(typeof(YIUIChild))]
     public static partial class YIUIComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this YIUIComponent self, YIUIBindVo uiBindVo, GameObject obj)
+        private static void Awake(this YIUIChild self, YIUIBindVo uiBindVo, GameObject obj)
         {
             self.InitUIBase(uiBindVo, obj);
         }
 
         [EntitySystem]
-        private static void Destroy(this YIUIComponent self)
+        private static void Destroy(this YIUIChild self)
         {
             if (self.OwnerGameObject != null)
                 UnityEngine.Object.Destroy(self.OwnerGameObject);
         }
 
         //设置当前拥有的这个实际UI 之后初始化
-        internal static void InitOwnerUIEntity(this YIUIComponent self, Entity uiEntity)
+        internal static void InitOwnerUIEntity(this YIUIChild self, Entity uiEntity)
         {
             self.m_OwnerUIEntity = uiEntity;
             self.UIInitialize();
@@ -41,7 +41,7 @@ namespace ET.Client
         /// 初始化UIBase 由PanelMgr创建对象后调用
         /// 外部禁止
         /// </summary>
-        private static void InitUIBase(this YIUIComponent self, YIUIBindVo uiBindVo, GameObject ownerGameObject)
+        private static void InitUIBase(this YIUIChild self, YIUIBindVo uiBindVo, GameObject ownerGameObject)
         {
             if (ownerGameObject == null)
             {
@@ -70,7 +70,7 @@ namespace ET.Client
         }
 
         //根据UI类型添加其他组件
-        private static void AddUIDataComponent(this YIUIComponent self)
+        private static void AddUIDataComponent(this YIUIChild self)
         {
             switch (self.m_UIBindVo.CodeType)
             {
@@ -90,7 +90,7 @@ namespace ET.Client
             }
         }
 
-        private static void UIDataComponentInitialize(this YIUIComponent self)
+        private static void UIDataComponentInitialize(this YIUIChild self)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace ET.Client
         /// <summary>
         /// 设置显隐
         /// </summary>
-        public static void SetActive(this YIUIComponent self, bool value)
+        public static void SetActive(this YIUIChild self, bool value)
         {
             if (self.OwnerGameObject == null) return;
             self.OwnerGameObject.SetActive(value);
@@ -136,11 +136,11 @@ namespace ET.Client
 
         #region 生命周期
 
-        private static void UIBaseStart(this YIUIComponent self)
+        private static void UIBaseStart(this YIUIChild self)
         {
         }
 
-        private static void UIInitialize(this YIUIComponent self)
+        private static void UIInitialize(this YIUIChild self)
         {
             self.UIDataComponentInitialize();
             try
@@ -160,7 +160,7 @@ namespace ET.Client
             }
         }
 
-        private static void UIBaseOnEnable(this YIUIComponent self)
+        private static void UIBaseOnEnable(this YIUIChild self)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace ET.Client
             }
         }
 
-        private static void UIBaseOnDisable(this YIUIComponent self)
+        private static void UIBaseOnDisable(this YIUIChild self)
         {
             try
             {
@@ -187,7 +187,7 @@ namespace ET.Client
         }
 
         //UI对象被移除时
-        private static void UIBaseOnDestroy(this YIUIComponent self)
+        private static void UIBaseOnDestroy(this YIUIChild self)
         {
             if (!self.IsDisposed)
                 self.Parent.RemoveChild(self.Id);

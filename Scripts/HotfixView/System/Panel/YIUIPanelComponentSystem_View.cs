@@ -214,7 +214,7 @@ namespace ET.Client
         /// </summary>
         internal static async ETTask OpenViewBefore(this YIUIPanelComponent self, Entity view)
         {
-            if (!view.GetParent<YIUIComponent>().GetComponent<YIUIWindowComponent>().WindowFirstOpen)
+            if (!view.GetParent<YIUIChild>().GetComponent<YIUIWindowComponent>().WindowFirstOpen)
             {
                 await self.CloseLastView(view);
             }
@@ -227,14 +227,14 @@ namespace ET.Client
         {
             if (success)
             {
-                if (view.GetParent<YIUIComponent>().GetComponent<YIUIWindowComponent>().WindowFirstOpen)
+                if (view.GetParent<YIUIChild>().GetComponent<YIUIWindowComponent>().WindowFirstOpen)
                 {
                     await self.CloseLastView(view);
                 }
             }
             else
             {
-                view.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>().Close(false);
+                view.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().Close(false);
             }
         }
 
@@ -245,17 +245,17 @@ namespace ET.Client
         private static async ETTask CloseLastView(this YIUIPanelComponent self, Entity view)
         {
             //其他需要被忽略 Panel下的view 如果是窗口类型 那么他只能同时存在一个  弹窗层可以存在多个
-            if (view.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>().ViewWindowType != EViewWindowType.View)
+            if (view.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().ViewWindowType != EViewWindowType.View)
             {
                 return;
             }
 
             //View只有切换没有关闭
-            var skipTween = view.GetParent<YIUIComponent>().GetComponent<YIUIWindowComponent>().WindowSkipOtherCloseTween;
+            var skipTween = view.GetParent<YIUIChild>().GetComponent<YIUIWindowComponent>().WindowSkipOtherCloseTween;
 
             if (self.CurrentOpenView != null && self.CurrentOpenView != view && self.CurrentOpenViewActiveSelf)
             {
-                var uibase = self.CurrentOpenView.GetParent<YIUIComponent>();
+                var uibase = self.CurrentOpenView.GetParent<YIUIChild>();
 
                 //View 没有自动回退功能  比如AView 关闭 自动吧上一个BView 给打开 没有这种需求 也不能有这个需求
                 //只能有 打开一个新View 上一个View的自动处理 99% 都是吧上一个隐藏即可
@@ -269,7 +269,7 @@ namespace ET.Client
                         uibase.SetActive(false);
                         break;
                     case EViewStackOption.VisibleTween:
-                        await self.CurrentOpenView.GetParent<YIUIComponent>().GetComponent<YIUIViewComponent>().CloseAsync(!skipTween);
+                        await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().CloseAsync(!skipTween);
                         break;
                     default:
                         Debug.LogError($"新增类型未实现 {uibase.GetComponent<YIUIViewComponent>().StackOption}");

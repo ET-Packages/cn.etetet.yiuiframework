@@ -118,12 +118,12 @@ namespace YIUIFramework.Editor
             switch (self.UICodeType)
             {
                 case EUICodeType.Common:
-                    sb.AppendFormat("        public EntityRef<YIUIComponent> u_UIBase;\r\n");
-                    sb.AppendFormat("        public YIUIComponent UIBase => u_UIBase;\r\n");
+                    sb.AppendFormat("        public EntityRef<YIUIChild> u_UIBase;\r\n");
+                    sb.AppendFormat("        public YIUIChild UIBase => u_UIBase;\r\n");
                     return;
                 case EUICodeType.Panel:
-                    sb.AppendFormat("        public EntityRef<YIUIComponent> u_UIBase;\r\n");
-                    sb.AppendFormat("        public YIUIComponent UIBase => u_UIBase;\r\n");
+                    sb.AppendFormat("        public EntityRef<YIUIChild> u_UIBase;\r\n");
+                    sb.AppendFormat("        public YIUIChild UIBase => u_UIBase;\r\n");
 
                     sb.AppendFormat("        public EntityRef<YIUIWindowComponent> u_UIWindow;\r\n");
                     sb.AppendFormat("        public YIUIWindowComponent UIWindow => u_UIWindow;\r\n");
@@ -132,8 +132,8 @@ namespace YIUIFramework.Editor
                     sb.AppendFormat("        public YIUIPanelComponent UIPanel => u_UIPanel;\r\n");
                     break;
                 case EUICodeType.View:
-                    sb.AppendFormat("        public EntityRef<YIUIComponent> u_UIBase;\r\n");
-                    sb.AppendFormat("        public YIUIComponent UIBase => u_UIBase;\r\n");
+                    sb.AppendFormat("        public EntityRef<YIUIChild> u_UIBase;\r\n");
+                    sb.AppendFormat("        public YIUIChild UIBase => u_UIBase;\r\n");
 
                     sb.AppendFormat("        public EntityRef<YIUIWindowComponent> u_UIWindow;\r\n");
                     sb.AppendFormat("        public YIUIWindowComponent UIWindow => u_UIWindow;\r\n");

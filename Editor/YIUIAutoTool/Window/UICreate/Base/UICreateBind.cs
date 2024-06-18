@@ -110,15 +110,15 @@ namespace YIUIFramework.Editor
             switch (self.UICodeType)
             {
                 case EUICodeType.Common:
-                    sb.AppendFormat("    [FriendOf(typeof(YIUIComponent))]");
+                    sb.AppendFormat("    [FriendOf(typeof(YIUIChild))]");
                     return;
                 case EUICodeType.Panel:
-                    sb.AppendFormat("    [FriendOf(typeof(YIUIComponent))]\r\n");
+                    sb.AppendFormat("    [FriendOf(typeof(YIUIChild))]\r\n");
                     sb.AppendFormat("    [FriendOf(typeof(YIUIWindowComponent))]\r\n");
                     sb.AppendFormat("    [FriendOf(typeof(YIUIPanelComponent))]");
                     break;
                 case EUICodeType.View:
-                    sb.AppendFormat("    [FriendOf(typeof(YIUIComponent))]\r\n");
+                    sb.AppendFormat("    [FriendOf(typeof(YIUIChild))]\r\n");
                     sb.AppendFormat("    [FriendOf(typeof(YIUIWindowComponent))]\r\n");
                     sb.AppendFormat("    [FriendOf(typeof(YIUIViewComponent))]");
                     break;
@@ -140,10 +140,10 @@ namespace YIUIFramework.Editor
             switch (self.UICodeType)
             {
                 case EUICodeType.Common:
-                    sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIComponent>();\r\n");
+                    sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIChild>();\r\n");
                     return;
                 case EUICodeType.Panel:
-                    sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIComponent>();\r\n");
+                    sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIChild>();\r\n");
                     sb.AppendFormat("            self.u_UIWindow = self.UIBase.GetComponent<YIUIWindowComponent>();\r\n");
                     sb.AppendFormat("            self.u_UIPanel = self.UIBase.GetComponent<YIUIPanelComponent>();\r\n");
                     sb.AppendFormat("            self.UIWindow.WindowOption = EWindowOption.{0};\r\n",
@@ -160,7 +160,7 @@ namespace YIUIFramework.Editor
                                         self.CachePanelTime);
                     break;
                 case EUICodeType.View:
-                    sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIComponent>();\r\n");
+                    sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIChild>();\r\n");
                     sb.AppendFormat("            self.u_UIWindow = self.UIBase.GetComponent<YIUIWindowComponent>();\r\n");
                     sb.AppendFormat("            self.u_UIView = self.UIBase.GetComponent<YIUIViewComponent>();\r\n");
                     sb.AppendFormat("            self.UIWindow.WindowOption = EWindowOption.{0};\r\n",

@@ -27,7 +27,7 @@
             if (info.UIPanel == null) return false;
             var (exist, entity) = info.UIPanel.ExistView(viewName);
             if (!exist) return false;
-            return entity.GetParent<YIUIComponent>()?.ActiveSelf ?? false;
+            return entity.GetParent<YIUIChild>()?.ActiveSelf ?? false;
         }
 
         public static bool ActiveSelfView<TPanel, TView>(this YIUIMgrComponent self)
@@ -39,7 +39,7 @@
             if (info.UIPanel == null) return false;
             var (exist, entity) = info.UIPanel.ExistView<TView>();
             if (!exist) return false;
-            return entity.GetParent<YIUIComponent>()?.ActiveSelf ?? false;
+            return entity.GetParent<YIUIChild>()?.ActiveSelf ?? false;
         }
 
         public static bool ActiveSelfViewByViewName<TPanel>(this YIUIMgrComponent self, string viewName)
@@ -50,7 +50,7 @@
             if (info.UIPanel == null) return false;
             var (exist, entity) = info.UIPanel.ExistView(viewName);
             if (!exist) return false;
-            return entity.GetParent<YIUIComponent>()?.ActiveSelf ?? false;
+            return entity.GetParent<YIUIChild>()?.ActiveSelf ?? false;
         }
 
         public static bool ActiveSelfViewByPanelName<TView>(this YIUIMgrComponent self, string panelName)
@@ -61,7 +61,7 @@
             if (info.UIPanel == null) return false;
             var (exist, entity) = info.UIPanel.ExistView<TView>();
             if (!exist) return false;
-            return entity.GetParent<YIUIComponent>()?.ActiveSelf ?? false;
+            return entity.GetParent<YIUIChild>()?.ActiveSelf ?? false;
         }
 
         #endregion

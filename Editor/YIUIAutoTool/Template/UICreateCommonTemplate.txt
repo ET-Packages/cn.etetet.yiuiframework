@@ -11,14 +11,14 @@ namespace ${Namespace}
     /// Desc
     /// </summary>
     [YIUI(typeof(${ResName}Component))]
-    public sealed partial class ${ResName}:${ResName}Base
+    public sealed partial class ${ResName} : ${ResName}Base
     {
         #region YIUIEvent开始
         #endregion YIUIEvent结束
     }
 
     #region DefaultComponentSystem开始
-    
+
     public static partial class ${ResName}ComponentSystem
     {
         [EntitySystem]
@@ -27,13 +27,13 @@ namespace ${Namespace}
             self.UI             = (${ResName})uiBase;
             self.UI.UIComponent = self;
         }
-        
+
         [EntitySystem]
         private static void Destroy(this ${ResName}Component self)
         {
             self.UI.EntityOnDestroy();
         }
     }
-    
+
     #endregion DefaultComponentSystem结束
 }

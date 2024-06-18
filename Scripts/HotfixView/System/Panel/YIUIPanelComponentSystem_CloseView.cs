@@ -32,7 +32,7 @@ namespace ET.Client
 
         private static async ETTask<bool> CloseViewAsync(Entity entity, bool tween)
         {
-            var uibase = entity.GetParent<YIUIComponent>();
+            var uibase = entity.GetParent<YIUIChild>();
             if (uibase == null) return false;
 
             var viewComponent = uibase.GetComponent<YIUIViewComponent>(true);

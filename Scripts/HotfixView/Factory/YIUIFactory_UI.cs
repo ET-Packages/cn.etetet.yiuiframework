@@ -57,6 +57,7 @@ namespace ET.Client
             return CreateByObjVo(vo, obj, parentEntity);
         }
 
+        [EnableAccessEntiyChild]
         internal static Entity CreateByObjVo(YIUIBindVo vo, GameObject obj, Entity parentEntity)
         {
             var cdeTable = obj.GetComponent<UIBindCDETable>();
@@ -66,13 +67,14 @@ namespace ET.Client
                 return null;
             }
 
-            var uiBase    = parentEntity.AddYIUIChild<YIUIComponent, YIUIBindVo, GameObject>(vo, obj);
-            var component = uiBase.AddYIUIChild(vo.ComponentType);
+            var uiBase    = parentEntity.AddChild<YIUIChild, YIUIBindVo, GameObject>(vo, obj);
+            var component = uiBase.AddComponent(vo.ComponentType);
             cdeTable.CreateComponent(component);
             uiBase.InitOwnerUIEntity(component); //这里就是要晚于其他内部组件这样才能访问时别人已经初始化好了
             return component;
         }
 
+        [EnableAccessEntiyChild]
         private static void CreateComponent(this UIBindCDETable cdeTable, Entity parentEntity)
         {
             foreach (var childCde in cdeTable.AllChildCdeTable)
@@ -87,8 +89,8 @@ namespace ET.Client
                 if (data == null) continue;
                 var vo = data.Value;
 
-                var uiBase    = parentEntity.AddYIUIChild<YIUIComponent, YIUIBindVo, GameObject>(vo, childCde.gameObject);
-                var component = uiBase.AddYIUIChild(vo.ComponentType);
+                var uiBase    = parentEntity.AddChild<YIUIChild, YIUIBindVo, GameObject>(vo, childCde.gameObject);
+                var component = uiBase.AddComponent(vo.ComponentType);
                 cdeTable.AddUIOwner(childCde.gameObject.name, component);
                 childCde.CreateComponent(component);
                 uiBase.InitOwnerUIEntity(component); //这里就是要晚于其他内部组件这样才能访问时别人已经初始化好了

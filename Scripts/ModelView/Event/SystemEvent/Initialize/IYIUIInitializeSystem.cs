@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIInitializeSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         void IYIUIInitializeSystem.Run(Entity o)
         {
             this.YIUIInitialize((T)o);

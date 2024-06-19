@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ET.Client
 {
@@ -28,10 +29,9 @@ namespace ET.Client
         //P1 = 消息类型 = 如:YIUIEventPanelOpenBefore
         public static async ETTask UIEvent<P1>(this Fiber fiber, int sceneType, P1 message) where P1 : struct
         {
-            await ETTask.CompletedTask;
-            return;
-            /*var queue = fiber.EntitySystem.Queues[InstanceQueueIndex.UIEvent];
-            int count = queue.Count;
+            Type                     systemType = typeof(IYIUIEventSystem<P1>);
+            Queue<EntityRef<Entity>> queue      = fiber.EntitySystem.GetQueue(systemType);
+            int                      count      = queue.Count;
             if (count <= 0) return;
 
             using ListComponent<ETTask> list = ListComponent<ETTask>.Create();
@@ -74,7 +74,7 @@ namespace ET.Client
             catch (Exception e)
             {
                 Log.Error(e);
-            }*/
+            }
         }
     }
 }

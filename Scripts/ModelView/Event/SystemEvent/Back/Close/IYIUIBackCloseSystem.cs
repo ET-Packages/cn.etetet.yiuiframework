@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIBackCloseSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask IYIUIBackCloseSystem.Run(Entity o, YIUIPanelInfo addPanelInfo)
         {
             await this.YIUIBackClose((T)o, addPanelInfo);

@@ -102,10 +102,10 @@ namespace ET.Client
             #endif
 
             EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenBefore
-                                                       {
-                                                           UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
-                                                           PanelLayer = info.PanelLayer,
-                                                       });
+            {
+                UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
+                PanelLayer = info.PanelLayer,
+            });
 
             if (info.UIBase == null)
             {
@@ -136,7 +136,7 @@ namespace ET.Client
         /// </summary>
         internal static async ETTask OpenPanelBefore(this YIUIMgrComponent self, PanelInfo info)
         {
-            if (!info.UIWindow.WindowFirstOpen)
+            if (info.UIWindow is { WindowLastClose: false })
             {
                 await self.AddUICloseElse(info);
             }
@@ -149,7 +149,7 @@ namespace ET.Client
         {
             if (success)
             {
-                if (info.UIWindow.WindowFirstOpen)
+                if (info.UIWindow is { WindowLastClose: true })
                 {
                     await self.AddUICloseElse(info);
                 }
@@ -166,13 +166,13 @@ namespace ET.Client
             }
 
             EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenAfter
-                                                       {
-                                                           Success         = success,
-                                                           UIPkgName       = info.PkgName,
-                                                           UIResName       = info.ResName,
-                                                           UIComponentName = info.Name,
-                                                           PanelLayer      = info.PanelLayer,
-                                                       });
+            {
+                Success         = success,
+                UIPkgName       = info.PkgName,
+                UIResName       = info.ResName,
+                UIComponentName = info.Name,
+                PanelLayer      = info.PanelLayer,
+            });
         }
 
         internal static async ETTask<T> OpenPanelAsync<T>(this YIUIMgrComponent self, Entity root)
@@ -183,6 +183,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             try
@@ -191,7 +197,8 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);
@@ -207,6 +214,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             var p = ParamVo.Get(paramMore);
@@ -217,7 +230,8 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);
@@ -235,6 +249,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             try
@@ -243,7 +263,8 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);
@@ -259,6 +280,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             try
@@ -267,7 +294,8 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);
@@ -283,6 +311,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             try
@@ -291,12 +325,13 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);
 
-            return success ? component : null;
+            return success ? component : default;
         }
 
         internal static async ETTask<T> OpenPanelAsync<T, P1, P2, P3, P4>(this YIUIMgrComponent self, Entity root, P1 p1, P2 p2, P3 p3,
@@ -308,6 +343,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             try
@@ -316,7 +357,8 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);
@@ -334,6 +376,12 @@ namespace ET.Client
 
             var success   = false;
             var component = (T)info.OwnerUIEntity;
+            if (component == null)
+            {
+                Log.Error($"面板[{info.ResName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");
+                return default;
+            }
+
             await self.OpenPanelBefore(info);
 
             try
@@ -342,7 +390,8 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Debug.LogError($"panel={info.ResName}, err={e.Message}{e.StackTrace}");
+                Debug.LogError($"Panel Open方法try报错={info.ResName}, 请检查={e.Message}{e.StackTrace}");
+                return default;
             }
 
             await self.OpenPanelAfter(info, success);

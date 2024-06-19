@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIBackOpenSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask IYIUIBackOpenSystem.Run(Entity o, YIUIPanelInfo closePanelInfo)
         {
             await this.YIUIBackOpen((T)o, closePanelInfo);

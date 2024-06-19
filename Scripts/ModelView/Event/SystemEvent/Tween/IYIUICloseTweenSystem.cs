@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUICloseTweenSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask IYIUICloseTweenSystem.Run(Entity o)
         {
             await this.YIUICloseTween((T)o);

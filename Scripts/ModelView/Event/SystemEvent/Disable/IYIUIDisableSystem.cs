@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIDisableSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         void IYIUIDisableSystem.Run(Entity o)
         {
             this.YIUIDisable((T)o);

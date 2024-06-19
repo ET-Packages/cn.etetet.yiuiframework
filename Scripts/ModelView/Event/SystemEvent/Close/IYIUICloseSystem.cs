@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUICloseSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask<bool> IYIUICloseSystem.Run(Entity o)
         {
             return await this.YIUIClose((T)o);

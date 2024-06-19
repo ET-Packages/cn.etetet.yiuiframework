@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIBackHomeOpenSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask IYIUIBackHomeOpenSystem.Run(Entity o)
         {
             await this.YIUIBackHomeOpen((T)o);

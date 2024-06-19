@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIBindSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         void IYIUIBindSystem.Run(Entity o)
         {
             this.YIUIBind((T)o);

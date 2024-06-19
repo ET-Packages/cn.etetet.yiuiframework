@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIBackHomeCloseSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask IYIUIBackHomeCloseSystem.Run(Entity o, YIUIPanelInfo HomeClosePanelInfo)
         {
             await this.YIUIBackHomeClose((T)o, HomeClosePanelInfo);

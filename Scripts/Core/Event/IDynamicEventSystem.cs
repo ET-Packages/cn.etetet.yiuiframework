@@ -1,4 +1,3 @@
-/*
 using System;
 
 namespace ET
@@ -25,11 +24,6 @@ namespace ET
             return typeof(IDynamicEventSystem<A>);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.Dynamic;
-        }
-
         public async ETTask Run(Entity o, A message)
         {
             await DynamicEvent((T)o, message);
@@ -38,4 +32,3 @@ namespace ET
         protected abstract ETTask DynamicEvent(T self, A message);
     }
 }
-*/

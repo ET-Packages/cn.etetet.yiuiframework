@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIOpenTweenEndSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         void IYIUIOpenTweenEndSystem.Run(Entity o)
         {
             this.YIUIOpenTweenEnd((T)o);

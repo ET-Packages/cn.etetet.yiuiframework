@@ -14,7 +14,6 @@ namespace ET.Client
         internal static void StopCountDownDestroyPanel(this YIUIPanelComponent self)
         {
             if (self.m_Token == null) return;
-
             self.m_Token.Cancel();
             self.m_Token = null;
         }
@@ -27,7 +26,7 @@ namespace ET.Client
 
                 await self.Root().GetComponent<TimerComponent>().WaitAsync((long)(self.CachePanelTime * 1000));
 
-                if (oldCancellationToken != null && !oldCancellationToken.IsCancel()) //取消倒计时
+                if (oldCancellationToken != null && oldCancellationToken.IsCancel()) //取消倒计时
                 {
                     return;
                 }
@@ -39,9 +38,9 @@ namespace ET.Client
             }
 
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRemoveUIReset
-                                                 {
-                                                     PanelName = self.UIBase.UIName
-                                                 });
+            {
+                PanelName = self.UIBase.UIName
+            });
         }
     }
 }

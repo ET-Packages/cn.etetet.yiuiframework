@@ -2,7 +2,11 @@ using System;
 
 namespace ET.Client
 {
-    public interface IYIUIEvent<in A> where A : struct
+    public struct YIUIEvent
+    {
+    }
+
+    public interface IYIUIEvent<A> : IClassEvent<A> where A : struct
     {
     }
 
@@ -13,7 +17,7 @@ namespace ET.Client
     }
 
     [EntitySystem]
-    public abstract class YIUIEventSystem<T, A> : SystemObject, IYIUIEventSystem<A> where T : Entity, IYIUIEvent<A> where A : struct
+    public abstract class YIUIEventSystem<T, A> : ClassEventSystem<T, A>, IYIUIEventSystem<A> where T : Entity, IYIUIEvent<A> where A : struct
     {
         Type ISystemType.Type()
         {
@@ -25,17 +29,16 @@ namespace ET.Client
             return typeof(IYIUIEventSystem<A>);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return 0;
-            //return InstanceQueueIndex.UIEvent;
-        }
-
         public async ETTask Run(Entity o, A message)
         {
             await YIUIEvent((T)o, message);
         }
 
-        protected abstract ETTask YIUIEvent(T self, A message);
+        protected override void Handle(Entity e,    A t)
+        {
+            throw new NotImplementedException();
+        }
+        
+        protected abstract ETTask YIUIEvent(T   self, A message);
     }
 }

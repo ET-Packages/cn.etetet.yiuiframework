@@ -24,11 +24,6 @@ namespace ET.Client
             return typeof(IYIUIOpenTweenSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask IYIUIOpenTweenSystem.Run(Entity o)
         {
             await this.YIUIOpenTween((T)o);

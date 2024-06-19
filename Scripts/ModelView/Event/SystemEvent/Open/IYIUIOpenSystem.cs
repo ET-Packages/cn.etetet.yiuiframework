@@ -74,11 +74,6 @@ namespace ET.Client
             return typeof(IYIUIOpenSystem);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask<bool> IYIUIOpenSystem.Run(Entity o)
         {
             return await this.YIUIOpen((T)o);
@@ -98,11 +93,6 @@ namespace ET.Client
         Type ISystemType.SystemType()
         {
             return typeof(IYIUIOpenSystem<A>);
-        }
-
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
         }
 
         async ETTask<bool> IYIUIOpenSystem<A>.Run(Entity o, A a)
@@ -126,11 +116,6 @@ namespace ET.Client
             return typeof(IYIUIOpenSystem<A, B>);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask<bool> IYIUIOpenSystem<A, B>.Run(Entity o, A a, B b)
         {
             return await this.YIUIOpen((T)o, a, b);
@@ -150,11 +135,6 @@ namespace ET.Client
         Type ISystemType.SystemType()
         {
             return typeof(IYIUIOpenSystem<A, B, C>);
-        }
-
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
         }
 
         async ETTask<bool> IYIUIOpenSystem<A, B, C>.Run(Entity o, A a, B b, C c)
@@ -178,11 +158,6 @@ namespace ET.Client
             return typeof(IYIUIOpenSystem<A, B, C, D>);
         }
 
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
-        }
-
         async ETTask<bool> IYIUIOpenSystem<A, B, C, D>.Run(Entity o, A a, B b, C c, D d)
         {
             return await this.YIUIOpen((T)o, a, b, c, d);
@@ -202,11 +177,6 @@ namespace ET.Client
         Type ISystemType.SystemType()
         {
             return typeof(IYIUIOpenSystem<A, B, C, D, E>);
-        }
-
-        int ISystemType.GetInstanceQueueIndex()
-        {
-            return InstanceQueueIndex.None;
         }
 
         async ETTask<bool> IYIUIOpenSystem<A, B, C, D, E>.Run(Entity o, A a, B b, C c, D d,

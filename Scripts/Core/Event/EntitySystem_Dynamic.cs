@@ -1,5 +1,4 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace ET
@@ -10,8 +9,6 @@ namespace ET
     //所以还可区分场景
     public partial class EntitySystem
     {
-        public Queue<EntityRef<Entity>>[] Queues => queues;
-
         //向任意场景发送动态事件
         public async ETTask DynamicEvent<P1>(P1 message) where P1 : struct
         {
@@ -33,8 +30,9 @@ namespace ET
         //向指定场景发送动态事件
         public async ETTask DynamicEvent<P1>(int sceneType, P1 message) where P1 : struct
         {
-            var queue = queues[InstanceQueueIndex.Dynamic];
-            int count = queue.Count;
+            Type                     systemType = typeof(IDynamicEventSystem<P1>);
+            Queue<EntityRef<Entity>> queue      = this.GetQueue(systemType);
+            int                      count      = queue.Count;
             if (count <= 0) return;
 
             using ListComponent<ETTask> list = ListComponent<ETTask>.Create();
@@ -110,4 +108,3 @@ namespace ET
         }
     }
 }
-*/

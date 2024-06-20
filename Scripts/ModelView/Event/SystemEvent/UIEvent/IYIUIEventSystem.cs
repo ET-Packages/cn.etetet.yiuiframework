@@ -29,6 +29,7 @@ namespace ET.Client
             return typeof(IYIUIEventSystem<A>);
         }
 
+        //TODO 这里会有覆盖提示 等待官方提供异步方案
         public async ETTask Run(Entity o, A message)
         {
             await YIUIEvent((T)o, message);

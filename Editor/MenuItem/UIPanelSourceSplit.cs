@@ -1,7 +1,9 @@
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
+using ET;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace YIUIFramework.Editor
 {
@@ -44,7 +46,17 @@ namespace YIUIFramework.Editor
             cdeTable.IsSplitData              = false;
             cdeTable.PanelSplitEditorShowData = cdeTable.PanelSplitData;
             var splitData = cdeTable.PanelSplitData;
-            var savePath  = $"{YIUIConst.UIProjectResPath}/{pkgName}/{YIUIConst.UIPrefabs}";
+
+            string savePath = "";
+            if (UIOperationHelper.CheckUIIsPackages(loadSource, false))
+            {
+                var etPkgName = UIOperationHelper.GetETPackagesName(loadSource, false);
+                savePath = $"{string.Format(YIUIConst.UIProjectPackageResPath, etPkgName)}/{pkgName}/{YIUIConst.UIPrefabs}";
+            }
+            else
+            {
+                savePath = $"{YIUIConst.UIProjectResPath}/{pkgName}/{YIUIConst.UIPrefabs}";
+            }
 
             AllViewSaveAsPrefabAsset(oldSplitData.AllCommonView, splitData.AllCommonView, savePath, true);
             AllViewSaveAsPrefabAsset(oldSplitData.AllCreateView, splitData.AllCreateView, savePath);
@@ -148,7 +160,7 @@ namespace YIUIFramework.Editor
             var prefab = PrefabUtility.SaveAsPrefabAsset(obj, path);
             if (prefab == null)
             {
-                Debug.LogError($"{obj.name} 创建失败");
+                Debug.Log($"生成完毕 {obj.name} 请检查然后手动检查所有");
             }
             else
             {

@@ -23,11 +23,20 @@ namespace YIUIFramework
         [LabelText("YIUI项目编辑器资源")]
         public const string UIProjectEditorPath = "Assets/Editor/" + UIProjectName; //编辑器才会用到的资源
 
+        [LabelText("YIUI项目指定包编辑器资源")]
+        public const string UIProjectPackageEditorPath = "Assets/../Packages/cn.etetet.{0}/" + UIProjectEditorPath; //指定包的编辑器才会用到的资源
+
         [LabelText("YIUI项目资源")]
         public const string UIProjectResPath = "Assets/GameRes/" + UIProjectName; //玩家的预设/图片等资源存放的地方
 
+        [LabelText("YIUI项目指定包资源")]
+        public const string UIProjectPackageResPath = "Assets/../Packages/cn.etetet.{0}/" + UIProjectResPath; //指定包的资源存放的地方
+
         [LabelText("YIUI项目生成包名")]
         public const string UIETCreatePackageName = "yiui"; //对应指定代码生成到指定的包中
+
+        [LabelText("YIUI项目生成包路径")]
+        public const string UIETCreatePackagePath = "Assets/../Packages/cn.etetet.yiui";
 
         [LabelText("YIUI项目脚本")]
         public const string UIETComponentGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/YIUIGen"; //自动生成的代码会覆盖不可修改
@@ -51,6 +60,7 @@ namespace YIUIFramework
         public const string UIRootPrefabPath = "Assets/../Packages/cn.etetet.yiuiframework/Editor/UIRootPrefab" + UIRootName + ".prefab";
 
         public const string UIPackages               = "Packages";
+        public const string UIETPackagesFormat       = "cn.etetet.";
         public const string UIRootName               = "YIUIRoot";
         public const string UILayerRootName          = "YIUILayerRoot";
         public const string UIRootPkgName            = "Common";

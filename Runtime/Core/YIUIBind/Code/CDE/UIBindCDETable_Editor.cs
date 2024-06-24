@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -205,7 +206,12 @@ namespace YIUIFramework
         private bool ShowPackagesCreateBtn()
         {
             if (IsSplitData) return false;
-            return UIOperationHelper.CheckUIIsPackages(this, false);
+            var result = UIOperationHelper.CheckUIIsPackages(this, false);
+            if (result && string.IsNullOrEmpty(m_PackagesName))
+            {
+                m_PackagesName = UIOperationHelper.GetETPackagesName(this, false);
+            }
+            return result;
         }
 
         [GUIColor(0.7f, 0.4f, 0.8f)]
@@ -220,6 +226,12 @@ namespace YIUIFramework
             AssetDatabase.Refresh();
         }
 
+        [LabelText("指定生成包名")]
+        [ShowIf("ShowPackagesCreateBtn")]
+        [ShowInInspector]
+        [OdinSerialize]
+        private string m_PackagesName;
+
         [GUIColor(0.7f, 0.4f, 0.8f)]
         [Button("Packages生成", 50)]
         [ShowIf("ShowPackagesCreateBtn")]
@@ -227,7 +239,7 @@ namespace YIUIFramework
         {
             if (!UIOperationHelper.CheckUIIsPackages(this)) return;
 
-            if (!InvokeTargetMethod(CreateModuleType, "CreatePackages", this, false, false)) return;
+            if (!InvokeTargetMethod(CreateModuleType, "CreatePackages", this, false, false, m_PackagesName)) return;
 
             AssetDatabase.Refresh();
         }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
+using ET;
 using UnityEditor;
 #endif
 
@@ -152,12 +154,41 @@ namespace YIUIFramework
 
             var prefabPath = AssetDatabase.GetAssetPath(obj);
 
-            if (prefabPath.Contains(YIUIConst.UIPackages))
+            if (prefabPath.Contains(YIUIConst.UIPackages) && prefabPath.Contains(YIUIConst.UIETPackagesFormat))
             {
                 return true;
             }
 
             return false;
+        }
+
+        public static string GetETPackagesName(Object obj, bool log = true)
+        {
+            var prefabPath = AssetDatabase.GetAssetPath(obj);
+
+            if (prefabPath.Contains(YIUIConst.UIPackages) && prefabPath.Contains(YIUIConst.UIETPackagesFormat))
+            {
+                var pathSplit = prefabPath.Split('/');
+
+                for (int i = 0; i < pathSplit.Length; i++)
+                {
+                    var name = pathSplit[i];
+                    if (name.Contains(YIUIConst.UIPackages))
+                    {
+                        var packageFullName      = pathSplit[i + 1];
+                        var packageFullNameSplit = packageFullName.Split('.');
+                        var packageName          = packageFullNameSplit[^1];
+                        return packageName;
+                    }
+                }
+            }
+
+            if (log)
+            {
+                Log.Error($"{prefabPath} 未找到预制体的包名 请检查预制体路径是否正确 {obj.name}");
+            }
+
+            return "";
         }
 
         #endif

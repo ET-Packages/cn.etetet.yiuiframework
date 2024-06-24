@@ -52,38 +52,38 @@ namespace YIUIFramework.Editor
         [ShowIf("m_UIPublishPackageData", EPlatformType.Default)]
         [BoxGroup("平台设置", centerLabel: true)]
         public UIPlatformSettings Default = new UIPlatformSettings
-                                            {
-                                                PlatformType    = EPlatformType.Default,
-                                                BuildTargetName = "DefaultTexturePlatform",
-                                                Format          = TextureImporterFormat.Automatic,
-                                            };
+        {
+            PlatformType    = EPlatformType.Default,
+            BuildTargetName = "DefaultTexturePlatform",
+            Format          = TextureImporterFormat.Automatic,
+        };
 
         [ShowIf("m_UIPublishPackageData", EPlatformType.PC)]
         [BoxGroup("平台设置", centerLabel: true)]
         public UIPlatformSettings PC = new UIPlatformSettings
-                                       {
-                                           PlatformType    = EPlatformType.PC,
-                                           BuildTargetName = "Standalone",
-                                           Format          = TextureImporterFormat.DXT5Crunched,
-                                       };
+        {
+            PlatformType    = EPlatformType.PC,
+            BuildTargetName = "Standalone",
+            Format          = TextureImporterFormat.DXT5Crunched,
+        };
 
         [ShowIf("m_UIPublishPackageData", EPlatformType.Android)]
         [BoxGroup("平台设置", centerLabel: true)]
         public UIPlatformSettings Android = new UIPlatformSettings
-                                            {
-                                                PlatformType    = EPlatformType.Android,
-                                                BuildTargetName = "Android",
-                                                Format          = TextureImporterFormat.ASTC_6x6,
-                                            };
+        {
+            PlatformType    = EPlatformType.Android,
+            BuildTargetName = "Android",
+            Format          = TextureImporterFormat.ASTC_6x6,
+        };
 
         [ShowIf("m_UIPublishPackageData", EPlatformType.iPhone)]
         [BoxGroup("平台设置", centerLabel: true)]
         public UIPlatformSettings iPhone = new UIPlatformSettings
-                                           {
-                                               PlatformType    = EPlatformType.iPhone,
-                                               BuildTargetName = "iPhone",
-                                               Format          = TextureImporterFormat.ASTC_4x4,
-                                           };
+        {
+            PlatformType    = EPlatformType.iPhone,
+            BuildTargetName = "iPhone",
+            Format          = TextureImporterFormat.ASTC_4x4,
+        };
 
         private GlobalSpriteAtlasSettings m_GlobalSpriteAtlasSettings = new GlobalSpriteAtlasSettings();
 
@@ -101,7 +101,7 @@ namespace YIUIFramework.Editor
         }
 
         private const string GlobalSaveSpriteAtlasSettingsPath =
-                YIUIConst.UIProjectEditorPath + "/GlobalSpriteAtlasSettings.txt";
+                YIUIConst.UIETCreatePackagePath + "/" + YIUIConst.UIProjectEditorPath + "/GlobalSpriteAtlasSettings.txt";
 
         private class GlobalSpriteAtlasSettings
         {
@@ -134,21 +134,21 @@ namespace YIUIFramework.Editor
             spriteAtlas.SetIncludeInBuild(SpriteAtlasSettings.IncludeInBuild);
 
             var packingSettings = new SpriteAtlasPackingSettings()
-                                  {
-                                      blockOffset        = SpriteAtlasSettings.BlockOffset,
-                                      enableRotation     = SpriteAtlasSettings.EnableRotation,
-                                      enableTightPacking = SpriteAtlasSettings.EnableTightPacking,
-                                      padding            = SpriteAtlasSettings.Padding,
-                                  };
+            {
+                blockOffset        = SpriteAtlasSettings.BlockOffset,
+                enableRotation     = SpriteAtlasSettings.EnableRotation,
+                enableTightPacking = SpriteAtlasSettings.EnableTightPacking,
+                padding            = SpriteAtlasSettings.Padding,
+            };
             spriteAtlas.SetPackingSettings(packingSettings);
 
             var textureSettings = new SpriteAtlasTextureSettings()
-                                  {
-                                      readable        = SpriteAtlasSettings.Readable,
-                                      generateMipMaps = SpriteAtlasSettings.GenerateMipMaps,
-                                      sRGB            = SpriteAtlasSettings.sRGB,
-                                      filterMode      = SpriteAtlasSettings.FilterMode,
-                                  };
+            {
+                readable        = SpriteAtlasSettings.Readable,
+                generateMipMaps = SpriteAtlasSettings.GenerateMipMaps,
+                sRGB            = SpriteAtlasSettings.sRGB,
+                filterMode      = SpriteAtlasSettings.FilterMode,
+            };
             spriteAtlas.SetTextureSettings(textureSettings);
 
             foreach (var targetSetting in AllUIPlatformSettings.Values)
@@ -206,9 +206,9 @@ namespace YIUIFramework.Editor
         public int MaxTextureSize = 2048;
 
         private static List<int> MaxTextureSizeListKey = new List<int>
-                                                         {
-                                                             32, 64, 128, 256, 512, 1024, 2048, 4096, 8192
-                                                         };
+        {
+            32, 64, 128, 256, 512, 1024, 2048, 4096, 8192
+        };
 
         [ShowIf("PlatformType", EPlatformType.Default)]
         public bool CrunchedCompression = true;

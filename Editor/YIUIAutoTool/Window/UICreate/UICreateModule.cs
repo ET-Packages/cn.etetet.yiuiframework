@@ -10,25 +10,36 @@ namespace YIUIFramework.Editor
     {
         public static string UICreatePackageName;
 
-        public static void CreatePackages(UIBindCDETable cdeTable, bool refresh, bool tips)
+        public static void CreateTargetPackages(UIBindCDETable cdeTable, bool refresh, bool tips, string createPackageName)
         {
-            var prefabPath = AssetDatabase.GetAssetPath(cdeTable);
-
-            var pkgName = GetPkgName(prefabPath);
-            if (string.IsNullOrEmpty(pkgName))
+            if (string.IsNullOrEmpty(createPackageName))
             {
-                UnityTipsHelper.ShowErrorContext(cdeTable,
-                                                 $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConst.UIProjectResPath}");
+                UnityTipsHelper.ShowErrorContext(cdeTable, $"必须指定目标创建模块名");
                 return;
             }
 
-            UICreatePackageName = $"{YIUIConst.UIETCreatePackageName}{pkgName.ToLower()}";
+            UICreatePackageName = createPackageName.ToLower();
             Create(cdeTable, refresh, tips);
+        }
+
+        public static void CreatePackages(UIBindCDETable cdeTable, bool refresh, bool tips, string createPackageName = "")
+        {
+            if (string.IsNullOrEmpty(createPackageName))
+            {
+                createPackageName = UIOperationHelper.GetETPackagesName(cdeTable);
+                if (string.IsNullOrEmpty(createPackageName))
+                {
+                    UnityTipsHelper.ShowErrorContext(cdeTable, $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConst.UIProjectResPath}");
+                    return;
+                }
+            }
+
+            CreateTargetPackages(cdeTable, refresh, tips, createPackageName);
         }
 
         public static void CreateCommon(UIBindCDETable cdeTable, bool refresh, bool tips)
         {
-            UICreatePackageName = YIUIConst.UIETCreatePackageName;
+            UICreatePackageName = YIUIConst.UIETCreatePackageName.ToLower();
             Create(cdeTable, refresh, tips);
         }
 
@@ -71,7 +82,7 @@ namespace YIUIFramework.Editor
             if (!checkAsset)
             {
                 UnityTipsHelper.ShowErrorContext(cdeTable,
-                                                 $"1: 必须是预制体 2: 不能在Hierarchy面板中使用 必须在Project面板下的预制体原件才能使用使用 ");
+                    $"1: 必须是预制体 2: 不能在Hierarchy面板中使用 必须在Project面板下的预制体原件才能使用使用 ");
                 return;
             }
 
@@ -82,22 +93,22 @@ namespace YIUIFramework.Editor
 
             //component信息
             var createBaseData = new UICreateBaseData
-                                 {
-                                     AutoRefresh   = false,
-                                     ShowTips      = tips,
-                                     Namespace     = YIUIConst.UINamespace,
-                                     PkgName       = cdeTable.PkgName,
-                                     ResName       = cdeTable.ResName,
-                                     CodeType      = cdeTable.UICodeType,
-                                     PanelLayer    = cdeTable.PanelLayer,
-                                     Variables     = UICreateVariables.Get(cdeTable),
-                                     UIFriend      = UICreateBind.GetFriend(cdeTable),
-                                     UIBase        = UICreateBind.GetBase(cdeTable),
-                                     UIBind        = UICreateBind.GetBind(cdeTable),
-                                     UIUnBind      = UICreateBind.GetUnBind(cdeTable),
-                                     VirtualMethod = UICreateMethod.Get(cdeTable),
-                                     PanelViewEnum = UICreatePanelViewEnum.Get(cdeTable),
-                                 };
+            {
+                AutoRefresh   = false,
+                ShowTips      = tips,
+                Namespace     = YIUIConst.UINamespace,
+                PkgName       = cdeTable.PkgName,
+                ResName       = cdeTable.ResName,
+                CodeType      = cdeTable.UICodeType,
+                PanelLayer    = cdeTable.PanelLayer,
+                Variables     = UICreateVariables.Get(cdeTable),
+                UIFriend      = UICreateBind.GetFriend(cdeTable),
+                UIBase        = UICreateBind.GetBase(cdeTable),
+                UIBind        = UICreateBind.GetBind(cdeTable),
+                UIUnBind      = UICreateBind.GetUnBind(cdeTable),
+                VirtualMethod = UICreateMethod.Get(cdeTable),
+                PanelViewEnum = UICreatePanelViewEnum.Get(cdeTable),
+            };
 
             //自定义的component
             new UICreateComponentCode(out var resultComponent, YIUIAutoTool.Author, createBaseData);
@@ -107,14 +118,14 @@ namespace YIUIFramework.Editor
 
             //system信息
             var createSystemData = new UICreateSystemData
-                                   {
-                                       AutoRefresh = false,
-                                       ShowTips    = tips,
-                                       Namespace   = YIUIConst.UINamespace,
-                                       PkgName     = cdeTable.PkgName,
-                                       ResName     = cdeTable.ResName,
-                                       OverrideDic = UICreateMethod.GetSystemEventOverrideDic(cdeTable),
-                                   };
+            {
+                AutoRefresh = false,
+                ShowTips    = tips,
+                Namespace   = YIUIConst.UINamespace,
+                PkgName     = cdeTable.PkgName,
+                ResName     = cdeTable.ResName,
+                OverrideDic = UICreateMethod.GetSystemEventOverrideDic(cdeTable),
+            };
 
             //生成的component
             //自定义的system
@@ -165,7 +176,7 @@ namespace YIUIFramework.Editor
             if (string.IsNullOrEmpty(pkgName))
             {
                 UnityTipsHelper.ShowErrorContext(cdeTable,
-                                                 $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConst.UIProjectResPath}");
+                    $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConst.UIProjectResPath}");
                 return false;
             }
 

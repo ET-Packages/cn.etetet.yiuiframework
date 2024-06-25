@@ -1,7 +1,10 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
+using ET;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace YIUIFramework.Editor
 {
@@ -10,6 +13,8 @@ namespace YIUIFramework.Editor
     /// </summary>
     public static class MenuItemYIUIPanelToSource
     {
+        private static string m_PanelPath;
+
         [MenuItem("Assets/YIUI/Panel 逆向 源数据 Source", false, 1)]
         static void CreateYIUIPanelByFolder()
         {
@@ -25,6 +30,18 @@ namespace YIUIFramework.Editor
             if (!path.Contains(YIUIConst.UIProjectResPath))
             {
                 UnityTipsHelper.ShowError($"请在路径 {YIUIConst.UIProjectResPath}/xxx/{YIUIConst.UIPanelName} 下右键选择一个Panel 进行转换");
+                return;
+            }
+
+            var parts = path.Split(new string[] { "/Prefabs" }, StringSplitOptions.None);
+
+            if (parts.Length > 1)
+            {
+                m_PanelPath = string.Join("/", parts, 0, parts.Length - 1);
+            }
+            else
+            {
+                Log.Error("路径中没有找到预制件。");
                 return;
             }
 
@@ -59,8 +76,7 @@ namespace YIUIFramework.Editor
             }
 
             var newSourceName = $"{panelCdeTable.name}{YIUIConst.UISource}";
-            var savePath =
-                    $"{YIUIConst.UIProjectResPath}/{panelCdeTable.PkgName}/{YIUIConst.UISource}/{newSourceName}.prefab";
+            var savePath      = $"{m_PanelPath}/{YIUIConst.UISource}/{newSourceName}.prefab";
 
             //TODO 有人不按要求操作直接不使用view 关联了其他组件 这个组件的引用逆向时会无法关联
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
@@ -112,8 +128,7 @@ namespace YIUIFramework.Editor
 
                 var viewName = viewParent.name.Replace(YIUIConst.UIParentName, "");
 
-                var viewPath =
-                        $"{YIUIConst.UIProjectResPath}/{pkgName}/{YIUIConst.UIPrefabs}/{viewName}.prefab";
+                var viewPath = $"{m_PanelPath}/{YIUIConst.UIPrefabs}/{viewName}.prefab";
 
                 var childView = viewParent.FindChildByName(viewName);
                 if (childView != null)
@@ -131,7 +146,7 @@ namespace YIUIFramework.Editor
             var loadView = (GameObject)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Object));
             if (loadView == null)
             {
-                UnityTipsHelper.ShowError($"未知错误 没有加载到 请检查 {loadPath}");
+                UnityTipsHelper.ShowError($"未知错误 没有加载到 请检查 {loadPath} 是否修改了路径 必须在Prefabs目录下 与Panel同级");
                 return;
             }
 

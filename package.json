@@ -13,8 +13,12 @@
     "url": "https://github.com/LiShengYang-yiyi/YIUI/tree/YIUI-ET9.0"
   },
   "relatedPackages": {},
-  "gitDependencies": {
-	"cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1",
-    "cn.etetet.yiui": "https://github.com/ET-Packages/cn.etetet.yiui.git#0.0.1"
+  "dependencies": {
+    "cn.etetet.core": "0.0.6",
+    "cn.etetet.yiui": "0.0.1"
+  },
+  "publishConfig": 
+  { 
+    "registry": "https://npm.pkg.github.com/@ET-Packages" 
   }
 }

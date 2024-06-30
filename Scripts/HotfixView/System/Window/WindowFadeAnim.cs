@@ -1,5 +1,4 @@
-﻿using ET;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace ET.Client
@@ -19,7 +18,6 @@ namespace ET.Client
         private static async ETTask GetAwaiter(this Tweener tweener)
         {
             var task = ETTask.Create();
-            tweener.onKill     += () => { task.SetResult(); };
             tweener.onComplete += () => { task.SetResult(); };
             await task;
         }

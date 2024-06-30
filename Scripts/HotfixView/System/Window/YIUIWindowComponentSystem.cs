@@ -7,7 +7,6 @@
 using System;
 using UnityEngine;
 using YIUIFramework;
-using DG.Tweening;
 
 namespace ET.Client
 {
@@ -151,12 +150,19 @@ namespace ET.Client
 
         private static async ETTask OnOpenTween(this YIUIWindowComponent self)
         {
-            if (self._LastETTask != null)
+            if (self._LastCloseETTask != null)
             {
-                await self._LastETTask;
+                await self._LastCloseETTask;
             }
 
-            self._LastETTask = ETTask.Create(true);
+            if (self._LastOpenETTask != null)
+            {
+                await self._LastOpenETTask;
+                return;
+            }
+
+            self._LastOpenETTask = ETTask.Create(true);
+            await YIUIEventSystem.OpenTween(self.UIBase.OwnerUIEntity);
             var tweent = await YIUIEventSystem.OpenTween(self.UIBase.OwnerUIEntity);
             if (!tweent)
             {
@@ -168,18 +174,24 @@ namespace ET.Client
             }
 
             if (self.IsDisposed) return;
-            self._LastETTask?.SetResult();
-            self._LastETTask = null;
+            self._LastOpenETTask?.SetResult();
+            self._LastOpenETTask = null;
         }
 
         private static async ETTask OnCloseTween(this YIUIWindowComponent self)
         {
-            if (self._LastETTask != null)
+            if (self._LastOpenETTask != null)
             {
-                await self._LastETTask;
+                await self._LastOpenETTask;
             }
 
-            self._LastETTask = ETTask.Create(true);
+            if (self._LastCloseETTask != null)
+            {
+                await self._LastCloseETTask;
+                return;
+            }
+
+            self._LastCloseETTask = ETTask.Create(true);
             var tweent = await YIUIEventSystem.CloseTween(self.UIBase.OwnerUIEntity);
             if (!tweent)
             {
@@ -188,8 +200,8 @@ namespace ET.Client
             }
 
             if (self.IsDisposed) return;
-            self._LastETTask?.SetResult();
-            self._LastETTask = null;
+            self._LastCloseETTask?.SetResult();
+            self._LastCloseETTask = null;
         }
     }
 }

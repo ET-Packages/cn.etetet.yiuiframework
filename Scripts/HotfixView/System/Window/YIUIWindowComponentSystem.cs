@@ -162,7 +162,6 @@ namespace ET.Client
             }
 
             self._LastOpenETTask = ETTask.Create(true);
-            await YIUIEventSystem.OpenTween(self.UIBase.OwnerUIEntity);
             var tweent = await YIUIEventSystem.OpenTween(self.UIBase.OwnerUIEntity);
             if (!tweent)
             {

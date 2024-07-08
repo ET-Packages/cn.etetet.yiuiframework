@@ -1,6 +1,4 @@
-﻿using YIUIFramework;
-
-namespace ET.Client
+﻿namespace ET.Client
 {
     [FriendOf(typeof(CountDownMgr))]
     [EntitySystemOf(typeof(CountDownMgr))]
@@ -19,7 +17,7 @@ namespace ET.Client
         }
 
         [EntitySystem]
-        public static void LateUpdate(this CountDownMgr self)
+        private static void LateUpdate(this CountDownMgr self)
         {
             self.ManagerUpdate();
         }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using ET;
 using UnityEngine;
 
 namespace YIUIFramework
@@ -52,6 +53,14 @@ namespace YIUIFramework
             }
 
             #if !UNITY_EDITOR || YIUIMACRO_SIMULATE_NONEEDITOR || ENABLE_DLL
+
+            //https://lib9kmxvq7k.feishu.cn/wiki/W80jwOq9SiY30KkISOec1kQZnNf
+            //关联UI工具中自动生成绑定代码 Tools >> YIUI自动化工具 >> 发布 >> UI自动生成绑定替代反射代码
+            //在ET中这个自动生成的代码在ModelView中所以在此框架中无法初始化赋值
+            //将由HotfixView AddComponent<YIUIMgrComponent> 之前调用一次
+            //会在 InitAllBind 方法中被调用
+            //YIUIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.YIUIBindProvider.Get;
+
             if (InternalGameGetUIBindVoFunc == null)
             {
                 Debug.LogError(@$"使用非反射注册绑定 但是方法未实现 请检查 建议在YIUI初始化的地方调用一次
@@ -65,8 +74,9 @@ namespace YIUIFramework
 
             if (binds == null || binds.Length <= 0)
             {
+                //https://lib9kmxvq7k.feishu.cn/wiki/W80jwOq9SiY30KkISOec1kQZnNf
                 //如果才接入框架 第一个UI都没有生成是无法运行的 先生成一个UI吧
-                Debug.LogError("没有找到绑定信息 或者 没有绑定信息 请检查");
+                Log.Error("没有找到绑定信息 或者 没有绑定信息 请检查 或 参考文档");
                 return false;
             }
 

@@ -8,14 +8,16 @@ using Sirenix.OdinInspector;
 
 namespace YIUIFramework
 {
-    //一个项目不可能随时换项目路径 这里就是强制设置的只可读 初始化项目的时候手动改这个一次就可以了
+    /// 一个项目不可能随时换项目路径 这里就是强制设置的只可读
+    /// 初始化项目的时候手动改这个一次就可以了
+    /// 建议什么都不要改 改了自己查问题
     /// <summary>
     /// YIUI常量
     /// </summary>
     public static partial class YIUIConst
     {
         [LabelText("YIUI根目录名称")]
-        public const string UIProjectName = "YIUI";
+        public const string UIProjectName = "YIUI"; //不要修改
 
         [LabelText("YIUI项目命名空间")]
         public const string UINamespace = "ET.Client"; //所有生成文件的命名空间

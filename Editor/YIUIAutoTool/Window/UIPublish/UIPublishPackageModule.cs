@@ -102,12 +102,12 @@ namespace YIUIFramework.Editor
 
         #region 初始化
 
-        public UIPublishPackageModule(UIPublishModule publishModule, string pkgName)
+        public UIPublishPackageModule(UIPublishModule publishModule, string resPath, string pkgName)
         {
             m_UIPublishModule = publishModule;
             m_UIAtlasModule   = ((YIUIAutoTool)publishModule.AutoTool).AtlasModule;
             PkgName           = pkgName;
-            PkgPath           = $"{YIUIConst.UIProjectResPath}/{pkgName}";
+            PkgPath           = $"{resPath}/{pkgName}";
             FindUIBindCDETableResources();
             FindUITextureResources();
             FindUISpriteAtlasResources();

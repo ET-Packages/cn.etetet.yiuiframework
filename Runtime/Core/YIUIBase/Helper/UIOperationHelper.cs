@@ -165,10 +165,14 @@ namespace YIUIFramework
         public static string GetETPackagesName(Object obj, bool log = true)
         {
             var prefabPath = AssetDatabase.GetAssetPath(obj);
+            return GetETPackagesName(prefabPath, log);
+        }
 
-            if (prefabPath.Contains(YIUIConst.UIPackages) && prefabPath.Contains(YIUIConst.UIETPackagesFormat))
+        public static string GetETPackagesName(string path, bool log = true)
+        {
+            if (path.Contains(YIUIConst.UIPackages) && path.Contains(YIUIConst.UIETPackagesFormat))
             {
-                var pathSplit = prefabPath.Split('/');
+                var pathSplit = path.Split('/');
 
                 for (int i = 0; i < pathSplit.Length; i++)
                 {
@@ -185,7 +189,7 @@ namespace YIUIFramework
 
             if (log)
             {
-                Log.Error($"{prefabPath} 未找到预制体的包名 请检查预制体路径是否正确 {obj.name}");
+                Log.Error($"{path} 未找到预制体的包名 请检查预制体路径是否正确");
             }
 
             return "";

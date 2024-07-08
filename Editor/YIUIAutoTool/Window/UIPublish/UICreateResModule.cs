@@ -8,7 +8,7 @@ namespace YIUIFramework.Editor
     [HideLabel]
     public class UICreateResModule : BaseCreateModule
     {
-        [InfoBox("UI所在的ET分包中的包名，可以没有 没有时生成在Unity/Assets/下")]
+        [InfoBox("UI所在的ET分包中的包名[cn.etetet.{0}]，可以没有 没有时生成在Unity/Assets/下")]
         [LabelText("新增模块指定分包名")]
         public string PackageName;
 

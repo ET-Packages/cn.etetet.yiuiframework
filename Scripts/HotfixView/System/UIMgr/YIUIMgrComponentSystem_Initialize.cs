@@ -6,17 +6,29 @@ namespace ET.Client
     {
         //添加component的地方 调用 方便异步等待
         //因为UI初始化需要动态加载UI根节点
-        public static async ETTask Initialize(this YIUIMgrComponent self)
+        public static async ETTask<bool> Initialize(this YIUIMgrComponent self)
         {
-            //初始化所有YIUI相关 单例
-            await YIUISingletonHelper.InitializeAll();
+            //初始化UI绑定
+            YIUIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.YIUIBindProvider.Get;
+            var buildResult = YIUIBindHelper.InitAllBind();
+            if (!buildResult) return false;
+
+            //YIUI资源管理
+            var loadResult = await self.AddComponent<YIUILoadComponent>().Initialize();
+            if (!loadResult) return false;
 
             //初始化其他UI框架中的管理器
             self.AddComponent<CountDownMgr>();
 
-            //初始化UIRoot
-            await self.InitRoot();
+            //初始化所有YIUI相关 单例
+            await YIUISingletonHelper.InitializeAll();
+
+            //初始化YIUIRoot
+            var rootResult = await self.InitRoot();
+            if (!rootResult) return false;
             self.InitSafeArea();
+
+            return true;
         }
     }
 }

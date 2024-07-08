@@ -109,6 +109,7 @@ namespace ET.Client
 
         internal static void ResetRoot(this YIUIMgrComponent self)
         {
+            if (self.UILayerRoot == null) return;
             for (int i = self.UILayerRoot.transform.childCount - 1; i >= 0; i--)
             {
                 UnityEngine.Object.Destroy(self.UILayerRoot.transform.GetChild(i).gameObject);

@@ -84,4 +84,10 @@ namespace ET.Client
     {
         public GameObject obj;
     }
+
+    //YIUI加载组件初始化 由具体的资源管理器实现
+    public struct YIUIInvokeLoadComponentAwake
+    {
+        public EntityRef<YIUILoadComponent> LoadComponent;
+    }
 }

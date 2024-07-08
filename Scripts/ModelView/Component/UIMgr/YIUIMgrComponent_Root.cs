@@ -9,7 +9,6 @@ namespace ET.Client
         [StaticField]
         public static bool IsLowQuality = false; //低品质 将会影响动画等逻辑 也可以根据这个参数自定义一些区别
 
-        public bool          BindInit     { get; set; } //绑定初始化情况
         public GameObject    UIRoot       { get; set; }
         public GameObject    UICanvasRoot { get; set; }
         public RectTransform UILayerRoot  { get; set; }

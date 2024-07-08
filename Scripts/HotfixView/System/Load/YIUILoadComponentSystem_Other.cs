@@ -1,5 +1,4 @@
-﻿using YIUIFramework;
-using UnityObject = UnityEngine.Object;
+﻿using UnityObject = UnityEngine.Object;
 
 namespace ET.Client
 {

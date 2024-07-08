@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YooAsset;
 
 namespace ET.Client
 {
@@ -8,15 +7,12 @@ namespace ET.Client
     /// 全局唯一 挂在YIUI管理器下
     /// </summary>
     [ComponentOf(typeof(YIUIMgrComponent))]
-    public partial class YIUILoadComponent : Entity, IAwake, IAwake<string>, IDestroy
+    public partial class YIUILoadComponent : Entity, IAwake, IDestroy
     {
         [StaticField]
         public static EntityRef<YIUILoadComponent> m_InstRef;
 
         [StaticField]
         public static YIUILoadComponent Inst => m_InstRef;
-
-        public Dictionary<int, AssetHandle> m_AllHandle = new();
-        public ResourcePackage              m_Package;
     }
 }

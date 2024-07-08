@@ -20,17 +20,19 @@ namespace YIUIFramework.Editor
 
         public UICreateETScriptComponentCode(out bool result, string authorName, UICreateETScriptData codeData) : base(authorName)
         {
-            var path     = $"{codeData.ComponentPath}/{codeData.Name}Component.cs";
-            var template = $"{YIUIConst.UITemplatePath}/ETScript/UICreateETScriptCommonTemplate.txt";
+            var componentType = codeData.ComponentTpye.ToString();
+            var path          = $"{codeData.ComponentPath}/{codeData.Name}{componentType}.cs";
+            var template      = $"{YIUIConst.UITemplatePath}/ETScript/UICreateETScriptCommonTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
-            m_EventName           = $"{codeData.Name} ET-Component 自动生成";
-            m_AutoRefresh         = codeData.AutoRefresh;
-            m_ShowTips            = codeData.ShowTips;
-            ValueDic["Namespace"] = codeData.Namespace;
-            ValueDic["Name"]      = codeData.Name;
-            ValueDic["Desc"]      = codeData.Desc;
-            ValueDic["Life"]      = GetLife(codeData);
+            m_EventName               = $"{codeData.Name} ET-Component 自动生成";
+            m_AutoRefresh             = codeData.AutoRefresh;
+            m_ShowTips                = codeData.ShowTips;
+            ValueDic["Namespace"]     = codeData.Namespace;
+            ValueDic["Name"]          = codeData.Name;
+            ValueDic["Desc"]          = codeData.Desc;
+            ValueDic["ComponentType"] = componentType;
+            ValueDic["Life"]          = GetLife(codeData);
 
             result = CreateNewFile();
         }

@@ -27,6 +27,12 @@ namespace YIUIFramework.Editor
         IDestroy = 1 << 3,
     }
 
+    public enum EETComponentTpye
+    {
+        Component = 0,
+        Child     = 1,
+    }
+
     /// <summary>
     ///  自动生成ET脚本
     /// </summary>
@@ -42,10 +48,14 @@ namespace YIUIFramework.Editor
         public string ComponentDesc;
 
         [EnumToggleButtons, HideLabel]
+        [BoxGroup("组件类型")]
+        public EETComponentTpye ComponentTpye = EETComponentTpye.Component;
+
+        [EnumToggleButtons, HideLabel]
         [BoxGroup("生命周期")]
         public EETLifeTpye LifeTpye = EETLifeTpye.Def;
 
-        private const string ParentFolderPath = "Assets/Scripts/";
+        private const string ParentFolderPath = "Assets/";
 
         [BoxGroup("Component路径")]
         [HideLabel]
@@ -72,29 +82,16 @@ namespace YIUIFramework.Editor
 
             ComponentName = NameUtility.ToFirstUpper(ComponentName);
 
-            if (string.IsNullOrEmpty(ComponentPath) ||
-                ComponentPath.IndexOf("../", StringComparison.Ordinal) >= 0)
-            {
-                UnityTipsHelper.ShowError($"路径无效 请重新选择 {ComponentPath}");
-                return;
-            }
-
-            if (string.IsNullOrEmpty(SystemPath) ||
-                SystemPath.IndexOf("../", StringComparison.Ordinal) >= 0)
-            {
-                UnityTipsHelper.ShowError($"路径无效 请重新选择 {SystemPath}");
-                return;
-            }
-
             var data = new UICreateETScriptData
-                       {
-                           Namespace     = GetNamespace(),
-                           Name          = ComponentName,
-                           Desc          = ComponentDesc,
-                           LifeTpye      = LifeTpye,
-                           ComponentPath = ParentFolderPath + ComponentPath,
-                           SystemPath    = ParentFolderPath + SystemPath,
-                       };
+            {
+                Namespace     = GetNamespace(),
+                Name          = ComponentName,
+                Desc          = ComponentDesc,
+                ComponentTpye = ComponentTpye,
+                LifeTpye      = LifeTpye,
+                ComponentPath = ParentFolderPath + ComponentPath,
+                SystemPath    = ParentFolderPath + SystemPath,
+            };
 
             new UICreateETScriptComponentCode(out var resultComponent, YIUIAutoTool.Author, data);
             if (resultComponent)
@@ -111,7 +108,7 @@ namespace YIUIFramework.Editor
         private string GetNamespace()
         {
             string scriptNamespace = "ET";
-            if (ComponentPath.Contains("Client"))
+            if (ComponentPath.Contains("Client") || ComponentPath.Contains("HotfixView") || ComponentPath.Contains("ModelView"))
             {
                 scriptNamespace += ".Client";
             }

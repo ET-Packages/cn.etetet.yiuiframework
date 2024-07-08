@@ -20,42 +20,45 @@ namespace YIUIFramework.Editor
 
         public UICreateETScriptSystemCode(out bool result, string authorName, UICreateETScriptData codeData) : base(authorName)
         {
-            var path     = $"{codeData.SystemPath}/{codeData.Name}ComponentSystem.cs";
-            var template = $"{YIUIConst.UITemplatePath}/ETScript/UICreateETScriptSystemTemplate.txt";
+            var componentType = codeData.ComponentTpye.ToString();
+            var path          = $"{codeData.SystemPath}/{codeData.Name}{componentType}System.cs";
+            var template      = $"{YIUIConst.UITemplatePath}/ETScript/UICreateETScriptSystemTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
-            m_EventName           = $"{codeData.Name} ET-System 自动生成";
-            m_AutoRefresh         = codeData.AutoRefresh;
-            m_ShowTips            = codeData.ShowTips;
-            ValueDic["Namespace"] = codeData.Namespace;
-            ValueDic["Name"]      = codeData.Name;
-            ValueDic["Desc"]      = codeData.Desc;
-            ValueDic["Life"]      = GetLife(codeData);
+            m_EventName               = $"{codeData.Name} ET-System 自动生成";
+            m_AutoRefresh             = codeData.AutoRefresh;
+            m_ShowTips                = codeData.ShowTips;
+            ValueDic["Namespace"]     = codeData.Namespace;
+            ValueDic["Name"]          = codeData.Name;
+            ValueDic["Desc"]          = codeData.Desc;
+            ValueDic["ComponentType"] = componentType;
+            ValueDic["ObjectSystem"]  = GetLife(codeData);
 
             result = CreateNewFile();
         }
 
         private string GetLife(UICreateETScriptData codeData)
         {
-            var sb = SbPool.Get();
+            var sbA = SbPool.Get();
             foreach (EETLifeTpye lifeEnum in Enum.GetValues(typeof(EETLifeTpye)))
             {
                 if (codeData.LifeTpye.HasFlag(lifeEnum))
                 {
-                    var content = SwitchLife(codeData, lifeEnum);
-                    if (!string.IsNullOrEmpty(content))
+                    var contentSystem = SwitchLife(codeData, lifeEnum);
+                    if (!string.IsNullOrEmpty(contentSystem))
                     {
-                        sb.Append(content);
-                        sb.AppendLine();
+                        sbA.Append(contentSystem);
+                        sbA.AppendLine();
                     }
                 }
             }
 
-            return SbPool.PutAndToStr(sb);
+            return SbPool.PutAndToStr(sbA);
         }
 
         private string SwitchLife(UICreateETScriptData codeData, EETLifeTpye life)
         {
+            var componentType = codeData.ComponentTpye.ToString();
             switch (life)
             {
                 case EETLifeTpye.All:
@@ -65,11 +68,11 @@ namespace YIUIFramework.Editor
                 case EETLifeTpye.None:
                     break;
                 case EETLifeTpye.IAwake:
-                    return string.Format(lifeTemp, codeData.Name, "Awake");
+                    return string.Format(lifeTemp, codeData.Name, "Awake", componentType);
                 case EETLifeTpye.IUpdate:
-                    return string.Format(lifeTemp, codeData.Name, "Update");
+                    return string.Format(lifeTemp, codeData.Name, "Update", componentType);
                 case EETLifeTpye.IDestroy:
-                    return string.Format(lifeTemp, codeData.Name, "Destroy");
+                    return string.Format(lifeTemp, codeData.Name, "Destroy", componentType);
                 default:
                     Debug.LogError($"是否新增了类型 请检查 {life}");
                     break;
@@ -80,7 +83,7 @@ namespace YIUIFramework.Editor
 
         private const string lifeTemp = @"
         [EntitySystem]
-        private static void {1}(this {0}Component self)
+        private static void {1}(this {0}{2} self)
         {{
         }}";
     }

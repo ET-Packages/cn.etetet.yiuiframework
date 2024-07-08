@@ -5,7 +5,7 @@ namespace YIUIFramework
 {
     /// <summary>
     /// 组件的单例类基类
-    /// 注意：如果这个单例实现不存在于场景,那么会自动在场景上创建一个GO，并把类挂在他下面
+    /// 注意：如果这个单例实现不能存在于场景,会自动在场景上创建一个GO，并把类挂在他下面
     /// 如果不希望自动创建，请使用MonoSceneSingleton。
     /// 它默认会设置DontDestroyOnLoad， 如果有其它需求，请覆写CanDestroyOnLoad。
     /// 它默认会给go一个合适的名字，如果有其它需求，请覆写CreateName。

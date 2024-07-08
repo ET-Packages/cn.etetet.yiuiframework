@@ -28,6 +28,9 @@ namespace ET.Client
             if (!rootResult) return false;
             self.InitSafeArea();
 
+            //其他模块各自初始化
+            await EventSystem.Instance.PublishAsync(self.Scene(), new YIUIEventInitializeAfter());
+
             return true;
         }
     }

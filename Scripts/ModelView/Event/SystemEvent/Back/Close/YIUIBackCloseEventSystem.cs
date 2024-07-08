@@ -9,7 +9,7 @@ namespace ET.Client
         /// 被关闭触发 (有界面打开 当前界面被关闭)
         /// 自己被关闭
         /// </summary>
-        public static async ETTask BackClose(Entity component, YIUIPanelInfo addPanelInfo)
+        public static async ETTask BackClose(Entity component, YIUIEventPanelInfo addPanelInfo)
         {
             if (component == null || component.IsDisposed)
             {

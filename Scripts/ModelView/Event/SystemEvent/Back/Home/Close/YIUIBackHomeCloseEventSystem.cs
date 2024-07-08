@@ -9,7 +9,7 @@ namespace ET.Client
         /// HomeClose触发 (有其他界面打开 当前界面被关闭)
         /// 自己被关闭
         /// </summary>
-        public static async ETTask BackHomeClose(Entity component, YIUIPanelInfo HomeClosePanelInfo)
+        public static async ETTask BackHomeClose(Entity component, YIUIEventPanelInfo HomeClosePanelInfo)
         {
             if (component == null || component.IsDisposed)
             {

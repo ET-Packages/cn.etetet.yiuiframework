@@ -69,7 +69,7 @@ namespace ET.Client
 
                 if (child.OwnerUIEntity is IYIUIBackClose)
                 {
-                    await YIUIEventSystem.BackClose(child.OwnerUIEntity, new YIUIPanelInfo
+                    await YIUIEventSystem.BackClose(child.OwnerUIEntity, new YIUIEventPanelInfo
                                                                          {
                                                                              UIPkgName       = info.PkgName,
                                                                              UIResName       = info.ResName,
@@ -170,7 +170,7 @@ namespace ET.Client
 
                 if (child.OwnerUIEntity is IYIUIBackOpen)
                 {
-                    await YIUIEventSystem.BackOpen(child.OwnerUIEntity, new YIUIPanelInfo
+                    await YIUIEventSystem.BackOpen(child.OwnerUIEntity, new YIUIEventPanelInfo
                                                                         {
                                                                             UIPkgName       = info.PkgName,
                                                                             UIResName       = info.ResName,
@@ -222,7 +222,7 @@ namespace ET.Client
 
                     if (!skipHomeBack && child.OwnerUIEntity is IYIUIBackClose)
                     {
-                        await YIUIEventSystem.BackClose(child.OwnerUIEntity, new YIUIPanelInfo
+                        await YIUIEventSystem.BackClose(child.OwnerUIEntity, new YIUIEventPanelInfo
                                                                              {
                                                                                  UIPkgName       = home.PkgName,
                                                                                  UIResName       = home.ResName,
@@ -233,7 +233,7 @@ namespace ET.Client
 
                     if (child.OwnerUIEntity is IYIUIBackHomeClose)
                     {
-                        await YIUIEventSystem.BackHomeClose(child.OwnerUIEntity, new YIUIPanelInfo
+                        await YIUIEventSystem.BackHomeClose(child.OwnerUIEntity, new YIUIEventPanelInfo
                                                                                  {
                                                                                      UIPkgName       = home.PkgName,
                                                                                      UIResName       = home.ResName,
@@ -296,7 +296,7 @@ namespace ET.Client
 
                 if (!skipHomeBack && child.OwnerUIEntity is IYIUIBackOpen)
                 {
-                    await YIUIEventSystem.BackOpen(child.OwnerUIEntity, new YIUIPanelInfo
+                    await YIUIEventSystem.BackOpen(child.OwnerUIEntity, new YIUIEventPanelInfo
                                                                         {
                                                                             UIPkgName       = child.PkgName,
                                                                             UIResName       = child.ResName,

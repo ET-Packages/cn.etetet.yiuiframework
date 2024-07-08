@@ -10,7 +10,7 @@ namespace ET.Client
         /// 自己被打开
         /// panelInfo = 是哪个界面被关闭了 那个界面的一些信息
         /// </summary>
-        public static async ETTask BackOpen(Entity component, YIUIPanelInfo closePanelInfo)
+        public static async ETTask BackOpen(Entity component, YIUIEventPanelInfo closePanelInfo)
         {
             if (component == null || component.IsDisposed)
             {

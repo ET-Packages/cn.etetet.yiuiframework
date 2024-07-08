@@ -8,7 +8,7 @@ namespace ET.Client
 
     public interface IYIUIBackCloseSystem : ISystemType
     {
-        ETTask Run(Entity o, YIUIPanelInfo addPanelInfo);
+        ETTask Run(Entity o, YIUIEventPanelInfo addPanelInfo);
     }
 
     [EntitySystem]
@@ -24,11 +24,11 @@ namespace ET.Client
             return typeof(IYIUIBackCloseSystem);
         }
 
-        async ETTask IYIUIBackCloseSystem.Run(Entity o, YIUIPanelInfo addPanelInfo)
+        async ETTask IYIUIBackCloseSystem.Run(Entity o, YIUIEventPanelInfo addPanelInfo)
         {
             await this.YIUIBackClose((T)o, addPanelInfo);
         }
 
-        protected abstract ETTask YIUIBackClose(T self, YIUIPanelInfo addPanelInfo);
+        protected abstract ETTask YIUIBackClose(T self, YIUIEventPanelInfo addPanelInfo);
     }
 }

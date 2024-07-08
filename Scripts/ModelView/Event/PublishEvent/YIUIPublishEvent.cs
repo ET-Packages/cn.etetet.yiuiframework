@@ -2,8 +2,13 @@
 
 namespace ET.Client
 {
+    //YIUI初始化过后的事件 其他模块各自初始化
+    public struct YIUIEventInitializeAfter
+    {
+    }
+
     //一个UI的信息 在不同环境下表达的意境不同
-    public struct YIUIPanelInfo
+    public struct YIUIEventPanelInfo
     {
         public string      UIPkgName;       //所在包名
         public string      UIResName;       //资源名称

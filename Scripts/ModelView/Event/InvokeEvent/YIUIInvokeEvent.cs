@@ -86,7 +86,7 @@ namespace ET.Client
     }
 
     //YIUI加载组件初始化 由具体的资源管理器实现
-    public struct YIUIInvokeLoadComponentAwake
+    public struct YIUIInvokeLoadInitialize
     {
         public EntityRef<YIUILoadComponent> LoadComponent;
     }

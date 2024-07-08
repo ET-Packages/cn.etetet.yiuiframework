@@ -29,7 +29,7 @@ namespace ET.Client
 
         public static async ETTask<bool> Initialize(this YIUILoadComponent self)
         {
-            return await EventSystem.Instance.Invoke<YIUIInvokeLoadComponentAwake, ETTask<bool>>(new YIUIInvokeLoadComponentAwake
+            return await EventSystem.Instance.Invoke<YIUIInvokeLoadInitialize, ETTask<bool>>(new YIUIInvokeLoadInitialize
             {
                 LoadComponent = self
             });

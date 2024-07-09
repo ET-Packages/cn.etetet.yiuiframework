@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditor.U2D;
 using UnityEngine;
@@ -23,7 +24,15 @@ namespace YIUIFramework.Editor
         Atlas,
     }
 
-    public class UIPublishPackageModule
+    public class UIPublishPackageModuleData
+    {
+        public UIPublishModule PublishModule;
+        public string          PublishPath;
+        public string          ResPath;
+        public string          PkgName;
+    }
+
+    public class UIPublishPackageModule : BaseYIUIToolModule
     {
         private UIPublishModule m_UIPublishModule;
 
@@ -37,6 +46,8 @@ namespace YIUIFramework.Editor
         [LabelText("模块路径")]
         [ReadOnly]
         public string PkgPath;
+
+        private UIPublishPackageModuleData Data;
 
         [EnumToggleButtons]
         [HideLabel]
@@ -102,22 +113,77 @@ namespace YIUIFramework.Editor
 
         #region 初始化
 
+        public UIPublishPackageModule()
+        {
+        }
+
         public UIPublishPackageModule(UIPublishModule publishModule, string resPath, string pkgName)
+        {
+            SetData(publishModule, resPath, pkgName);
+            Refresh();
+        }
+
+        private void SetData(UIPublishModule publishModule, string resPath, string pkgName)
         {
             m_UIPublishModule = publishModule;
             m_UIAtlasModule   = ((YIUIAutoTool)publishModule.AutoTool).AtlasModule;
             PkgName           = pkgName;
             PkgPath           = $"{resPath}/{pkgName}";
+        }
+
+        private void Refresh()
+        {
             FindUIBindCDETableResources();
             FindUITextureResources();
             FindUISpriteAtlasResources();
         }
 
+        private bool m_RefreshEnd;
+
+        public override void SelectionMenu()
+        {
+            if (m_RefreshEnd) return;
+            m_RefreshEnd = true;
+            if (this.UserData is UIPublishPackageModuleData data)
+            {
+                Data = data;
+                SetData(data.PublishModule, data.ResPath, data.PkgName);
+                Refresh();
+                AddAllAssetsAtPath();
+            }
+            else
+            {
+                Debug.LogError($"数据错误");
+            }
+        }
+
+        private void AddAllAssetsAtPath()
+        {
+            var publishPath = Data.PublishPath;
+            var resPath     = Data.ResPath;
+            var pkgName     = Data.PkgName;
+
+            //1 图集
+            Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConst.UIAtlasCN}",
+                                    $"{resPath}/{pkgName}/{YIUIConst.UIAtlas}", typeof(SpriteAtlas), true, false);
+
+            //2 预制体
+            Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConst.UIPrefabsCN}",
+                                    $"{resPath}/{pkgName}/{YIUIConst.UIPrefabs}", typeof(UIBindCDETable), true, false);
+
+            //3 源文件
+            Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConst.UISourceCN}",
+                                    $"{resPath}/{pkgName}/{YIUIConst.UISource}", typeof(UIBindCDETable), true, false);
+
+            //4 精灵
+            Tree.AddAllAssetImporterAtPath($"{publishPath}/{YIUIConst.UISpritesCN}",
+                                           $"{resPath}/{pkgName}/{YIUIConst.UISprites}", typeof(TextureImporter), true, false);
+        }
+
         private void FindUIBindCDETableResources()
         {
-            var strings = AssetDatabase.GetAllAssetPaths().Where(x =>
-                                                                         x.StartsWith($"{PkgPath}/{YIUIConst.UIPrefabs}",
-                                                                                      StringComparison.InvariantCultureIgnoreCase));
+            var strings = AssetDatabase.GetAllAssetPaths()
+                                       .Where(x => x.StartsWith($"{PkgPath}/{YIUIConst.UIPrefabs}", StringComparison.InvariantCultureIgnoreCase));
 
             foreach (var path in strings)
             {
@@ -132,9 +198,8 @@ namespace YIUIFramework.Editor
 
         private void FindUITextureResources()
         {
-            var strings = AssetDatabase.GetAllAssetPaths().Where(x =>
-                                                                         x.StartsWith($"{PkgPath}/{YIUIConst.UISprites}",
-                                                                                      StringComparison.InvariantCultureIgnoreCase));
+            var strings = AssetDatabase.GetAllAssetPaths()
+                                       .Where(x => x.StartsWith($"{PkgPath}/{YIUIConst.UISprites}", StringComparison.InvariantCultureIgnoreCase));
 
             m_AtlasName.Clear();
 

@@ -78,7 +78,8 @@ namespace YIUIFramework.Editor
                            Tree       = Tree,
                            ModuleName = ModuleName,
                        };
-            Instance?.Initialize();
+            Instance.UserData = this.UserData;
+            Instance.Initialize();
         }
 
         public override void OnDestroy()

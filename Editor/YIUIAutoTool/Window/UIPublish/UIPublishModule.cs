@@ -32,23 +32,22 @@ namespace YIUIFramework.Editor
         [ShowInInspector]
         internal UICreateResModule CreateResModule = new UICreateResModule();
 
-        //所有模块
-        private List<UIPublishPackageModule> m_AllUIPublishPackageModule = new List<UIPublishPackageModule>();
+        private Dictionary<string, List<string>> m_AllInfo = new();
 
-        private void AddAllPkg()
+        private void RefreshAllPkg()
         {
             EditorHelper.CreateExistsDirectory(m_AllPkgPath);
-            var allInfo = new Dictionary<string, List<string>>();
+            m_AllInfo.Clear();
             try
             {
                 foreach (var yiuiPkg in Directory.GetDirectories(EditorHelper.GetProjPath(m_AllPkgPath)))
                 {
-                    if (!allInfo.ContainsKey(m_AllPkgPath))
+                    if (!m_AllInfo.ContainsKey(m_AllPkgPath))
                     {
-                        allInfo.Add(m_AllPkgPath, new List<string>());
+                        m_AllInfo.Add(m_AllPkgPath, new List<string>());
                     }
 
-                    var list = allInfo[m_AllPkgPath];
+                    var list = m_AllInfo[m_AllPkgPath];
                     list.Add(yiuiPkg);
                 }
 
@@ -65,12 +64,12 @@ namespace YIUIFramework.Editor
                         }
 
                         var resPath = $"{m_AllETPkgPath}{YIUIConst.UIETPackagesFormat}{etPackagesName}/{m_AllPkgPath}";
-                        if (!allInfo.ContainsKey(resPath))
+                        if (!m_AllInfo.ContainsKey(resPath))
                         {
-                            allInfo.Add(resPath, new List<string>());
+                            m_AllInfo.Add(resPath, new List<string>());
                         }
 
-                        var list = allInfo[resPath];
+                        var list = m_AllInfo[resPath];
                         foreach (var yiuiPkg in Directory.GetDirectories(packageRes))
                         {
                             list.Add(yiuiPkg);
@@ -89,7 +88,7 @@ namespace YIUIFramework.Editor
             var packagePublish = $"{m_PublishName}/{m_PublishPackageName}";
             Tree.AddMenuItemAtPath(m_PublishName, new OdinMenuItem(Tree, m_PublishPackageName, null)).AddIcon(EditorIcons.Folder);
 
-            foreach ((var resPath, var listInfo) in allInfo)
+            foreach ((var resPath, var listInfo) in m_AllInfo)
             {
                 var etPackagesName = UIOperationHelper.GetETPackagesName(resPath, false);
 
@@ -103,33 +102,20 @@ namespace YIUIFramework.Editor
                         continue;
                     }
 
-                    var newUIPublishPackageModule = new UIPublishPackageModule(this, resPath, pkgName);
-
                     var showPkgName = string.IsNullOrEmpty(etPackagesName) ? $"{pkgName}" : $"[{etPackagesName}]{pkgName}";
 
                     var publishName = string.IsNullOrEmpty(etPackagesName) ? $"{commonPublish}" : $"{packagePublish}";
 
-                    //0 模块
-                    Tree.AddMenuItemAtPath(publishName,
-                                           new OdinMenuItem(Tree, showPkgName, newUIPublishPackageModule)).AddIcon(EditorIcons.Folder);
-
-                    //1 图集
-                    Tree.AddAllAssetsAtPath($"{publishName}/{showPkgName}/{YIUIConst.UIAtlasCN}",
-                                            $"{resPath}/{pkgName}/{YIUIConst.UIAtlas}", typeof(SpriteAtlas), true, false);
-
-                    //2 预制体
-                    Tree.AddAllAssetsAtPath($"{publishName}/{showPkgName}/{YIUIConst.UIPrefabsCN}",
-                                            $"{resPath}/{pkgName}/{YIUIConst.UIPrefabs}", typeof(UIBindCDETable), true, false);
-
-                    //3 源文件
-                    Tree.AddAllAssetsAtPath($"{publishName}/{showPkgName}/{YIUIConst.UISourceCN}",
-                                            $"{resPath}/{pkgName}/{YIUIConst.UISource}", typeof(UIBindCDETable), true, false);
-
-                    //4 精灵
-                    Tree.AddAllAssetImporterAtPath($"{publishName}/{showPkgName}/{YIUIConst.UISpritesCN}",
-                                                   $"{resPath}/{pkgName}/{YIUIConst.UISprites}", typeof(TextureImporter), true, false);
-
-                    m_AllUIPublishPackageModule.Add(newUIPublishPackageModule);
+                    var PublishPath = $"{publishName}/{showPkgName}";
+                    var pkgMenu = new TreeMenuItem<UIPublishPackageModule>(this.AutoTool, this.Tree, PublishPath,
+                                                                           EditorIcons.Folder);
+                    pkgMenu.UserData = new UIPublishPackageModuleData
+                                       {
+                                           PublishModule = this,
+                                           PublishPath   = PublishPath,
+                                           ResPath       = resPath,
+                                           PkgName       = pkgName
+                                       };
                 }
             }
         }
@@ -149,17 +135,32 @@ namespace YIUIFramework.Editor
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
 
-            foreach (var module in m_AllUIPublishPackageModule)
-            {
-                module.PublishCurrent(false); //不要默认重置所有图集设置 有的图集真的会有独立设置
-            }
+            UnityTipsHelper.CallBack("确定发布全部YIUI? 所有UI都会重新导出 需要等待一小会.", () =>
+                                         {
+                                             foreach ((var resPath, var listInfo) in m_AllInfo)
+                                             {
+                                                 foreach (var folder in listInfo)
+                                                 {
+                                                     var pkgName   = Path.GetFileName(folder);
+                                                     var upperName = NameUtility.ToFirstUpper(pkgName);
+                                                     if (upperName != pkgName)
+                                                     {
+                                                         Debug.LogError($"这是一个非法的模块[ {pkgName} ]请使用统一方法创建模块 或者满足指定要求");
+                                                         continue;
+                                                     }
 
-            UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+                                                     var module = new UIPublishPackageModule(this, resPath, pkgName);
+                                                     module.PublishCurrent(false); //不要默认重置所有图集设置 有的图集真的会有独立设置
+                                                 }
+                                             }
+
+                                             UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+                                         });
         }
 
         public override void Initialize()
         {
-            AddAllPkg();
+            this.RefreshAllPkg();
             CreateResModule?.Initialize();
         }
 

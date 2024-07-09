@@ -17,6 +17,9 @@ namespace YIUIFramework.Editor
         [HideInInspector]
         public string ModuleName { get; internal set; }
 
+        [HideInInspector]
+        public object UserData { get; internal set; }
+
         public virtual void SelectionMenu()
         {
         }

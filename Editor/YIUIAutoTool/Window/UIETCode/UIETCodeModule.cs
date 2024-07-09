@@ -36,7 +36,7 @@ namespace YIUIFramework.Editor
     /// <summary>
     ///  自动生成ET脚本
     /// </summary>
-    [YIUIAutoMenu("ET生成")]
+    [YIUIAutoMenu("ET生成",200000)]
     public class UIETScriptModule : BaseYIUIToolModule
     {
         [HideLabel]

@@ -10,7 +10,7 @@ namespace YIUIFramework.Editor
     /// <summary>
     ///  宏
     /// </summary>
-    [YIUIAutoMenu("宏设置")]
+    [YIUIAutoMenu("宏设置", 200100)]
     public class UIMacroModule : BaseYIUIToolModule
     {
         [GUIColor(0.4f, 0.8f, 1)]

@@ -13,6 +13,7 @@ using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+using Type = System.Type;
 
 namespace YIUIFramework.Editor
 {
@@ -58,16 +59,27 @@ namespace YIUIFramework.Editor
             var    assembly = AssemblyHelper.GetAssembly("ET.YIUIFramework.Editor");
             Type[] types    = assembly.GetTypes();
 
+            var allAutoMenus = new List<YIUIAutoMenuData>();
+
             foreach (Type type in types)
             {
                 if (type.IsDefined(typeof(YIUIAutoMenuAttribute), false))
                 {
                     YIUIAutoMenuAttribute attribute = (YIUIAutoMenuAttribute)Attribute.GetCustomAttribute(type, typeof(YIUIAutoMenuAttribute));
-
-                    string menuName = attribute.MenuName;
-
-                    m_AllMenuItem.Add(NewTreeMenuItem(type, menuName));
+                    allAutoMenus.Add(new YIUIAutoMenuData
+                    {
+                        Type     = type,
+                        MenuName = attribute.MenuName,
+                        Order    = attribute.Order
+                    });
                 }
+            }
+
+            allAutoMenus.Sort((a, b) => a.Order.CompareTo(b.Order));
+
+            foreach (var attribute in allAutoMenus)
+            {
+                m_AllMenuItem.Add(NewTreeMenuItem(attribute.Type, attribute.MenuName));
             }
 
             m_OdinMenuTree.Add("全局设置", this, EditorIcons.SettingsCog);
@@ -82,18 +94,18 @@ namespace YIUIFramework.Editor
             var specificTreeMenuItemType = treeMenuItemType.MakeGenericType(moduleType);
 
             var constructor = specificTreeMenuItemType.GetConstructor(new Type[]
-                                                                      {
-                                                                          typeof(OdinMenuEditorWindow),
-                                                                          typeof(OdinMenuTree),
-                                                                          typeof(string)
-                                                                      });
+            {
+                typeof(OdinMenuEditorWindow),
+                typeof(OdinMenuTree),
+                typeof(string)
+            });
 
             object treeMenuItem = constructor.Invoke(new object[]
-                                                     {
-                                                         this,
-                                                         m_OdinMenuTree,
-                                                         moduleName
-                                                     });
+            {
+                this,
+                m_OdinMenuTree,
+                moduleName
+            });
 
             return (BaseTreeMenuItem)treeMenuItem;
         }

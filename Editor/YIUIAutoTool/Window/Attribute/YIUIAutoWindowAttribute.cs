@@ -6,9 +6,21 @@ namespace YIUIFramework.Editor
     {
         public string MenuName;
 
-        public YIUIAutoMenuAttribute(string menuName)
+        public int Order;
+
+        public YIUIAutoMenuAttribute(string menuName, int order = 0)
         {
             MenuName = menuName;
+            Order    = order;
         }
+    }
+
+    public class YIUIAutoMenuData
+    {
+        public Type Type;
+
+        public string MenuName;
+
+        public int Order;
     }
 }

@@ -135,7 +135,7 @@ namespace YIUIFramework.Editor
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
 
-            UnityTipsHelper.CallBack("确定发布全部YIUI? 所有UI都会重新导出 需要等待一小会.", () =>
+            UnityTipsHelper.CallBack("确定发布全部YIUI?", () =>
                                          {
                                              foreach ((var resPath, var listInfo) in m_AllInfo)
                                              {

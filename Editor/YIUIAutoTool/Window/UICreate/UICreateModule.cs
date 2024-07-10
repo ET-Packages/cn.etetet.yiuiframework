@@ -10,7 +10,7 @@ namespace YIUIFramework.Editor
     {
         public static string UICreatePackageName;
 
-        public static void CreateTargetPackages(UIBindCDETable cdeTable, bool refresh, bool tips, string createPackageName)
+        private static void CreateTargetPackages(UIBindCDETable cdeTable, bool refresh, bool tips, string createPackageName)
         {
             if (string.IsNullOrEmpty(createPackageName))
             {
@@ -43,7 +43,7 @@ namespace YIUIFramework.Editor
             Create(cdeTable, refresh, tips);
         }
 
-        public static void Create(UIBindCDETable cdeTable, bool refresh, bool tips)
+        private static void Create(UIBindCDETable cdeTable, bool refresh, bool tips)
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
 

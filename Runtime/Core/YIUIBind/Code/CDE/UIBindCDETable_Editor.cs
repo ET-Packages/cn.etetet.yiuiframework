@@ -211,6 +211,7 @@ namespace YIUIFramework
             {
                 m_PackagesName = UIOperationHelper.GetETPackagesName(this, false);
             }
+
             return result;
         }
 
@@ -231,6 +232,8 @@ namespace YIUIFramework
         [ShowInInspector]
         [OdinSerialize]
         private string m_PackagesName;
+
+        public string PackagesName => m_PackagesName;
 
         [GUIColor(0.7f, 0.4f, 0.8f)]
         [Button("Packages生成", 50)]

@@ -145,12 +145,8 @@ namespace YIUIFramework.Editor
             FindUISpriteAtlasResources();
         }
 
-        private bool m_RefreshEnd;
-
-        public override void SelectionMenu()
+        public override void Initialize()
         {
-            if (m_RefreshEnd) return;
-            m_RefreshEnd = true;
             if (this.UserData is UIPublishPackageModuleData data)
             {
                 Data = data;
@@ -172,19 +168,19 @@ namespace YIUIFramework.Editor
 
             //1 图集
             Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConst.UIAtlasCN}",
-                $"{resPath}/{pkgName}/{YIUIConst.UIAtlas}", typeof(SpriteAtlas), true, false);
+                                    $"{resPath}/{pkgName}/{YIUIConst.UIAtlas}", typeof(SpriteAtlas), true, false);
 
             //2 预制体
             Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConst.UIPrefabsCN}",
-                $"{resPath}/{pkgName}/{YIUIConst.UIPrefabs}", typeof(UIBindCDETable), true, false);
+                                    $"{resPath}/{pkgName}/{YIUIConst.UIPrefabs}", typeof(UIBindCDETable), true, false);
 
             //3 源文件
             Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConst.UISourceCN}",
-                $"{resPath}/{pkgName}/{YIUIConst.UISource}", typeof(UIBindCDETable), true, false);
+                                    $"{resPath}/{pkgName}/{YIUIConst.UISource}", typeof(UIBindCDETable), true, false);
 
             //4 精灵
             Tree.AddAllAssetImporterAtPath($"{publishPath}/{YIUIConst.UISpritesCN}",
-                $"{resPath}/{pkgName}/{YIUIConst.UISprites}", typeof(TextureImporter), true, false);
+                                           $"{resPath}/{pkgName}/{YIUIConst.UISprites}", typeof(TextureImporter), true, false);
         }
 
         private void FindUIBindCDETableResources()
@@ -218,7 +214,7 @@ namespace YIUIFramework.Editor
                     if (string.IsNullOrEmpty(atlasName))
                     {
                         Logger.LogError(texture,
-                            $"此文件位置错误 {path}  必须在 {YIUIConst.UISprites}/XX 图集文件下 不可以直接在根目录");
+                                        $"此文件位置错误 {path}  必须在 {YIUIConst.UISprites}/XX 图集文件下 不可以直接在根目录");
                         continue;
                     }
 
@@ -254,8 +250,8 @@ namespace YIUIFramework.Editor
         private void FindUISpriteAtlasResources()
         {
             var strings = AssetDatabase.GetAllAssetPaths().Where(x =>
-                    x.StartsWith($"{PkgPath}/{YIUIConst.UIAtlas}",
-                        StringComparison.InvariantCultureIgnoreCase));
+                                                                         x.StartsWith($"{PkgPath}/{YIUIConst.UIAtlas}",
+                                                                                      StringComparison.InvariantCultureIgnoreCase));
 
             foreach (var path in strings)
             {

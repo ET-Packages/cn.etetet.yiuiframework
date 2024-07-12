@@ -13,7 +13,7 @@ namespace YIUIFramework
     /// 只要是任何可以被射线检测的物体都可以响应事件
     /// </summary>
     [LabelText("拖拽中<obj>")]
-    [AddComponentMenu("YIUIBind/Event/拖拽中 【Drag】 UIEventBindDrag")]
+    [AddComponentMenu("YIUIBind/Event/拖拽中 【Drag PointerEventData】 UIEventBindDrag")]
     public class UIEventBindDrag : UIEventBind, IDragHandler
     {
         [SerializeField]

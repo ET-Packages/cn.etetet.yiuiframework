@@ -13,7 +13,7 @@ namespace YIUIFramework
     /// 只要是任何可以被射线检测的物体都可以响应事件
     /// </summary>
     [LabelText("拖拽开始<obj>")]
-    [AddComponentMenu("YIUIBind/Event/拖拽开始 【Drag】 UIEventBindBeginDrag")]
+    [AddComponentMenu("YIUIBind/Event/拖拽开始 【BeginDrag PointerEventData】 UIEventBindBeginDrag")]
     public class UIEventBindBeginDrag : UIEventBind, IBeginDragHandler
     {
         [SerializeField]

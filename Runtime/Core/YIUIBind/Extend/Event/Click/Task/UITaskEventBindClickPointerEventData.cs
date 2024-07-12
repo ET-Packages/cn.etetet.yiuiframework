@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// </summary>
     [InfoBox("提示: 可用事件参数 1个 , Object(PointerEventData)")]
     [LabelText("点击<PointerEventData>")]
-    [AddComponentMenu("YIUIBind/TaskEvent/点击 【ClickPointerEventData】 UITaskEventBindClickPointerEventData")]
+    [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click PointerEventData】 UITaskEventBindClickPointerEventData")]
     public class UITaskEventBindClickPointerEventData : UITaskEventBindClick
     {
         [NonSerialized]

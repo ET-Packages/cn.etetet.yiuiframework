@@ -13,7 +13,7 @@ namespace YIUIFramework
     /// 只要是任何可以被射线检测的物体都可以响应事件
     /// </summary>
     [LabelText("拖拽结束<obj>")]
-    [AddComponentMenu("YIUIBind/Event/拖拽结束 【Drag】 UIEventBindEndDrag")]
+    [AddComponentMenu("YIUIBind/Event/拖拽结束 【EndDrag PointerEventData】 UIEventBindEndDrag")]
     public class UIEventBindEndDrag : UIEventBind, IEndDragHandler
     {
         [SerializeField]

@@ -22,7 +22,7 @@ namespace YIUIFramework.Editor
     /// </summary>
     public class YIUIAutoTool : OdinMenuEditorWindow
     {
-        [MenuItem("Tools/YIUI 自动化工具")]
+        [MenuItem("ET/YIUI 自动化工具")]
         private static void OpenWindow()
         {
             var window = GetWindow<YIUIAutoTool>();

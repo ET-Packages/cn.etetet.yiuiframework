@@ -1,7 +1,7 @@
 {
   "name": "cn.etetet.yiuiframework",
   "displayName": "ET.YIUI.Framework",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "unity": "2022.3",
   "description": "YIUI 框架 >>> 文档: https://lib9kmxvq7k.feishu.cn/wiki/ES7Gwz4EAiVGKSkotY5cRbTznuh",
   "author": {
@@ -14,7 +14,7 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "cn.etetet.core": "0.0.11",
+    "cn.etetet.core": "0.0.14",
     "cn.etetet.yiui": "0.0.10"
   },
   "publishConfig": {

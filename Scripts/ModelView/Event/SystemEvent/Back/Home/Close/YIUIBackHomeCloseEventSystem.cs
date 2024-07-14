@@ -8,6 +8,7 @@ namespace ET.Client
         /// 触发堆栈时
         /// HomeClose触发 (有其他界面打开 当前界面被关闭)
         /// 自己被关闭
+        /// panelInfo = 是哪个界面被打开了 那个界面的一些信息
         /// </summary>
         public static async ETTask BackHomeClose(Entity component, YIUIEventPanelInfo HomeClosePanelInfo)
         {

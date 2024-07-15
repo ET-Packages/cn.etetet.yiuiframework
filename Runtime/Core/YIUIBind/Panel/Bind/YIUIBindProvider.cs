@@ -58,10 +58,10 @@ namespace YIUIFramework
 
         public YIUIBindVo[] Get()
         {
-            #if !ENABLE_DLL
-            var types = GetLogicTypes();
-            #else
+            #if !UNITY_EDITOR || YIUIMACRO_SIMULATE_NONEEDITOR
             var types = GetLogicTypesByDll();
+            #else
+            var types = GetLogicTypes();
             #endif
 
             var binds = new List<YIUIBindVo>();

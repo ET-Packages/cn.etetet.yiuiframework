@@ -1,6 +1,4 @@
-﻿//#define YIUIMACRO_SIMULATE_NONEEDITOR //模拟非编辑器状态  在编辑器使用 非编辑器加载模式 用于在编辑器下测试  
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ET;
 using UnityEngine;
@@ -52,7 +50,7 @@ namespace YIUIFramework
                 return false;
             }
 
-            #if !UNITY_EDITOR || YIUIMACRO_SIMULATE_NONEEDITOR || ENABLE_DLL
+            #if !UNITY_EDITOR || YIUIMACRO_SIMULATE_NONEEDITOR
 
             //https://lib9kmxvq7k.feishu.cn/wiki/W80jwOq9SiY30KkISOec1kQZnNf
             //关联UI工具中自动生成绑定代码 Tools >> YIUI自动化工具 >> 发布 >> UI自动生成绑定替代反射代码

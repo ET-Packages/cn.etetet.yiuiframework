@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
@@ -29,7 +30,8 @@ namespace YIUIFramework.Editor
 
         public override void Initialize()
         {
-            //MacroEnumType = MacroHelper.InitEnumValue<T>(UnityMacroModule.BuildTargetGroup);
+            var value = MacroHelper.InitEnumValue<T>(UnityMacroModule.BuildTargetGroup);
+            Enum.TryParse(value.ToString(), out this.MacroEnumType);
         }
 
         /// <summary>

@@ -21,6 +21,11 @@ namespace YIUIFramework.Editor
         [HideLabel]
         public static BuildTargetGroup BuildTargetGroup = BuildTargetGroup.Standalone;
 
+        private void OnBuildTargetGroupChange()
+        {
+            SelfInitialize();
+        }
+
         [BoxGroup("当前平台所有宏", centerLabel: true)]
         [HideLabel]
         public MacroCurrentData MacroStaticData;
@@ -47,8 +52,6 @@ namespace YIUIFramework.Editor
 
             MacroHelper.ChangeSymbols(allRemove, allSelect, BuildTargetGroup);
 
-            SelfInitialize();
-
             YIUIAutoTool.CloseWindowRefresh();
         }
 
@@ -66,18 +69,15 @@ namespace YIUIFramework.Editor
 
             var assembly = AssemblyHelper.GetAssembly("ET.YIUIFramework.Editor");
 
-            var allMacroEnum = AssemblyHelper.GetClassesWithAttribute<YIUIEnumMacroAttribute>(assembly);
+            var allMacroEnum = AssemblyHelper.GetClassesWithAttribute<YIUIEnumUnityMacroAttribute>(assembly);
 
             Type macroDataBaseType = typeof(MacroDataBase<>);
 
             foreach (var macroEnum in allMacroEnum)
             {
-                Type      specificType       = macroDataBaseType.MakeGenericType(macroEnum);
-                var       instance           = (MacroDataBase)Activator.CreateInstance(specificType);
-                FieldInfo macroEnumTypeField = macroDataBaseType.GetField("MacroEnumType", BindingFlags.NonPublic | BindingFlags.Instance);
-                var value = MacroHelper.InitEnumValue(macroEnum,BuildTargetGroup);
-                var enumValue = Enum.Parse(macroEnum, value.ToString());
-                macroEnumTypeField.SetValue(instance, enumValue);
+                Type specificType = macroDataBaseType.MakeGenericType(macroEnum);
+                var  instance     = (MacroDataBase)Activator.CreateInstance(specificType);
+                instance.Initialize();
                 AllMacroData.Add(instance);
             }
         }
@@ -104,11 +104,6 @@ namespace YIUIFramework.Editor
             }
 
             return BuildTargetGroup.Standalone;
-        }
-
-        private void OnBuildTargetGroupChange()
-        {
-            SelfInitialize();
         }
 
         public override void OnDestroy()

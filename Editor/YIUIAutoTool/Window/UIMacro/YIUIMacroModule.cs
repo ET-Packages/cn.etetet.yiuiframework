@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -23,6 +24,9 @@ namespace YIUIFramework.Editor
         [HideLabel]
         public BaseYIUIToolModule CurrentMacroModule;
 
+        [HideLabel]
+        private EnumPrefs<YIUIMacroType> YIUIMacroPrefs = new("YIUIAutoTool_YIUIMacroModule_MacroType", null, YIUIMacroType.Unity);
+
         private void OnMacroTypeChanged()
         {
             SelectMacroType(MacroType);
@@ -33,7 +37,7 @@ namespace YIUIFramework.Editor
             switch (macroType)
             {
                 case YIUIMacroType.ET:
-                    CurrentMacroModule = null;
+                    CurrentMacroModule = new ETMacroModule();
                     break;
                 case YIUIMacroType.Unity:
                     CurrentMacroModule = new UnityMacroModule();
@@ -54,18 +58,19 @@ namespace YIUIFramework.Editor
 
         public override void Initialize()
         {
-            SelectMacroType(YIUIMacroType.ET);
+            SelectMacroType(YIUIMacroPrefs.Value);
         }
 
         public override void OnDestroy()
         {
+            YIUIMacroPrefs.Value = MacroType;
         }
     }
 
     public enum YIUIMacroType
     {
-        ET,
-        Unity
+        Unity,
+        ET
     }
 }
 #endif

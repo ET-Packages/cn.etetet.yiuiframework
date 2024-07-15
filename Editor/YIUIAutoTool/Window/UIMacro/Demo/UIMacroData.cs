@@ -7,7 +7,7 @@ namespace YIUIFramework.Editor
 {
     [Flags]
     [LabelText("YIUI")]
-    [YIUIEnumMacro(YIUIMacroType.Unity)]
+    [YIUIEnumUnityMacro]
     public enum EYIUIMacroType : long
     {
         [LabelText("所有")]

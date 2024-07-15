@@ -34,7 +34,7 @@ namespace YIUIFramework.Editor
             RefreshAction     = refreshAction;
             RemoveMacro       = null;
             AddMacro          = null;
-            AllMacro          = MacroHelper.GetSymbols(UIMacroModule.BuildTargetGroup);
+            AllMacro          = MacroHelper.GetSymbols(UnityMacroModule.BuildTargetGroup);
             CurrentMacroCount = AllMacro.Count;
         }
 
@@ -51,7 +51,7 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            MacroHelper.AddMacro(AddMacro, UIMacroModule.BuildTargetGroup);
+            MacroHelper.AddMacro(AddMacro, UnityMacroModule.BuildTargetGroup);
             RefreshAction?.Invoke();
         }
 
@@ -63,7 +63,7 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            MacroHelper.RemoveMacro(RemoveMacro, UIMacroModule.BuildTargetGroup);
+            MacroHelper.RemoveMacro(RemoveMacro, UnityMacroModule.BuildTargetGroup);
             RefreshAction?.Invoke();
         }
     }

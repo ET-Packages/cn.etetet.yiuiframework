@@ -2,16 +2,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Sirenix.OdinInspector;
 using UnityEditor;
+using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
     /// <summary>
-    ///  宏
+    ///  Unity宏
     /// </summary>
-    [YIUIAutoMenu("宏设置", 200100)]
-    public class UIMacroModule : BaseYIUIToolModule
+    public class UnityMacroModule : BaseYIUIToolModule
     {
         [GUIColor(0.4f, 0.8f, 1)]
         [BoxGroup("目标平台切换", centerLabel: true)]
@@ -63,11 +64,21 @@ namespace YIUIFramework.Editor
 
             AllMacroData = new List<MacroDataBase>();
 
-            var allMacro = AssemblyHelper.GetClassesWithAttribute<MacroAttribute>();
+            var assembly = AssemblyHelper.GetAssembly("ET.YIUIFramework.Editor");
 
-            foreach (var macroData in allMacro)
+            var allMacroEnum = AssemblyHelper.GetClassesWithAttribute<YIUIEnumMacroAttribute>(assembly);
+
+            Type macroDataBaseType = typeof(MacroDataBase<>);
+
+            foreach (var macroEnum in allMacroEnum)
             {
-                AllMacroData.Add((MacroDataBase)Activator.CreateInstance(macroData));
+                Type      specificType       = macroDataBaseType.MakeGenericType(macroEnum);
+                var       instance           = (MacroDataBase)Activator.CreateInstance(specificType);
+                FieldInfo macroEnumTypeField = macroDataBaseType.GetField("MacroEnumType", BindingFlags.NonPublic | BindingFlags.Instance);
+                var value = MacroHelper.InitEnumValue(macroEnum,BuildTargetGroup);
+                var enumValue = Enum.Parse(macroEnum, value.ToString());
+                macroEnumTypeField.SetValue(instance, enumValue);
+                AllMacroData.Add(instance);
             }
         }
 

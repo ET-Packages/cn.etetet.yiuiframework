@@ -10,12 +10,7 @@ namespace YIUIFramework.Editor
     [HideReferenceObjectPicker]
     public abstract class MacroDataBase
     {
-        public void ResetMacro()
-        {
-            MacroHelper.RemoveMacro(GetAll(), UIMacroModule.BuildTargetGroup);
-            MacroHelper.AddMacro(GetSelect(), UIMacroModule.BuildTargetGroup);
-        }
-
+        public abstract void         Initialize();
         public abstract List<string> GetAll();
         public abstract List<string> GetSelect();
     }
@@ -26,21 +21,16 @@ namespace YIUIFramework.Editor
     [HideLabel]
     [HideReferenceObjectPicker]
     [Serializable]
-    public abstract class MacroDataBase<T> : MacroDataBase where T : struct
+    public class MacroDataBase<T> : MacroDataBase where T : struct
     {
         [LabelText("宏 枚举")]
         [ShowInInspector]
         protected T MacroEnumType;
 
-        protected MacroDataBase()
+        public override void Initialize()
         {
-            Init();
+            //MacroEnumType = MacroHelper.InitEnumValue<T>(UnityMacroModule.BuildTargetGroup);
         }
-
-        /// <summary>
-        /// 初始化宏枚举值
-        /// </summary>
-        protected abstract void Init();
 
         /// <summary>
         /// 获取当前枚举所有宏

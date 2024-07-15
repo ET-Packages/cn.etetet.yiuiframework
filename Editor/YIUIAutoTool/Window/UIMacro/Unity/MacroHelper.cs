@@ -194,7 +194,6 @@ namespace YIUIFramework.Editor
         public static List<string> GetEnumSelect<T>(T selectEnum) where T : struct
         {
             var selectValue = Convert.ToInt64(selectEnum);
-            ;
 
             var all = new List<string>();
 
@@ -227,6 +226,32 @@ namespace YIUIFramework.Editor
             foreach (var symbol in defineSymbols)
             {
                 foreach (var valueObj in Enum.GetValues(typeof(T)))
+                {
+                    var value = (long)valueObj;
+                    if (value <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (symbol == valueObj.ToString())
+                    {
+                        initValue += value;
+                    }
+                }
+            }
+
+            return initValue;
+        }
+
+        public static long InitEnumValue(Type enumType, BuildTargetGroup targetGroup)
+        {
+            var defineSymbols = GetSymbols(targetGroup);
+
+            long initValue = 0;
+
+            foreach (var symbol in defineSymbols)
+            {
+                foreach (var valueObj in Enum.GetValues(enumType))
                 {
                     var value = (long)valueObj;
                     if (value <= 0)

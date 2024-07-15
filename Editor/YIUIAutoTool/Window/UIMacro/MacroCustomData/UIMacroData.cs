@@ -7,6 +7,7 @@ namespace YIUIFramework.Editor
 {
     [Flags]
     [LabelText("YIUI")]
+    [YIUIEnumMacro(YIUIMacroType.Unity)]
     public enum EYIUIMacroType : long
     {
         [LabelText("所有")]
@@ -29,16 +30,6 @@ namespace YIUIFramework.Editor
 
         [LabelText("红点堆栈收集")]
         YIUIMACRO_REDDOT_STACK = 1 << 4,
-    }
-
-    [Serializable]
-    [MacroAttribute]
-    public class UIMacroData : MacroDataBase<EYIUIMacroType>
-    {
-        protected override void Init()
-        {
-            MacroEnumType = (EYIUIMacroType)MacroHelper.InitEnumValue<EYIUIMacroType>(UIMacroModule.BuildTargetGroup);
-        }
     }
 }
 #endif

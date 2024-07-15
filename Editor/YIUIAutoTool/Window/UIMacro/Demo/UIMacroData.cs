@@ -31,5 +31,20 @@ namespace YIUIFramework.Editor
         [LabelText("红点堆栈收集")]
         YIUIMACRO_REDDOT_STACK = 1 << 4,
     }
+
+    [Flags]
+    [LabelText("ET")]
+    [YIUIEnumUnityMacro]
+    public enum EYIUIETMacroType : long
+    {
+        [LabelText("所有")]
+        ALL = -1,
+
+        [LabelText("无")]
+        NONE = 0,
+
+        [LabelText("可视化")]
+        ENABLE_VIEW = 1,
+    }
 }
 #endif

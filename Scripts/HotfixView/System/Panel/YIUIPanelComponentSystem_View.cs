@@ -234,7 +234,7 @@ namespace ET.Client
             }
             else
             {
-                view.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().Close(false);
+                view.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().Close(view, false);
             }
         }
 
@@ -256,6 +256,7 @@ namespace ET.Client
             if (self.CurrentOpenView != null && self.CurrentOpenView != view && self.CurrentOpenViewActiveSelf)
             {
                 var uibase = self.CurrentOpenView.GetParent<YIUIChild>();
+                var tween  = true;
 
                 //View 没有自动回退功能  比如AView 关闭 自动吧上一个BView 给打开 没有这种需求 也不能有这个需求
                 //只能有 打开一个新View 上一个View的自动处理 99% 都是吧上一个隐藏即可
@@ -264,21 +265,45 @@ namespace ET.Client
                 switch (uibase.GetComponent<YIUIViewComponent>().StackOption)
                 {
                     case EViewStackOption.None:
-                        break;
                     case EViewStackOption.Visible:
-                        uibase.SetActive(false);
+                        tween = false;
                         break;
                     case EViewStackOption.VisibleTween:
-                        await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().CloseAsync(!skipTween);
+                        tween = !skipTween;
                         break;
                     default:
                         Debug.LogError($"新增类型未实现 {uibase.GetComponent<YIUIViewComponent>().StackOption}");
-                        uibase.SetActive(false);
+                        tween = false;
                         break;
                 }
+
+                await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>()
+                          .CloseAsync(self.CurrentOpenView, tween);
             }
 
             self.u_CurrentOpenView = view;
+        }
+
+        /// <summary>
+        /// Panel被关闭前需要触发关闭所有View
+        /// </summary>
+        internal static async ETTask<bool> CloseAllView(this YIUIPanelComponent self, bool tween = true)
+        {
+            foreach (Entity view in self.m_ExistView.Values)
+            {
+                var uibase        = view.GetParent<YIUIChild>();
+                var viewComponent = uibase?.GetComponent<YIUIViewComponent>();
+                if (viewComponent != null && uibase is { ActiveSelf: true })
+                {
+                    var result = await viewComponent.CloseAsync(view, tween);
+                    if (!result)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -37,8 +37,8 @@ namespace ET.Client
 
             var viewComponent = uibase.GetComponent<YIUIViewComponent>(true);
             if (viewComponent == null) return false;
-            await viewComponent.CloseAsync(tween);
-            return true;
+
+            return await viewComponent.CloseAsync(entity,tween);
         }
     }
 }

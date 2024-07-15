@@ -22,10 +22,10 @@ namespace ET.Client
             if (info?.UIBase == null) return true; //没有也算成功关闭
 
             EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseBefore
-                                                       {
-                                                           UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
-                                                           PanelLayer = info.PanelLayer,
-                                                       });
+            {
+                UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
+                PanelLayer = info.PanelLayer,
+            });
 
             if (info.UIPanel.PanelOption.HasFlag(EPanelOption.DisClose))
             {
@@ -44,12 +44,10 @@ namespace ET.Client
                 }
             }
 
-            var success = await YIUIEventSystem.Close(info.OwnerUIEntity);
-            if (!success)
+            var successPanel = await YIUIEventSystem.Close(info.OwnerUIEntity);
+            if (!successPanel)
             {
-                #if YIUIMACRO_PANEL_OPENCLOSE
-                Debug.Log($"<color=yellow> 关闭事件返回不允许关闭UI: {panelName} </color>");
-                #endif
+                Log.Info($"<color=yellow> 关闭事件返回不允许关闭Panel UI: {panelName} </color>");
                 return false;
             }
 
@@ -61,6 +59,10 @@ namespace ET.Client
 
             if (info.UIWindow is { WindowLastClose: true })
                 await info.UIWindow.InternalOnWindowCloseTween(tween);
+
+            //必须后关闭所有view 没有动画 也不管会不会失败
+            //如果你有其他特殊需求 请自行处理
+            await info.UIPanel.CloseAllView(false);
 
             self.RemoveUI(info);
 
@@ -82,10 +84,10 @@ namespace ET.Client
             #endif
 
             EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseBefore
-                                                       {
-                                                           UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
-                                                           PanelLayer = info.PanelLayer,
-                                                       });
+            {
+                UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
+                PanelLayer = info.PanelLayer,
+            });
 
             self.DestroylRemoveUI(info);
 
@@ -138,10 +140,10 @@ namespace ET.Client
                 {
                     await self.CloseAll(EPanelLayer.Panel, EPanelOption.IgnoreClose, tween);
                     return await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeRootOpenPanel, ETTask<bool>>(new YIUIInvokeRootOpenPanel
-                        {
-                            Root      = forceHome,
-                            PanelName = homeName
-                        });
+                    {
+                        Root      = forceHome,
+                        PanelName = homeName
+                    });
                 }
             }
 

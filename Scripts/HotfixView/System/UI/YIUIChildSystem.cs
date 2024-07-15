@@ -15,7 +15,7 @@ namespace ET.Client
     /// </summary>
     [FriendOf(typeof(YIUIChild))]
     [EntitySystemOf(typeof(YIUIChild))]
-    public static partial class YIUIComponentSystem
+    public static partial class YIUIChildSystem
     {
         [EntitySystem]
         private static void Awake(this YIUIChild self, YIUIBindVo uiBindVo, GameObject obj)

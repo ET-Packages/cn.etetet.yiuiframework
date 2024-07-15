@@ -12,13 +12,12 @@ namespace ET.Client
     /// 与OnDisable 不同  Disable 只是显影操作不代表被关闭
     /// 与OnDestroy 不同  Destroy 是摧毁 但是因为有缓存界面的原因 当被缓存时 OnDestroy是不会来的
     /// 这个时候你想要知道是不是被关闭了就必须通过OnClose
-    /// baseView除外 因为view的关闭就是隐藏 所以 view的 OnDisable = OnClose
     /// </summary>
     public static partial class YIUIEventSystem
     {
         //返回结果
-        //true = 界面可以被关闭
-        //false = 界面不允许关闭 需要自行处理各种突发情况
+        //true = 界面可以被关闭 (99%的情况都返回true)
+        //false = 界面不允许关闭 需要自行处理各种突发情况 (false 可能会遇到各种界面未关闭的情况)
         //这个事件建议没有特殊情况不要用
         public static async ETTask<bool> Close(Entity component)
         {

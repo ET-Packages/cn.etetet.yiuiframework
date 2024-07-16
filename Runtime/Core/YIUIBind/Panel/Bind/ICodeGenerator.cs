@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.Text;
+﻿using System.Text;
 
 namespace YIUIFramework
 {
@@ -31,4 +30,3 @@ namespace YIUIFramework
         void NewCode(T info, StringBuilder sb);
     }
 }
-#endif

@@ -12,7 +12,7 @@ namespace YIUIFramework.Editor
     [HideReferenceObjectPicker]
     public class CreateUIBindProviderModule : BaseCreateModule
     {
-        [Button("UI自动生成绑定替代反射代码", 50), GUIColor(0.4f, 0.8f, 1)]
+        [Button("UI自动生成绑定替代反射代码 (编译后生效)", 50), GUIColor(0.4f, 0.8f, 1)]
         public void Create()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
@@ -23,7 +23,7 @@ namespace YIUIFramework.Editor
 
             if (result)
             {
-                UnityTipsHelper.CallBackOk("UI自动生成绑定替代反射代码 生成完毕", YIUIAutoTool.CloseWindowRefresh);
+                UnityTipsHelper.CallBackOk("UI自动生成绑定替代反射代码 生成完毕 \n编译ET后才会生效", YIUIAutoTool.CloseWindowRefresh);
             }
         }
 

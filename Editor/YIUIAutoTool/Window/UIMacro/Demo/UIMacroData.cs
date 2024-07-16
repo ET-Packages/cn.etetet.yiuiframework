@@ -30,6 +30,15 @@ namespace YIUIFramework.Editor
 
         [LabelText("红点堆栈收集")]
         YIUIMACRO_REDDOT_STACK = 1 << 4,
+
+        [LabelText("绑定使用反射")]
+        YIUIMACRO_BIND_REFLECTION = 1 << 5, //打包后你也想用反射加载绑定信息的 打开这个
+
+        [LabelText("绑定使用反射 编辑器时使用ET DLL")]
+        YIUIMACRO_BIND_BYETDLL = 1 << 6, //使用反射时 有2种方式 1.使用DLL(ET工程编译出来的) 2.使用Unity的程序集(Unity编译的)
+
+        [LabelText("绑定使用反射 运行时使用AppDomain程序集 全部")]
+        YIUIMACRO_BIND_BYUNITYDLL_ALL = 1 << 7, //默认只找ET.ModelView 开了这个会找全部的程序集
     }
 
     [Flags]

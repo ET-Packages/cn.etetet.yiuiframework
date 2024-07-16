@@ -1,7 +1,4 @@
-﻿#if UNITY_EDITOR
-
-//#define YIUI_GETALL_ASSEMBLY
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +12,7 @@ namespace YIUIFramework
     {
         #region 扫描指定程序集
 
-        #if !YIUI_GETALL_ASSEMBLY
+        #if !YIUIMACRO_BIND_BYUNITYDLL_ALL
 
         //业务代码相关程序集的名字
         //默认有Unity默认程序集 可以根据需求修改
@@ -39,26 +36,28 @@ namespace YIUIFramework
 
         #endregion
 
+        #if UNITY_EDITOR
+        /// <summary>
+        /// 编辑器下加载热更dll的目录
+        /// </summary>
+        public const string CodeDir = "Packages/cn.etetet.loader/Bundles/Code";
+
         public Type[] GetLogicTypesByDll()
         {
-            var      buildOutputDir = "./Temp/Bin/Debug";
-            string[] logicFiles     = Directory.GetFiles(buildOutputDir, "Model.dll");
-            if (logicFiles.Length != 1)
-            {
-                throw new Exception("Logic dll count != 1");
-            }
-
-            string logicName = Path.GetFileNameWithoutExtension(logicFiles[0]);
-            var    assBytes  = File.ReadAllBytes(Path.Combine(buildOutputDir, $"{logicName}.dll"));
-            var    pdbBytes  = File.ReadAllBytes(Path.Combine(buildOutputDir, $"{logicName}.pdb"));
-            var    model     = Assembly.Load(assBytes, pdbBytes);
-            var    typesDic  = AssemblyHelper.GetAssemblyTypes(model);
+            byte[] modelViewAssBytes = File.ReadAllBytes(Path.Combine(CodeDir, "ET.ModelView.dll.bytes"));
+            byte[] modelViewPdbBytes = File.ReadAllBytes(Path.Combine(CodeDir, "ET.ModelView.pdb.bytes"));
+            var    modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
+            var    typesDic          = AssemblyHelper.GetAssemblyTypes(modelViewAssembly);
             return typesDic.Values.ToArray();
         }
+        #endif
 
         public YIUIBindVo[] Get()
         {
-            #if !UNITY_EDITOR || YIUIMACRO_SIMULATE_NONEEDITOR
+            //使用反射时 有2种方式
+            //1.使用DLL(ET工程编译出来的) 只能编辑器时用 一般情况下都不用
+            //2.使用Unity的程序集(Unity编译的)
+            #if UNITY_EDITOR && YIUIMACRO_BIND_BYETDLL
             var types = GetLogicTypesByDll();
             #else
             var types = GetLogicTypes();
@@ -126,4 +125,3 @@ namespace YIUIFramework
         }
     }
 }
-#endif

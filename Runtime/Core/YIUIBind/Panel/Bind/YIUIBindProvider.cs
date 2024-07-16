@@ -67,19 +67,12 @@ namespace YIUIFramework
 
             foreach (var type in types)
             {
-                if (type.IsAbstract)
+                if (type.IsAbstract) continue;
+                var attribute = type.GetCustomAttribute<YIUIAttribute>(true);
+                if (attribute == null) continue;
+                if (GetBindVo(out var bindVo, attribute, type))
                 {
-                    continue;
-                }
-
-                var uiAttributes = (YIUIAttribute[])type.GetCustomAttributes(typeof(YIUIAttribute), true);
-
-                foreach (var attribute in uiAttributes)
-                {
-                    if (GetBindVo(out var bindVo, attribute, type))
-                    {
-                        binds.Add(bindVo);
-                    }
+                    binds.Add(bindVo);
                 }
             }
 

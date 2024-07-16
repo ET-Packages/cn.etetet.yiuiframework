@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ET.Client
 {
@@ -33,35 +34,25 @@ namespace ET.Client
             var types = CodeTypes.Instance.GetTypes(typeof(YIUIEventAttribut));
             foreach (var type in types)
             {
-                object[] attrs = type.GetCustomAttributes(typeof(YIUIEventAttribut), false);
-                for (int i = 0; i < attrs.Length; i++)
+                var eventAttribut = type.GetCustomAttribute<YIUIEventAttribut>(false);
+                var obj           = (IYIUICommonEvent)Activator.CreateInstance(type);
+                var eventType     = eventAttribut.EventType;
+                var componentName = eventAttribut.ComponentType.Name;
+                var info          = new YIUIEventInfo(eventType, componentName, obj);
+
+                if (!self._AllEventInfo.ContainsKey(eventAttribut.EventType))
                 {
-                    if (i >= 1)
-                    {
-                        Log.Error($"ConfigExtendAttribute特性写一个就可以了 {types}");
-                        break;
-                    }
-
-                    var eventAttribut = (YIUIEventAttribut)attrs[i];
-                    var obj           = (IYIUICommonEvent)Activator.CreateInstance(type);
-                    var eventType     = eventAttribut.EventType;
-                    var componentName = eventAttribut.ComponentType.Name;
-                    var info          = new YIUIEventInfo(eventType, componentName, obj);
-
-                    if (!self._AllEventInfo.ContainsKey(eventAttribut.EventType))
-                    {
-                        self._AllEventInfo.Add(eventAttribut.EventType, new Dictionary<string, List<YIUIEventInfo>>());
-                    }
-
-                    if (!self._AllEventInfo[eventAttribut.EventType].ContainsKey(componentName))
-                    {
-                        self._AllEventInfo[eventAttribut.EventType].Add(componentName, new List<YIUIEventInfo>());
-                    }
-
-                    var infoList = self._AllEventInfo[eventAttribut.EventType][componentName];
-
-                    infoList.Add(info);
+                    self._AllEventInfo.Add(eventAttribut.EventType, new Dictionary<string, List<YIUIEventInfo>>());
                 }
+
+                if (!self._AllEventInfo[eventAttribut.EventType].ContainsKey(componentName))
+                {
+                    self._AllEventInfo[eventAttribut.EventType].Add(componentName, new List<YIUIEventInfo>());
+                }
+
+                var infoList = self._AllEventInfo[eventAttribut.EventType][componentName];
+
+                infoList.Add(info);
             }
         }
 

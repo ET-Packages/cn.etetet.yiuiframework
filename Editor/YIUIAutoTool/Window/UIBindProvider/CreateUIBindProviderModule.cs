@@ -12,19 +12,25 @@ namespace YIUIFramework.Editor
     [HideReferenceObjectPicker]
     public class CreateUIBindProviderModule : BaseCreateModule
     {
-        [Button("UI自动生成绑定替代反射代码 (编译后生效)", 50), GUIColor(0.4f, 0.8f, 1)]
+        [Button("UI自动生成绑定替代反射代码", 50), GUIColor(0.4f, 0.8f, 1)]
         public void Create()
         {
-            if (!UIOperationHelper.CheckUIOperation()) return;
-
-            var codeData = GenCodeByType(typeof(YIUIBindProvider));
-            if (codeData == null) return;
-            new CreateUIBindProviderCode(out var result, YIUIAutoTool.Author, codeData);
-
+            var result = CreateBindProviderCode();
             if (result)
             {
                 UnityTipsHelper.CallBackOk("UI自动生成绑定替代反射代码 生成完毕 \n编译ET后才会生效", YIUIAutoTool.CloseWindowRefresh);
             }
+        }
+
+        //使用自动化打包流程时 可调用此方法生成绑定替代反射代码
+        public static bool CreateBindProviderCode()
+        {
+            if (!UIOperationHelper.CheckUIOperation()) return false;
+
+            var codeData = GenCodeByType(typeof(YIUIBindProvider));
+            if (codeData == null) return false;
+            new CreateUIBindProviderCode(out var result, YIUIAutoTool.Author, codeData);
+            return result;
         }
 
         private static UIBindProviderData GenCodeByType(Type type)
@@ -70,13 +76,13 @@ namespace YIUIFramework.Editor
             var userCode = SbPool.PutAndToStr(sb);
 
             return new UIBindProviderData
-                   {
-                       Namespace = type.Namespace,
-                       FullName  = type.FullName,
-                       Name      = type.Name,
-                       Count     = list.Count,
-                       Content   = userCode,
-                   };
+            {
+                Namespace = type.Namespace,
+                FullName  = type.FullName,
+                Name      = type.Name,
+                Count     = list.Count,
+                Content   = userCode,
+            };
         }
     }
 }

@@ -32,8 +32,11 @@ namespace ET.Client
         //后关
         public bool WindowLastClose => WindowOption.HasFlag(EWindowOption.LastClose);
 
-        //禁止动画
-        public bool WindowBanTween => WindowOption.HasFlag(EWindowOption.BanTween);
+        //禁止打开动画
+        public bool WindowBanOpenTween => WindowOption.HasFlag(EWindowOption.BanOpenTween);
+        
+        //禁止关闭动画
+        public bool WindowBanCloseTween => WindowOption.HasFlag(EWindowOption.BanCloseTween);
 
         //打开动画不可重复播放
         public bool WindowBanRepetitionOpenTween => WindowOption.HasFlag(EWindowOption.BanRepetitionOpenTween);

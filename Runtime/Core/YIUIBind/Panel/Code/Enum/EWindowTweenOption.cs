@@ -31,8 +31,11 @@ namespace YIUIFramework
         [LabelText("后关")]
         LastClose = 1 << 4, // 默认先关 (自己再打开其他 如果后关: 先打开其他 再关闭自己 这个时候大概率是看不到自己的关闭动画的)
 
-        [LabelText("禁止动画")]
-        BanTween = 1 << 10, //所有开关动画都会被跳过
+        [LabelText("禁止打开动画")]
+        BanOpenTween = 1 << 9, //所有开动画都会被跳过
+
+        [LabelText("禁止关闭动画")]
+        BanCloseTween = 1 << 10, //所有关动画都会被跳过
 
         [LabelText("打开动画不可重复播放")]
         BanRepetitionOpenTween = 1 << 11, //生命周期内 打开动画只可以播放一次
@@ -57,10 +60,9 @@ namespace YIUIFramework
 
         [LabelText("播放动画时 可以操作")]
         AllowOptionByTween = 1 << 18, //默认播放动画的时候是不能操作UI的 不然容易出问题
-        
+
         [LabelText("Home时 操作不视作Back")]
         SkipHomeBack = 1 << 19, //反之 默认情况下 Home时被关闭 打开时 会触发BackClose Open 方便统一处理 毕竟都是属于回退功能的关闭
-
     }
 
     public static class WindowOptionOptionExt

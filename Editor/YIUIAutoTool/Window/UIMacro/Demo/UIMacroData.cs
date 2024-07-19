@@ -52,8 +52,11 @@ namespace YIUIFramework.Editor
         [LabelText("无")]
         NONE = 0,
 
+        [LabelText("已初始化")]
+        INITED = 1,
+
         [LabelText("可视化")]
-        ENABLE_VIEW = 1,
+        ENABLE_VIEW = 1 << 1,
     }
 }
 #endif

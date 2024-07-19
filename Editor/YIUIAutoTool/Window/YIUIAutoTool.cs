@@ -26,14 +26,15 @@ namespace YIUIFramework.Editor
         private static void OpenWindow()
         {
             var window = GetWindow<YIUIAutoTool>();
-            window.Show();
+            if (window != null)
+                window.Show();
         }
 
         //[MenuItem("Tools/关闭 YIUI 自动化工具")]
         //错误时使用的 面板出现了错误 会导致如何都打不开 就需要先关闭
         private static void CloseWindow()
         {
-            GetWindow<YIUIAutoTool>().Close();
+            GetWindow<YIUIAutoTool>()?.Close();
         }
 
         //关闭后刷新资源
@@ -41,7 +42,8 @@ namespace YIUIFramework.Editor
         {
             CloseWindow();
             AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            //AssetDatabase.Refresh();//下面的刷新更NB
+            EditorApplication.ExecuteMenuItem("Assets/Refresh");
         }
 
         private OdinMenuTree           m_OdinMenuTree;

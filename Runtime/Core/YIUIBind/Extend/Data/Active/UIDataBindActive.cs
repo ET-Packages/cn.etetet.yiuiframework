@@ -15,7 +15,7 @@ namespace YIUIFramework
         [SerializeField]
         [LabelText("过度时间")]
         [HideIf("m_TransitionMode", UITransitionModeEnum.Instant)]
-        private float m_TransitionTime = 0.1f;
+        private float m_TransitionTime = 0.5f;
 
         private CanvasGroup m_CanvasGroup;
 
@@ -39,60 +39,53 @@ namespace YIUIFramework
 
                 if (m_CanvasGroup != null)
                 {
-                    if (gameObject.activeInHierarchy)
+                    StopAllCoroutines();
+
+                    switch (m_TransitionMode)
                     {
-                        StopAllCoroutines();
+                        case UITransitionModeEnum.Fade:
+                            if (result)
+                            {
+                                gameObject.SetActive(true);
+                                StartCoroutine(TransitionFade(m_CanvasGroup, 1.0f, true));
+                            }
+                            else
+                            {
+                                StartCoroutine(TransitionFade(m_CanvasGroup, 0.0f, false));
+                            }
 
-                        switch (m_TransitionMode)
-                        {
-                            case UITransitionModeEnum.Fade:
-                                if (result)
-                                {
-                                    gameObject.SetActive(true);
-                                    StartCoroutine(TransitionFade(m_CanvasGroup, 1.0f, true));
-                                }
-                                else
-                                {
-                                    StartCoroutine(TransitionFade(m_CanvasGroup, 0.0f, false));
-                                }
+                            break;
+                        case UITransitionModeEnum.FadeIn:
+                            if (result)
+                            {
+                                gameObject.SetActive(true);
+                                m_CanvasGroup.alpha = 0;
+                                StartCoroutine(TransitionFade(m_CanvasGroup, 1.0f, true));
+                            }
+                            else
+                            {
+                                gameObject.SetActive(false);
+                            }
 
-                                break;
-                            case UITransitionModeEnum.FadeIn:
-                                if (result)
-                                {
-                                    gameObject.SetActive(true);
-                                    m_CanvasGroup.alpha = 0;
-                                    StartCoroutine(TransitionFade(m_CanvasGroup, 1.0f, true));
-                                }
-                                else
-                                {
-                                    gameObject.SetActive(false);
-                                }
+                            break;
+                        case UITransitionModeEnum.FadeOut:
+                            if (result)
+                            {
+                                m_CanvasGroup.alpha = 1f;
+                                gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                m_CanvasGroup.alpha = 1f;
+                                StartCoroutine(TransitionFade(m_CanvasGroup, 0.0f, false));
+                            }
 
-                                break;
-                            case UITransitionModeEnum.FadeOut:
-                                if (result)
-                                {
-                                    m_CanvasGroup.alpha = 1f;
-                                    gameObject.SetActive(true);
-                                }
-                                else
-                                {
-                                    m_CanvasGroup.alpha = 1f;
-                                    StartCoroutine(TransitionFade(m_CanvasGroup, 0.0f, false));
-                                }
-
-                                break;
-                            case UITransitionModeEnum.Instant:
-                            default:
-                                gameObject.SetActive(result);
-                                Debug.LogError($"不支持的功能 {m_TransitionMode}");
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        gameObject.SetActive(result);
+                            break;
+                        case UITransitionModeEnum.Instant:
+                        default:
+                            gameObject.SetActive(result);
+                            Debug.LogError($"不支持的功能 {m_TransitionMode}");
+                            break;
                     }
                 }
                 else

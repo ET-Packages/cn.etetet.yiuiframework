@@ -53,7 +53,7 @@ namespace YIUIFramework
         public const string UIETSystemPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/YIUISystem"; //玩家可编写的核心代码部分 ET系统
 
         [LabelText("YIUI框架所处位置")]
-        public const string UIFrameworkPath = "Assets/../Packages/cn.etetet.yiuiframework/Runtime";
+        public const string UIFrameworkPath = "Assets/../Packages/cn.etetet.yiuiframework";
 
         [LabelText("YIUI项目代码模板")]
         public const string UITemplatePath = "Assets/../Packages/cn.etetet.yiuiframework/Editor/YIUIAutoTool/Template";

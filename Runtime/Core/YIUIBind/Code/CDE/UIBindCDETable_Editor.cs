@@ -156,46 +156,6 @@ namespace YIUIFramework
             return true;
         }
 
-        private bool ShowCreateBtnByHierarchy()
-        {
-            if (IsSplitData) return false;
-            if (string.IsNullOrEmpty(PkgName) || string.IsNullOrEmpty(ResName)) return false;
-            if (!UIOperationHelper.CheckUIOperation(this, false)) return false;
-            return !PrefabUtility.IsPartOfPrefabAsset(this);
-        }
-
-        [GUIColor(0f, 0.5f, 1f)]
-        [Button("生成", 50)]
-        [ShowIf("ShowCreateBtnByHierarchy")]
-        internal void CreateUICodeByHierarchy()
-        {
-            if (!ShowCreateBtnByHierarchy()) return;
-
-            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-            if (prefabStage == null)
-            {
-                Debug.LogError($"当前不在预制体编辑器模式下");
-                return;
-            }
-
-            var path = prefabStage.assetPath;
-            var root = prefabStage.prefabContentsRoot;
-            PrefabUtility.SaveAsPrefabAsset(root, path, out var success);
-            if (!success)
-            {
-                Debug.LogError("快捷保存失败 请检查");
-                return;
-            }
-
-            prefabStage.ClearDirtiness();
-
-            var cdeTable = AssetDatabase.LoadAssetAtPath<UIBindCDETable>(path);
-            if (cdeTable == null) return;
-            cdeTable.CreateUICode();
-
-            AssetDatabase.OpenAsset(cdeTable);
-        }
-
         private bool ShowCreateBtn()
         {
             if (IsSplitData) return false;

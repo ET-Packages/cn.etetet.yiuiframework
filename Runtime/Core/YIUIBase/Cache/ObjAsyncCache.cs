@@ -21,6 +21,8 @@ namespace YIUIFramework
             m_createCallback = createCallback;
         }
 
+        public int Count => m_pool.Count;
+
         public async ETTask<T> Get()
         {
             return m_pool.Count > 0 ? m_pool.Pop() : await m_createCallback();

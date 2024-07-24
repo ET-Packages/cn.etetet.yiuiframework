@@ -41,16 +41,16 @@ namespace YIUIFramework
         public const string UIETCreatePackagePath = "Assets/../Packages/cn.etetet.yiui";
 
         [LabelText("YIUI项目脚本")]
-        public const string UIETComponentGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/YIUIGen"; //自动生成的代码会覆盖不可修改
+        public const string UIETComponentGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/Client/YIUIGen"; //自动生成的代码会覆盖不可修改
 
         [LabelText("YIUI项目ET组件")]
-        public const string UIETComponentPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/YIUIComponent"; //玩家可编写的核心代码部分 ET系统
+        public const string UIETComponentPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/Client/YIUIComponent"; //玩家可编写的核心代码部分 ET系统
 
         [LabelText("YIUI项目自定义脚本")]
-        public const string UIETSystemGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/YIUIGen"; //自动生成的代码会覆盖不可修改
+        public const string UIETSystemGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUIGen"; //自动生成的代码会覆盖不可修改
 
         [LabelText("YIUI项目ET系统")]
-        public const string UIETSystemPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/YIUISystem"; //玩家可编写的核心代码部分 ET系统
+        public const string UIETSystemPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUISystem"; //玩家可编写的核心代码部分 ET系统
 
         [LabelText("YIUI框架所处位置")]
         public const string UIFrameworkPath = "Assets/../Packages/cn.etetet.yiuiframework";

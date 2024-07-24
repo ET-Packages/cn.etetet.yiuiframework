@@ -138,6 +138,7 @@ namespace YIUIFramework
 
             if (!result1 || !result2) return false;
 
+            ShowPackagesCreateBtn();
             OnValueChangedEUICodeType();
             OnValueChangedEPanelLayer();
             if (UICodeType == EUICodeType.Panel && IsSplitData)
@@ -153,6 +154,8 @@ namespace YIUIFramework
                 DataTable.AutoCheck();
             if (EventTable != null)
                 EventTable.AutoCheck();
+
+            EditorUtility.SetDirty(this);
             return true;
         }
 

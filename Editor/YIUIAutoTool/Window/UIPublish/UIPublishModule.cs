@@ -34,10 +34,13 @@ namespace YIUIFramework.Editor
 
         private Dictionary<string, List<string>> m_AllInfo = new();
 
+        private int m_AllCount;
+
         private void RefreshAllPkg()
         {
             EditorHelper.CreateExistsDirectory(m_AllPkgPath);
             m_AllInfo.Clear();
+            m_AllCount = 0;
             try
             {
                 foreach (var yiuiPkg in Directory.GetDirectories(EditorHelper.GetProjPath(m_AllPkgPath)))
@@ -73,6 +76,7 @@ namespace YIUIFramework.Editor
                         foreach (var yiuiPkg in Directory.GetDirectories(packageRes))
                         {
                             list.Add(yiuiPkg);
+                            this.m_AllCount++;
                         }
                     }
                 }
@@ -108,14 +112,14 @@ namespace YIUIFramework.Editor
 
                     var PublishPath = $"{publishName}/{showPkgName}";
                     var pkgMenu = new TreeMenuItem<UIPublishPackageModule>(this.AutoTool, this.Tree, PublishPath,
-                                                                           EditorIcons.Folder);
+                        EditorIcons.Folder);
                     pkgMenu.UserData = new UIPublishPackageModuleData
-                                       {
-                                           PublishModule = this,
-                                           PublishPath   = PublishPath,
-                                           ResPath       = resPath,
-                                           PkgName       = pkgName
-                                       };
+                    {
+                        PublishModule = this,
+                        PublishPath   = PublishPath,
+                        ResPath       = resPath,
+                        PkgName       = pkgName
+                    };
                 }
             }
         }
@@ -136,26 +140,30 @@ namespace YIUIFramework.Editor
             if (!UIOperationHelper.CheckUIOperation()) return;
 
             UnityTipsHelper.CallBack("确定发布全部YIUI?", () =>
-                                         {
-                                             foreach ((var resPath, var listInfo) in m_AllInfo)
-                                             {
-                                                 foreach (var folder in listInfo)
-                                                 {
-                                                     var pkgName   = Path.GetFileName(folder);
-                                                     var upperName = NameUtility.ToFirstUpper(pkgName);
-                                                     if (upperName != pkgName)
-                                                     {
-                                                         Debug.LogError($"这是一个非法的模块[ {pkgName} ]请使用统一方法创建模块 或者满足指定要求");
-                                                         continue;
-                                                     }
+            {
+                var index = 0;
+                foreach ((var resPath, var listInfo) in m_AllInfo)
+                {
+                    foreach (var folder in listInfo)
+                    {
+                        var pkgName   = Path.GetFileName(folder);
+                        var upperName = NameUtility.ToFirstUpper(pkgName);
+                        if (upperName != pkgName)
+                        {
+                            Debug.LogError($"这是一个非法的模块[ {pkgName} ]请使用统一方法创建模块 或者满足指定要求");
+                            continue;
+                        }
 
-                                                     var module = new UIPublishPackageModule(this, resPath, pkgName);
-                                                     module.PublishCurrent(false); //不要默认重置所有图集设置 有的图集真的会有独立设置
-                                                 }
-                                             }
+                        var module = new UIPublishPackageModule(this, resPath, pkgName);
+                        module.PublishCurrent(false); //不要默认重置所有图集设置 有的图集真的会有独立设置
+                        index++;
+                        EditorHelper.DisplayProgressBar("发布", $"正在发布 {pkgName} ...", index, m_AllCount);
+                    }
+                }
 
-                                             UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
-                                         });
+                EditorHelper.ClearProgressBar();
+                UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+            });
         }
 
         public override void Initialize()

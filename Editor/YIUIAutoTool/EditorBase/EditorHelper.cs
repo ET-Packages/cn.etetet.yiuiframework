@@ -97,9 +97,9 @@ namespace YIUIFramework.Editor
         public static Type[] GetTypesByInterface(string fullName)
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
-                                                                      {
-                                                                          return a.GetTypes().Where(t => GetInterfaceByName(t, fullName) != null);
-                                                                      }).ToArray();
+            {
+                return a.GetTypes().Where(t => GetInterfaceByName(t, fullName) != null);
+            }).ToArray();
         }
 
         public static Type GetInterfaceByName(Type type, string fullName)
@@ -280,13 +280,13 @@ namespace YIUIFramework.Editor
         /// <param name="message">内容</param>
         /// <param name="current">当前进度</param>
         /// <param name="total">总进度</param>
-        public static void DisplayProgressBar(string title, string message, int current, int total)
+        public static void DisplayProgressBar(string title, string message, int current = 0, int total = 0)
         {
             float progress = 0;
             if (total != 0)
             {
                 progress = Mathf.InverseLerp(0, total, current);
-                message  = string.Format("{0} {1}/{2}", message, current + 1, total);
+                message  = $"{message} {current + 1}/{total}";
             }
 
             EditorUtility.DisplayProgressBar(title, message, progress);

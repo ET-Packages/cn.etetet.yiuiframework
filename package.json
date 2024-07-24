@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LiShengYang-yiyi/YIUI/tree/YIUI-ET9.0"
+    "url": "https://github.com/ET-Packages/cn.etetet.yiuiframework"
   },
   "relatedPackages": {},
   "dependencies": {

@@ -2,6 +2,8 @@
 
 using System;
 using Sirenix.OdinInspector;
+using UnityEditor;
+using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
@@ -36,9 +38,16 @@ namespace YIUIFramework.Editor
     /// <summary>
     ///  自动生成ET脚本
     /// </summary>
-    [YIUIAutoMenu("ET生成",200000)]
+    [YIUIAutoMenu("ET生成", 200000)]
     public class UIETScriptModule : BaseYIUIToolModule
     {
+        [Button("文档", 30, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
+        [PropertyOrder(-99999)]
+        public void OpenDocument()
+        {
+            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/XKHYwD7Ppi95f6kqz7IcijmKnQg");
+        }
+
         [HideLabel]
         [BoxGroup("名称")]
         public string ComponentName;

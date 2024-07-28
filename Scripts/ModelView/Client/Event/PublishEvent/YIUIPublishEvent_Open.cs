@@ -1,5 +1,6 @@
 ﻿using YIUIFramework;
 
+//文档 https://lib9kmxvq7k.feishu.cn/wiki/GQb8wtMiYibrxaklR9ic6RHUnUe
 namespace ET.Client
 {
     //UI消息  有UI被打开之前 (有人调用了打开XXpanel 但是还未加载UI之前)

@@ -1,5 +1,6 @@
 ﻿using YIUIFramework;
 
+//文档 https://lib9kmxvq7k.feishu.cn/wiki/GQb8wtMiYibrxaklR9ic6RHUnUe
 namespace ET.Client
 {
     //YIUI初始化过后的事件 其他模块各自初始化

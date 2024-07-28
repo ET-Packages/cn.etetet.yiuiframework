@@ -37,6 +37,13 @@ namespace YIUIFramework.Editor
     [HideLabel]
     public class UIAtlasModule : BaseCreateModule
     {
+        [Button("图集文档", 30, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
+        [PropertyOrder(-99999)]
+        public void OpenDocument()
+        {
+            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/LDFqwjaljiMSg3kh3rVcSyesn0f");
+        }
+
         [HideLabel]
         public UISpriteAtlasSettings SpriteAtlasSettings = new UISpriteAtlasSettings();
 

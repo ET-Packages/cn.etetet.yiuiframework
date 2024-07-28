@@ -15,6 +15,13 @@ namespace YIUIFramework.Editor
     [YIUIAutoMenu("宏设置", 200100)]
     public class YIUIMacroModule : BaseYIUIToolModule
     {
+        [Button("文档", 30, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
+        [PropertyOrder(-99999)]
+        public void OpenDocument()
+        {
+            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/F1cDwqKSliIiBIkWMwmcfsj6nUe");
+        }
+
         [BoxGroup("宏", centerLabel: true)]
         [HideLabel]
         [EnumToggleButtons]

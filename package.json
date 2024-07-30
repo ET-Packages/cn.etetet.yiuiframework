@@ -1,7 +1,7 @@
 ﻿{
   "name": "cn.etetet.yiuiframework",
   "displayName": "ET.YIUI.Framework",
-  "version": "0.0.30",
+  "version": "0.1.0",
   "unity": "2022.3",
   "category": "UI/YIUI",
   "description": "YIUI 框架 >>> 文档: https://lib9kmxvq7k.feishu.cn/wiki/ES7Gwz4EAiVGKSkotY5cRbTznuh",
@@ -15,8 +15,8 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "cn.etetet.core": "0.0.14",
-    "cn.etetet.yiui": "0.0.30"
+    "cn.etetet.core": "0.0.16",
+    "cn.etetet.yiui": "0.1.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@ET-Packages"

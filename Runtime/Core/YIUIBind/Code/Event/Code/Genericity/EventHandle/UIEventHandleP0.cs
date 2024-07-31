@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace YIUIFramework
@@ -7,7 +8,7 @@ namespace YIUIFramework
     /// </summary>
     public static class PublicUIEventP0
     {
-        public static readonly ObjectPool<UIEventHandleP0> HandlerPool = new ObjectPool<UIEventHandleP0>(null, handler => handler.Dispose());
+        public static readonly ObjectPool<UIEventHandleP0> HandlerPool = new(null, handler => handler.Dispose());
     }
 
     /// <summary>
@@ -18,27 +19,41 @@ namespace YIUIFramework
         private LinkedList<UIEventHandleP0>     m_UIEventList;
         private LinkedListNode<UIEventHandleP0> m_UIEventNode;
 
-        private UIEventDelegate m_UIEventParamDelegate;
-        public  UIEventDelegate UIEventParamDelegate => m_UIEventParamDelegate;
+        public Type OnEventInvokeType { get; private set; }
+
+        public UIEventDelegate UIEventParamDelegate { get; private set; }
 
         public UIEventHandleP0()
         {
         }
 
-        internal UIEventHandleP0 Init(LinkedList<UIEventHandleP0>     uiEventList,
-                                      LinkedListNode<UIEventHandleP0> uiEventNode,
-                                      UIEventDelegate                 uiEventDelegate)
+        internal UIEventHandleP0 Init(LinkedList<UIEventHandleP0> uiEventList, LinkedListNode<UIEventHandleP0> uiEventNode, Type onEventInvokeType)
         {
-            m_UIEventList          = uiEventList;
-            m_UIEventNode          = uiEventNode;
-            m_UIEventParamDelegate = uiEventDelegate;
+            if (UIEventParamDelegate != null)
+            {
+                Logger.LogError($"错误当前已经添加委托 无法添加分发事件 {onEventInvokeType.Name}");
+                return null;
+            }
+
+            m_UIEventList     = uiEventList;
+            m_UIEventNode     = uiEventNode;
+            OnEventInvokeType = onEventInvokeType;
+            return this;
+        }
+
+        internal UIEventHandleP0 Init(LinkedList<UIEventHandleP0> uiEventList, LinkedListNode<UIEventHandleP0> uiEventNode, UIEventDelegate uiEventDelegate)
+        {
+            m_UIEventList        = uiEventList;
+            m_UIEventNode        = uiEventNode;
+            UIEventParamDelegate = uiEventDelegate;
             return this;
         }
 
         public void Dispose()
         {
+            OnEventInvokeType    = null;
+            UIEventParamDelegate = null;
             if (m_UIEventList == null || m_UIEventNode == null) return;
-
             m_UIEventList.Remove(m_UIEventNode);
             m_UIEventNode = null;
             m_UIEventList = null;

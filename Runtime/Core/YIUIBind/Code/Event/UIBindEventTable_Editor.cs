@@ -135,7 +135,8 @@ namespace YIUIFramework
                     break;
                 default:
                     uiEventBase = UIEventBaseHelper.CreatorUIEventBase(m_AddUIEventName, AllEventParamType);
-                    throw new ArgumentOutOfRangeException();
+                    Logger.LogError($"是否实现了一个新的事件类型 未实现请检查 {m_UITaskEventType}");
+                    break;
             }
 
             if (uiEventBase == null)

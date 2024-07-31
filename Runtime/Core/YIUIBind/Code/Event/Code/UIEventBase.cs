@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ET;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -19,6 +20,11 @@ namespace YIUIFramework
         private string m_EventName;
 
         public string EventName => m_EventName;
+
+        [NonSerialized]
+        protected EntityRef<Entity> m_Trigger;
+
+        protected Entity Trigger => m_Trigger;
 
         [SerializeField]
         [ReadOnly]

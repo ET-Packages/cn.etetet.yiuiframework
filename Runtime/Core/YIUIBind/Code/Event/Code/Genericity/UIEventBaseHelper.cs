@@ -53,42 +53,27 @@ namespace YIUIFramework
 
         private static UIEventBase CreatorUIEventP1(List<EUIEventParamType> paramList)
         {
-            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP1<>)
-                                                                 .MakeGenericType(paramList[0].GetParamType())));
+            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP1<>).MakeGenericType(paramList[0].GetParamType())));
         }
 
         private static UIEventBase CreatorUIEventP2(List<EUIEventParamType> paramList)
         {
-            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP2<,>)
-                                                                 .MakeGenericType(paramList[0].GetParamType(),
-                                                                                  paramList[1].GetParamType())));
+            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP2<,>).MakeGenericType(paramList[0].GetParamType(), paramList[1].GetParamType())));
         }
 
         private static UIEventBase CreatorUIEventP3(List<EUIEventParamType> paramList)
         {
-            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP3<,,>)
-                                                                 .MakeGenericType(paramList[0].GetParamType(),
-                                                                                  paramList[1].GetParamType(),
-                                                                                  paramList[2].GetParamType())));
+            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP3<,,>).MakeGenericType(paramList[0].GetParamType(), paramList[1].GetParamType(), paramList[2].GetParamType())));
         }
 
         private static UIEventBase CreatorUIEventP4(List<EUIEventParamType> paramList)
         {
-            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP4<,,,>)
-                                                                 .MakeGenericType(paramList[0].GetParamType(),
-                                                                                  paramList[1].GetParamType(),
-                                                                                  paramList[2].GetParamType(),
-                                                                                  paramList[3].GetParamType())));
+            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP4<,,,>).MakeGenericType(paramList[0].GetParamType(), paramList[1].GetParamType(), paramList[2].GetParamType(), paramList[3].GetParamType())));
         }
 
         private static UIEventBase CreatorUIEventP5(List<EUIEventParamType> paramList)
         {
-            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP5<,,,,>)
-                                                                 .MakeGenericType(paramList[0].GetParamType(),
-                                                                                  paramList[1].GetParamType(),
-                                                                                  paramList[2].GetParamType(),
-                                                                                  paramList[3].GetParamType(),
-                                                                                  paramList[4].GetParamType())));
+            return (UIEventBase)(Activator.CreateInstance(typeof(UIEventP5<,,,,>).MakeGenericType(paramList[0].GetParamType(), paramList[1].GetParamType(), paramList[2].GetParamType(), paramList[3].GetParamType(), paramList[4].GetParamType())));
         }
 
         #endregion
@@ -155,8 +140,7 @@ namespace YIUIFramework
             }
         }
 
-        public static void Invoke<P1, P2, P3, P4, P5>(this UIEventBase self, P1 p1, P2 p2, P3 p3, P4 p4,
-                                                      P5               p5)
+        public static void Invoke<P1, P2, P3, P4, P5>(this UIEventBase self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
             if (self is IUIEventInvoke<P1, P2, P3, P4, P5> uiEventInvoke)
             {
@@ -214,8 +198,7 @@ namespace YIUIFramework
             return null;
         }
 
-        public static UIEventHandleP3<P1, P2, P3> AddEvent<P1, P2, P3>(this UIEventBase            self,
-                                                                       UIEventDelegate<P1, P2, P3> callback)
+        public static UIEventHandleP3<P1, P2, P3> AddEvent<P1, P2, P3>(this UIEventBase self, UIEventDelegate<P1, P2, P3> callback)
         {
             if (self is UIEventP3<P1, P2, P3> uiEventParam)
             {
@@ -243,8 +226,7 @@ namespace YIUIFramework
             return null;
         }
 
-        public static UIEventHandleP5<P1, P2, P3, P4, P5> AddEvent<P1, P2, P3, P4, P5>(this UIEventBase                    self,
-                                                                                       UIEventDelegate<P1, P2, P3, P4, P5> callback)
+        public static UIEventHandleP5<P1, P2, P3, P4, P5> AddEvent<P1, P2, P3, P4, P5>(this UIEventBase self, UIEventDelegate<P1, P2, P3, P4, P5> callback)
         {
             if (self is UIEventP5<P1, P2, P3, P4, P5> uiEventParam)
             {
@@ -332,8 +314,7 @@ namespace YIUIFramework
             return false;
         }
 
-        public static bool RemoveEvent<P1, P2, P3, P4, P5>(this UIEventBase                    self,
-                                                           UIEventHandleP5<P1, P2, P3, P4, P5> handle)
+        public static bool RemoveEvent<P1, P2, P3, P4, P5>(this UIEventBase self, UIEventHandleP5<P1, P2, P3, P4, P5> handle)
         {
             if (self is UIEventP5<P1, P2, P3, P4, P5> uiEventParam)
             {

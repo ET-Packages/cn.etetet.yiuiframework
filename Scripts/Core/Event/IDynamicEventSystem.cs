@@ -25,7 +25,6 @@ namespace ET
             return typeof(IDynamicEventSystem<A>);
         }
 
-        //TODO 这里会有覆盖提示 等待官方提供异步方案
         public new async ETTask Run(Entity o, A message)
         {
             await DynamicEvent((T)o, message);

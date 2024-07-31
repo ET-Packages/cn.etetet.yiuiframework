@@ -7,31 +7,31 @@ namespace ET
     //只能发往目标纤程中
     //同一个纤程中也会有不同的scene
     //所以还可区分场景
-    public partial class EntitySystem
+    public static class EntitySystem_Extension
     {
         //向任意场景发送动态事件
-        public async ETTask DynamicEvent<P1>(P1 message) where P1 : struct
+        public static async ETTask DynamicEvent<P1>(this EntitySystem self, P1 message) where P1 : struct
         {
-            await DynamicEvent(0, message);
+            await self.DynamicEvent(0, message);
         }
 
         //向与传入的实体相同的场景发送动态事件
-        public async ETTask DynamicEvent<P1>(Entity entity, P1 message) where P1 : struct
+        public static async ETTask DynamicEvent<P1>(this EntitySystem self, Entity entity, P1 message) where P1 : struct
         {
-            await DynamicEvent(entity.IScene.SceneType, message);
+            await self.DynamicEvent(entity.IScene.SceneType, message);
         }
 
         //向目标场景发送动态事件
-        public async ETTask DynamicEvent<P1>(Scene scene, P1 message) where P1 : struct
+        public static async ETTask DynamicEvent<P1>(this EntitySystem self, Scene scene, P1 message) where P1 : struct
         {
-            await DynamicEvent(scene.SceneType, message);
+            await self.DynamicEvent(scene.SceneType, message);
         }
 
         //向指定场景发送动态事件
-        public async ETTask DynamicEvent<P1>(int sceneType, P1 message) where P1 : struct
+        public static async ETTask DynamicEvent<P1>(this EntitySystem self, int sceneType, P1 message) where P1 : struct
         {
             Type                     systemType = typeof(IDynamicEventSystem<P1>);
-            Queue<EntityRef<Entity>> queue      = this.GetQueue(systemType);
+            Queue<EntityRef<Entity>> queue      = self.GetQueue(systemType);
             int                      count      = queue.Count;
             if (count <= 0) return;
 

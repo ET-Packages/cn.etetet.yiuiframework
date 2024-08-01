@@ -31,8 +31,7 @@ namespace YIUIFramework.Editor
                 if (string.IsNullOrEmpty(name)) continue;
                 var bindCom = value.Value;
                 if (bindCom == null) continue;
-                sb.AppendFormat("            self.{1} = self.UIBase.ComponentTable.FindComponent<{0}>(\"{1}\");\r\n", bindCom.GetType(),
-                                name);
+                sb.AppendFormat("            self.{1} = self.UIBase.ComponentTable.FindComponent<{0}>(\"{1}\");\r\n", bindCom.GetType(), name);
             }
         }
 
@@ -48,8 +47,7 @@ namespace YIUIFramework.Editor
                 var uiData    = value.Value;
                 var dataValue = uiData?.DataValue;
                 if (dataValue == null) continue;
-                sb.AppendFormat("            self.{1} = self.UIBase.DataTable.FindDataValue<{0}>(\"{1}\");\r\n", dataValue.GetType(),
-                                name);
+                sb.AppendFormat("            self.{1} = self.UIBase.DataTable.FindDataValue<{0}>(\"{1}\");\r\n", dataValue.GetType(), name);
             }
         }
 
@@ -64,10 +62,8 @@ namespace YIUIFramework.Editor
                 if (string.IsNullOrEmpty(name)) continue;
                 var uiEventBase = value.Value;
                 if (uiEventBase == null) continue;
-                sb.AppendFormat("            self.{1} = self.UIBase.EventTable.FindEvent<{0}>(\"{1}\");\r\n", uiEventBase.GetEventType(),
-                                name);
-                sb.AppendFormat("            self.{0} = self.{1}.Add(self.{2});\r\n", $"{name}Handle", name,
-                                $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Action");
+                sb.AppendFormat("            self.{1} = self.UIBase.EventTable.FindEvent<{0}>(\"{1}\");\r\n", uiEventBase.GetEventType(), name);
+                sb.AppendFormat("            self.{0} = self.{1}.Add(self,typeof({2}));\r\n", $"{name}Handle", name, $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke");
             }
         }
 
@@ -91,10 +87,7 @@ namespace YIUIFramework.Editor
                 }
 
                 existName.Add(newName);
-                sb.AppendFormat("            self.{0} = self.UIBase.CDETable.FindUIOwner<{1}>(\"{2}\");\r\n",
-                                newName,
-                                $"{YIUIConst.UINamespace}.{resName}Component",
-                                name);
+                sb.AppendFormat("            self.{0} = self.UIBase.CDETable.FindUIOwner<{1}>(\"{2}\");\r\n", newName, $"{YIUIConst.UINamespace}.{resName}Component", name);
             }
         }
 
@@ -146,29 +139,21 @@ namespace YIUIFramework.Editor
                     sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIChild>();\r\n");
                     sb.AppendFormat("            self.u_UIWindow = self.UIBase.GetComponent<YIUIWindowComponent>();\r\n");
                     sb.AppendFormat("            self.u_UIPanel = self.UIBase.GetComponent<YIUIPanelComponent>();\r\n");
-                    sb.AppendFormat("            self.UIWindow.WindowOption = EWindowOption.{0};\r\n",
-                                    self.WindowOption.ToString().Replace(", ", "|EWindowOption."));
-                    sb.AppendFormat("            self.UIPanel.Layer = EPanelLayer.{0};\r\n",
-                                    self.PanelLayer);
-                    sb.AppendFormat("            self.UIPanel.PanelOption = EPanelOption.{0};\r\n",
-                                    self.PanelOption.ToString().Replace(", ", "|EPanelOption."));
-                    sb.AppendFormat("            self.UIPanel.StackOption = EPanelStackOption.{0};\r\n",
-                                    self.PanelStackOption);
+                    sb.AppendFormat("            self.UIWindow.WindowOption = EWindowOption.{0};\r\n", self.WindowOption.ToString().Replace(", ", "|EWindowOption."));
+                    sb.AppendFormat("            self.UIPanel.Layer = EPanelLayer.{0};\r\n", self.PanelLayer);
+                    sb.AppendFormat("            self.UIPanel.PanelOption = EPanelOption.{0};\r\n", self.PanelOption.ToString().Replace(", ", "|EPanelOption."));
+                    sb.AppendFormat("            self.UIPanel.StackOption = EPanelStackOption.{0};\r\n", self.PanelStackOption);
                     sb.AppendFormat("            self.UIPanel.Priority = {0};\r\n", self.Priority);
                     if (self.PanelOption.HasFlag(EPanelOption.TimeCache))
-                        sb.AppendFormat("            self.UIPanel.CachePanelTime = {0};\r\n",
-                                        self.CachePanelTime);
+                        sb.AppendFormat("            self.UIPanel.CachePanelTime = {0};\r\n", self.CachePanelTime);
                     break;
                 case EUICodeType.View:
                     sb.AppendFormat("            self.u_UIBase = self.GetParent<YIUIChild>();\r\n");
                     sb.AppendFormat("            self.u_UIWindow = self.UIBase.GetComponent<YIUIWindowComponent>();\r\n");
                     sb.AppendFormat("            self.u_UIView = self.UIBase.GetComponent<YIUIViewComponent>();\r\n");
-                    sb.AppendFormat("            self.UIWindow.WindowOption = EWindowOption.{0};\r\n",
-                                    self.WindowOption.ToString().Replace(", ", "|EWindowOption."));
-                    sb.AppendFormat("            self.UIView.ViewWindowType = EViewWindowType.{0};\r\n",
-                                    self.ViewWindowType);
-                    sb.AppendFormat("            self.UIView.StackOption = EViewStackOption.{0};\r\n",
-                                    self.ViewStackOption);
+                    sb.AppendFormat("            self.UIWindow.WindowOption = EWindowOption.{0};\r\n", self.WindowOption.ToString().Replace(", ", "|EWindowOption."));
+                    sb.AppendFormat("            self.UIView.ViewWindowType = EViewWindowType.{0};\r\n", self.ViewWindowType);
+                    sb.AppendFormat("            self.UIView.StackOption = EViewStackOption.{0};\r\n", self.ViewStackOption);
                     break;
                 default:
                     Debug.LogError($"新增类型未实现 {self.UICodeType}");

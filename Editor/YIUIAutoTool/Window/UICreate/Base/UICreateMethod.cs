@@ -30,9 +30,7 @@ namespace YIUIFramework.Editor
                 if (string.IsNullOrEmpty(name)) continue;
                 var uiEventBase = value.Value;
                 if (uiEventBase == null) continue;
-                sb.AppendFormat("        protected virtual void {0}({1}){{}}\r\n",
-                                $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Action",
-                                GetEventMethodParam(uiEventBase));
+                sb.AppendFormat("        protected virtual void {0}({1}){{}}\r\n", $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Action", GetEventMethodParam(uiEventBase));
             }
         }
 
@@ -49,7 +47,30 @@ namespace YIUIFramework.Editor
             for (int i = 0; i < paramCount; i++)
             {
                 var paramType = uiEventBase.AllEventParamType[i];
-                sb.AppendFormat("{0} p{1}", paramType.GetParamTypeString(), i + 1);
+                sb.AppendFormat(" {0} p{1}", paramType.GetParamTypeString(), i + 1);
+                if (i < paramCount - 1)
+                {
+                    sb.Append(",");
+                }
+            }
+
+            return SbPool.PutAndToStr(sb);
+        }
+
+        private static string GetEventMethodParamType(UIEventBase uiEventBase)
+        {
+            var paramCount = uiEventBase.AllEventParamType.Count;
+            if (paramCount <= 0)
+            {
+                return "";
+            }
+
+            var sb = SbPool.Get();
+
+            for (int i = 0; i < paramCount; i++)
+            {
+                var paramType = uiEventBase.AllEventParamType[i];
+                sb.AppendFormat(" {0}", paramType.GetParamTypeString());
                 if (i < paramCount - 1)
                 {
                     sb.Append(",");
@@ -173,21 +194,49 @@ namespace YIUIFramework.Editor
                 if (string.IsNullOrEmpty(name)) continue;
                 var uiEventBase = value.Value;
                 if (uiEventBase == null) continue;
-                var    onEvent          = $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}";
-                var    eventParam       = GetEventMethodParam(uiEventBase);
-                var    systemEventParam = string.IsNullOrEmpty(eventParam) ? "" : $", {eventParam}";
-                var    methodParam      = $"Action(this {cdeTable.ResName}Component self{systemEventParam})";
+                var    onEvent              = $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke";
+                var    component            = $"{cdeTable.ResName}Component";
+                var    eventParam           = GetEventMethodParam(uiEventBase);
+                var    eventParamType       = GetEventMethodParamType(uiEventBase);
+                var    systemEventParam     = string.IsNullOrEmpty(eventParam) ? "" : $",{eventParam}";
+                var    systemEventParamType = string.IsNullOrEmpty(eventParamType) ? "" : $",{eventParamType}";
                 string check;
                 if (uiEventBase.IsTaskEvent)
-                    check = $"private static async ETTask {onEvent}{methodParam}";
+                    check = $"class {onEvent} : YIUITaskEventInvokeSystem";
                 else
-                    check = $"private static void {onEvent}{methodParam}";
-                var    firstContent = $"\r\n        {check}";
+                    check = $"class {onEvent} : YIUIEventInvokeSystem";
+
                 string content;
                 if (uiEventBase.IsTaskEvent)
-                    content = firstContent + "\r\n        {\r\n            await ETTask.CompletedTask;\r\n        }\r\n        ";
+                {
+                    content = @$"
+        [EntitySystem]
+        [FriendOf(typeof({component}))]
+        public class {onEvent} : YIUITaskEventInvokeSystem<{component}{systemEventParamType}>
+        {{
+            protected override async ETTask Invoke({component} self{systemEventParam})
+            {{
+                
+                await ETTask.CompletedTask;
+            }}
+        }}
+        ";
+                }
                 else
-                    content = firstContent + "\r\n        {\r\n            \r\n        }\r\n        ";
+                {
+                    content = @$"
+        [EntitySystem]
+        [FriendOf(typeof({component}))]
+        public class {onEvent} : YIUIEventInvokeSystem<{component}{systemEventParamType}>
+        {{
+            protected override void Invoke({component} self{systemEventParam})
+            {{
+                
+            }}
+        }}
+        ";
+                }
+
                 newList.Add(new Dictionary<string, string> { { check, content } });
             }
 

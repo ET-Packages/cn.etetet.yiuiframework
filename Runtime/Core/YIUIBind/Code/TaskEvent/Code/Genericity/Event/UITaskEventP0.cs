@@ -1,13 +1,13 @@
+using ET;
 using System;
 using System.Collections.Generic;
-using ET;
 
 namespace YIUIFramework
 {
     public class UITaskEventP0 : UIEventBase, IUITaskEventInvoke
     {
-        private LinkedList<UITaskEventHandleP0> m_UITaskEventDelegates;
-        public  LinkedList<UITaskEventHandleP0> UITaskEventDelegates => m_UITaskEventDelegates;
+        private LinkedList<UITaskEventHandleP0> m_UITaskEventHandles;
+        public  LinkedList<UITaskEventHandleP0> UITaskEventHandles => m_UITaskEventHandles;
 
         public UITaskEventP0()
         {
@@ -19,7 +19,7 @@ namespace YIUIFramework
 
         public async ETTask Invoke()
         {
-            if (m_UITaskEventDelegates == null)
+            if (m_UITaskEventHandles == null)
             {
                 Logger.LogWarning($"{EventName} 未绑定任何事件");
                 return;
@@ -27,14 +27,18 @@ namespace YIUIFramework
 
             using var list = ListComponent<ETTask>.Create();
 
-            var itr = m_UITaskEventDelegates.First;
-            while (itr != null)
+            var handle = m_UITaskEventHandles.First;
+            while (handle != null)
             {
-                var next  = itr.Next;
-                var value = itr.Value;
-                if (value.UITaskEventParamDelegate != null)
-                    list.Add(value.UITaskEventParamDelegate.Invoke());
-                itr = next;
+                var next  = handle.Next;
+                var value = handle.Value;
+
+                if (value != null)
+                {
+                    list.Add(value.Invoke());
+                }
+
+                handle = next;
             }
 
             try
@@ -51,23 +55,31 @@ namespace YIUIFramework
 
         public override bool Clear()
         {
-            if (m_UITaskEventDelegates == null) return false;
+            if (m_UITaskEventHandles == null) return false;
 
-            var first = m_UITaskEventDelegates.First;
+            var first = m_UITaskEventHandles.First;
             while (first != null)
             {
                 PublicUITaskEventP0.HandlerPool.Release(first.Value);
-                first = m_UITaskEventDelegates.First;
+                first = m_UITaskEventHandles.First;
             }
 
-            LinkedListPool<UITaskEventHandleP0>.Release(m_UITaskEventDelegates);
-            m_UITaskEventDelegates = null;
+            LinkedListPool<UITaskEventHandleP0>.Release(m_UITaskEventHandles);
+            m_UITaskEventHandles = null;
             return true;
+        }
+
+        public UITaskEventHandleP0 Add(Entity trigger, Type onEventInvokeType)
+        {
+            m_UITaskEventHandles ??= LinkedListPool<UITaskEventHandleP0>.Get();
+            var handler = PublicUITaskEventP0.HandlerPool.Get();
+            var node    = m_UITaskEventHandles.AddLast(handler);
+            return handler.Init(m_UITaskEventHandles, node, trigger, onEventInvokeType);
         }
 
         public UITaskEventHandleP0 Add(UITaskEventDelegate callback)
         {
-            m_UITaskEventDelegates ??= LinkedListPool<UITaskEventHandleP0>.Get();
+            m_UITaskEventHandles ??= LinkedListPool<UITaskEventHandleP0>.Get();
 
             if (callback == null)
             {
@@ -75,13 +87,13 @@ namespace YIUIFramework
             }
 
             var handler = PublicUITaskEventP0.HandlerPool.Get();
-            var node    = m_UITaskEventDelegates.AddLast(handler);
-            return handler.Init(m_UITaskEventDelegates, node, callback);
+            var node    = m_UITaskEventHandles.AddLast(handler);
+            return handler.Init(m_UITaskEventHandles, node, callback);
         }
 
         public bool Remove(UITaskEventHandleP0 handle)
         {
-            m_UITaskEventDelegates ??= LinkedListPool<UITaskEventHandleP0>.Get();
+            m_UITaskEventHandles ??= LinkedListPool<UITaskEventHandleP0>.Get();
 
             if (handle == null)
             {
@@ -89,8 +101,9 @@ namespace YIUIFramework
                 return false;
             }
 
-            return m_UITaskEventDelegates.Remove(handle);
+            return m_UITaskEventHandles.Remove(handle);
         }
+
         #if UNITY_EDITOR
         public override string GetEventType()
         {

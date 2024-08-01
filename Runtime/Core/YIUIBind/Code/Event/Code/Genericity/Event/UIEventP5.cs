@@ -1,3 +1,4 @@
+using ET;
 using System;
 using System.Collections.Generic;
 
@@ -5,8 +6,8 @@ namespace YIUIFramework
 {
     public class UIEventP5<P1, P2, P3, P4, P5> : UIEventBase, IUIEventInvoke<P1, P2, P3, P4, P5>
     {
-        private LinkedList<UIEventHandleP5<P1, P2, P3, P4, P5>> m_UIEventDelegates;
-        public  LinkedList<UIEventHandleP5<P1, P2, P3, P4, P5>> UIEventDelegates => m_UIEventDelegates;
+        private LinkedList<UIEventHandleP5<P1, P2, P3, P4, P5>> m_UIEventHandles;
+        public  LinkedList<UIEventHandleP5<P1, P2, P3, P4, P5>> UIEventHandles => m_UIEventHandles;
 
         public UIEventP5()
         {
@@ -18,27 +19,27 @@ namespace YIUIFramework
 
         public void Invoke(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
-            if (m_UIEventDelegates == null)
+            if (m_UIEventHandles == null)
             {
                 Logger.LogWarning($"{EventName} 未绑定任何事件");
                 return;
             }
 
-            var itr = m_UIEventDelegates.First;
-            while (itr != null)
+            var handle = m_UIEventHandles.First;
+            while (handle != null)
             {
-                var next  = itr.Next;
-                var value = itr.Value;
-                try
+                var next  = handle.Next;
+                var value = handle.Value;
+
+                if (value != null)
                 {
-                    value.UIEventParamDelegate?.Invoke(p1, p2, p3, p4, p5);
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError(e);
+                    if (!value.Invoke(p1, p2, p3, p4, p5))
+                    {
+                        Logger.LogError($"UI事件名称:{EventName} 执行错误 请配合上面报错信息排查");
+                    }
                 }
 
-                itr = next;
+                handle = next;
             }
         }
 
@@ -46,23 +47,31 @@ namespace YIUIFramework
 
         public override bool Clear()
         {
-            if (m_UIEventDelegates == null) return false;
+            if (m_UIEventHandles == null) return false;
 
-            var first = m_UIEventDelegates.First;
+            var first = m_UIEventHandles.First;
             while (first != null)
             {
                 PublicUIEventP5<P1, P2, P3, P4, P5>.HandlerPool.Release(first.Value);
-                first = m_UIEventDelegates.First;
+                first = m_UIEventHandles.First;
             }
 
-            LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Release(m_UIEventDelegates);
-            m_UIEventDelegates = null;
+            LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Release(m_UIEventHandles);
+            m_UIEventHandles = null;
             return true;
+        }
+
+        public UIEventHandleP5<P1, P2, P3, P4, P5> Add(Entity trigger, Type onEventInvokeType)
+        {
+            m_UIEventHandles ??= LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Get();
+            var handler = PublicUIEventP5<P1, P2, P3, P4, P5>.HandlerPool.Get();
+            var node    = m_UIEventHandles.AddLast(handler);
+            return handler.Init(m_UIEventHandles, node, trigger, onEventInvokeType);
         }
 
         public UIEventHandleP5<P1, P2, P3, P4, P5> Add(UIEventDelegate<P1, P2, P3, P4, P5> callback)
         {
-            m_UIEventDelegates ??= LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Get();
+            m_UIEventHandles ??= LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Get();
 
             if (callback == null)
             {
@@ -70,13 +79,13 @@ namespace YIUIFramework
             }
 
             var handler = PublicUIEventP5<P1, P2, P3, P4, P5>.HandlerPool.Get();
-            var node    = m_UIEventDelegates.AddLast(handler);
-            return handler.Init(m_UIEventDelegates, node, callback);
+            var node    = m_UIEventHandles.AddLast(handler);
+            return handler.Init(m_UIEventHandles, node, callback);
         }
 
         public bool Remove(UIEventHandleP5<P1, P2, P3, P4, P5> handle)
         {
-            m_UIEventDelegates ??= LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Get();
+            m_UIEventHandles ??= LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Get();
 
             if (handle == null)
             {
@@ -84,8 +93,9 @@ namespace YIUIFramework
                 return false;
             }
 
-            return m_UIEventDelegates.Remove(handle);
+            return m_UIEventHandles.Remove(handle);
         }
+
         #if UNITY_EDITOR
         public override string GetEventType()
         {

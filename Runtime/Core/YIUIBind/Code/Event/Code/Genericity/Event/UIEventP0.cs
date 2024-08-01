@@ -30,58 +30,16 @@ namespace YIUIFramework
             {
                 var next  = handle.Next;
                 var value = handle.Value;
+
+                if (value != null)
+                {
+                    if (!value.Invoke())
+                    {
+                        Logger.LogError($"UI事件名称:{EventName} 执行错误 请配合上面报错信息排查");
+                    }
+                }
+
                 handle = next;
-
-                if (value == null)
-                {
-                    continue;
-                }
-
-                if (value.OnEventInvokeType != null)
-                {
-                    if (Trigger == null)
-                    {
-                        Logger.LogError($"UI事件名称:{EventName}  事件:{value.OnEventInvokeType.Name} Trigger == null");
-                        continue;
-                    }
-
-                    var iEventSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(Trigger.GetType(), typeof(IYIUIEventInvokeSystem));
-                    if (iEventSystems is not { Count: > 0 })
-                    {
-                        Logger.LogError($"类:{Trigger.GetType()} UI事件名称:{EventName} 没有具体实现的事件 IYIUIEventInvokeSystem 请检查");
-                        continue;
-                    }
-
-                    foreach (IYIUIEventInvokeSystem eventSystem in iEventSystems)
-                    {
-                        if (eventSystem.GetType() == value.OnEventInvokeType)
-                        {
-                            try
-                            {
-                                eventSystem.Invoke(Trigger);
-                            }
-                            catch (Exception e)
-                            {
-                                Logger.LogError($"类:{Trigger.GetType()} UI事件名称:{EventName} 事件:{value.OnEventInvokeType.Name} 事件回调错误: {e.Message}");
-                            }
-                        }
-                    }
-                }
-                else if (value.UIEventParamDelegate != null)
-                {
-                    try
-                    {
-                        value.UIEventParamDelegate.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError($"UI事件名称:{EventName} 委托:{value.UIEventParamDelegate.GetType().Name} 委托回调错误: {e.Message}");
-                    }
-                }
-                else
-                {
-                    Logger.LogError($"UI事件名称:{EventName} 没有实现事件 也没有实现委托 请检查");
-                }
             }
         }
 
@@ -106,10 +64,9 @@ namespace YIUIFramework
         public UIEventHandleP0 Add(Entity trigger, Type onEventInvokeType)
         {
             m_UIEventHandles ??= LinkedListPool<UIEventHandleP0>.Get();
-            m_Trigger        =   trigger;
             var handler = PublicUIEventP0.HandlerPool.Get();
             var node    = m_UIEventHandles.AddLast(handler);
-            return handler.Init(m_UIEventHandles, node, onEventInvokeType);
+            return handler.Init(m_UIEventHandles, node, trigger, onEventInvokeType);
         }
 
         public UIEventHandleP0 Add(UIEventDelegate callback)

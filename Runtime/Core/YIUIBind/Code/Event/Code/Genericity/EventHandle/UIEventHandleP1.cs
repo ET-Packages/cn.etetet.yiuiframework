@@ -1,3 +1,5 @@
+using ET;
+using System;
 using System.Collections.Generic;
 
 namespace YIUIFramework
@@ -7,7 +9,7 @@ namespace YIUIFramework
     /// </summary>
     public static class PublicUIEventP1<P1>
     {
-        public static readonly ObjectPool<UIEventHandleP1<P1>> HandlerPool = new ObjectPool<UIEventHandleP1<P1>>(null, handler => handler.Dispose());
+        public static readonly ObjectPool<UIEventHandleP1<P1>> HandlerPool = new(null, handler => handler.Dispose());
     }
 
     /// <summary>
@@ -18,27 +20,93 @@ namespace YIUIFramework
         private LinkedList<UIEventHandleP1<P1>>     m_UIEventList;
         private LinkedListNode<UIEventHandleP1<P1>> m_UIEventNode;
 
-        private UIEventDelegate<P1> m_UIEventParamDelegate;
-        public  UIEventDelegate<P1> UIEventParamDelegate => m_UIEventParamDelegate;
+        public UIEventDelegate<P1> UIEventParamDelegate { get; private set; }
+
+        private EntityRef<Entity> m_Trigger;
+        public  Entity            Trigger => m_Trigger;
+
+        public Type OnEventInvokeType { get; private set; }
 
         public UIEventHandleP1()
         {
         }
 
-        internal UIEventHandleP1<P1> Init(LinkedList<UIEventHandleP1<P1>>     uiEventList,
-                                          LinkedListNode<UIEventHandleP1<P1>> uiEventNode,
-                                          UIEventDelegate<P1>                 uiEventDelegate)
+        internal UIEventHandleP1<P1> Init(LinkedList<UIEventHandleP1<P1>> uiEventList, LinkedListNode<UIEventHandleP1<P1>> uiEventNode, Entity trigger, Type onEventInvokeType)
         {
-            m_UIEventList          = uiEventList;
-            m_UIEventNode          = uiEventNode;
-            m_UIEventParamDelegate = uiEventDelegate;
+            m_UIEventList     = uiEventList;
+            m_UIEventNode     = uiEventNode;
+            m_Trigger         = trigger;
+            OnEventInvokeType = onEventInvokeType;
             return this;
+        }
+
+        internal UIEventHandleP1<P1> Init(LinkedList<UIEventHandleP1<P1>> uiEventList, LinkedListNode<UIEventHandleP1<P1>> uiEventNode, UIEventDelegate<P1> uiEventDelegate)
+        {
+            m_UIEventList        = uiEventList;
+            m_UIEventNode        = uiEventNode;
+            UIEventParamDelegate = uiEventDelegate;
+            return this;
+        }
+
+        internal bool Invoke(P1 p1)
+        {
+            if (OnEventInvokeType != null)
+            {
+                if (Trigger == null)
+                {
+                    Log.Error($"事件:{OnEventInvokeType.Name} Trigger == null");
+                    return false;
+                }
+
+                var iEventSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(Trigger.GetType(), typeof(IYIUIEventInvokeSystem<P1>));
+                if (iEventSystems is not { Count: > 0 })
+                {
+                    Logger.LogError($"类:{Trigger.GetType()} UI事件名称:{OnEventInvokeType.Name} 没有具体实现的事件 IYIUIEventInvokeSystem {typeof(P1).Name} 请检查");
+                    return false;
+                }
+
+                foreach (IYIUIEventInvokeSystem<P1> eventSystem in iEventSystems)
+                {
+                    if (eventSystem.GetType() == OnEventInvokeType)
+                    {
+                        try
+                        {
+                            eventSystem.Invoke(Trigger, p1);
+                            return true;
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogError($"类:{Trigger.GetType()} UI事件名称:{OnEventInvokeType.Name} 事件:{OnEventInvokeType.Name} 事件回调错误: {e.Message}");
+                        }
+                    }
+                }
+            }
+            else if (UIEventParamDelegate != null)
+            {
+                try
+                {
+                    UIEventParamDelegate.Invoke(p1);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError($"委托:{UIEventParamDelegate.GetType().Name} 委托回调错误: {e.Message}");
+                }
+            }
+            else
+            {
+                Logger.LogError($"没有实现事件 也没有实现委托 请检查");
+            }
+
+            return false;
         }
 
         public void Dispose()
         {
+            OnEventInvokeType    = null;
+            UIEventParamDelegate = null;
+            m_Trigger            = null;
             if (m_UIEventList == null || m_UIEventNode == null) return;
-
             m_UIEventList.Remove(m_UIEventNode);
             m_UIEventNode = null;
             m_UIEventList = null;

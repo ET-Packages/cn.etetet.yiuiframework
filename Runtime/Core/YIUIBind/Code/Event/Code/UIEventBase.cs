@@ -21,11 +21,6 @@ namespace YIUIFramework
 
         public string EventName => m_EventName;
 
-        [NonSerialized]
-        protected EntityRef<Entity> m_Trigger;
-
-        protected Entity Trigger => m_Trigger;
-
         [SerializeField]
         [ReadOnly]
         [LabelText("当前所有参数列表")]

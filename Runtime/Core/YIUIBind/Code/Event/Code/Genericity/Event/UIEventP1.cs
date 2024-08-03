@@ -61,7 +61,7 @@ namespace YIUIFramework
             return true;
         }
 
-        public UIEventHandleP1<P1> Add(Entity trigger, Type onEventInvokeType)
+        public UIEventHandleP1<P1> Add(Entity trigger, string onEventInvokeType)
         {
             m_UIEventHandles ??= LinkedListPool<UIEventHandleP1<P1>>.Get();
             var handler = PublicUIEventP1<P1>.HandlerPool.Get();

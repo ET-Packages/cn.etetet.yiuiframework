@@ -25,13 +25,13 @@ namespace YIUIFramework
         private EntityRef<Entity> m_Trigger;
         public  Entity            Trigger => m_Trigger;
 
-        public Type OnEventInvokeType { get; private set; }
+        public string OnEventInvokeType { get; private set; }
 
         public UITaskEventHandleP0()
         {
         }
 
-        internal UITaskEventHandleP0 Init(LinkedList<UITaskEventHandleP0> uiTaskEventList, LinkedListNode<UITaskEventHandleP0> uiTaskEventNode, Entity trigger, Type onEventInvokeType)
+        internal UITaskEventHandleP0 Init(LinkedList<UITaskEventHandleP0> uiTaskEventList, LinkedListNode<UITaskEventHandleP0> uiTaskEventNode, Entity trigger, string onEventInvokeType)
         {
             m_UITaskEventList = uiTaskEventList;
             m_UITaskEventNode = uiTaskEventNode;
@@ -54,32 +54,12 @@ namespace YIUIFramework
             {
                 if (Trigger == null)
                 {
-                    Log.Error($"事件:{OnEventInvokeType.Name} Trigger == null");
+                    Log.Error($"事件:{OnEventInvokeType} Trigger == null");
                     return;
                 }
 
-                var iEventSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(Trigger.GetType(), typeof(IYIUITaskEventInvokeSystem));
-                if (iEventSystems is not { Count: > 0 })
-                {
-                    Logger.LogError($"类:{Trigger.GetType()} UI事件名称:{OnEventInvokeType.Name} 没有具体实现的事件 IYIUITaskEventInvokeSystem 请检查");
-                    return;
-                }
-
-                foreach (IYIUITaskEventInvokeSystem eventSystem in iEventSystems)
-                {
-                    if (eventSystem.GetType() == OnEventInvokeType)
-                    {
-                        try
-                        {
-                            await eventSystem.Invoke(Trigger);
-                            return;
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.LogError($"类:{Trigger.GetType()} UI事件名称:{OnEventInvokeType.Name} 事件:{OnEventInvokeType.Name} 事件回调错误: {e.Message}");
-                        }
-                    }
-                }
+                await YIUIInvokeSystem.Instance.Invoke<Entity, ETTask>(Trigger, OnEventInvokeType);
+                return;
             }
             else if (UITaskEventParamDelegate != null)
             {

@@ -200,39 +200,28 @@ namespace YIUIFramework.Editor
                 var    eventParamType       = GetEventMethodParamType(uiEventBase);
                 var    systemEventParam     = string.IsNullOrEmpty(eventParam) ? "" : $",{eventParam}";
                 var    systemEventParamType = string.IsNullOrEmpty(eventParamType) ? "" : $",{eventParamType}";
-                string check;
-                if (uiEventBase.IsTaskEvent)
-                    check = $"class {onEvent} : YIUITaskEventInvokeSystem";
-                else
-                    check = $"class {onEvent} : YIUIEventInvokeSystem";
-
+                
+                var check = $"{onEvent}(this {component} self{systemEventParam})";
+                
                 string content;
                 if (uiEventBase.IsTaskEvent)
                 {
                     content = @$"
-        [EntitySystem]
-        [FriendOf(typeof({component}))]
-        public class {onEvent} : YIUITaskEventInvokeSystem<{component}{systemEventParamType}>
+        [YIUIInvoke]
+        private static async ETTask {onEvent}(this {component} self{systemEventParam})
         {{
-            protected override async ETTask Invoke({component} self{systemEventParam})
-            {{
-                
-                await ETTask.CompletedTask;
-            }}
+            
+            await ETTask.CompletedTask;
         }}
         ";
                 }
                 else
                 {
                     content = @$"
-        [EntitySystem]
-        [FriendOf(typeof({component}))]
-        public class {onEvent} : YIUIEventInvokeSystem<{component}{systemEventParamType}>
+        [YIUIInvoke]
+        private static void {onEvent}(this {component} self{systemEventParam})
         {{
-            protected override void Invoke({component} self{systemEventParam})
-            {{
-                
-            }}
+
         }}
         ";
                 }

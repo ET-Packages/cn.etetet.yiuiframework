@@ -69,7 +69,7 @@ namespace YIUIFramework
             return true;
         }
 
-        public UITaskEventHandleP0 Add(Entity trigger, Type onEventInvokeType)
+        public UITaskEventHandleP0 Add(Entity trigger, string onEventInvokeType)
         {
             m_UITaskEventHandles ??= LinkedListPool<UITaskEventHandleP0>.Get();
             var handler = PublicUITaskEventP0.HandlerPool.Get();

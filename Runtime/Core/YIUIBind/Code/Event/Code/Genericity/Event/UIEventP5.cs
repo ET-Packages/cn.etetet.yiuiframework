@@ -61,7 +61,7 @@ namespace YIUIFramework
             return true;
         }
 
-        public UIEventHandleP5<P1, P2, P3, P4, P5> Add(Entity trigger, Type onEventInvokeType)
+        public UIEventHandleP5<P1, P2, P3, P4, P5> Add(Entity trigger, string onEventInvokeType)
         {
             m_UIEventHandles ??= LinkedListPool<UIEventHandleP5<P1, P2, P3, P4, P5>>.Get();
             var handler = PublicUIEventP5<P1, P2, P3, P4, P5>.HandlerPool.Get();

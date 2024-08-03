@@ -93,6 +93,8 @@ namespace ET.Client
                 self.m_AllPanelLayer.Add((EPanelLayer)i, rectDic);
             }
 
+            self.GetLayerRect(EPanelLayer.Cache).gameObject.SetActive(false);
+
             self.InitAddUIBlock(); //所有层级初始化后添加一个终极屏蔽层 可根据API 定时屏蔽UI操作
 
             self.UICamera.transform.localPosition =

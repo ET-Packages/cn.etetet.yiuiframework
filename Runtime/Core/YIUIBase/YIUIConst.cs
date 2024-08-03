@@ -37,7 +37,7 @@ namespace YIUIFramework
         [LabelText("YIUI项目生成包名")]
         public const string UIETCreatePackageName = "yiui"; //对应指定代码生成到指定的包中
 
-        [LabelText("YIUI项目生成包路径")]
+        [LabelText("YIUI项目生成默认包")]
         public const string UIETCreatePackagePath = "Assets/../Packages/cn.etetet.yiui";
 
         [LabelText("YIUI项目脚本")]
@@ -59,7 +59,7 @@ namespace YIUIFramework
         public const string UITemplatePath = "Assets/../Packages/cn.etetet.yiuiframework/Editor/YIUIAutoTool/Template";
 
         [LabelText("YIUI项目Root预制")]
-        public const string UIRootPrefabPath = "Assets/../Packages/cn.etetet.yiuiframework/Editor/UIRootPrefab" + UIRootName + ".prefab";
+        public const string UIRootPrefabPath = "Packages/cn.etetet.yiuiframework/Editor/UIRootPrefab/" + UIRootName + ".prefab";
 
         public const string UIPackages               = "Packages";
         public const string UIETPackagesFormat       = "cn.etetet.";

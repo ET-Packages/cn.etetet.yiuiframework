@@ -63,7 +63,7 @@ namespace YIUIFramework.Editor
 
         private void CopyUIRoot()
         {
-            var loadRoot = (GameObject)AssetDatabase.LoadAssetAtPath(YIUIConst.UIRootPrefabPath, typeof(Object));
+            var loadRoot = (GameObject)AssetDatabase.LoadAssetAtPath($"{YIUIConst.UIRootPrefabPath}", typeof(Object));
             if (loadRoot == null)
             {
                 Debug.LogError($"没有找到原始UIRoot {YIUIConst.UIRootPrefabPath}");

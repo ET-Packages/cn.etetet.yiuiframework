@@ -30,12 +30,8 @@ namespace ET.Client
     {
         public override async ETTask<UnityObject> Handle(YIUIInvokeLoad args)
         {
-            var resName = args.ResName;
-
-            await YIUIMgrComponent.Inst?.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, resName.GetHashCode());
-
             if (YIUILoadComponent.Inst == null) return null;
-
+            var resName = args.ResName;
             var obj = await YIUILoadComponent.Inst.LoadAssetAsync(args.PkgName, resName, args.LoadType);
 
             if (obj == null)
@@ -82,12 +78,8 @@ namespace ET.Client
     {
         public override async ETTask<Sprite> Handle(YIUIInvokeLoadSprite args)
         {
-            var resName = args.ResName;
-
-            await YIUIMgrComponent.Inst?.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, resName.GetHashCode());
-
             if (YIUILoadComponent.Inst == null) return null;
-
+            var resName = args.ResName;
             #if UNITY_EDITOR
             if (!YIUILoadComponent.Inst.VerifyAssetValidity(resName))
             {

@@ -75,8 +75,7 @@ namespace ET.Client
                 return null;
             }
 
-            using var coroutineLock =
-                    await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, resName.GetHashCode());
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, resName.GetHashCode());
 
             var data = YIUIBindHelper.GetBindVoByResName(resName);
             if (data == null) return null;
@@ -113,8 +112,7 @@ namespace ET.Client
                 return null;
             }
 
-            using var coroutineLock =
-                    await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, typeof(T).GetHashCode());
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, typeof(T).GetHashCode());
 
             var data = YIUIBindHelper.GetBindVoByType<T>();
             if (data == null) return null;

@@ -60,4 +60,11 @@ namespace YIUIFramework
     {
         public long Time;
     }
+
+    //协程锁
+    public struct YIUIInvokeCoroutineLock
+    {
+        public long LockType;
+        public long Lock;
+    }
 }

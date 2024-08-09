@@ -77,9 +77,9 @@ namespace YIUIFramework
 
         private async ETTask ChangeSprite(string resName)
         {
-            var sprite
-                    = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoadSprite, ETTask<Sprite>>(
-                        new YIUIInvokeLoadSprite { ResName = resName });
+            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = this.GetHashCode() });
+
+            var sprite = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoadSprite, ETTask<Sprite>>(new YIUIInvokeLoadSprite { ResName = resName });
 
             if (sprite == null)
             {

@@ -29,7 +29,7 @@ namespace YIUIFramework.Editor
                 createPackageName = UIOperationHelper.GetETPackagesName(cdeTable);
                 if (string.IsNullOrEmpty(createPackageName))
                 {
-                    UnityTipsHelper.ShowErrorContext(cdeTable, $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConst.UIProjectResPath}");
+                    UnityTipsHelper.ShowErrorContext(cdeTable, $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConstHelper.Const.UIProjectResPath}");
                     return;
                 }
             }
@@ -39,7 +39,7 @@ namespace YIUIFramework.Editor
 
         public static void CreateCommon(UIBindCDETable cdeTable, bool refresh, bool tips)
         {
-            UICreatePackageName = YIUIConst.UIETCreatePackageName.ToLower();
+            UICreatePackageName = YIUIConstHelper.Const.UIETCreatePackageName.ToLower();
             Create(cdeTable, refresh, tips);
         }
 
@@ -96,7 +96,7 @@ namespace YIUIFramework.Editor
             {
                 AutoRefresh   = false,
                 ShowTips      = tips,
-                Namespace     = YIUIConst.UINamespace,
+                Namespace     = YIUIConstHelper.Const.UINamespace,
                 PkgName       = cdeTable.PkgName,
                 ResName       = cdeTable.ResName,
                 CodeType      = cdeTable.UICodeType,
@@ -121,7 +121,7 @@ namespace YIUIFramework.Editor
             {
                 AutoRefresh = false,
                 ShowTips    = tips,
-                Namespace   = YIUIConst.UINamespace,
+                Namespace   = YIUIConstHelper.Const.UINamespace,
                 PkgName     = cdeTable.PkgName,
                 ResName     = cdeTable.ResName,
                 OverrideDic = UICreateMethod.GetSystemEventOverrideDic(cdeTable),
@@ -176,7 +176,7 @@ namespace YIUIFramework.Editor
             if (string.IsNullOrEmpty(pkgName))
             {
                 UnityTipsHelper.ShowErrorContext(cdeTable,
-                    $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConst.UIProjectResPath}");
+                    $"没有找到模块名 请在预制体上使用 且 必须在指定的文件夹下才可使用 {YIUIConstHelper.Const.UIProjectResPath}");
                 return false;
             }
 
@@ -193,7 +193,7 @@ namespace YIUIFramework.Editor
 
         public static string GetPkgName(string path, string currentName = "")
         {
-            if (!path.Replace("\\", "/").Contains(YIUIConst.UIProjectResPath))
+            if (!path.Replace("\\", "/").Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
                 return null;
             }
@@ -204,7 +204,7 @@ namespace YIUIFramework.Editor
                 return currentName;
             }
 
-            if (parentInfo.Name == YIUIConst.UIProjectName)
+            if (parentInfo.Name == YIUIConstHelper.Const.UIProjectName)
             {
                 return currentName;
             }
@@ -233,7 +233,7 @@ namespace YIUIFramework.Editor
                 var parentName  = parent.name;
 
                 //这里使用的是强判断 如果使用|| 可以弱判断根据需求  如果遵守View规则是没有问题的
-                if (parentName.Contains(YIUIConst.UIParentName) && parentName.Contains(targetTable.gameObject.name))
+                if (parentName.Contains(YIUIConstHelper.Const.UIParentName) && parentName.Contains(targetTable.gameObject.name))
                 {
                     addCdeTable.RemoveAt(i);
                 }

@@ -47,7 +47,7 @@ namespace YIUIFramework.Editor
         [LabelText("所有模块资源路径")]
         [ReadOnly]
         [ShowInInspector]
-        private string m_AllPkgPath = YIUIConst.UIProjectResPath;
+        private string m_AllPkgPath = YIUIConstHelper.Const.UIProjectResPath;
 
         //所有ET模块资源路径
         private const string m_AllETPkgPath = "Packages/";
@@ -90,7 +90,7 @@ namespace YIUIFramework.Editor
                             continue;
                         }
 
-                        var resPath = $"{m_AllETPkgPath}{YIUIConst.UIETPackagesFormat}{etPackagesName}/{m_AllPkgPath}";
+                        var resPath = $"{m_AllETPkgPath}{YIUIConstHelper.Const.UIETPackagesFormat}{etPackagesName}/{m_AllPkgPath}";
                         if (!m_AllInfo.ContainsKey(resPath))
                         {
                             m_AllInfo.Add(resPath, new List<string>());

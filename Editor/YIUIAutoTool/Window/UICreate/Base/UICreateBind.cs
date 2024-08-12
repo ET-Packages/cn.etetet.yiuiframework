@@ -87,7 +87,7 @@ namespace YIUIFramework.Editor
                 }
 
                 existName.Add(newName);
-                sb.AppendFormat("            self.{0} = self.UIBase.CDETable.FindUIOwner<{1}>(\"{2}\");\r\n", newName, $"{YIUIConst.UINamespace}.{resName}Component", name);
+                sb.AppendFormat("            self.{0} = self.UIBase.CDETable.FindUIOwner<{1}>(\"{2}\");\r\n", newName, $"{YIUIConstHelper.Const.UINamespace}.{resName}Component", name);
             }
         }
 

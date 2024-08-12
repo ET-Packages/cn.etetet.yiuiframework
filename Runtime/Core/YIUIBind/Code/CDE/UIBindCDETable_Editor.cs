@@ -75,20 +75,20 @@ namespace YIUIFramework
 
         private void OnValueChangedEUICodeType()
         {
-            if (name.EndsWith(YIUIConst.UIPanelName) || name.EndsWith(YIUIConst.UIPanelSourceName))
+            if (name.EndsWith(YIUIConstHelper.Const.UIPanelName) || name.EndsWith(YIUIConstHelper.Const.UIPanelSourceName))
             {
                 if (UICodeType != EUICodeType.Panel)
                 {
-                    Debug.LogWarning($"{name} 结尾{YIUIConst.UIPanelName} 必须设定为{YIUIConst.UIPanelName}类型");
+                    Debug.LogWarning($"{name} 结尾{YIUIConstHelper.Const.UIPanelName} 必须设定为{YIUIConstHelper.Const.UIPanelName}类型");
                 }
 
                 UICodeType = EUICodeType.Panel;
             }
-            else if (name.EndsWith(YIUIConst.UIViewName))
+            else if (name.EndsWith(YIUIConstHelper.Const.UIViewName))
             {
                 if (UICodeType != EUICodeType.View)
                 {
-                    Debug.LogWarning($"{name} 结尾{YIUIConst.UIViewName} 必须设定为{YIUIConst.UIViewName}类型");
+                    Debug.LogWarning($"{name} 结尾{YIUIConstHelper.Const.UIViewName} 必须设定为{YIUIConstHelper.Const.UIViewName}类型");
                 }
 
                 UICodeType = EUICodeType.View;

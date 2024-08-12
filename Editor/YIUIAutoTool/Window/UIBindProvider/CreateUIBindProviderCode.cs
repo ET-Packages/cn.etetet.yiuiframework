@@ -14,8 +14,8 @@ namespace YIUIFramework.Editor
 
         public CreateUIBindProviderCode(out bool result, string authorName, UIBindProviderData codeData) : base(authorName)
         {
-            var path     = $"{string.Format(YIUIConst.UIETComponentGenPath, YIUIConst.UIETCreatePackageName)}/{codeData.Name}.cs";
-            var template = $"{YIUIConst.UITemplatePath}/UIBindProviderTemplate.txt";
+            var path     = $"{string.Format(YIUIConstHelper.Const.UIETComponentGenPath, YIUIConstHelper.Const.UIETCreatePackageName)}/{codeData.Name}.cs";
+            var template = $"{YIUIConstHelper.Const.UITemplatePath}/UIBindProviderTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
             ValueDic["Count"]   = codeData.Count.ToString();

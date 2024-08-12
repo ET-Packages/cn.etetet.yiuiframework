@@ -41,7 +41,7 @@ namespace YIUIFramework.Editor
             //ViewParent
             var viewParentObject = new GameObject();
             var viewParentRect   = viewParentObject.GetOrAddComponent<RectTransform>();
-            viewParentObject.name = YIUIConst.UIYIUIViewParentName;
+            viewParentObject.name = YIUIConstHelper.Const.UIYIUIViewParentName;
             viewParentRect.SetParent(activeObject.transform, false);
             viewParentRect.ResetToFullScreen();
 
@@ -51,7 +51,7 @@ namespace YIUIFramework.Editor
             viewObject.GetOrAddComponent<CanvasRenderer>();
             var cdeTable = viewObject.GetOrAddComponent<UIBindCDETable>();
             cdeTable.UICodeType = EUICodeType.View;
-            viewObject.name     = YIUIConst.UIYIUIViewName;
+            viewObject.name     = YIUIConstHelper.Const.UIYIUIViewName;
             viewRect.SetParent(viewParentRect, false);
             viewRect.ResetToFullScreen();
 

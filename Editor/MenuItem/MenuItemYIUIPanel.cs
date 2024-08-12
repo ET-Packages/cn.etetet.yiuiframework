@@ -12,16 +12,16 @@ namespace YIUIFramework.Editor
             var activeObject = Selection.activeObject as DefaultAsset;
             if (activeObject == null)
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConst.UIProjectResPath}/xxx/{YIUIConst.UISource} 下右键创建");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UISource} 下右键创建");
                 return;
             }
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (activeObject.name != YIUIConst.UISource ||
-                !path.Contains(YIUIConst.UIProjectResPath))
+            if (activeObject.name != YIUIConstHelper.Const.UISource ||
+                !path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConst.UIProjectResPath}/xxx/{YIUIConst.UISource} 下右键创建");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UISource} 下右键创建");
                 return;
             }
 
@@ -30,15 +30,15 @@ namespace YIUIFramework.Editor
 
         internal static void CreateYIUIPanelByPath(string path, string name = null)
         {
-            if (!path.Contains(YIUIConst.UIProjectResPath))
+            if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConst.UIProjectResPath}/xxx/{YIUIConst.UISource} 下右键创建");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UISource} 下右键创建");
                 return;
             }
 
             var saveName = string.IsNullOrEmpty(name)
-                    ? YIUIConst.UIYIUIPanelSourceName
-                    : $"{name}{YIUIConst.UIPanelSourceName}";
+                    ? YIUIConstHelper.Const.UIYIUIPanelSourceName
+                    : $"{name}{YIUIConstHelper.Const.UIPanelSourceName}";
             var savePath = $"{path}/{saveName}.prefab";
 
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
@@ -63,9 +63,9 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            if (activeObject.name != YIUIConst.UILayerRootName)
+            if (activeObject.name != YIUIConstHelper.Const.UILayerRootName)
             {
-                UnityTipsHelper.ShowError($"只能在指定的 {YIUIConst.UILayerRootName} 下使用 快捷创建Panel");
+                UnityTipsHelper.ShowError($"只能在指定的 {YIUIConstHelper.Const.UILayerRootName} 下使用 快捷创建Panel");
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace YIUIFramework.Editor
 
             var panelEditorData = cdeTable.PanelSplitData;
             panelEditorData.Panel = panelObject;
-            panelObject.name      = YIUIConst.UIYIUIPanelSourceName;
+            panelObject.name      = YIUIConstHelper.Const.UIYIUIPanelSourceName;
             if (activeObject != null)
                 panelRect.SetParent(activeObject.transform, false);
             panelRect.ResetToFullScreen();
@@ -102,7 +102,7 @@ namespace YIUIFramework.Editor
             // 添加allView节点
             var allViewObject = new GameObject();
             var allViewRect   = allViewObject.GetOrAddComponent<RectTransform>();
-            allViewObject.name = YIUIConst.UIAllViewParentName;
+            allViewObject.name = YIUIConstHelper.Const.UIAllViewParentName;
             allViewRect.SetParent(panelRect, false);
             allViewRect.ResetToFullScreen();
             panelEditorData.AllViewParent = allViewRect;
@@ -110,7 +110,7 @@ namespace YIUIFramework.Editor
             // 添加AllPopupView节点
             var allPopupViewObject = new GameObject();
             var allPopupViewRect   = allPopupViewObject.GetOrAddComponent<RectTransform>();
-            allPopupViewObject.name = YIUIConst.UIAllPopupViewParentName;
+            allPopupViewObject.name = YIUIConstHelper.Const.UIAllPopupViewParentName;
             allPopupViewRect.SetParent(panelRect, false);
             allPopupViewRect.ResetToFullScreen();
             panelEditorData.AllPopupViewParent = allPopupViewRect;

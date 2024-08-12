@@ -8,14 +8,17 @@ namespace ET.Client
         //因为UI初始化需要动态加载UI根节点
         public static async ETTask<bool> Initialize(this YIUIMgrComponent self)
         {
+            //YIUI资源管理
+            var loadResult = await self.AddComponent<YIUILoadComponent>().Initialize();
+            if (!loadResult) return false;
+            
+            var constResult = await YIUIConstHelper.LoadAsset();
+            if (!constResult) return false;
+
             //初始化UI绑定
             YIUIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.YIUIBindProvider.Get;
             var buildResult = YIUIBindHelper.InitAllBind();
             if (!buildResult) return false;
-
-            //YIUI资源管理
-            var loadResult = await self.AddComponent<YIUILoadComponent>().Initialize();
-            if (!loadResult) return false;
 
             //初始化其他UI框架中的管理器
             self.AddComponent<CountDownMgr>();

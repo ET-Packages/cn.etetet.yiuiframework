@@ -11,10 +11,10 @@ namespace ET.Client
         {
             #region UICanvasRoot 查找各种组件
 
-            self.UIRoot = GameObject.Find(YIUIConst.UIRootName);
+            self.UIRoot = GameObject.Find(YIUIConstHelper.Const.UIRootName);
             if (self.UIRoot == null)
             {
-                self.UIRoot = await self.GetComponent<YIUILoadComponent>().LoadAssetAsyncInstantiate(YIUIConst.UIRootPkgName, YIUIConst.UIRootName);
+                self.UIRoot = await self.GetComponent<YIUILoadComponent>().LoadAssetAsyncInstantiate(YIUIConstHelper.Const.UIRootPkgName, YIUIConstHelper.Const.UIRootName);
             }
 
             if (self.UIRoot == null)
@@ -27,7 +27,7 @@ namespace ET.Client
             UnityEngine.Object.DontDestroyOnLoad(self.UIRoot);
 
             //root可修改位置防止与世界3D场景重叠导致不好编辑
-            self.UIRoot.transform.position = new Vector3(YIUIMgrComponent.RootPosOffset, YIUIMgrComponent.RootPosOffset, 0);
+            self.UIRoot.transform.position = new Vector3(YIUIConstHelper.Const.RootPosOffset, YIUIConstHelper.Const.RootPosOffset, 0);
 
             self.UICanvas = self.UIRoot.GetComponentInChildren<Canvas>();
             if (self.UICanvas == null)
@@ -38,7 +38,7 @@ namespace ET.Client
 
             self.UICanvasRoot = self.UICanvas.gameObject;
 
-            self.UILayerRoot = self.UICanvasRoot.transform.FindChildByName(YIUIConst.UILayerRootName)?.GetComponent<RectTransform>();
+            self.UILayerRoot = self.UICanvasRoot.transform.FindChildByName(YIUIConstHelper.Const.UILayerRootName)?.GetComponent<RectTransform>();
             if (self.UILayerRoot == null)
             {
                 Debug.LogError($"初始化错误 没有找到UILayerRoot");
@@ -70,7 +70,7 @@ namespace ET.Client
             }
 
             canvasScaler.uiScaleMode         = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            canvasScaler.referenceResolution = new Vector2(YIUIMgrComponent.DesignScreenWidth, YIUIMgrComponent.DesignScreenHeight);
+            canvasScaler.referenceResolution = new Vector2(YIUIConstHelper.Const.DesignScreenWidth, YIUIConstHelper.Const.DesignScreenHeight);
 
             #endregion
 
@@ -88,7 +88,7 @@ namespace ET.Client
                 rect.anchorMin     = Vector2.zero;
                 rect.sizeDelta     = Vector2.zero;
                 rect.localRotation = Quaternion.identity;
-                rect.localPosition = new Vector3(0, 0, i * YIUIMgrComponent.LayerDistance); //这个是为了3D模型时穿插的问题
+                rect.localPosition = new Vector3(0, 0, i * YIUIConstHelper.Const.LayerDistance); //这个是为了3D模型时穿插的问题
                 var rectDic = new Dictionary<RectTransform, List<PanelInfo>> { { rect, new List<PanelInfo>() } };
                 self.m_AllPanelLayer.Add((EPanelLayer)i, rectDic);
             }
@@ -98,7 +98,7 @@ namespace ET.Client
             self.InitAddUIBlock(); //所有层级初始化后添加一个终极屏蔽层 可根据API 定时屏蔽UI操作
 
             self.UICamera.transform.localPosition =
-                    new Vector3(self.UILayerRoot.localPosition.x, self.UILayerRoot.localPosition.y, -YIUIMgrComponent.LayerDistance);
+                    new Vector3(self.UILayerRoot.localPosition.x, self.UILayerRoot.localPosition.y, -YIUIConstHelper.Const.LayerDistance);
 
             self.UICamera.clearFlags   = CameraClearFlags.Depth;
             self.UICamera.orthographic = true;

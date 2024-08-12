@@ -17,8 +17,8 @@ namespace YIUIFramework.Editor
 
         public UICreateCommonSystemCode(out bool result, string authorName, UICreateSystemData codeData) : base(authorName)
         {
-            var path = $"{string.Format(YIUIConst.UIETSystemPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}ComponentSystem.cs";
-            var template = $"{YIUIConst.UITemplatePath}/UICreateCommonSystemTemplate.txt";
+            var path = $"{string.Format(YIUIConstHelper.Const.UIETSystemPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}ComponentSystem.cs";
+            var template = $"{YIUIConstHelper.Const.UITemplatePath}/UICreateCommonSystemTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
             m_EventName           = $"{codeData.ResName} ET-System 自动生成";

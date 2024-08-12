@@ -154,7 +154,7 @@ namespace YIUIFramework
 
             var prefabPath = AssetDatabase.GetAssetPath(obj);
 
-            if (prefabPath.Contains(YIUIConst.UIPackages) && prefabPath.Contains(YIUIConst.UIETPackagesFormat))
+            if (prefabPath.Contains(YIUIConstHelper.Const.UIPackages) && prefabPath.Contains(YIUIConstHelper.Const.UIETPackagesFormat))
             {
                 return true;
             }
@@ -170,14 +170,14 @@ namespace YIUIFramework
 
         public static string GetETPackagesName(string path, bool log = true)
         {
-            if (path.Contains(YIUIConst.UIPackages) && path.Contains(YIUIConst.UIETPackagesFormat))
+            if (path.Contains(YIUIConstHelper.Const.UIPackages) && path.Contains(YIUIConstHelper.Const.UIETPackagesFormat))
             {
                 var pathSplit = path.Split('/');
 
                 for (int i = 0; i < pathSplit.Length; i++)
                 {
                     var name = pathSplit[i];
-                    if (name.Contains(YIUIConst.UIPackages))
+                    if (name.Contains(YIUIConstHelper.Const.UIPackages))
                     {
                         var packageFullName      = pathSplit[i + 1];
                         var packageFullNameSplit = packageFullName.Split('.');

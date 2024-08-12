@@ -37,7 +37,7 @@ namespace YIUIFramework.Editor
         {
             foreach (var viewParent in viewList)
             {
-                var viewName = viewParent.name.Replace(YIUIConst.UIParentName, "");
+                var viewName = viewParent.name.Replace(YIUIConstHelper.Const.UIParentName, "");
                 sb.AppendFormat("        {0} = {1},\r\n", $"{viewName}", index);
                 index++;
             }

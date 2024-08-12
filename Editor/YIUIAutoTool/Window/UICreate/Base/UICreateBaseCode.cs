@@ -17,8 +17,8 @@ namespace YIUIFramework.Editor
 
         public UICreateBaseCode(out bool result, string authorName, UICreateBaseData codeData) : base(authorName)
         {
-            var path = $"{string.Format(YIUIConst.UIETComponentGenPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}Base.cs";
-            var template = $"{YIUIConst.UITemplatePath}/UICreateBaseTemplate.txt";
+            var path = $"{string.Format(YIUIConstHelper.Const.UIETComponentGenPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}Base.cs";
+            var template = $"{YIUIConstHelper.Const.UITemplatePath}/UICreateBaseTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
             m_EventName               = $"{codeData.ResName}Base 自动生成";

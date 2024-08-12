@@ -17,8 +17,8 @@ namespace YIUIFramework.Editor
 
         public UICreateComponentGenCode(out bool result, string authorName, UICreateBaseData codeData) : base(authorName)
         {
-            var path = $"{string.Format(YIUIConst.UIETComponentGenPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}ComponentGen.cs";
-            var template = $"{YIUIConst.UITemplatePath}/UICreateComponentGenTemplate.txt";
+            var path = $"{string.Format(YIUIConstHelper.Const.UIETComponentGenPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}ComponentGen.cs";
+            var template = $"{YIUIConstHelper.Const.UITemplatePath}/UICreateComponentGenTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
             m_EventName               = $"{codeData.ResName} ET-Component Gen 自动生成";

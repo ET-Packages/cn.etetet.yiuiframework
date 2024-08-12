@@ -22,7 +22,7 @@ namespace ET.Client
         {
             foreach (var parent in listParent)
             {
-                var viewName = parent.name.Replace(YIUIConst.UIParentName, "");
+                var viewName = parent.name.Replace(YIUIConstHelper.Const.UIParentName, "");
                 self.m_ViewParent.Add(viewName, parent);
             }
         }
@@ -31,7 +31,7 @@ namespace ET.Client
         {
             foreach (var commonParentView in self.m_PanelSplitData.AllCommonView)
             {
-                var viewName = commonParentView.name.Replace(YIUIConst.UIParentName, "");
+                var viewName = commonParentView.name.Replace(YIUIConstHelper.Const.UIParentName, "");
 
                 //通用view的名称是不允许修改的 如果修改了 那么就创建一个新的
                 var viewTsf = commonParentView.FindChildByName(viewName);

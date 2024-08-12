@@ -27,9 +27,9 @@ namespace YIUIFramework.Editor
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (!path.Contains(YIUIConst.UIProjectResPath))
+            if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConst.UIProjectResPath}/xxx/{YIUIConst.UIPanelName} 下右键选择一个Panel 进行转换");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPanelName} 下右键选择一个Panel 进行转换");
                 return;
             }
 
@@ -75,8 +75,8 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            var newSourceName = $"{panelCdeTable.name}{YIUIConst.UISource}";
-            var savePath      = $"{m_PanelPath}/{YIUIConst.UISource}/{newSourceName}.prefab";
+            var newSourceName = $"{panelCdeTable.name}{YIUIConstHelper.Const.UISource}";
+            var savePath      = $"{m_PanelPath}/{YIUIConstHelper.Const.UISource}/{newSourceName}.prefab";
 
             //TODO 有人不按要求操作直接不使用view 关联了其他组件 这个组件的引用逆向时会无法关联
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
@@ -101,7 +101,7 @@ namespace YIUIFramework.Editor
             var newSource   = UIMenuItemHelper.CopyGameObject(loadPanel);
             var oldCdeTable = newSource.GetComponent<UIBindCDETable>();
             oldCdeTable.IsSplitData = true;
-            newSource.name          = $"{loadPanel.name}{YIUIConst.UISource}";
+            newSource.name          = $"{loadPanel.name}{YIUIConstHelper.Const.UISource}";
 
             CorrelationView(oldCdeTable);
 
@@ -126,9 +126,9 @@ namespace YIUIFramework.Editor
             {
                 if (viewParent == null) continue;
 
-                var viewName = viewParent.name.Replace(YIUIConst.UIParentName, "");
+                var viewName = viewParent.name.Replace(YIUIConstHelper.Const.UIParentName, "");
 
-                var viewPath = $"{m_PanelPath}/{YIUIConst.UIPrefabs}/{viewName}.prefab";
+                var viewPath = $"{m_PanelPath}/{YIUIConstHelper.Const.UIPrefabs}/{viewName}.prefab";
 
                 var childView = viewParent.FindChildByName(viewName);
                 if (childView != null)

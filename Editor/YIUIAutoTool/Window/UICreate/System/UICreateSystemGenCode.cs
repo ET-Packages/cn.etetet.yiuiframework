@@ -17,8 +17,8 @@ namespace YIUIFramework.Editor
 
         public UICreateSystemGenCode(out bool result, string authorName, UICreateBaseData codeData) : base(authorName)
         {
-            var path = $"{string.Format(YIUIConst.UIETSystemGenPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}ComponentSystemGen.cs";
-            var template = $"{YIUIConst.UITemplatePath}/UICreateSystemGenTemplate.txt";
+            var path = $"{string.Format(YIUIConstHelper.Const.UIETSystemGenPath, UICreateModule.UICreatePackageName)}/{codeData.PkgName}/{codeData.ResName}ComponentSystemGen.cs";
+            var template = $"{YIUIConstHelper.Const.UITemplatePath}/UICreateSystemGenTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
             m_EventName               = $"{codeData.ResName} ET-System Gen 自动生成";

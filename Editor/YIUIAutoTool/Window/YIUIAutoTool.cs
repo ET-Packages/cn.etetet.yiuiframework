@@ -30,7 +30,7 @@ namespace YIUIFramework.Editor
                 window.Show();
         }
 
-        //[MenuItem("Tools/关闭 YIUI 自动化工具")]
+        //[MenuItem("ET/关闭 YIUI 自动化工具")]
         //错误时使用的 面板出现了错误 会导致如何都打不开 就需要先关闭
         private static void CloseWindow()
         {
@@ -172,19 +172,22 @@ namespace YIUIFramework.Editor
         [HideLabel]
         [HideReferenceObjectPicker]
         [ShowInInspector]
-        private readonly BaseCreateModule m_UIBaseModule = new CreateUIBaseModule();
+        private BaseCreateModule m_UIBaseModule;
 
         [BoxGroup("全局图集设置", centerLabel: true)]
         [ShowInInspector]
-        internal UIAtlasModule AtlasModule = new();
+        internal UIAtlasModule AtlasModule;
 
         [BoxGroup("其他设置", centerLabel: true)]
         [ShowInInspector]
-        internal UIOtherModule OtherModule = new();
+        internal UIOtherModule OtherModule;
 
         protected override void Initialize()
         {
             base.Initialize();
+            m_UIBaseModule = new CreateUIBaseModule();
+            AtlasModule    = new();
+            OtherModule    = new();
             m_Author = UserNamePrefs.Value;
             m_UIBaseModule?.Initialize();
             AtlasModule?.Initialize();

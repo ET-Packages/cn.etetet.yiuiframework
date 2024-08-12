@@ -93,7 +93,7 @@ namespace ET.Client
                 return null;
             }
 
-            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConst.UIProjectName.GetHashCode() : panelName.GetHashCode();
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, coroutineLockCode);
 

@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.IO;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -14,25 +15,25 @@ namespace YIUIFramework.Editor
         [LabelText("YIUI项目命名空间")]
         [ShowInInspector]
         [ReadOnly]
-        private const string UINamespace = YIUIConst.UINamespace;
+        private readonly string UINamespace = YIUIConstHelper.Const.UINamespace;
 
         [LabelText("YIUI项目资源路径")]
         [FolderPath]
         [ShowInInspector]
         [ReadOnly]
-        private const string UIProjectResPath = YIUIConst.UIProjectResPath;
+        private readonly string UIProjectResPath = YIUIConstHelper.Const.UIProjectResPath;
 
         [LabelText("YIUI项目脚本路径")]
         [FolderPath]
         [ShowInInspector]
         [ReadOnly]
-        private const string UIGenerationPath = YIUIConst.UIETComponentGenPath;
+        private readonly string UIGenerationPath = YIUIConstHelper.Const.UIETComponentGenPath;
 
         [LabelText("YIUI项目自定义脚本路径")]
         [FolderPath]
         [ShowInInspector]
         [ReadOnly]
-        private const string UICodeScriptsPath = YIUIConst.UIETSystemGenPath;
+        private readonly string UICodeScriptsPath = YIUIConstHelper.Const.UIETSystemGenPath;
 
         [HideLabel]
         [ShowInInspector]
@@ -53,26 +54,30 @@ namespace YIUIFramework.Editor
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
 
-            EditorHelper.CreateExistsDirectory(UIGenerationPath);
             EditorHelper.CreateExistsDirectory(UIProjectResPath);
-            EditorHelper.CreateExistsDirectory(UICodeScriptsPath);
             UICreateResModule.Create(m_CommonPkg); //默认初始化一个common模块
             CopyUIRoot();
+            YIUIConstHelper.LoadAsset();
             YIUIAutoTool.CloseWindowRefresh();
         }
 
         private void CopyUIRoot()
         {
-            var loadRoot = (GameObject)AssetDatabase.LoadAssetAtPath($"{YIUIConst.UIRootPrefabPath}", typeof(Object));
+            //如果有安装yiuistatesync包 就不需要这个root了
+            if (Directory.Exists($"{Application.dataPath}/../Packages/cn.etetet.yiuistatesync"))
+            {
+                return;
+            }
+
+            var loadRoot = (GameObject)AssetDatabase.LoadAssetAtPath($"{YIUIConstHelper.Const.UIRootPrefabPath}", typeof(Object));
             if (loadRoot == null)
             {
-                Debug.LogError($"没有找到原始UIRoot {YIUIConst.UIRootPrefabPath}");
+                Debug.LogError($"没有找到原始UIRoot {YIUIConstHelper.Const.UIRootPrefabPath}");
                 return;
             }
 
             var newGameObj = Object.Instantiate(loadRoot);
-            var commonPath =
-                    $"{UIProjectResPath}/{m_CommonPkg}/{YIUIConst.UIPrefabs}/{YIUIConst.UIRootName}.prefab";
+            var commonPath = $"{UIProjectResPath}/{m_CommonPkg}/{YIUIConstHelper.Const.UIPrefabs}/{YIUIConstHelper.Const.UIRootName}.prefab";
             PrefabUtility.SaveAsPrefabAsset(newGameObj, commonPath);
             Object.DestroyImmediate(newGameObj);
         }

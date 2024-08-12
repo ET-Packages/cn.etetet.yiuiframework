@@ -22,7 +22,7 @@ namespace YIUIFramework.Editor
         {
             var componentType = codeData.ComponentTpye.ToString();
             var path          = $"{codeData.SystemPath}/{codeData.Name}{componentType}System.cs";
-            var template      = $"{YIUIConst.UITemplatePath}/ETScript/UICreateETScriptSystemTemplate.txt";
+            var template      = $"{YIUIConstHelper.Const.UITemplatePath}/ETScript/UICreateETScriptSystemTemplate.txt";
             CreateVo = new CreateVo(template, path);
 
             m_EventName               = $"{codeData.Name} ET-System 自动生成";

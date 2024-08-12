@@ -115,7 +115,7 @@ namespace YIUIFramework.Editor
             var newList = new List<Dictionary<string, string>>();
             overrideDic.Add("DefaultComponentSystem", newList);
 
-            var template    = $"{YIUIConst.UITemplatePath}/UICreateDefaultComponentSystemTemplate.txt";
+            var template    = $"{YIUIConstHelper.Const.UITemplatePath}/UICreateDefaultComponentSystemTemplate.txt";
             var path        = EditorHelper.GetProjPath(template);
             var templateStr = "";
             try

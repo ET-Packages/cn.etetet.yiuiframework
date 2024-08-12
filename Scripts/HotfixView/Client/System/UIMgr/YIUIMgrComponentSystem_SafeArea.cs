@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using YIUIFramework;
 
 namespace ET.Client
 {
@@ -19,8 +20,8 @@ namespace ET.Client
 
             YIUIMgrComponent.g_SafeArea = new Rect(safeAreaX,
                                                    safeAreaY,
-                                                   YIUIMgrComponent.DesignScreenWidth_F - self.GetSafeValue(safeAreaX),
-                                                   YIUIMgrComponent.DesignScreenHeight_F - self.GetSafeValue(safeAreaY));
+                                                   YIUIConstHelper.Const.DesignScreenWidth_F - self.GetSafeValue(safeAreaX),
+                                                   YIUIConstHelper.Const.DesignScreenHeight_F - self.GetSafeValue(safeAreaY));
 
             self.InitUISafeArea();
         }

@@ -93,9 +93,9 @@ namespace YIUIFramework.Editor
 
                 existName.Add(newName);
                 sb.AppendFormat("        public {0} {1};\r\n",
-                                $"EntityRef<{YIUIConst.UINamespace}.{resName}Component>", newName);
+                                $"EntityRef<{YIUIConstHelper.Const.UINamespace}.{resName}Component>", newName);
                 sb.AppendFormat("        public {0} {1} => {2};\r\n",
-                                $"{YIUIConst.UINamespace}.{resName}Component", newName.Replace(NameUtility.FirstName, ""), newName);
+                                $"{YIUIConstHelper.Const.UINamespace}.{resName}Component", newName.Replace(NameUtility.FirstName, ""), newName);
             }
         }
 

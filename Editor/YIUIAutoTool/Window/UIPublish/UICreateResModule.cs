@@ -38,19 +38,19 @@ namespace YIUIFramework.Editor
             string basePath = "";
             if (string.IsNullOrEmpty(packageName))
             {
-                basePath = $"{YIUIConst.UIProjectResPath}/{createName}";
+                basePath = $"{YIUIConstHelper.Const.UIProjectResPath}/{createName}";
             }
             else
             {
-                basePath = $"{string.Format(YIUIConst.UIProjectPackageResPath, packageName)}/{createName}";
+                basePath = $"{string.Format(YIUIConstHelper.Const.UIProjectPackageResPath, packageName)}/{createName}";
             }
 
-            var prefabsPath       = $"{basePath}/{YIUIConst.UIPrefabs}";
-            var spritesPath       = $"{basePath}/{YIUIConst.UISprites}";
-            var spritesAtlas1Path = $"{basePath}/{YIUIConst.UISprites}/{YIUIConst.UISpritesAtlas1}";
-            var atlasIgnorePath   = $"{basePath}/{YIUIConst.UISprites}/{YIUIConst.UIAtlasIgnore}";
-            var atlasPath         = $"{basePath}/{YIUIConst.UIAtlas}";
-            var sourcePath        = $"{basePath}/{YIUIConst.UISource}";
+            var prefabsPath       = $"{basePath}/{YIUIConstHelper.Const.UIPrefabs}";
+            var spritesPath       = $"{basePath}/{YIUIConstHelper.Const.UISprites}";
+            var spritesAtlas1Path = $"{basePath}/{YIUIConstHelper.Const.UISprites}/{YIUIConstHelper.Const.UISpritesAtlas1}";
+            var atlasIgnorePath   = $"{basePath}/{YIUIConstHelper.Const.UISprites}/{YIUIConstHelper.Const.UIAtlasIgnore}";
+            var atlasPath         = $"{basePath}/{YIUIConstHelper.Const.UIAtlas}";
+            var sourcePath        = $"{basePath}/{YIUIConstHelper.Const.UISource}";
 
             EditorHelper.CreateExistsDirectory(prefabsPath);
             EditorHelper.CreateExistsDirectory(spritesPath);

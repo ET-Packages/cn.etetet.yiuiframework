@@ -42,7 +42,7 @@ namespace YIUIFramework.Editor
 
             var newSource = UIMenuItemHelper.CopyGameObject(loadSource);
             var cdeTable  = newSource.GetComponent<UIBindCDETable>();
-            newSource.name                    = newSource.name.Replace(YIUIConst.UISource, "");
+            newSource.name                    = newSource.name.Replace(YIUIConstHelper.Const.UISource, "");
             cdeTable.IsSplitData              = false;
             cdeTable.PanelSplitEditorShowData = cdeTable.PanelSplitData;
             var splitData = cdeTable.PanelSplitData;
@@ -51,11 +51,11 @@ namespace YIUIFramework.Editor
             if (UIOperationHelper.CheckUIIsPackages(loadSource, false))
             {
                 var etPkgName = UIOperationHelper.GetETPackagesName(loadSource, false);
-                savePath = $"{string.Format(YIUIConst.UIProjectPackageResPath, etPkgName)}/{pkgName}/{YIUIConst.UIPrefabs}";
+                savePath = $"{string.Format(YIUIConstHelper.Const.UIProjectPackageResPath, etPkgName)}/{pkgName}/{YIUIConstHelper.Const.UIPrefabs}";
             }
             else
             {
-                savePath = $"{YIUIConst.UIProjectResPath}/{pkgName}/{YIUIConst.UIPrefabs}";
+                savePath = $"{YIUIConstHelper.Const.UIProjectResPath}/{pkgName}/{YIUIConstHelper.Const.UIPrefabs}";
             }
 
             AllViewSaveAsPrefabAsset(oldSplitData.AllCommonView, splitData.AllCommonView, savePath, true);
@@ -95,14 +95,14 @@ namespace YIUIFramework.Editor
                                                         string        savePath,      bool          nest = false)
         {
             //View 查找
-            var view = viewParent.FindChildByName(viewParent.name.Replace(YIUIConst.UIParentName, ""));
+            var view = viewParent.FindChildByName(viewParent.name.Replace(YIUIConstHelper.Const.UIParentName, ""));
             if (view == null)
             {
                 Debug.LogError($"{viewParent.name} 没找到View");
                 return false;
             }
 
-            var oldView = oldViewParent.FindChildByName(oldViewParent.name.Replace(YIUIConst.UIParentName, ""));
+            var oldView = oldViewParent.FindChildByName(oldViewParent.name.Replace(YIUIConstHelper.Const.UIParentName, ""));
             if (oldView == null)
             {
                 Debug.LogError($"{oldViewParent.name} 没找到oldView");

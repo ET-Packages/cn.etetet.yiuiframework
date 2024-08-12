@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+﻿/*//------------------------------------------------------------
 // Author: 亦亦
 // Mail: 379338943@qq.com
 // Data: 2023年2月12日
@@ -87,4 +87,4 @@ namespace YIUIFramework
         public const string UIViewParentName         = UIViewName + UIParentName;
         public const string UIYIUIViewParentName     = UIProjectName + UIViewName + UIParentName;
     }
-}
+}*/

@@ -15,14 +15,6 @@ namespace ET.Client
         public Camera        UICamera     { get; set; }
         public Canvas        UICanvas     { get; set; }
 
-        public const int   DesignScreenWidth    = 1920;
-        public const int   DesignScreenHeight   = 1080;
-        public const float DesignScreenWidth_F  = 1920f;
-        public const float DesignScreenHeight_F = 1080f;
-
-        public const int RootPosOffset = 1000;
-        public const int LayerDistance = 1000;
-
         //K1 = 层级枚举 V1 = 层级对应的rect
         //List = 当前层级中的当前所有UI 前面的代表这个UI在前面以此类推
         public Dictionary<EPanelLayer, Dictionary<RectTransform, List<PanelInfo>>> m_AllPanelLayer = new();

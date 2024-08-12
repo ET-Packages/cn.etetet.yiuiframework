@@ -75,7 +75,7 @@ namespace ET.Client
                 return null;
             }
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, resName.GetHashCode());
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, resName.GetHashCode());
 
             var data = YIUIBindHelper.GetBindVoByResName(resName);
             if (data == null) return null;
@@ -112,7 +112,7 @@ namespace ET.Client
                 return null;
             }
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoader, typeof(T).GetHashCode());
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, typeof(T).GetHashCode());
 
             var data = YIUIBindHelper.GetBindVoByType<T>();
             if (data == null) return null;
@@ -232,14 +232,13 @@ namespace ET.Client
             }
             else
             {
-                view.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().Close(view, false);
+                view.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().Close(false);
             }
         }
 
         /// <summary>
         /// 关闭上一个
         /// </summary>
-        /// <param name="view">当前</param>
         private static async ETTask CloseLastView(this YIUIPanelComponent self, Entity view)
         {
             //其他需要被忽略 Panel下的view 如果是窗口类型 那么他只能同时存在一个  弹窗层可以存在多个
@@ -254,11 +253,13 @@ namespace ET.Client
             if (self.CurrentOpenView != null && self.CurrentOpenView != view && self.CurrentOpenViewActiveSelf)
             {
                 var uibase = self.CurrentOpenView.GetParent<YIUIChild>();
-                var tween  = true;
 
+                var tween = true;
                 //View 没有自动回退功能  比如AView 关闭 自动吧上一个BView 给打开 没有这种需求 也不能有这个需求
                 //只能有 打开一个新View 上一个View的自动处理 99% 都是吧上一个隐藏即可
                 //外部就只需要关心 打开 A B C 即可
+                //因为这是View  不是 Panel
+                //如果你想要 先打开了 A B C  然后关闭 C 自动回退到B 关闭B又回退到A 那么你就需要自己实现
                 //因为这是View  不是 Panel
                 switch (uibase.GetComponent<YIUIViewComponent>().StackOption)
                 {
@@ -275,8 +276,7 @@ namespace ET.Client
                         break;
                 }
 
-                await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>()
-                          .CloseAsync(self.CurrentOpenView, tween);
+                await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().CloseAsync(tween);
             }
 
             self.u_CurrentOpenView = view;
@@ -293,11 +293,7 @@ namespace ET.Client
                 var viewComponent = uibase?.GetComponent<YIUIViewComponent>();
                 if (viewComponent != null && uibase is { ActiveSelf: true })
                 {
-                    var result = await viewComponent.CloseAsync(view, tween);
-                    if (!result)
-                    {
-                        return false;
-                    }
+                    await viewComponent.CloseAsync(tween);
                 }
             }
 

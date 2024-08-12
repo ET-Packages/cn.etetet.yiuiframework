@@ -29,7 +29,7 @@ namespace ET.Client
 
                 foreach (var info in list)
                 {
-                    //有忽略操作 且满足调节 则这个界面无法获取到
+                    //有忽略操作 且满足条件 则这个界面无法获取到
                     if (ignoreOption != EPanelOption.None &&
                         (info.UIPanel.PanelOption & ignoreOption) != 0)
                     {

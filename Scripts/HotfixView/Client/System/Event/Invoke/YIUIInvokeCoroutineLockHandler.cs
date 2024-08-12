@@ -11,7 +11,7 @@ namespace ET.Client
             var lockType = args.LockType;
             if (lockType <= 0)
             {
-                lockType = CoroutineLockType.YIUILoader;
+                lockType = CoroutineLockType.YIUIFramework;
             }
             var coroutineLock = await YIUIMgrComponent.Inst?.Root().GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
             return coroutineLock;

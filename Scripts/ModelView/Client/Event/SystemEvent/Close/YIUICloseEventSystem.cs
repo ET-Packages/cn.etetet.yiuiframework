@@ -18,7 +18,7 @@ namespace ET.Client
         //返回结果
         //true = 界面可以被关闭 (99%的情况都返回true)
         //false = 界面不允许关闭 需要自行处理各种突发情况 (false 可能会遇到各种界面未关闭的情况)
-        //这个事件建议没有特殊情况不要用
+        //这个事件建议没有特殊情况不要用 特别返回值不要返回false 关闭失败你要处理非常多的情况 确定你Hold住
         public static async ETTask<bool> Close(Entity component)
         {
             if (component == null || component.IsDisposed)
@@ -29,6 +29,7 @@ namespace ET.Client
             var iYIUICloseSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUICloseSystem));
             if (iYIUICloseSystems == null)
             {
+                await WindowClose(component, true);
                 return true;
             }
 
@@ -41,7 +42,9 @@ namespace ET.Client
 
                 try
                 {
-                    return await aYIUICloseSystem.Run(component);
+                    var result = await aYIUICloseSystem.Run(component);
+                    await WindowClose(component, result);
+                    return result;
                 }
                 catch (Exception e)
                 {

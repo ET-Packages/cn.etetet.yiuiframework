@@ -11,11 +11,9 @@ namespace ET.Client
             var safeAreaX = Math.Max(Screen.safeArea.x, Screen.width - Screen.safeArea.xMax);
             var safeAreaY = Math.Max(Screen.safeArea.y, Screen.height - Screen.safeArea.yMax);
 
-            #if UNITY_EDITOR
-
-            //这里可调试 
-            //safeAreaX = 100;
-            //safeAreaY = 100;
+            #if UNITY_EDITOR //调试用 有其他需求自行修改
+            safeAreaX = YIUIConstHelper.Const.SafeAreaX;
+            safeAreaY = YIUIConstHelper.Const.SafeAreaY;
             #endif
 
             YIUIMgrComponent.g_SafeArea = new Rect(safeAreaX,
@@ -28,13 +26,13 @@ namespace ET.Client
 
         private static float GetSafeValue(this YIUIMgrComponent self, float safeValue)
         {
-            return YIUIMgrComponent.DoubleSafe ? safeValue * 2 : safeValue;
+            return YIUIConstHelper.Const.DoubleSafe ? safeValue * 2 : safeValue;
         }
 
         private static void InitUISafeArea(this YIUIMgrComponent self)
         {
             self.UILayerRoot.anchoredPosition = new Vector2(YIUIMgrComponent.g_SafeArea.x, -YIUIMgrComponent.g_SafeArea.y);
-            if (YIUIMgrComponent.DoubleSafe)
+            if (YIUIConstHelper.Const.DoubleSafe)
             {
                 self.UILayerRoot.offsetMax = new Vector2(-YIUIMgrComponent.g_SafeArea.x, self.UILayerRoot.offsetMax.y);
                 self.UILayerRoot.offsetMin = new Vector2(self.UILayerRoot.offsetMin.x, YIUIMgrComponent.g_SafeArea.y);

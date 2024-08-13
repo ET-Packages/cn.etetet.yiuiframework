@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using YIUIFramework;
 
 namespace ET.Client
 {
@@ -25,11 +26,13 @@ namespace ET.Client
         //淡入
         public static async ETTask In(GameObject gameObject, float time = 0.25f)
         {
+            if (YIUIConstHelper.Const.BanDotweenAnim) return;
+
             if (gameObject == null) return;
 
             gameObject.SetActive(true);
 
-            gameObject.transform.localScale = WindowFadeAnimStatic.m_AnimScale;
+            gameObject.transform.localScale = YIUIConstHelper.Const.DotweenAnimScale;
 
             await gameObject.transform.DOScale(Vector3.one, time);
         }
@@ -37,11 +40,13 @@ namespace ET.Client
         //淡出
         public static async ETTask Out(GameObject gameObject, float time = 0.25f)
         {
+            if (YIUIConstHelper.Const.BanDotweenAnim) return;
+
             if (gameObject == null) return;
 
             gameObject.transform.localScale = Vector3.one;
 
-            await gameObject.transform.DOScale(WindowFadeAnimStatic.m_AnimScale, time);
+            await gameObject.transform.DOScale(YIUIConstHelper.Const.DotweenAnimScale, time);
 
             if (gameObject == null) return;
 

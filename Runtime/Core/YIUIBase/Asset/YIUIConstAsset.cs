@@ -4,125 +4,216 @@ using UnityEngine;
 
 namespace YIUIFramework
 {
+    /// <summary>
+    /// YIUI 常量配置
+    /// 部类 可以根据需求自行扩展
+    /// </summary>
     [Serializable]
     [HideReferenceObjectPicker]
     [HideLabel]
-    public class YIUIConstAsset : ScriptableObject
+    public partial class YIUIConstAsset : ScriptableObject
     {
+        #region 项目配置
+
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI根目录名称")]
         public string UIProjectName = "YIUI"; //不要修改
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目命名空间")]
         public string UINamespace = "ET.Client"; //所有生成文件的命名空间
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目编辑器资源")]
         public string UIProjectEditorPath = "Assets/Editor/YIUI"; //编辑器才会用到的资源
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目指定包编辑器资源")]
         public string UIProjectPackageEditorPath = "Assets/../Packages/cn.etetet.{0}/Assets/Editor/YIUI"; //指定包的编辑器才会用到的资源
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目资源")]
         public string UIProjectResPath = "Assets/GameRes/YIUI"; //玩家的预设/图片等资源存放的地方
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目指定包资源")]
         public string UIProjectPackageResPath = "Assets/../Packages/cn.etetet.{0}/Assets/GameRes/YIUI"; //指定包的资源存放的地方
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目生成包名")]
         public string UIETCreatePackageName = "yiui"; //对应指定代码生成到指定的包中
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目生成默认包")]
         public string UIETCreatePackagePath = "Assets/../Packages/cn.etetet.yiui";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目脚本")]
         public string UIETComponentGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/Client/YIUIGen"; //自动生成的代码会覆盖不可修改
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目ET组件")]
         public string UIETComponentPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/Client/YIUIComponent"; //玩家可编写的核心代码部分 ET系统
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目自定义脚本")]
         public string UIETSystemGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUIGen"; //自动生成的代码会覆盖不可修改
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目ET系统")]
         public string UIETSystemPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUISystem"; //玩家可编写的核心代码部分 ET系统
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI框架所处位置")]
         public string UIFrameworkPath = "Assets/../Packages/cn.etetet.yiuiframework";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目代码模板")]
         public string UITemplatePath = "Assets/../Packages/cn.etetet.yiuiframework/Editor/YIUIAutoTool/Template";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目Root预制")]
         public string UIRootPrefabPath = "Packages/cn.etetet.yiuiframework/Editor/UIRootPrefab/YIUIRoot.prefab";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPackages = "Packages";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIETPackagesFormat = "cn.etetet.";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIRootName = "YIUIRoot";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UILayerRootName = "YIUILayerRoot";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIRootPkgName = "Common";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPanelName = "Panel";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIViewName = "View";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIParentName = "Parent";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPrefabs = "Prefabs";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPrefabsCN = "预制";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UISprites = "Sprites";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UISpritesCN = "精灵";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAtlas = "Atlas";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAtlasCN = "图集";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UISource = "Source";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UISourceCN = "源文件";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAtlasIgnore = "AtlasIgnore"; //图集忽略文件夹名称
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UISpritesAtlas1 = "Atlas1"; //图集1 不需要华丽的取名 每个包内的自定义图集就按顺序就好 当然你也可以自定义其他
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAllViewParentName = "AllViewParent";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAllPopupViewParentName = "AllPopupViewParent";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIYIUIPanelSourceName = "YIUIPanelSource";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPanelSourceName = "PanelSource";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIYIUIViewName = "YIUIView";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIViewParentName = "ViewParent";
 
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIYIUIViewParentName = "YIUIViewParent";
+
+        #endregion
 
         #region Root
 
+        [BoxGroup("Root", CenterLabel = true)]
+        [LabelText("低品质")]
+        public bool IsLowQuality = false; //低品质 将会影响动画等逻辑 也可以根据这个参数自定义一些区别
+
+        [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI宽度")]
         public int DesignScreenWidth = 1920;
 
+        [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI高度")]
         public int DesignScreenHeight = 1080;
 
+        [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI宽度(float)")]
         public float DesignScreenWidth_F = 1920f;
 
+        [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI高度(float)")]
         public float DesignScreenHeight_F = 1080f;
 
+        [BoxGroup("Root", CenterLabel = true)]
         [LabelText("根节点偏移")]
         public int RootPosOffset = 1000;
 
+        [BoxGroup("Root", CenterLabel = true)]
         [LabelText("每个层级的距离")]
         public int LayerDistance = 1000;
+
+        #endregion
+
+        #region 安全区调试编辑器下有效
+
+        //这个需要自行实现黑底背景 这里只是提供参数
+        [BoxGroup("安全区", CenterLabel = true)]
+        [LabelText("在刘海屏机子时，是否打开黑边")]
+        public bool OpenBlackBorder = false;
+
+        [BoxGroup("安全区", CenterLabel = true)]
+        [LabelText("启用2倍安全 则左右2边都会裁剪")]
+        public bool DoubleSafe = false;
+
+        [BoxGroup("安全区", CenterLabel = true)]
+        [LabelText("安全区X")]
+        public int SafeAreaX = 0;
+
+        [BoxGroup("安全区", CenterLabel = true)]
+        [LabelText("安全区Y")]
+        public int SafeAreaY = 0;
+
+        #endregion
+
+        #region 动画
+
+        [BoxGroup("动画", CenterLabel = true)]
+        [LabelText("Dotween默认动画缩放")]
+        public Vector3 DotweenAnimScale = new(0.8f, 0.8f, 0.8f);
+
+        [BoxGroup("动画", CenterLabel = true)]
+        [LabelText("全局禁用默认的Dotween动画")]
+        public bool BanDotweenAnim = false;
 
         #endregion
     }

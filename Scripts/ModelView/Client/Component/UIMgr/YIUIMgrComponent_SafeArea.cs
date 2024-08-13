@@ -9,16 +9,6 @@ namespace ET.Client
     /// </summary>
     public partial class YIUIMgrComponent
     {
-        /// <summary>
-        /// 在刘海屏机子时，是否打开黑边
-        /// </summary>
-        [StaticField]
-        public static bool OpenBlackBorder = false;
-
-        //启用2倍安全 则左右2边都会裁剪
-        [StaticField]
-        public static bool DoubleSafe = false;
-
         //安全区
         [StaticField]
         public static Rect g_SafeArea;

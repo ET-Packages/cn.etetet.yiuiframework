@@ -60,6 +60,5 @@ namespace ET.Client
 
         public bool    m_FirstOpenTween;
         public bool    m_FirstCloseTween;
-        public Vector3 m_AnimScale = new Vector3(0.8f, 0.8f, 0.8f);
     }
 }

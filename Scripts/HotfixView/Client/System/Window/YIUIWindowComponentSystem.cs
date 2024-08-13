@@ -85,7 +85,7 @@ namespace ET.Client
 
         private static async ETTask SealedOnWindowOpenTween(this YIUIWindowComponent self)
         {
-            if (YIUIMgrComponent.IsLowQuality || self.WindowBanOpenTween)
+            if (YIUIConstHelper.Const.IsLowQuality || self.WindowBanOpenTween)
             {
                 self.OnOpenTweenEnd();
                 return;
@@ -118,7 +118,7 @@ namespace ET.Client
 
         private static async ETTask SealedOnWindowCloseTween(this YIUIWindowComponent self)
         {
-            if (!self.UIBase.ActiveSelf || YIUIMgrComponent.IsLowQuality || self.WindowBanCloseTween)
+            if (!self.UIBase.ActiveSelf || YIUIConstHelper.Const.IsLowQuality || self.WindowBanCloseTween)
             {
                 self.OnCloseTweenEnd();
                 return;

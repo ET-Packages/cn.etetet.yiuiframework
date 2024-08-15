@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using YIUIFramework;
-using UnityObject = UnityEngine.Object;
+using UnityGameObject = UnityEngine.GameObject;
 
 namespace ET.Client
 {
@@ -41,18 +41,18 @@ namespace ET.Client
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeInstantiateGameObjectSyncHandler : AInvokeHandler<YIUIInvokeInstantiateGameObject, UnityObject>
+    public class YIUIInvokeInstantiateGameObjectSyncHandler : AInvokeHandler<YIUIInvokeInstantiateGameObject, UnityGameObject>
     {
-        public override UnityObject Handle(YIUIInvokeInstantiateGameObject args)
+        public override UnityGameObject Handle(YIUIInvokeInstantiateGameObject args)
         {
             return YIUIFactory.InstantiateGameObject(args.PkgName, args.ResName);
         }
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeInstantiateGameObjectAsyncHandler : AInvokeHandler<YIUIInvokeInstantiateGameObject, ETTask<UnityObject>>
+    public class YIUIInvokeInstantiateGameObjectAsyncHandler : AInvokeHandler<YIUIInvokeInstantiateGameObject, ETTask<UnityGameObject>>
     {
-        public override async ETTask<UnityObject> Handle(YIUIInvokeInstantiateGameObject args)
+        public override async ETTask<UnityGameObject> Handle(YIUIInvokeInstantiateGameObject args)
         {
             return await YIUIFactory.InstantiateGameObjectAsync(args.PkgName, args.ResName);
         }

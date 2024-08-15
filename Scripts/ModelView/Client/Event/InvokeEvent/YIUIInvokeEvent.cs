@@ -73,7 +73,7 @@ namespace ET.Client
         public Transform  ParentTransform;
     }
 
-    //实例化一个unityObj
+    //实例化一个GameObject
     public struct YIUIInvokeInstantiateGameObject
     {
         public string PkgName;

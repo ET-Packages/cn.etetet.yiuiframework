@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-
+using UnityEngine;
 
 namespace YIUIFramework
 {
@@ -120,6 +120,7 @@ namespace YIUIFramework
             }
             else
             {
+                Debug.LogError($"不可以用非字母开头 {name} 请检查 强制改为A");
                 arrayName[index] = 'A';
             }
 

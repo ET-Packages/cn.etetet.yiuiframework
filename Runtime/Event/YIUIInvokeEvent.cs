@@ -1,8 +1,31 @@
 ﻿using System;
+using ET;
+using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
 namespace YIUIFramework
 {
+    // 加载任意实例化 to Vo
+    public struct YIUIInvokeLoadInstantiateByVo
+    {
+        public YIUIBindVo BindVo;
+        public Entity     ParentEntity;
+        public Transform  ParentTransform;
+    }
+
+    //实例化一个GameObject
+    public struct YIUIInvokeInstantiateGameObject
+    {
+        public string PkgName;
+        public string ResName;
+    }
+
+    //回收YIUI实例化资源
+    public struct YIUIInvokeReleaseInstantiate
+    {
+        public GameObject obj;
+    }
+
     // 回收YIUI资源
     public struct YIUIInvokeRelease
     {

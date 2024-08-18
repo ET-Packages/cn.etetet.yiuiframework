@@ -5,6 +5,7 @@
 //------------------------------------------------------------
 
 using UnityEngine;
+using YIUIFramework;
 
 namespace ET.Client
 {

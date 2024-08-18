@@ -16,7 +16,7 @@ namespace YIUIFramework
     {
         private void OnDestroy()
         {
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = gameObject });
+            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeReleaseInstantiate { obj = gameObject });
         }
     }
 }

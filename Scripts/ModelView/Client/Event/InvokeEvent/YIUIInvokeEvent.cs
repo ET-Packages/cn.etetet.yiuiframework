@@ -65,27 +65,6 @@ namespace ET.Client
         public Transform ParentTransform;
     }
 
-    // 加载任意实例化 to Vo
-    public struct YIUIInvokeLoadInstantiateByVo
-    {
-        public YIUIBindVo BindVo;
-        public Entity     ParentEntity;
-        public Transform  ParentTransform;
-    }
-
-    //实例化一个GameObject
-    public struct YIUIInvokeInstantiateGameObject
-    {
-        public string PkgName;
-        public string ResName;
-    }
-
-    //回收YIUI实例化资源
-    public struct YIUIInvokeReleaseInstantiate
-    {
-        public GameObject obj;
-    }
-
     //YIUI加载组件初始化 由具体的资源管理器实现
     public struct YIUIInvokeLoadInitialize
     {

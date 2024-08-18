@@ -37,6 +37,7 @@ namespace ET.Client
                 return;
             }
 
+            self.m_Token = null;
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRemoveUIReset
             {
                 PanelName = self.UIBase.UIName

@@ -43,11 +43,7 @@ namespace YIUIFramework
 
         protected override bool ExistText()
         {
-            if (m_Text == null)
-            {
-                m_Text = GetComponent<Text>();
-            }
-
+            m_Text = GetComponent<Text>();
             return m_Text != null;
         }
     }

@@ -43,11 +43,7 @@ namespace YIUIFramework
 
         protected override bool ExistText()
         {
-            if (m_Text == null)
-            {
-                m_Text = GetComponent<TextMeshProUGUI>();
-            }
-
+            m_Text = GetComponent<TextMeshProUGUI>();
             return m_Text != null;
         }
     }

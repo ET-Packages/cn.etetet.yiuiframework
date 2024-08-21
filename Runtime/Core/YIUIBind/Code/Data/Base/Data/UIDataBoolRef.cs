@@ -37,6 +37,9 @@ namespace YIUIFramework
         private bool ShowCompareMode()
         {
             if (m_Data.DataValue.UIBindDataType == EUIBindDataType.Int ||
+                m_Data.DataValue.UIBindDataType == EUIBindDataType.Long ||
+                m_Data.DataValue.UIBindDataType == EUIBindDataType.Bool ||
+                m_Data.DataValue.UIBindDataType == EUIBindDataType.String ||
                 m_Data.DataValue.UIBindDataType == EUIBindDataType.Float)
             {
                 return true;

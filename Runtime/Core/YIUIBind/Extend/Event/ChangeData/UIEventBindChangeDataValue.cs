@@ -35,7 +35,7 @@ namespace YIUIFramework
 
         private void InitBindChange()
         {
-            m_UIDataBindChange ??= GetComponent<UIDataBindChange>();
+            m_UIDataBindChange = GetComponent<UIDataBindChange>();
             if (m_UIDataBindChange != null)
             {
                 m_UIDataBindChange.AddChangeAction(OnChangeDataValue);

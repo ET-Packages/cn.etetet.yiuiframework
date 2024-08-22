@@ -17,7 +17,7 @@ namespace YIUIFramework
 
         protected override void OnInit()
         {
-            m_Text ??= GetComponent<Text>();
+            m_Text = GetComponent<Text>();
             if (m_Text == null)
             {
                 Logger.LogError($"{name} 错误没有 Text 组件");

@@ -30,7 +30,7 @@ namespace YIUIFramework
 
         private void Awake()
         {
-            m_Toggle ??= GetComponent<Toggle>();
+            m_Toggle = GetComponent<Toggle>();
         }
 
         private void OnEnable()

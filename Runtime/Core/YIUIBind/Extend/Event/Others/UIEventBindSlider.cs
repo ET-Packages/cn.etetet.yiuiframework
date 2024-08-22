@@ -30,7 +30,7 @@ namespace YIUIFramework
 
         private void Awake()
         {
-            m_Slider ??= GetComponent<Slider>();
+            m_Slider = GetComponent<Slider>();
         }
 
         private void OnEnable()

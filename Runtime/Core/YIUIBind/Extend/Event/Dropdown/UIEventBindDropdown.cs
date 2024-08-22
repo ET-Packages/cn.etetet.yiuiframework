@@ -30,7 +30,7 @@ namespace YIUIFramework
 
         private void Awake()
         {
-            m_Dropdown ??= GetComponent<Dropdown>();
+            m_Dropdown = GetComponent<Dropdown>();
         }
 
         private void OnEnable()

@@ -30,7 +30,7 @@ namespace YIUIFramework
 
         private void Awake()
         {
-            m_Scrollbar ??= GetComponent<Scrollbar>();
+            m_Scrollbar = GetComponent<Scrollbar>();
         }
 
         private void OnEnable()

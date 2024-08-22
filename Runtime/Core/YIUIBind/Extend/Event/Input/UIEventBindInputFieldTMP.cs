@@ -30,7 +30,7 @@ namespace YIUIFramework
 
         private void Awake()
         {
-            m_InputField ??= GetComponent<TMP_InputField>();
+            m_InputField = GetComponent<TMP_InputField>();
         }
 
         private void OnEnable()

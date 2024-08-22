@@ -1,9 +1,11 @@
 ﻿using ET;
+using System;
 using UnityEngine;
-using UnityObject = UnityEngine.Object;
+
 #if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
+using Sirenix.Serialization;
 #endif
 
 namespace YIUIFramework
@@ -11,6 +13,7 @@ namespace YIUIFramework
     public static class YIUIConstHelper
     {
         public const string YIUIConstAssetName = "YIUIConstAsset";
+        public const string YIUIConstAssetPath = "Assets/GameRes/YIUI/YIUIConstAsset.txt";
 
         private static YIUIConstAsset m_YIUIConstAsset;
 
@@ -20,25 +23,8 @@ namespace YIUIFramework
 
         public static async ETTask<bool> LoadAsset()
         {
-            var loadResult = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoad, ETTask<UnityObject>>(new YIUIInvokeLoad
-            {
-                LoadType = typeof(YIUIConstAsset),
-                ResName  = YIUIConstAssetName
-            });
-
-            if (loadResult == null)
-            {
-                Debug.LogError($"初始化失败 没有加载到目标数据 {YIUIConstAssetName} 请到YIUI工具中 全局设置 初始化项目");
-                return false;
-            }
-
-            m_YIUIConstAsset = (YIUIConstAsset)loadResult;
-
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease
-            {
-                obj = loadResult
-            });
-            return true;
+            m_YIUIConstAsset = await OdinSerializationHelper.RuntimeLoad<YIUIConstAsset>(YIUIConstAssetName);
+            return m_YIUIConstAsset != null;
         }
 
         #if UNITY_EDITOR
@@ -58,57 +44,33 @@ namespace YIUIFramework
 
         private static YIUIConstAsset LoadEditorAsset()
         {
-            var constAsset = Load<YIUIConstAsset>();
+            var constAsset = OdinSerializationHelper.EditorLoad<YIUIConstAsset>(YIUIConstAssetPath);
 
             if (constAsset == null)
             {
-                constAsset = CreateAsset();
+                constAsset = new YIUIConstAsset();
+                var bytes = Sirenix.Serialization.SerializationUtility.SerializeValue(constAsset, DataFormat.JSON);
+                WriteAllBytes($"{Application.dataPath}/../{YIUIConstAssetPath}", bytes);
             }
 
             return constAsset;
         }
 
-        private static YIUIConstAsset CreateAsset()
+        private static void WriteAllBytes(string path, byte[] bytes)
         {
-            var constAsset = ScriptableObject.CreateInstance<YIUIConstAsset>();
-
-            var assetFolder = constAsset.UIProjectResPath;
-            if (!Directory.Exists(assetFolder))
-                Directory.CreateDirectory(assetFolder);
-
-            AssetDatabase.CreateAsset(constAsset, $"{assetFolder}/{YIUIConstAssetName}.asset");
-
-            return constAsset;
-        }
-
-        private static T Load<T>(bool showLog = false)
-                where T : ScriptableObject
-        {
-            var settingType = typeof(T);
-            var guids       = AssetDatabase.FindAssets($"t:{settingType.Name}");
-            if (guids.Length == 0)
+            try
             {
-                if (showLog)
+                string directoryPath = Path.GetDirectoryName(path);
+                if (!Directory.Exists(directoryPath))
                 {
-                    Debug.LogError($"没有这个文件 : {settingType.Name}");
+                    Directory.CreateDirectory(directoryPath);
                 }
 
-                return null;
+                File.WriteAllBytes(path, bytes);
             }
-            else
+            catch (Exception e)
             {
-                if (guids.Length != 1)
-                {
-                    foreach (var guid in guids)
-                    {
-                        string path = AssetDatabase.GUIDToAssetPath(guid);
-                        Debug.LogError($"找到多个文件 : {path}");
-                    }
-                }
-
-                string filePath = AssetDatabase.GUIDToAssetPath(guids[0]);
-                var    asset    = AssetDatabase.LoadAssetAtPath<T>(filePath);
-                return asset;
+                Debug.LogError("写入文件失败: path =" + path + ", err=" + e);
             }
         }
 

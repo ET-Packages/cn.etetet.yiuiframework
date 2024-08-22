@@ -57,7 +57,6 @@ namespace YIUIFramework.Editor
             EditorHelper.CreateExistsDirectory(UIProjectResPath);
             UICreateResModule.Create(m_CommonPkg); //默认初始化一个common模块
             CopyUIRoot();
-            YIUIConstHelper.LoadAsset();
             YIUIAutoTool.CloseWindowRefresh();
         }
 

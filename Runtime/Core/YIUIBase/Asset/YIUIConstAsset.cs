@@ -11,10 +11,11 @@ namespace YIUIFramework
     [Serializable]
     [HideReferenceObjectPicker]
     [HideLabel]
-    public partial class YIUIConstAsset : ScriptableObject
+    public partial class YIUIConstAsset
     {
         #region 项目配置
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI根目录名称")]
         public string UIProjectName = "YIUI"; //不要修改

@@ -13,6 +13,7 @@ namespace YIUIFramework
         [SerializeField]
         [ReadOnly]
         [HideIf("IsTaskEvent")]
+        [PropertyOrder(-10)]
         #if UNITY_EDITOR
         [InfoBox("此事件没有任何关联", InfoMessageType.Warning, "ShowIfBindsTips")]
         #endif
@@ -22,6 +23,7 @@ namespace YIUIFramework
         [ReadOnly]
         [ShowInInspector]
         [ShowIf("IsTaskEvent")]
+        [PropertyOrder(-10)]
         #if UNITY_EDITOR
         [InfoBox("此事件没有任何关联", InfoMessageType.Warning, "ShowIfBindsTips")]
         #endif

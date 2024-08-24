@@ -40,12 +40,7 @@ namespace ET.Client
             return await YIUIMgrComponent.Inst.OpenPanelAsync<T, P1, P2, P3, P4>(self, p1, p2, p3, p4);
         }
 
-        public static async ETTask<T> OpenPanelAsync<T, P1, P2, P3, P4, P5>(this YIUIRootComponent self,
-                                                                            P1                     p1,
-                                                                            P2                     p2,
-                                                                            P3                     p3,
-                                                                            P4                     p4,
-                                                                            P5                     p5)
+        public static async ETTask<T> OpenPanelAsync<T, P1, P2, P3, P4, P5>(this YIUIRootComponent self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         where T : Entity, IYIUIOpen<P1, P2, P3, P4, P5>
         {
             return await YIUIMgrComponent.Inst.OpenPanelAsync<T, P1, P2, P3, P4, P5>(self, p1, p2, p3, p4, p5);

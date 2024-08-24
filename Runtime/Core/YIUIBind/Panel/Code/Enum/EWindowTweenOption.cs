@@ -63,6 +63,9 @@ namespace YIUIFramework
 
         [LabelText("Home时 操作不视作Back")]
         SkipHomeBack = 1 << 19, //反之 默认情况下 Home时被关闭 打开时 会触发BackClose Open 方便统一处理 毕竟都是属于回退功能的关闭
+
+        [LabelText("窗口关闭事件动画前触发")]
+        WindowCloseTweenBefor = 1 << 20, //反之 默认情况下 等关闭动画播放完毕对象隐藏后触发
     }
 
     public static class WindowOptionOptionExt

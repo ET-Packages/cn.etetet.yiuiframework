@@ -64,5 +64,8 @@ namespace ET.Client
 
         //Home时 被关闭不视作Back
         public bool WindowSkipHomeBack => WindowOption.HasFlag(EWindowOption.SkipHomeBack);
+
+        //窗口关闭事件动画前触发
+        public bool WindowCloseTweenBefor => WindowOption.HasFlag(EWindowOption.WindowCloseTweenBefor);
     }
 }

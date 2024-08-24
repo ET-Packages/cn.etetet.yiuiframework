@@ -32,8 +32,7 @@ namespace ET.Client
             return success ? component : null;
         }
 
-        internal static async ETTask<Entity> OpenPanelParamAsync(this   YIUIMgrComponent self, string componentName, Entity root,
-                                                                 params object[]         paramMore)
+        internal static async ETTask<Entity> OpenPanelParamAsync(this YIUIMgrComponent self, string componentName, Entity root, params object[] paramMore)
         {
             var info = self.GetPanelInfo(componentName);
             if (info == null) return default;
@@ -113,8 +112,7 @@ namespace ET.Client
             return success ? component : null;
         }
 
-        internal static async ETTask<Entity> OpenPanelAsync<P1, P2, P3>(this YIUIMgrComponent self, string componentName, Entity root, P1 p1, P2 p2,
-                                                                        P3                    p3)
+        internal static async ETTask<Entity> OpenPanelAsync<P1, P2, P3>(this YIUIMgrComponent self, string componentName, Entity root, P1 p1, P2 p2, P3 p3)
         {
             var info = self.GetPanelInfo(componentName);
             if (info == null) return default;
@@ -140,8 +138,7 @@ namespace ET.Client
             return success ? component : null;
         }
 
-        internal static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4>(this YIUIMgrComponent self, string componentName, Entity root, P1 p1,
-                                                                            P2                    p2,   P3     p3,            P4     p4)
+        internal static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4>(this YIUIMgrComponent self, string componentName, Entity root, P1 p1, P2 p2, P3 p3, P4 p4)
         {
             var info = self.GetPanelInfo(componentName);
             if (info == null) return default;
@@ -167,8 +164,7 @@ namespace ET.Client
             return success ? component : null;
         }
 
-        internal static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4, P5>(this YIUIMgrComponent self, string componentName, Entity root, P1 p1,
-                                                                                P2                    p2,   P3     p3,            P4     p4,   P5 p5)
+        internal static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4, P5>(this YIUIMgrComponent self, string componentName, Entity root, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
             var info = self.GetPanelInfo(componentName);
             if (info == null) return default;

@@ -27,14 +27,12 @@
             return await YIUIMgrComponent.Inst.OpenPanelAsync(componentName, self, p1, p2, p3);
         }
 
-        public static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4>(this YIUIRootComponent self, string componentName, P1 p1, P2 p2, P3 p3,
-                                                                          P4                     p4)
+        public static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4>(this YIUIRootComponent self, string componentName, P1 p1, P2 p2, P3 p3, P4 p4)
         {
             return await YIUIMgrComponent.Inst.OpenPanelAsync(componentName, self, p1, p2, p3, p4);
         }
 
-        public static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4, P5>(this YIUIRootComponent self, string componentName, P1 p1, P2 p2, P3 p3,
-                                                                              P4                     p4,   P5     p5)
+        public static async ETTask<Entity> OpenPanelAsync<P1, P2, P3, P4, P5>(this YIUIRootComponent self, string componentName, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
             return await YIUIMgrComponent.Inst.OpenPanelAsync(componentName, self, p1, p2, p3, p4, p5);
         }

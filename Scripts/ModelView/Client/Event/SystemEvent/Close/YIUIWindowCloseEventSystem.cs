@@ -15,7 +15,7 @@ namespace ET.Client
         /// </summary>
         /// <param name="component">实体对应的那个具体UI</param>
         /// <param name="viewCloseResult">base.Close()的返回值</param>
-        private static async ETTask WindowClose(Entity component, bool viewCloseResult)
+        public static async ETTask WindowClose(Entity component, bool viewCloseResult)
         {
             if (component == null || component.IsDisposed)
             {
@@ -23,6 +23,17 @@ namespace ET.Client
             }
 
             var windowComponent = component.GetParent<YIUIChild>()?.GetComponent<YIUIWindowComponent>();
+            if (windowComponent != null)
+            {
+                foreach (var view in windowComponent.Components.Values)
+                {
+                    await WindowCloseSystem(view, viewCloseResult);
+                }
+            }
+        }
+
+        public static async ETTask WindowClose(YIUIWindowComponent windowComponent, bool viewCloseResult)
+        {
             if (windowComponent != null)
             {
                 foreach (var view in windowComponent.Components.Values)
@@ -40,10 +51,7 @@ namespace ET.Client
             }
 
             var iYIUICloseSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIWindowCloseSystem));
-            if (iYIUICloseSystems == null)
-            {
-                return;
-            }
+            if (iYIUICloseSystems is not { Count: > 0 }) return;
 
             foreach (IYIUIWindowCloseSystem aYIUICloseSystem in iYIUICloseSystems)
             {

@@ -27,11 +27,7 @@ namespace ET.Client
             }
 
             var iYIUICloseSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUICloseSystem));
-            if (iYIUICloseSystems == null)
-            {
-                await WindowClose(component, true);
-                return true;
-            }
+            if (iYIUICloseSystems is not { Count: > 0 }) return true;
 
             foreach (IYIUICloseSystem aYIUICloseSystem in iYIUICloseSystems)
             {
@@ -42,9 +38,7 @@ namespace ET.Client
 
                 try
                 {
-                    var result = await aYIUICloseSystem.Run(component);
-                    await WindowClose(component, result);
-                    return result;
+                    return await aYIUICloseSystem.Run(component);
                 }
                 catch (Exception e)
                 {

@@ -54,6 +54,7 @@ namespace YIUIFramework.Editor
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
 
+            CopyYIUIPackage();
             EditorHelper.CreateExistsDirectory(UIProjectResPath);
             UICreateResModule.Create(m_CommonPkg); //默认初始化一个common模块
             CopyUIRoot();
@@ -79,6 +80,14 @@ namespace YIUIFramework.Editor
             var commonPath = $"{UIProjectResPath}/{m_CommonPkg}/{YIUIConstHelper.Const.UIPrefabs}/{YIUIConstHelper.Const.UIRootName}.prefab";
             PrefabUtility.SaveAsPrefabAsset(newGameObj, commonPath);
             Object.DestroyImmediate(newGameObj);
+        }
+
+        private void CopyYIUIPackage()
+        {
+            var PackagesPath      = $"{Application.dataPath}/../Packages";
+            var sourceFolder      = $"{PackagesPath}/cn.etetet.yiuiframework/.Template/cn.etetet.yiui";
+            var targetPackagePath = $"{PackagesPath}/cn.etetet.yiui";
+            CopyFolder.Copy(sourceFolder, targetPackagePath);
         }
     }
 }

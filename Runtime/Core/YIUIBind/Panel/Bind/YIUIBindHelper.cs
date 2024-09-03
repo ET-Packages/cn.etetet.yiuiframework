@@ -50,11 +50,8 @@ namespace YIUIFramework
                 return false;
             }
 
-            #if !UNITY_EDITOR || YIUIMACRO_SIMULATE_NONEEDITOR && !YIUIMACRO_BIND_REFLECTION
-
-            //https://lib9kmxvq7k.feishu.cn/wiki/W80jwOq9SiY30KkISOec1kQZnNf
-            //关联UI工具中自动生成绑定代码 Tools >> YIUI自动化工具 >> 发布 >> UI自动生成绑定替代反射代码
-            //*** 发布后记得编译ET工程 否则无效 ***
+            //https://lib9kmxvq7k.feishu.cn/wiki/AFj9w2gtriFXVZk8igEc7SMBnff
+            //关联UI工具中自动生成绑定代码 SG自动生成
             //在ET中这个自动生成的代码在ModelView中所以在此框架中无法初始化赋值
             //将由HotfixView AddComponent<YIUIMgrComponent> 之前调用一次
             //会在 InitAllBind 方法中被调用
@@ -69,13 +66,8 @@ namespace YIUIFramework
 
             var binds = InternalGameGetUIBindVoFunc?.Invoke();
 
-            #else
-                var binds = new YIUIBindProvider().Get();
-            #endif
-
             if (binds == null || binds.Length <= 0)
             {
-                //https://lib9kmxvq7k.feishu.cn/wiki/W80jwOq9SiY30KkISOec1kQZnNf
                 //如果才接入框架 第一个UI都没有生成是无法运行的 先生成一个UI吧
                 Log.Error("没有找到绑定信息 或者 没有绑定信息 请检查 或 参考文档");
                 return false;

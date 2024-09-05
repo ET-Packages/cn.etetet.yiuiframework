@@ -128,7 +128,7 @@ namespace YIUIFramework.Editor
         [HideLabel]
         [TableColumnWidth(100, resizable: false)]
         [Button(50, Icon = SdfIconType.X)]
-        [ShowIf("ShowIfDeleteScript")]
+        [ShowIf("ShowIfIgonre")]
         private void DeleteScript()
         {
             DeleteScript(true, true);
@@ -266,6 +266,38 @@ namespace YIUIFramework.Editor
                     PrefabPath = path;
                 }
             }
+        }
+
+        private bool m_IsIgnore;
+
+        [VerticalGroup("操作")]
+        [HideLabel]
+        [TableColumnWidth(100, resizable: false)]
+        [Button(50, Icon = SdfIconType.DashCircle)]
+        [ShowIf("ShowIfIgonre")]
+        private void Igonre()
+        {
+            m_IsIgnore = true;
+        }
+
+        public bool ShowIfIgonre()
+        {
+            return ShowIfDeleteScript() && !m_IsIgnore;
+        }
+
+        [VerticalGroup("操作")]
+        [HideLabel]
+        [TableColumnWidth(100, resizable: false)]
+        [Button(50, Icon = SdfIconType.DashCircleDotted)]
+        [ShowIf("ShowIfReIgonre")]
+        private void ReIgonre()
+        {
+            m_IsIgnore = false;
+        }
+
+        public bool ShowIfReIgonre()
+        {
+            return m_IsIgnore;
         }
     }
 }

@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
-    public class UICheckPrefabModule : BaseYIUIToolModule
+    public class UICheckPrefabModule: BaseYIUIToolModule
     {
         [GUIColor(0.4f, 0.8f, 1)]
         [Button("检查", 50)]
@@ -21,6 +21,18 @@ namespace YIUIFramework.Editor
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             InitGetAll();
+        }
+
+        [BoxGroup("检查筛选", centerLabel: true)]
+        [HideLabel]
+        [EnumToggleButtons]
+        [OnValueChanged("OnValueChangedFiltrate")]
+        [PropertyOrder(-98)]
+        public EYIUICheckPrefabFiltrate Filtrate = EYIUICheckPrefabFiltrate.CDE;
+
+        private void OnValueChangedFiltrate()
+        {
+            UpdateFiltrate();
         }
 
         [GUIColor(1, 0, 0)]
@@ -32,9 +44,9 @@ namespace YIUIFramework.Editor
             if (!UIOperationHelper.CheckUIOperation()) return;
 
             List<YIUICheckPrefabData> deleteVo = new();
-            foreach (var bind in m_CheckPrefabs)
+            foreach (var bind in m_FiltrateDatas)
             {
-                var result = bind.ShowIfDelete();
+                var result = bind.ShowIfIgonre();
                 if (result)
                 {
                     deleteVo.Add(bind);
@@ -77,6 +89,8 @@ namespace YIUIFramework.Editor
         [HideLabel]
         [ShowInInspector]
         [HideReferenceObjectPicker]
+        private List<YIUICheckPrefabData> m_FiltrateDatas = new();
+
         private List<YIUICheckPrefabData> m_CheckPrefabs = new();
 
         public override void Initialize()
@@ -109,11 +123,76 @@ namespace YIUIFramework.Editor
                     var fileNameAll = Path.GetFileName(path);
                     var fileName    = fileNameAll.Split('.')[0];
                     m_CheckPrefabs.Add(new YIUICheckPrefabData(path, pkgName, fileName));
-                    EditorUtility.DisplayProgressBar("同步信息", $"初始化 {pkgName},{fileName}", index * 1.0f / allCount);
+                    EditorUtility.DisplayProgressBar("同步信息", $"检查 {pkgName},{fileName}", index * 1.0f / allCount);
                 }
             }
 
+            UpdateFiltrate();
             EditorUtility.ClearProgressBar();
+        }
+
+        public void UpdateFiltrate()
+        {
+            m_FiltrateDatas.Clear();
+
+            switch (Filtrate)
+            {
+                case EYIUICheckPrefabFiltrate.All:
+                    m_FiltrateDatas.AddRange(m_CheckPrefabs);
+                    break;
+                case EYIUICheckPrefabFiltrate.Delete:
+                    foreach (var bind in m_CheckPrefabs)
+                    {
+                        var result = bind.ShowIfIgonre();
+                        if (result)
+                        {
+                            m_FiltrateDatas.Add(bind);
+                        }
+                    }
+
+                    break;
+
+                case EYIUICheckPrefabFiltrate.CDE:
+
+                    foreach (var bind in m_CheckPrefabs)
+                    {
+                        var result = bind.ShowIfIgonre() && bind.IsCDETable;
+                        if (result)
+                        {
+                            m_FiltrateDatas.Add(bind);
+                        }
+                    }
+
+                    break;
+
+                case EYIUICheckPrefabFiltrate.Prefab:
+
+                    foreach (var bind in m_CheckPrefabs)
+                    {
+                        var result = bind.ShowIfIgonre() && !bind.IsCDETable;
+                        if (result)
+                        {
+                            m_FiltrateDatas.Add(bind);
+                        }
+                    }
+
+                    break;
+
+                case EYIUICheckPrefabFiltrate.Igonre:
+                    foreach (var bind in m_CheckPrefabs)
+                    {
+                        var result = bind.ShowIfReIgonre();
+                        if (result)
+                        {
+                            m_FiltrateDatas.Add(bind);
+                        }
+                    }
+
+                    break;
+                default:
+                    Debug.LogError($"未知的Filtrate类型: {Filtrate}");
+                    break;
+            }
         }
     }
 }

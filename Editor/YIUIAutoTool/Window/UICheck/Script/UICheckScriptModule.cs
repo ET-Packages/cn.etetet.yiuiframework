@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
-    public class UICheckScriptModule : BaseYIUIToolModule
+    public class UICheckScriptModule: BaseYIUIToolModule
     {
         [GUIColor(0.4f, 0.8f, 1)]
         [Button("检查", 50)]
@@ -29,10 +29,23 @@ namespace YIUIFramework.Editor
             {
                 var bind = m_CheckScriptDatas[index];
                 bind.UpdatCheck();
-                EditorUtility.DisplayProgressBar("同步信息", $"刷新资源信息 {bind.ComponentType.Name}", index * 1.0f / count);
+                EditorUtility.DisplayProgressBar("同步信息", $"检查 {bind.ComponentType.Name}", index * 1.0f / count);
             }
 
+            UpdateFiltrate();
             EditorUtility.ClearProgressBar();
+        }
+
+        [BoxGroup("检查筛选", centerLabel: true)]
+        [HideLabel]
+        [EnumToggleButtons]
+        [OnValueChanged("OnValueChangedFiltrate")]
+        [PropertyOrder(-98)]
+        public EYIUICheckScriptFiltrate Filtrate = EYIUICheckScriptFiltrate.Delete;
+
+        private void OnValueChangedFiltrate()
+        {
+            UpdateFiltrate();
         }
 
         [GUIColor(1, 0, 0)]
@@ -44,9 +57,9 @@ namespace YIUIFramework.Editor
             if (!UIOperationHelper.CheckUIOperation()) return;
 
             List<YIUICheckScriptData> deleteVo = new();
-            foreach (var bind in m_CheckScriptDatas)
+            foreach (var bind in m_FiltrateScriptDatas)
             {
-                var result = bind.ShowIfDeleteScript();
+                var result = bind.ShowIfIgonre();
                 if (result)
                 {
                     deleteVo.Add(bind);
@@ -70,9 +83,9 @@ namespace YIUIFramework.Editor
 
         private bool ShowIfDeleteAll()
         {
-            if (m_CheckScriptDatas is not { Count: > 0 }) return false;
+            if (m_FiltrateScriptDatas is not { Count: > 0 }) return false;
 
-            foreach (var bind in m_CheckScriptDatas)
+            foreach (var bind in m_FiltrateScriptDatas)
             {
                 var result = bind.ShowIfDeleteScript();
                 if (result)
@@ -89,6 +102,8 @@ namespace YIUIFramework.Editor
         [HideLabel]
         [ShowInInspector]
         [HideReferenceObjectPicker]
+        private List<YIUICheckScriptData> m_FiltrateScriptDatas = new();
+
         private List<YIUICheckScriptData> m_CheckScriptDatas = new();
 
         public override void Initialize()
@@ -138,6 +153,43 @@ namespace YIUIFramework.Editor
             }
 
             return true;
+        }
+
+        public void UpdateFiltrate()
+        {
+            m_FiltrateScriptDatas.Clear();
+
+            switch (Filtrate)
+            {
+                case EYIUICheckScriptFiltrate.All:
+                    m_FiltrateScriptDatas.AddRange(m_CheckScriptDatas);
+                    break;
+                case EYIUICheckScriptFiltrate.Delete:
+                    foreach (var bind in m_CheckScriptDatas)
+                    {
+                        var result = bind.ShowIfIgonre();
+                        if (result)
+                        {
+                            m_FiltrateScriptDatas.Add(bind);
+                        }
+                    }
+
+                    break;
+                case EYIUICheckScriptFiltrate.Igonre:
+                    foreach (var bind in m_CheckScriptDatas)
+                    {
+                        var result = bind.ShowIfReIgonre();
+                        if (result)
+                        {
+                            m_FiltrateScriptDatas.Add(bind);
+                        }
+                    }
+
+                    break;
+                default:
+                    Debug.LogError($"未知的Filtrate类型: {Filtrate}");
+                    break;
+            }
         }
     }
 }

@@ -89,7 +89,7 @@ namespace YIUIFramework.Editor
         [VerticalGroup("操作")]
         [HideLabel]
         [TableColumnWidth(100, resizable: false)]
-        [Button(50, Icon = SdfIconType.HandIndex)]
+        [Button(30, Icon = SdfIconType.HandIndex)]
         [ShowIf("ShowIfSelectPrefab")]
         private void SelectPrefab()
         {
@@ -110,7 +110,7 @@ namespace YIUIFramework.Editor
         [HideLabel]
         [TableColumnWidth(100, resizable: false)]
         [Button(50, Icon = SdfIconType.X)]
-        [ShowIf("ShowIfDelete")]
+        [ShowIf("ShowIfIgonre")]
         private void Delete()
         {
             Delete(true, true);
@@ -224,6 +224,7 @@ namespace YIUIFramework.Editor
 
         private GameObject     m_GameObject;
         private UIBindCDETable m_CDETable;
+        public  bool           IsCDETable => m_CDETable != null;
 
         private void LoadGameObject()
         {
@@ -247,6 +248,38 @@ namespace YIUIFramework.Editor
                     }
                 }
             }
+        }
+
+        private bool m_IsIgnore;
+
+        [VerticalGroup("操作")]
+        [HideLabel]
+        [TableColumnWidth(100, resizable: false)]
+        [Button(50, Icon = SdfIconType.DashCircle)]
+        [ShowIf("ShowIfIgonre")]
+        private void Igonre()
+        {
+            m_IsIgnore = true;
+        }
+
+        public bool ShowIfIgonre()
+        {
+            return ShowIfDelete() && !m_IsIgnore;
+        }
+
+        [VerticalGroup("操作")]
+        [HideLabel]
+        [TableColumnWidth(100, resizable: false)]
+        [Button(50, Icon = SdfIconType.DashCircleDotted)]
+        [ShowIf("ShowIfReIgonre")]
+        private void ReIgonre()
+        {
+            m_IsIgnore = false;
+        }
+
+        public bool ShowIfReIgonre()
+        {
+            return m_IsIgnore;
         }
     }
 }

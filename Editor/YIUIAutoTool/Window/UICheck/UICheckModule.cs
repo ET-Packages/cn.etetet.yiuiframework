@@ -24,47 +24,22 @@ namespace YIUIFramework.Editor
         [BoxGroup("检查类型", centerLabel: true)]
         [HideLabel]
         [EnumToggleButtons]
-        [OnValueChanged("OnCheckViewTypeChanged")]
         public EYIUICheckViewType CheckViewType = EYIUICheckViewType.Script;
 
         [HideLabel]
-        public BaseYIUIToolModule CurrentCheckViewModule;
+        [ShowIf("CheckViewType", EYIUICheckViewType.Script)]
+        public UICheckScriptModule CheckScript = new();
 
         [HideLabel]
-        private EnumPrefs<EYIUICheckViewType> YIUICheckViewPrefs = new("YIUIAutoTool_YIUICheckViewPrefs");
+        [ShowIf("CheckViewType", EYIUICheckViewType.Prefab)]
+        public UICheckPrefabModule CheckPrefab = new();
 
-        private void OnCheckViewTypeChanged()
-        {
-            SelectCheckViewType(CheckViewType);
-        }
-
-        private void SelectCheckViewType(EYIUICheckViewType checkType)
-        {
-            switch (checkType)
-            {
-                case EYIUICheckViewType.Script:
-                    CurrentCheckViewModule = new UICheckScriptModule();
-                    break;
-                case EYIUICheckViewType.Prefab:
-                    CurrentCheckViewModule = new UICheckScriptModule();
-                    break;
-                default:
-                    UnityTipsHelper.ShowError($"未知的类型:{checkType}");
-                    CurrentCheckViewModule = null;
-                    break;
-            }
-
-            if (CurrentCheckViewModule != null)
-            {
-                CurrentCheckViewModule.Initialize();
-            }
-
-            CheckViewType = checkType;
-        }
+        [HideLabel]
+        private EnumPrefs<EYIUICheckViewType> YIUICheckViewPrefs = new("YIUIAutoTool_EYIUICheckViewType");
 
         public override void Initialize()
         {
-            SelectCheckViewType(YIUICheckViewPrefs.Value);
+            CheckViewType = YIUICheckViewPrefs.Value;
         }
 
         public override void OnDestroy()

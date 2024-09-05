@@ -6,32 +6,11 @@ using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
-    /// <summary>
-    /// UI资源绑定信息
-    /// </summary>
-    [HideReferenceObjectPicker]
     [HideLabel]
-    public class YIUICheckVo
+    [HideReferenceObjectPicker]
+    public class YIUICheckPrefabData
     {
         #region 信息
-
-        [HideInInspector]
-        public Type ComponentType;
-
-        [TableColumnWidth(300, resizable: false)]
-        [VerticalGroup("信息")]
-        [LabelText("UI类型")]
-        [LabelWidth(50)]
-        [ReadOnly]
-        public EUICodeType CodeType;
-
-        [TableColumnWidth(300, resizable: false)]
-        [VerticalGroup("信息")]
-        [LabelText("层级")]
-        [LabelWidth(50)]
-        [ReadOnly]
-        [ShowIf("ShowIfPanelLayer")]
-        public EPanelLayer PanelLayer;
 
         [TableColumnWidth(300, resizable: false)]
         [VerticalGroup("信息")]
@@ -46,11 +25,6 @@ namespace YIUIFramework.Editor
         [LabelWidth(50)]
         [ReadOnly]
         public string ResName;
-
-        private bool ShowIfPanelLayer()
-        {
-            return CodeType == EUICodeType.Panel;
-        }
 
         #endregion
 
@@ -103,22 +77,30 @@ namespace YIUIFramework.Editor
 
         #endregion
 
-        private bool m_IsUpdateCheck;
+        public YIUICheckPrefabData(string prefabPath, string pkgName, string resName)
+        {
+            PrefabPath = prefabPath;
+            PkgName    = pkgName;
+            ResName    = resName;
+            UpdateData(ResName);
+            LoadGameObject();
+        }
 
         [VerticalGroup("操作")]
         [HideLabel]
         [TableColumnWidth(100, resizable: false)]
-        [Button(50, Icon = SdfIconType.ArrowClockwise)]
-        [ShowIf("ShowIfUpdatCheck")]
-        public void UpdatCheck()
+        [Button(50, Icon = SdfIconType.HandIndex)]
+        [ShowIf("ShowIfSelectPrefab")]
+        private void SelectPrefab()
         {
-            m_IsUpdateCheck = true;
-            UpdatePath(ComponentType, ResName);
+            if (m_GameObject == null) return;
+            EditorGUIUtility.PingObject(m_GameObject);
+            Selection.activeObject = m_GameObject;
         }
 
-        private bool ShowIfUpdatCheck()
+        private bool ShowIfSelectPrefab()
         {
-            return !m_IsUpdateCheck && !m_IsDelete;
+            return m_GameObject != null;
         }
 
         private bool m_IsDelete;
@@ -128,39 +110,59 @@ namespace YIUIFramework.Editor
         [HideLabel]
         [TableColumnWidth(100, resizable: false)]
         [Button(50, Icon = SdfIconType.X)]
-        [ShowIf("ShowIfDeleteScript")]
-        private void DeleteScript()
+        [ShowIf("ShowIfDelete")]
+        private void Delete()
         {
-            DeleteScript(true, true);
+            Delete(true, true);
         }
 
-        public bool ShowIfDeleteScript()
+        public bool ShowIfDelete()
         {
-            return m_IsUpdateCheck && string.IsNullOrEmpty(PrefabPath) && !m_IsDelete;
+            if (m_IsDelete)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(PrefabPath))
+            {
+                return false;
+            }
+
+            if (m_GameObject == null)
+            {
+                return false;
+            }
+
+            if (m_CDETable == null)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(Component))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public void DeleteScript(bool refresh, bool tips)
+        public void Delete(bool refresh, bool tips)
         {
             m_IsDelete = true;
 
-            DeleteFile(Component);
-            Component = "";
-            DeleteFile(ComponentGen);
-            ComponentGen = "";
-            DeleteFile(System);
-            System = "";
-            DeleteFile(SystemGen);
-            SystemGen = "";
+            DeleteFile(PrefabPath);
 
             if (tips)
             {
-                UnityTipsHelper.Show($"删除成功: {ComponentType.Name} 相关文件");
+                UnityTipsHelper.Show($"删除成功: {PrefabPath}");
             }
 
             if (refresh)
             {
                 YIUIAutoTool.CloseWindowRefresh();
             }
+
+            PrefabPath = "";
         }
 
         private void DeleteFile(string path)
@@ -184,50 +186,15 @@ namespace YIUIFramework.Editor
             {
                 Debug.LogError($"没有权限删除文件: \n{path}\n{e.Message}");
             }
-
-            var directoryPath = Path.GetDirectoryName(path);
-            if (Directory.Exists(directoryPath))
-            {
-                var files          = Directory.GetFiles(directoryPath);
-                var subdirectories = Directory.GetDirectories(directoryPath);
-
-                if (files.Length == 0 && subdirectories.Length == 0)
-                {
-                    try
-                    {
-                        Directory.Delete(directoryPath, false);
-
-                        var metaPath = $"{directoryPath}.meta";
-                        if (File.Exists(metaPath))
-                        {
-                            File.Delete(metaPath);
-                        }
-                    }
-                    catch (IOException e)
-                    {
-                        Debug.LogError($"无法删除文件夹: \n{directoryPath}\n{e.Message}");
-                    }
-                    catch (UnauthorizedAccessException e)
-                    {
-                        Debug.LogError($"没有权限删除文件夹: \n{directoryPath}\n{e.Message}");
-                    }
-                }
-                else
-                {
-                    Debug.Log($"文件夹不为空 将保留文件夹: \n{directoryPath} ");
-                }
-            }
         }
 
-        private void UpdatePath(Type componentType, string resName)
+        private void UpdateData(string resName)
         {
             Component    = "";
             ComponentGen = "";
             System       = "";
             SystemGen    = "";
-            PrefabPath   = "";
-
-            var componentName = componentType.Name;
+            var componentName = $"{resName}Component";
             foreach (string guid in AssetDatabase.FindAssets($"{componentName} t:Script", null))
             {
                 var path        = AssetDatabase.GUIDToAssetPath(guid);
@@ -253,17 +220,31 @@ namespace YIUIFramework.Editor
                     Component = path;
                 }
             }
+        }
 
-            foreach (string guid in AssetDatabase.FindAssets($"{resName} t:Prefab", null))
+        private GameObject     m_GameObject;
+        private UIBindCDETable m_CDETable;
+
+        private void LoadGameObject()
+        {
+            m_CDETable   = null;
+            m_GameObject = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            if (m_GameObject != null)
             {
-                var path        = AssetDatabase.GUIDToAssetPath(guid);
-                var fileNameAll = Path.GetFileName(path);
-                if (string.IsNullOrEmpty(fileNameAll)) continue;
-
-                var fileName = fileNameAll.Split('.')[0];
-                if (fileName == resName)
+                m_CDETable = m_GameObject.GetComponent<UIBindCDETable>();
+                if (m_CDETable != null)
                 {
-                    PrefabPath = path;
+                    if (PkgName != m_CDETable.PkgName)
+                    {
+                        Debug.LogError($"{PrefabPath} PkgName不匹配 {PkgName} != {m_CDETable.PkgName}");
+                        PkgName = m_CDETable.PkgName;
+                    }
+
+                    if (ResName != m_CDETable.ResName)
+                    {
+                        Debug.LogError($"{PrefabPath} ResName不匹配 {ResName} != {m_CDETable.ResName}");
+                        ResName = m_CDETable.ResName;
+                    }
                 }
             }
         }

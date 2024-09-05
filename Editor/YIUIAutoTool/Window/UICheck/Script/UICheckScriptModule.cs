@@ -22,10 +22,12 @@ namespace YIUIFramework.Editor
 
             EditorUtility.DisplayProgressBar("同步信息", $"刷新资源信息", 0);
 
-            var count = m_Binds.Count;
-            for (int index = 0; index < m_Binds.Count; index++)
+            InitGetAll();
+
+            var count = m_CheckScriptDatas.Count;
+            for (int index = 0; index < m_CheckScriptDatas.Count; index++)
             {
-                var bind = this.m_Binds[index];
+                var bind = m_CheckScriptDatas[index];
                 bind.UpdatCheck();
                 EditorUtility.DisplayProgressBar("同步信息", $"刷新资源信息 {bind.ComponentType.Name}", index * 1.0f / count);
             }
@@ -41,8 +43,8 @@ namespace YIUIFramework.Editor
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
 
-            List<YIUICheckVo> deleteVo = new();
-            foreach (var bind in m_Binds)
+            List<YIUICheckScriptData> deleteVo = new();
+            foreach (var bind in m_CheckScriptDatas)
             {
                 var result = bind.ShowIfDeleteScript();
                 if (result)
@@ -68,9 +70,9 @@ namespace YIUIFramework.Editor
 
         private bool ShowIfDeleteAll()
         {
-            if (m_Binds is not { Count: > 0 }) return false;
+            if (m_CheckScriptDatas is not { Count: > 0 }) return false;
 
-            foreach (var bind in m_Binds)
+            foreach (var bind in m_CheckScriptDatas)
             {
                 var result = bind.ShowIfDeleteScript();
                 if (result)
@@ -86,11 +88,11 @@ namespace YIUIFramework.Editor
         [BoxGroup("检查结果", centerLabel: true)]
         [HideLabel]
         [ShowInInspector]
-        private List<YIUICheckVo> m_Binds;
+        [HideReferenceObjectPicker]
+        private List<YIUICheckScriptData> m_CheckScriptDatas = new();
 
         public override void Initialize()
         {
-            InitGetAll();
         }
 
         public override void OnDestroy()
@@ -101,7 +103,7 @@ namespace YIUIFramework.Editor
         {
             var types = AssemblyHelper.GetAllTypes();
 
-            m_Binds = new List<YIUICheckVo>();
+            m_CheckScriptDatas.Clear();
 
             foreach (var type in types)
             {
@@ -110,27 +112,27 @@ namespace YIUIFramework.Editor
                 if (attribute == null) continue;
                 if (GetBindVo(out var bindVo, attribute, type))
                 {
-                    this.m_Binds.Add(bindVo);
+                    m_CheckScriptDatas.Add(bindVo);
                 }
             }
         }
 
-        private static bool GetBindVo(out YIUICheckVo bindVo,
-                                      YIUIAttribute   attribute,
-                                      Type            componentType)
+        private static bool GetBindVo(out YIUICheckScriptData bindScriptData,
+                                      YIUIAttribute           attribute,
+                                      Type                    componentType)
         {
-            bindVo = new YIUICheckVo();
+            bindScriptData = new YIUICheckScriptData();
             if (componentType == null ||
-                !componentType.GetFieldValue("PkgName", out bindVo.PkgName) ||
-                !componentType.GetFieldValue("ResName", out bindVo.ResName))
+                !componentType.GetFieldValue("PkgName", out bindScriptData.PkgName) ||
+                !componentType.GetFieldValue("ResName", out bindScriptData.ResName))
             {
                 return false;
             }
 
-            bindVo.ComponentType = componentType;
-            bindVo.CodeType      = attribute.YIUICodeType;
-            bindVo.PanelLayer    = attribute.YIUIPanelLayer;
-            if (bindVo is { CodeType: EUICodeType.Panel, PanelLayer: EPanelLayer.Any })
+            bindScriptData.ComponentType = componentType;
+            bindScriptData.CodeType      = attribute.YIUICodeType;
+            bindScriptData.PanelLayer    = attribute.YIUIPanelLayer;
+            if (bindScriptData is { CodeType: EUICodeType.Panel, PanelLayer: EPanelLayer.Any })
             {
                 Debug.LogError($"{componentType.Name} 错误的设定 既然是Panel 那必须设定所在层级 不能是Any 请检查重新导出");
             }

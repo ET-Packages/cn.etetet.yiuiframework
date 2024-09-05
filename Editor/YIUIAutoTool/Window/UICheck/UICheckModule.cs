@@ -18,7 +18,7 @@ namespace YIUIFramework.Editor
         [PropertyOrder(-99999)]
         public void OpenDocument()
         {
-            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/F1cDwqKSliIiBIkWMwmcfsj6nUe");
+            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/GOBCwA1rdi7nBhkaBh8cLCjRnah");
         }
 
         [BoxGroup("检查类型", centerLabel: true)]

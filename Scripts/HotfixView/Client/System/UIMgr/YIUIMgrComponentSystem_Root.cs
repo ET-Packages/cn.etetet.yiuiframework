@@ -88,7 +88,7 @@ namespace ET.Client
                 rect.anchorMin     = Vector2.zero;
                 rect.sizeDelta     = Vector2.zero;
                 rect.localRotation = Quaternion.identity;
-                rect.localPosition = new Vector3(0, 0, i * YIUIConstHelper.Const.LayerDistance); //这个是为了3D模型时穿插的问题
+                rect.localPosition = new Vector3(0, 0, i * YIUIConstHelper.Const.LayerDistance);
                 var rectDic = new Dictionary<RectTransform, List<PanelInfo>> { { rect, new List<PanelInfo>() } };
                 self.m_AllPanelLayer.Add((EPanelLayer)i, rectDic);
             }
@@ -98,7 +98,8 @@ namespace ET.Client
             self.InitAddUIBlock(); //所有层级初始化后添加一个终极屏蔽层 可根据API 定时屏蔽UI操作
 
             self.UICamera.transform.localPosition =
-                    new Vector3(self.UILayerRoot.localPosition.x, self.UILayerRoot.localPosition.y, -YIUIConstHelper.Const.LayerDistance);
+                    // ReSharper disable once Unity.InefficientPropertyAccess
+                    new Vector3(self.UILayerRoot.localPosition.x, self.UILayerRoot.localPosition.y, -1000);
 
             self.UICamera.clearFlags   = CameraClearFlags.Depth;
             self.UICamera.orthographic = true;

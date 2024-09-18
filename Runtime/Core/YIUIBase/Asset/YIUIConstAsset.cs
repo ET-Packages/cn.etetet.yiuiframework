@@ -181,7 +181,7 @@ namespace YIUIFramework
 
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("每个层级的距离")]
-        public int LayerDistance = 1000;
+        public int LayerDistance = 0;
 
         #endregion
 

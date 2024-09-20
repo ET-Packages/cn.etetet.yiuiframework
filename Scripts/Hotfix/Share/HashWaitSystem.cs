@@ -18,7 +18,7 @@ namespace ET
         {
             foreach (var hashCode in self.m_HashWaitTasks.Keys.ToArray())
             {
-                self.Notify(hashCode, HashWaitError.Destroy);
+                self.Notify(hashCode, HashWaitError.Destroy, false);
             }
         }
 
@@ -47,18 +47,31 @@ namespace ET
 
             void CancelAction()
             {
-                self.Notify(hashCode, HashWaitError.Cancel);
+                self.Notify(hashCode, HashWaitError.Cancel, false);
             }
         }
 
-        public static void Notify(this HashWait self, long hashCode, HashWaitError error = HashWaitError.Success)
+        public static void Notify(this HashWait self, long hashCode, HashWaitError error = HashWaitError.Success, bool waitFrame = true)
         {
             if (!self.m_HashWaitTasks.Remove(hashCode, out var task))
             {
                 return;
             }
 
-            task.SetResult(error);
+            if (waitFrame)
+            {
+                Notfiy(self.Root(), task, error).NoContext();
+            }
+            else
+            {
+                task.SetResult(error);
+            }
+        }
+
+        private static async ETTask Notfiy(Scene scene, ETTask<HashWaitError> task, HashWaitError error)
+        {
+            await scene?.GetComponent<TimerComponent>().WaitFrameAsync();
+            task?.SetResult(error);
         }
     }
 }

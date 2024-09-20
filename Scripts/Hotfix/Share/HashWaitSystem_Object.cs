@@ -18,9 +18,9 @@ namespace ET
             return await self.Wait(hash);
         }
 
-        public static void NotifyObject(this HashWait self, object target, HashWaitError error = HashWaitError.Success)
+        public static void NotifyObject(this HashWait self, object target, HashWaitError error = HashWaitError.Success, bool waitFrame = true)
         {
-            self.Notify(target.GetHashCode(), error);
+            self.Notify(target.GetHashCode(), error, waitFrame);
         }
     }
 }

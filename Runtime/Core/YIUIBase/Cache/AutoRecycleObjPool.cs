@@ -13,7 +13,7 @@ namespace YIUIFramework
         private Func<T>   m_newCallback;
 
         private ITimeProvider m_timer;
-        private int           m_lastUpdateTime;
+        private float         m_lastUpdateTime;
 
         private List<PoolVo> m_uses;
         private List<PoolVo> m_frees;
@@ -83,7 +83,7 @@ namespace YIUIFramework
 
         private class PoolVo
         {
-            public int Timeout;
+            public float Timeout;
             public T   Value;
         }
     }

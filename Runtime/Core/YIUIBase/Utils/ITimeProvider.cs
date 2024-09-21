@@ -5,6 +5,6 @@
     /// </summary>
     public interface ITimeProvider
     {
-        int Time { get; }
+        float Time { get; }
     }
 }

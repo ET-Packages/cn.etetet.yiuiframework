@@ -58,7 +58,7 @@ namespace YIUIFramework
             }
 
             var curTime = m_timer.Time;
-            if (m_lastUpdateTime == curTime)
+            if (Math.Abs(this.m_lastUpdateTime - curTime) < 0.001f)
             {
                 return;
             }

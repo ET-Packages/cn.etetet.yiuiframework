@@ -13,7 +13,7 @@ namespace YIUIFramework
         /// </summary>
         public int Order { get; set; }
 
-        public YIUISingletonAttribute(int order)
+        public YIUISingletonAttribute(int order = 0)
         {
             Order = order;
         }

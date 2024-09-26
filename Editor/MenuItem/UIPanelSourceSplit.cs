@@ -74,8 +74,10 @@ namespace YIUIFramework.Editor
             AssetDatabase.Refresh();
         }
 
-        private static void AllViewSaveAsPrefabAsset(List<RectTransform> oldList,  List<RectTransform> newList,
-                                                     string              savePath, bool                nest = false)
+        private static void AllViewSaveAsPrefabAsset(List<RectTransform> oldList,
+                                                     List<RectTransform> newList,
+                                                     string              savePath,
+                                                     bool                nest = false)
         {
             if (oldList.Count != newList.Count)
             {
@@ -91,8 +93,10 @@ namespace YIUIFramework.Editor
             }
         }
 
-        private static bool SaveAsPrefabAssetViewParent(RectTransform oldViewParent, RectTransform viewParent,
-                                                        string        savePath,      bool          nest = false)
+        private static bool SaveAsPrefabAssetViewParent(RectTransform oldViewParent,
+                                                        RectTransform viewParent,
+                                                        string        savePath,
+                                                        bool          nest = false)
         {
             //View 查找
             var view = viewParent.FindChildByName(viewParent.name.Replace(YIUIConstHelper.Const.UIParentName, ""));
@@ -157,25 +161,34 @@ namespace YIUIFramework.Editor
 
         private static GameObject SaveAsPrefabAsset(GameObject obj, string path)
         {
-            var prefab = PrefabUtility.SaveAsPrefabAsset(obj, path);
+            PrefabUtility.SaveAsPrefabAsset(obj, path);
+            AssetDatabase.SaveAssets();
+            EditorApplication.ExecuteMenuItem("Assets/Refresh");
+            var selectPath = path.Replace("Assets/../", "");
+            var prefab     = AssetDatabase.LoadAssetAtPath<Object>(selectPath);
             if (prefab == null)
             {
-                Debug.Log($"生成完毕 {obj.name} 请检查然后手动检查所有");
+                Debug.LogError($"生成完毕 {obj.name} 请手动检查所有");
             }
             else
             {
-                var cde = prefab.GetComponent<UIBindCDETable>();
-                if (cde == null)
+                if (prefab is GameObject go)
                 {
-                    Debug.LogError($"{obj.name} cde == null");
-                }
-                else
-                {
-                    cde.AutoCheck();
+                    var cde = go.GetComponent<UIBindCDETable>();
+                    if (cde == null)
+                    {
+                        Debug.LogError($"{obj.name} cde == null");
+                    }
+                    else
+                    {
+                        cde.AutoCheck();
+                    }
+
+                    return go;
                 }
             }
 
-            return prefab;
+            return null;
         }
     }
 }

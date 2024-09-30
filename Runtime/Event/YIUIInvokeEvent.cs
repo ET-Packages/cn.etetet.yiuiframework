@@ -5,6 +5,18 @@ using UnityObject = UnityEngine.Object;
 
 namespace YIUIFramework
 {
+    public struct YIUIInvokeGetAssetInfo
+    {
+        public string Location;
+        public Type   AssetType;
+    }
+
+    public struct YIUIInvokeGetAssetInfoByGUID
+    {
+        public string AssetGUID;
+        public Type   AssetType;
+    }
+
     // 加载任意实例化 to Vo
     public struct YIUIInvokeLoadInstantiateByVo
     {

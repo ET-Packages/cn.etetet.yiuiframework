@@ -9,7 +9,7 @@ namespace ET.Client
     [FriendOf(typeof(YIUILoadComponent))]
     public static partial class YIUILoadComponentSystem
     {
-        internal static UnityObject LoadAsset(this YIUILoadComponent self, string pkgName, string resName, Type assetType)
+        public static UnityObject LoadAsset(this YIUILoadComponent self, string pkgName, string resName, Type assetType)
         {
             var load = LoadHelper.GetLoad(pkgName, resName);
             load.AddRefCount();
@@ -36,7 +36,7 @@ namespace ET.Client
             return obj;
         }
 
-        internal static async ETTask<UnityObject> LoadAssetAsync(this YIUILoadComponent self, string pkgName, string resName, Type assetType)
+        public static async ETTask<UnityObject> LoadAssetAsync(this YIUILoadComponent self, string pkgName, string resName, Type assetType)
         {
             var load = LoadHelper.GetLoad(pkgName, resName);
             load.AddRefCount();
@@ -85,7 +85,7 @@ namespace ET.Client
             return obj;
         }
 
-        internal static void LoadAssetAsync(this YIUILoadComponent self, string pkgName, string resName, Type assetType, Action<UnityObject> action)
+        private static void LoadAssetAsync(this YIUILoadComponent self, string pkgName, string resName, Type assetType, Action<UnityObject> action)
         {
             self.LoadAssetAsyncAction(pkgName, resName, assetType, action).NoContext();
         }

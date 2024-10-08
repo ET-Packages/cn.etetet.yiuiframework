@@ -16,7 +16,7 @@
   "relatedPackages": {},
   "dependencies": {
     "cn.etetet.core": "2.0.7",
-    "cn.etetet.yiuiinvoke": "0.5.1"
+    "cn.etetet.yiuiinvoke": "1.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@ET-Packages"

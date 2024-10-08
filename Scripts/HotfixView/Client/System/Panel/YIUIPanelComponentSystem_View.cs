@@ -252,18 +252,21 @@ namespace ET.Client
 
             if (self.CurrentOpenView != null && self.CurrentOpenView != view && self.CurrentOpenViewActiveSelf)
             {
-                var uibase = self.CurrentOpenView.GetParent<YIUIChild>();
+                var uiBase = self.CurrentOpenView.GetParent<YIUIChild>();
 
                 var tween = true;
+                var skipClose = false;
                 //View 没有自动回退功能  比如AView 关闭 自动吧上一个BView 给打开 没有这种需求 也不能有这个需求
                 //只能有 打开一个新View 上一个View的自动处理 99% 都是吧上一个隐藏即可
                 //外部就只需要关心 打开 A B C 即可
                 //因为这是View  不是 Panel
                 //如果你想要 先打开了 A B C  然后关闭 C 自动回退到B 关闭B又回退到A 那么你就需要自己实现
                 //因为这是View  不是 Panel
-                switch (uibase.GetComponent<YIUIViewComponent>().StackOption)
+                switch (uiBase.GetComponent<YIUIViewComponent>().StackOption)
                 {
                     case EViewStackOption.None:
+                        skipClose = true;
+                        break;
                     case EViewStackOption.Visible:
                         tween = false;
                         break;
@@ -271,12 +274,15 @@ namespace ET.Client
                         tween = !skipTween;
                         break;
                     default:
-                        Debug.LogError($"新增类型未实现 {uibase.GetComponent<YIUIViewComponent>().StackOption}");
+                        Debug.LogError($"新增类型未实现 {uiBase.GetComponent<YIUIViewComponent>().StackOption}");
                         tween = false;
                         break;
                 }
 
-                await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().CloseAsync(tween);
+                if (!skipClose)
+                {
+                    await self.CurrentOpenView.GetParent<YIUIChild>().GetComponent<YIUIViewComponent>().CloseAsync(tween);
+                }
             }
 
             self.u_CurrentOpenView = view;

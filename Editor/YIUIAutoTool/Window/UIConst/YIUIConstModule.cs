@@ -17,6 +17,13 @@ namespace YIUIFramework.Editor
             Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/KjMgw5woPi4iOFkH3wrcUIZtnKd");
         }
 
+        [Button("重置", 30, Icon = SdfIconType.BootstrapReboot, IconAlignment = IconAlignment.LeftOfText)]
+        [PropertyOrder(-9999)]
+        public void Reset()
+        {
+            UnityTipsHelper.CallBackOk("确定重置常量数据!!!", () => { YIUIConstAsset = YIUIConstHelper.ResetAsset(); });
+        }
+
         [ShowInInspector]
         [HideLabel]
         private YIUIConstAsset YIUIConstAsset;

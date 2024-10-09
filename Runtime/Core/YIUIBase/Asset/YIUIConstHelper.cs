@@ -33,26 +33,14 @@ namespace YIUIFramework
         {
             get
             {
-                if (m_YIUIConstAsset == null)
-                {
-                    m_YIUIConstAsset = LoadEditorAsset();
-                }
-
-                return m_YIUIConstAsset;
+                return m_YIUIConstAsset ??= LoadEditorAsset();
             }
         }
 
         private static YIUIConstAsset LoadEditorAsset()
         {
             var constAsset = OdinSerializationHelper.EditorLoad<YIUIConstAsset>(YIUIConstAssetPath);
-
-            if (constAsset == null)
-            {
-                constAsset = new YIUIConstAsset();
-                var bytes = Sirenix.Serialization.SerializationUtility.SerializeValue(constAsset, DataFormat.JSON);
-                WriteAllBytes($"{Application.dataPath}/../{YIUIConstAssetPath}", bytes);
-            }
-
+            constAsset ??= CreateAsset();
             return constAsset;
         }
 
@@ -72,6 +60,19 @@ namespace YIUIFramework
             {
                 Debug.LogError("写入文件失败: path =" + path + ", err=" + e);
             }
+        }
+
+        private static YIUIConstAsset CreateAsset()
+        {
+            var constAsset = new YIUIConstAsset();
+            var bytes      = Sirenix.Serialization.SerializationUtility.SerializeValue(constAsset, DataFormat.JSON);
+            WriteAllBytes($"{Application.dataPath}/../{YIUIConstAssetPath}", bytes);
+            return constAsset;
+        }
+
+        public static YIUIConstAsset ResetAsset()
+        {
+            return m_YIUIConstAsset = CreateAsset();
         }
 
         #endif

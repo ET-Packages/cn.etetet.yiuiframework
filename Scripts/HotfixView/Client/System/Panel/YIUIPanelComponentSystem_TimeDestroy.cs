@@ -6,6 +6,12 @@ namespace ET.Client
     {
         internal static void CacheTimeCountDownDestroyPanel(this YIUIPanelComponent self)
         {
+            if (self.CachePanelTime <= 0)
+            {
+                self.RemoveUIReset();
+                return;
+            }
+
             self.StopCountDownDestroyPanel();
             self.m_Token = new ETCancellationToken();
             self.DoCountDownDestroyPanel().WithContext(self.m_Token);
@@ -38,6 +44,11 @@ namespace ET.Client
             }
 
             self.m_Token = null;
+            self.RemoveUIReset();
+        }
+
+        private static void RemoveUIReset(this YIUIPanelComponent self)
+        {
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRemoveUIReset
             {
                 PanelName = self.UIBase.UIName

@@ -117,7 +117,15 @@ namespace ET.Client
                 {
                     //根据配置时间X秒后自动摧毁
                     //如果X秒内又被打开则可复用
-                    uiPanel.CacheTimeCountDownDestroyPanel();
+                    if (uiPanel.CachePanelTime > 0)
+                    {
+                        uiPanel.CacheTimeCountDownDestroyPanel();
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{panelInfo.Name} 缓存时间配置错误 {uiPanel.CachePanelTime} <= 0 请检查");
+                        self.RemoveUIReset(panelInfo.Name);
+                    }
                 }
             }
             else

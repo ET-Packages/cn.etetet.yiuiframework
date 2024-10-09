@@ -62,6 +62,7 @@ namespace YIUIFramework
         [GUIColor(0, 1, 1)]
         [LabelText("缓存时间")]
         [EnableIf("@UIOperationHelper.CommonShowIf()")]
+        [MinValue(0.01)]
         public float CachePanelTime = 10;
 
         private bool ShowCachePanelTime => PanelOption.HasFlag(EPanelOption.TimeCache);

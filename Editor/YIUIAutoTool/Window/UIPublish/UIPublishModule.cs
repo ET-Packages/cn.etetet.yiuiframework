@@ -16,27 +16,11 @@ namespace YIUIFramework.Editor
     public class UIPublishModule : BaseYIUIToolModule
     {
         [ButtonGroup("文档")]
-        [Button("YIUI文档", 30, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
+        [Button("YIUI文档", 50, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
         [PropertyOrder(-99999)]
         public void OpenDocument1()
         {
             Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/ES7Gwz4EAiVGKSkotY5cRbTznuh");
-        }
-
-        [ButtonGroup("文档")]
-        [Button("发布文档1", 30, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
-        [PropertyOrder(-99999)]
-        public void OpenDocument2()
-        {
-            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/JacHwwlf2iYF9bkpr2sc6Dcknng");
-        }
-
-        [ButtonGroup("文档")]
-        [Button("发布文档2", 30, Icon = SdfIconType.Link45deg, IconAlignment = IconAlignment.LeftOfText)]
-        [PropertyOrder(-99999)]
-        public void OpenDocument3()
-        {
-            Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/W80jwOq9SiY30KkISOec1kQZnNf");
         }
 
         internal const string m_PublishName        = "发布";

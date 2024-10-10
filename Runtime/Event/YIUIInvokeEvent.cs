@@ -58,6 +58,11 @@ namespace YIUIFramework
         public string ResName;
     }
 
+    public struct YIUIInvokeLoadTexture2D
+    {
+        public string ResName;
+    }
+
     //屏蔽所有YIUI操作
     public struct YIUIInvokeBanLayerOptionForever
     {

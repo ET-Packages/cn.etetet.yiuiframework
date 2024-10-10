@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ET;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -7,9 +8,9 @@ using UnityEngine.UI;
 namespace YIUIFramework
 {
     [RequireComponent(typeof(Image))]
-    [LabelText("Image 图片")]
-    [AddComponentMenu("YIUIBind/Data/图片 【Image】 UIDataBindImage")]
-    public sealed class UIDataBindImage : UIDataBindSelectBase
+    [LabelText("Image 图片Format")]
+    [AddComponentMenu("YIUIBind/Data/图片Format 【ImageFormat】 UIDataBindImageFormat")]
+    public sealed class UIDataBindImageFormat : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]
@@ -28,9 +29,13 @@ namespace YIUIFramework
         [NonSerialized]
         private string m_LastSpriteName;
 
+        [SerializeField]
+        [LabelText("格式化字符串")]
+        private string m_Format;
+
         protected override int Mask()
         {
-            return 1 << (int)EUIBindDataType.String;
+            return 1 << (int)EUIBindDataType.Int | 1 << (int)EUIBindDataType.String;
         }
 
         protected override int SelectMax()
@@ -64,9 +69,15 @@ namespace YIUIFramework
                 return;
             }
 
-            if (m_Image == null || gameObject == null) return;
+            var data = DataSelectDic.Count >= 1 ? DataSelectDic.First().Value : null;
 
-            var dataValue = GetFirstValue<string>();
+            if (data == null)
+            {
+                SetEnabled(false);
+                return;
+            }
+
+            var dataValue = GetDataToString(data);
 
             if (string.IsNullOrEmpty(dataValue))
             {
@@ -75,6 +86,34 @@ namespace YIUIFramework
             }
 
             ChangeSprite(dataValue).NoContext();
+        }
+
+        private string GetDataToString(UIDataSelect dataSelect)
+        {
+            var dataValue = dataSelect?.Data?.DataValue;
+            if (dataValue == null) return "";
+
+            if (string.IsNullOrEmpty(m_Format)) return dataValue.GetValueToString();
+
+            try
+            {
+                switch (dataValue.UIBindDataType)
+                {
+                    case EUIBindDataType.Int:
+                        return string.Format(m_Format, dataValue.GetValue<int>());
+                    case EUIBindDataType.String:
+                        return string.Format(m_Format, dataValue.GetValue<string>());
+                    default:
+                        return string.Format(m_Format, dataValue.GetValueToString());
+                }
+            }
+            catch (FormatException exp)
+            {
+                Logger.LogError($"{name} 字符串拼接Format 出错请检查是否有拼写错误  {m_Format}");
+                Logger.LogError(exp.Message, this);
+            }
+
+            return dataValue.GetValueToString();
         }
 
         private async ETTask ChangeSprite(string resName)

@@ -2,20 +2,21 @@
 using ET;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace YIUIFramework
 {
-    [RequireComponent(typeof(Image))]
-    [LabelText("Image 图片")]
-    [AddComponentMenu("YIUIBind/Data/图片 【Image】 UIDataBindImage")]
-    public sealed class UIDataBindImage : UIDataBindSelectBase
+    [RequireComponent(typeof(RawImage))]
+    [LabelText("RawImage 图片Raw")]
+    [AddComponentMenu("YIUIBind/Data/图片Raw 【RawImage】 UIDataBindRawImage")]
+    public sealed class UIDataBindRawImage : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]
         [Required("必须有此组件")]
         [LabelText("图片")]
-        private Image m_Image;
+        private RawImage m_RawImage;
 
         [SerializeField]
         [LabelText("自动调整图像大小")]
@@ -26,7 +27,7 @@ namespace YIUIFramework
         private bool m_ChangeEnabled = true;
 
         [NonSerialized]
-        private string m_LastSpriteName;
+        private string m_LastResName;
 
         protected override int Mask()
         {
@@ -41,8 +42,8 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Image = GetComponent<Image>();
-            if (!m_ChangeEnabled && !m_Image.enabled)
+            m_RawImage = GetComponent<RawImage>();
+            if (!m_ChangeEnabled && !m_RawImage.enabled)
             {
                 Logger.LogError($"{name} 当前禁止修改Enabled 且当前处于隐藏状态 可能会出现问题 请检查");
             }
@@ -52,9 +53,9 @@ namespace YIUIFramework
         {
             if (!m_ChangeEnabled) return;
 
-            if (m_Image == null) return;
+            if (m_RawImage == null) return;
 
-            m_Image.enabled = set;
+            m_RawImage.enabled = set;
         }
 
         protected override void OnValueChanged()
@@ -64,7 +65,7 @@ namespace YIUIFramework
                 return;
             }
 
-            if (m_Image == null || gameObject == null) return;
+            if (m_RawImage == null || gameObject == null) return;
 
             var dataValue = GetFirstValue<string>();
 
@@ -74,16 +75,16 @@ namespace YIUIFramework
                 return;
             }
 
-            ChangeSprite(dataValue).NoContext();
+            ChangeTexture2D(dataValue).NoContext();
         }
 
-        private async ETTask ChangeSprite(string resName)
+        private async ETTask ChangeTexture2D(string resName)
         {
-            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = this.GetHashCode() });
+            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = GetHashCode() });
 
-            if (m_LastSpriteName == resName)
+            if (m_LastResName == resName)
             {
-                if (m_Image != null && m_Image.sprite != null)
+                if (m_RawImage != null && m_RawImage.texture != null)
                 {
                     SetEnabled(true);
                 }
@@ -95,31 +96,31 @@ namespace YIUIFramework
                 return;
             }
 
-            var sprite = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoadSprite, ETTask<Sprite>>(new YIUIInvokeLoadSprite { ResName = resName });
+            var texture2d = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoadTexture2D, ETTask<Texture2D>>(new YIUIInvokeLoadTexture2D { ResName = resName });
 
-            if (sprite == null)
+            if (texture2d == null)
             {
-                m_LastSpriteName = "";
+                m_LastResName = "";
                 SetEnabled(false);
                 return;
             }
 
-            ReleaseLastSprite();
+            ReleaseLastTexture2D();
 
-            if (gameObject == null || m_Image == null)
+            if (gameObject == null || m_RawImage == null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = sprite });
+                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = texture2d });
                 Logger.LogError($"{resName} 加载过程中 对象被摧毁了 gameObject == null || m_Image == null");
                 return;
             }
 
-            m_LastSprite   = sprite;
-            m_Image.sprite = sprite;
+            m_LastTexture2D    = texture2d;
+            m_RawImage.texture = texture2d;
             if (m_SetNativeSize)
-                m_Image.SetNativeSize();
+                m_RawImage.SetNativeSize();
 
             SetEnabled(true);
-            m_LastSpriteName = resName;
+            m_LastResName = resName;
         }
 
         protected override void UnBindData()
@@ -130,17 +131,17 @@ namespace YIUIFramework
                 return;
             }
 
-            ReleaseLastSprite();
+            ReleaseLastTexture2D();
         }
 
-        private Sprite m_LastSprite;
+        private Texture2D m_LastTexture2D;
 
-        private void ReleaseLastSprite()
+        private void ReleaseLastTexture2D()
         {
-            if (m_LastSprite != null)
+            if (m_LastTexture2D != null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = m_LastSprite });
-                m_LastSprite = null;
+                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = m_LastTexture2D });
+                m_LastTexture2D = null;
             }
         }
     }

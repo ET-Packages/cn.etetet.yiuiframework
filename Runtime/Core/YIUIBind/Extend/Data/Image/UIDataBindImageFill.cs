@@ -5,8 +5,8 @@ using UnityEngine.UI;
 namespace YIUIFramework
 {
     [RequireComponent(typeof(Image))]
-    [LabelText("ImageFill 图片填充")]
-    [AddComponentMenu("YIUIBind/Data/图片填充 【ImageFill】 UIDataBindImageFill")]
+    [LabelText("ImageFill 图片Fill")]
+    [AddComponentMenu("YIUIBind/Data/图片Fill 【ImageFill】 UIDataBindImageFill")]
     public sealed class UIDataBindImageFill : UIDataBindSelectBase
     {
         [SerializeField]

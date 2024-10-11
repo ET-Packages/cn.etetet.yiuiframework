@@ -159,7 +159,7 @@ namespace YIUIFramework
         [GUIColor(0, 1, 1)]
         [Button("保存选中", 50)]
         [PropertyOrder(-100)]
-        [HideIf("ShowPackagesCreateBtn")]
+        [ShowIf("ShowSaveSelectSelf")]
         private void SaveSelectSelf()
         {
             var stage = PrefabStageUtility.GetPrefabStage(gameObject);
@@ -188,6 +188,17 @@ namespace YIUIFramework
             var assetObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(stage.assetPath);
             EditorGUIUtility.PingObject(assetObj);
             Selection.activeObject = assetObj;
+        }
+
+        private bool ShowSaveSelectSelf()
+        {
+            var parentName = gameObject.transform.parent?.name ?? "";
+            if (!parentName.Contains("Canvas"))
+            {
+                return false;
+            }
+
+            return !UIOperationHelper.CheckUIIsPackages(this, false);
         }
 
         internal bool AutoCheck()

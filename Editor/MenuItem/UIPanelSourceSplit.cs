@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
-using ET;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -63,7 +62,8 @@ namespace YIUIFramework.Editor
             AllViewSaveAsPrefabAsset(oldSplitData.AllPopupView, splitData.AllPopupView, savePath);
 
             //拆分后新的
-            SaveAsPrefabAsset(newSource, $"{savePath}/{newSource.name}.prefab");
+            var newPath = $"{savePath}/{newSource.name}.prefab";
+            SaveAsPrefabAsset(newSource, newPath);
             Object.DestroyImmediate(newSource);
 
             //老的重新关联 覆盖老数据
@@ -134,26 +134,22 @@ namespace YIUIFramework.Editor
             Object.DestroyImmediate(oldView.gameObject);
 
             //old 是每个下面都有一个关联上
-            var oldPrefabInstance = PrefabUtility.InstantiatePrefab(viewPrefab) as GameObject;
+            var oldPrefabInstance = PrefabUtility.InstantiatePrefab(viewPrefab, oldViewParent) as GameObject;
             if (oldPrefabInstance == null)
             {
                 Debug.LogError($"{oldViewParent.name} Old未知错误 得到一个null 对象");
                 return false;
             }
 
-            oldPrefabInstance.transform.SetParent(oldViewParent, false);
-
             //新要根据情况保留的才关联
             if (nest)
             {
-                var prefabInstance = PrefabUtility.InstantiatePrefab(viewPrefab) as GameObject;
+                var prefabInstance = PrefabUtility.InstantiatePrefab(viewPrefab, viewParent) as GameObject;
                 if (prefabInstance == null)
                 {
                     Debug.LogError($"{viewParent.name} 未知错误 得到一个null 对象");
                     return false;
                 }
-
-                prefabInstance.transform.SetParent(viewParent, false);
             }
 
             return true;
@@ -165,27 +161,24 @@ namespace YIUIFramework.Editor
             AssetDatabase.SaveAssets();
             EditorApplication.ExecuteMenuItem("Assets/Refresh");
             var selectPath = path.Replace("Assets/../", "");
-            var prefab     = AssetDatabase.LoadAssetAtPath<Object>(selectPath);
+            var prefab     = (GameObject)AssetDatabase.LoadAssetAtPath(selectPath, typeof(Object));
             if (prefab == null)
             {
                 Debug.LogError($"生成完毕 {obj.name} 请手动检查所有");
             }
             else
             {
-                if (prefab is GameObject go)
+                var cde = prefab.GetComponent<UIBindCDETable>();
+                if (cde == null)
                 {
-                    var cde = go.GetComponent<UIBindCDETable>();
-                    if (cde == null)
-                    {
-                        Debug.LogError($"{obj.name} cde == null");
-                    }
-                    else
-                    {
-                        cde.AutoCheck();
-                    }
-
-                    return go;
+                    Debug.LogError($"{obj.name} cde == null");
                 }
+                else
+                {
+                    cde.AutoCheck();
+                }
+
+                return prefab;
             }
 
             return null;

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.IO;
 using ET;
 using UnityEditor;
 using UnityEngine;
@@ -89,7 +90,7 @@ namespace YIUIFramework.Editor
             }
         }
 
-        private static void CreateNewSource(string loadPath, string savePath)
+        public static void CreateNewSource(string loadPath, string savePath, bool showTips = true)
         {
             var loadPanel = (GameObject)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Object));
             if (loadPanel == null)
@@ -108,7 +109,11 @@ namespace YIUIFramework.Editor
             PrefabUtility.SaveAsPrefabAsset(newSource, savePath);
             Object.DestroyImmediate(newSource);
 
-            UnityTipsHelper.Show($"Panel 逆向 源数据 完毕");
+            if (showTips)
+            {
+                UnityTipsHelper.Show($"Panel 逆向 源数据 完毕");
+            }
+
             AssetDatabase.Refresh();
         }
 
@@ -128,7 +133,20 @@ namespace YIUIFramework.Editor
 
                 var viewName = viewParent.name.Replace(YIUIConstHelper.Const.UIParentName, "");
 
-                var viewPath = $"{m_PanelPath}/{YIUIConstHelper.Const.UIPrefabs}/{viewName}.prefab";
+                //防止修改了生成的view路径 所以改为全局查找
+                //var viewPath = $"{m_PanelPath}/{YIUIConstHelper.Const.UIPrefabs}/{viewName}.prefab";
+
+                var viewPath = "";
+                foreach (string guid in AssetDatabase.FindAssets($"{viewName} t:Prefab", null))
+                {
+                    viewPath = AssetDatabase.GUIDToAssetPath(guid);
+                }
+
+                if (string.IsNullOrEmpty(viewPath))
+                {
+                    Log.Error($"未找到 {viewName} 预制件");
+                    continue;
+                }
 
                 var childView = viewParent.FindChildByName(viewName);
                 if (childView != null)
@@ -150,14 +168,11 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            var prefabInstance = PrefabUtility.InstantiatePrefab(loadView) as GameObject;
+            var prefabInstance = PrefabUtility.InstantiatePrefab(loadView, parent) as GameObject;
             if (prefabInstance == null)
             {
                 Debug.LogError($"{loadView.name} 未知错误 得到一个null 对象");
-                return;
             }
-
-            prefabInstance.transform.SetParent(parent, false);
         }
     }
 }

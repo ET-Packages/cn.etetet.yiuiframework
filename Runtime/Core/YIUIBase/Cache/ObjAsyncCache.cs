@@ -9,35 +9,79 @@ namespace YIUIFramework
     /// </summary>
     public class ObjAsyncCache<T>
     {
-        private Stack<T>        m_pool;
-        private Func<ETTask<T>> m_createCallback;
+        private readonly Stack<T> m_Pool;
+        private readonly Func<ETTask<T>> m_CreateCallback;
 
-        public ObjAsyncCache(Func<ETTask<T>> createCallback, int capacity = 0)
+        private float m_CreateInterval = 0f;
+        private float m_LastCreateTime = 0f;
+
+        public ObjAsyncCache(Func<ETTask<T>> createCallback, int capacity = 0, float createInterval = 0f)
         {
-            m_pool = capacity > 0
+            m_Pool = capacity > 0
                     ? new Stack<T>(capacity)
                     : new Stack<T>();
 
-            m_createCallback = createCallback;
+            m_CreateInterval = createInterval;
+            m_CreateCallback = createCallback;
         }
 
-        public int Count => m_pool.Count;
+        public void ChangeCreateInterval(float createInterval)
+        {
+            m_CreateInterval = createInterval;
+        }
 
         public async ETTask<T> Get()
         {
-            return m_pool.Count > 0 ? m_pool.Pop() : await m_createCallback();
+            return m_Pool.Count > 0 ? m_Pool.Pop() : await Create();
+        }
+
+        private async ETTask<T> Create()
+        {
+            if (m_CreateCallback == null)
+            {
+                Log.Error($" CreateCallback == null ");
+                return default;
+            }
+
+            if (m_CreateInterval > 0)
+            {
+                using var coroutineLock = await EventSystem.Instance.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = this.GetHashCode() });
+                
+                if (m_LastCreateTime > 0)
+                {
+                    var waitTime = m_LastCreateTime - UnityEngine.Time.time;
+                    if (waitTime > 0)
+                    {
+                        await EventSystem.Instance.YIUIInvokeAsync<YIUIInvokeWaitAsync, ETTask>(new YIUIInvokeWaitAsync
+                        {
+                            Time = (long)(waitTime * 1000)
+                        });
+                    }
+                }
+
+                var createBeforeTime = UnityEngine.Time.time;
+                var item = await m_CreateCallback.Invoke();
+                var currentTime = UnityEngine.Time.time;
+                var residueTime = m_CreateInterval - (currentTime - createBeforeTime);
+                m_LastCreateTime = residueTime <= 0 ? 0 : currentTime + residueTime;
+                return item;
+            }
+            else
+            {
+                return await m_CreateCallback();
+            }
         }
 
         public void Put(T value)
         {
-            m_pool.Push(value);
+            m_Pool.Push(value);
         }
 
         public void Clear(bool disposeItem = false)
         {
             if (disposeItem)
             {
-                foreach (var item in m_pool)
+                foreach (var item in m_Pool)
                 {
                     if (item is IDisposer disposer)
                     {
@@ -50,17 +94,19 @@ namespace YIUIFramework
                 }
             }
 
-            m_pool.Clear();
+            m_Pool.Clear();
         }
 
         public void Clear(Action<T> disposeAction)
         {
-            while (m_pool.Count >= 1)
+            while (m_Pool.Count >= 1)
             {
-                disposeAction?.Invoke(m_pool.Pop());
+                disposeAction?.Invoke(m_Pool.Pop());
             }
 
-            m_pool.Clear();
+            m_Pool.Clear();
         }
+
+        public int Count => m_Pool.Count;
     }
 }

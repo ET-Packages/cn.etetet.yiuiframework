@@ -233,6 +233,7 @@ namespace YIUIFramework
         private bool ShowCreateBtn()
         {
             if (IsSplitData) return false;
+            if (gameObject.transform.parent != null) return false;
             if (UIOperationHelper.CheckUIIsPackages(this, false)) return false;
             return UIOperationHelper.CheckUIOperationAll(this, false);
         }
@@ -240,6 +241,7 @@ namespace YIUIFramework
         private bool ShowPackagesCreateBtn()
         {
             if (IsSplitData) return false;
+            if (gameObject.transform.parent != null) return false;
             var result = UIOperationHelper.CheckUIIsPackages(this, false);
             if (result && string.IsNullOrEmpty(m_PackagesName))
             {

@@ -25,7 +25,7 @@ namespace YIUIFramework.Editor
         [MenuItem("ET/YIUI 自动化工具")]
         private static void OpenWindow()
         {
-            var window = GetWindow<YIUIAutoTool>();
+            var window = GetWindow<YIUIAutoTool>("YIUI");
             if (window != null)
                 window.Show();
         }

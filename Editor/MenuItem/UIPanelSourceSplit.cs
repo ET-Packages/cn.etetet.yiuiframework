@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -43,7 +42,6 @@ namespace YIUIFramework.Editor
             var cdeTable  = newSource.GetComponent<UIBindCDETable>();
             newSource.name                    = newSource.name.Replace(YIUIConstHelper.Const.UISource, "");
             cdeTable.IsSplitData              = false;
-            cdeTable.PanelSplitEditorShowData = cdeTable.PanelSplitData;
             var splitData = cdeTable.PanelSplitData;
 
             string savePath = "";
@@ -185,4 +183,3 @@ namespace YIUIFramework.Editor
         }
     }
 }
-#endif

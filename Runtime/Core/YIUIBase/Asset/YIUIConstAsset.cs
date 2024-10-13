@@ -95,6 +95,9 @@ namespace YIUIFramework
         public string UIPanelName = "Panel";
 
         [BoxGroup("项目配置", CenterLabel = true)]
+        public string UICommonName = "Common";
+
+        [BoxGroup("项目配置", CenterLabel = true)]
         public string UIViewName = "View";
 
         [BoxGroup("项目配置", CenterLabel = true)]

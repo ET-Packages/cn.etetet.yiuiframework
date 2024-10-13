@@ -59,7 +59,7 @@ namespace YIUIFramework.Editor
             EditorHelper.CreateExistsDirectory(atlasPath);
             EditorHelper.CreateExistsDirectory(sourcePath);
 
-            MenuItemYIUIPanel.CreateYIUIPanelByPath(sourcePath, createName);
+            MenuItemYIUIPanelSource.CreateYIUIPanelByPath(sourcePath, createName);
 
             YIUIAutoTool.CloseWindowRefresh();
         }

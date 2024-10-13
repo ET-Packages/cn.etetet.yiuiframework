@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace YIUIFramework.Editor
@@ -56,4 +55,3 @@ namespace YIUIFramework.Editor
         }
     }
 }
-#endif

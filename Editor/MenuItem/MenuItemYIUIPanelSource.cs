@@ -3,39 +3,41 @@ using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
-    public static class MenuItemYIUIPanel
+    public static class MenuItemYIUIPanelSource
     {
-        [MenuItem("Assets/YIUI/Create UIPanel", false, 1)]
+        [MenuItem("Assets/YIUI/Create UIPanelSource", false, 0)]
         static void CreateYIUIPanelByFolder()
         {
             var activeObject = Selection.activeObject as DefaultAsset;
             if (activeObject == null)
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UISource} 下右键创建");
                 return;
             }
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (activeObject.name != YIUIConstHelper.Const.UIPrefabs ||
+            if (activeObject.name != YIUIConstHelper.Const.UISource ||
                 !path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UISource} 下右键创建");
                 return;
             }
 
             CreateYIUIPanelByPath(path);
         }
 
-        internal static void CreateYIUIPanelByPath(string path)
+        internal static void CreateYIUIPanelByPath(string path, string name = null)
         {
             if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UISource} 下右键创建");
                 return;
             }
 
-            var saveName = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIPanelName}";
+            var saveName = string.IsNullOrEmpty(name)
+                    ? YIUIConstHelper.Const.UIYIUIPanelSourceName
+                    : $"{name}{YIUIConstHelper.Const.UIPanelSourceName}";
             var savePath = $"{path}/{saveName}.prefab";
 
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
@@ -64,16 +66,14 @@ namespace YIUIFramework.Editor
             panelObject.GetOrAddComponent<CanvasRenderer>();
             var cdeTable = panelObject.GetOrAddComponent<UIBindCDETable>();
             cdeTable.UICodeType  =  EUICodeType.Panel;
-            cdeTable.IsSplitData =  false;
+            cdeTable.IsSplitData =  true;
             cdeTable.PanelOption |= EPanelOption.TimeCache;
 
             var panelEditorData = cdeTable.PanelSplitData;
             panelEditorData.Panel = panelObject;
-            panelObject.name      = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIPanelName}";
+            panelObject.name      = YIUIConstHelper.Const.UIYIUIPanelSourceName;
             if (activeObject != null)
-            {
                 panelRect.SetParent(activeObject.transform, false);
-            }
             panelRect.ResetToFullScreen();
 
             //阻挡图

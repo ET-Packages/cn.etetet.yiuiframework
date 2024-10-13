@@ -1,13 +1,52 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
     public static class MenuItemYIUIView
     {
-        [MenuItem("GameObject/YIUI/Create UIView", false, 1)]
-        static void CreateYIUIView()
+        [MenuItem("Assets/YIUI/Create UIView", false, 2)]
+        static void CreateYIUIViewByFolder()
+        {
+            var activeObject = Selection.activeObject as DefaultAsset;
+            if (activeObject == null)
+            {
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
+                return;
+            }
+
+            var path = AssetDatabase.GetAssetPath(Selection.activeObject);
+
+            if (activeObject.name != YIUIConstHelper.Const.UIPrefabs ||
+                !path.Contains(YIUIConstHelper.Const.UIProjectResPath))
+            {
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
+                return;
+            }
+
+            var saveName = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIViewName}";
+            var savePath = $"{path}/{saveName}.prefab";
+
+            if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
+            {
+                UnityTipsHelper.ShowError($"已存在 请先重命名 {saveName}");
+                return;
+            }
+
+            var createView = CreateYIUIView();
+            PrefabUtility.SaveAsPrefabAsset(createView, savePath);
+            Object.DestroyImmediate(createView);
+
+            AssetDatabase.SaveAssets();
+            EditorApplication.ExecuteMenuItem("Assets/Refresh");
+            var selectPath = savePath.Replace("Assets/../", "");
+            var assetObj = AssetDatabase.LoadAssetAtPath<Object>(selectPath);
+            EditorGUIUtility.PingObject(assetObj);
+            Selection.activeObject = assetObj;
+        }
+
+        [MenuItem("GameObject/YIUI/Create UIView", false, 2)]
+        static void CreateYIUIViewByGameObject()
         {
             var activeObject = Selection.activeObject as GameObject;
             if (activeObject == null)
@@ -31,8 +70,8 @@ namespace YIUIFramework.Editor
 
             var panelEditorData = panelCdeTable.PanelSplitData;
 
-            if (activeObject != panelEditorData.AllViewParent.gameObject &&
-                activeObject != panelEditorData.AllPopupViewParent.gameObject)
+            if (activeObject != panelEditorData.AllViewParent?.gameObject &&
+                activeObject != panelEditorData.AllPopupViewParent?.gameObject)
             {
                 UnityTipsHelper.ShowError($"只能在AllViewParent / AllPopupViewParent 下使用 快捷创建View");
                 return;
@@ -40,21 +79,14 @@ namespace YIUIFramework.Editor
 
             //ViewParent
             var viewParentObject = new GameObject();
-            var viewParentRect   = viewParentObject.GetOrAddComponent<RectTransform>();
+            var viewParentRect = viewParentObject.GetOrAddComponent<RectTransform>();
             viewParentObject.name = YIUIConstHelper.Const.UIYIUIViewParentName;
             viewParentRect.SetParent(activeObject.transform, false);
             viewParentRect.ResetToFullScreen();
 
             //View
-            var viewObject = new GameObject();
-            var viewRect   = viewObject.GetOrAddComponent<RectTransform>();
-            viewObject.GetOrAddComponent<CanvasRenderer>();
+            var viewObject = CreateYIUIView(viewParentObject);
             var cdeTable = viewObject.GetOrAddComponent<UIBindCDETable>();
-            cdeTable.UICodeType = EUICodeType.View;
-            viewObject.name     = YIUIConstHelper.Const.UIYIUIViewName;
-            viewRect.SetParent(viewParentRect, false);
-            viewRect.ResetToFullScreen();
-
             if (activeObject == panelEditorData.AllViewParent.gameObject)
             {
                 panelEditorData.AllCreateView.Add(viewParentRect);
@@ -69,6 +101,24 @@ namespace YIUIFramework.Editor
             viewParentObject.SetLayerRecursively(LayerMask.NameToLayer("UI"));
             Selection.activeObject = viewParentObject;
         }
+
+        public static GameObject CreateYIUIView(GameObject activeObject = null)
+        {
+            var viewObject = new GameObject();
+            viewObject.name = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIViewName}";
+            var viewRect = viewObject.GetOrAddComponent<RectTransform>();
+            viewObject.GetOrAddComponent<CanvasRenderer>();
+            var cdeTable = viewObject.GetOrAddComponent<UIBindCDETable>();
+            cdeTable.UICodeType = EUICodeType.View;
+            if (activeObject != null)
+            {
+                viewRect.SetParent(activeObject.transform, false);
+            }
+
+            viewRect.ResetToFullScreen();
+
+            viewObject.SetLayerRecursively(LayerMask.NameToLayer("UI"));
+            return viewObject;
+        }
     }
 }
-#endif

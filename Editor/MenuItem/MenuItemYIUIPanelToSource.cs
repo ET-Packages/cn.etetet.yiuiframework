@@ -1,7 +1,5 @@
-﻿#if UNITY_EDITOR
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using ET;
 using UnityEditor;
 using UnityEngine;
@@ -14,9 +12,7 @@ namespace YIUIFramework.Editor
     /// </summary>
     public static class MenuItemYIUIPanelToSource
     {
-        private static string m_PanelPath;
-
-        [MenuItem("Assets/YIUI/Panel 逆向 源数据 Source", false, 1)]
+        [MenuItem("Assets/YIUI/Panel 逆向 源数据 Source", false, -1)]
         static void CreateYIUIPanelByFolder()
         {
             var activeObject = Selection.activeObject as GameObject;
@@ -34,11 +30,13 @@ namespace YIUIFramework.Editor
                 return;
             }
 
+            string panelPath;
+
             var parts = path.Split(new string[] { "/Prefabs" }, StringSplitOptions.None);
 
             if (parts.Length > 1)
             {
-                m_PanelPath = string.Join("/", parts, 0, parts.Length - 1);
+                panelPath = string.Join("/", parts, 0, parts.Length - 1);
             }
             else
             {
@@ -77,7 +75,7 @@ namespace YIUIFramework.Editor
             }
 
             var newSourceName = $"{panelCdeTable.name}{YIUIConstHelper.Const.UISource}";
-            var savePath      = $"{m_PanelPath}/{YIUIConstHelper.Const.UISource}/{newSourceName}.prefab";
+            var savePath      = $"{panelPath}/{YIUIConstHelper.Const.UISource}/{newSourceName}.prefab";
 
             //TODO 有人不按要求操作直接不使用view 关联了其他组件 这个组件的引用逆向时会无法关联
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
@@ -176,4 +174,3 @@ namespace YIUIFramework.Editor
         }
     }
 }
-#endif

@@ -49,13 +49,7 @@ namespace YIUIFramework.Editor
             var createPanel = CreateYIUIPanel();
             PrefabUtility.SaveAsPrefabAsset(createPanel, savePath);
             Object.DestroyImmediate(createPanel);
-
-            AssetDatabase.SaveAssets();
-            EditorApplication.ExecuteMenuItem("Assets/Refresh");
-            var selectPath = savePath.Replace("Assets/../", "");
-            var assetObj   = AssetDatabase.LoadAssetAtPath<Object>(selectPath);
-            EditorGUIUtility.PingObject(assetObj);
-            Selection.activeObject = assetObj;
+            UIMenuItemHelper.SelectAssetAtPath(savePath);
         }
 
         public static GameObject CreateYIUIPanel(GameObject activeObject = null)

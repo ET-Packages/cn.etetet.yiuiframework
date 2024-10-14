@@ -36,5 +36,18 @@ namespace YIUIFramework.Editor
 
             return newGameObj;
         }
+
+        internal static GameObject SelectAssetAtPath(string savePath)
+        {
+            AssetDatabase.SaveAssets();
+            EditorApplication.ExecuteMenuItem("Assets/Refresh");
+            var selectPath = savePath.Replace("Assets/../", "");
+            var assetObj   = (GameObject)AssetDatabase.LoadAssetAtPath(selectPath, typeof(Object));
+            var cde        = assetObj.GetComponent<UIBindCDETable>();
+            cde.AutoCheck();
+            EditorGUIUtility.PingObject(assetObj);
+            Selection.activeObject = assetObj;
+            return assetObj;
+        }
     }
 }

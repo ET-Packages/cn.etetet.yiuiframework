@@ -17,8 +17,7 @@ namespace YIUIFramework.Editor
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (activeObject.name != YIUIConstHelper.Const.UIPrefabs ||
-                !path.Contains(YIUIConstHelper.Const.UIProjectResPath))
+            if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
                 UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
                 return;
@@ -47,16 +46,10 @@ namespace YIUIFramework.Editor
             var createPanel = CreateYIUIPanel();
             PrefabUtility.SaveAsPrefabAsset(createPanel, savePath);
             Object.DestroyImmediate(createPanel);
-
-            AssetDatabase.SaveAssets();
-            EditorApplication.ExecuteMenuItem("Assets/Refresh");
-            var selectPath = savePath.Replace("Assets/../", "");
-            var assetObj   = AssetDatabase.LoadAssetAtPath<Object>(selectPath);
-            EditorGUIUtility.PingObject(assetObj);
-            Selection.activeObject = assetObj;
+            UIMenuItemHelper.SelectAssetAtPath(savePath);
         }
 
-        public static GameObject CreateYIUIPanel(GameObject activeObject = null)
+        private static GameObject CreateYIUIPanel(GameObject activeObject = null)
         {
             //panel
             var panelObject = new GameObject();
@@ -85,24 +78,7 @@ namespace YIUIFramework.Editor
             backgroundRect.SetParent(panelRect, false);
             backgroundRect.ResetToFullScreen();
 
-            // 添加allView节点
-            var allViewObject = new GameObject();
-            var allViewRect   = allViewObject.GetOrAddComponent<RectTransform>();
-            allViewObject.name = YIUIConstHelper.Const.UIAllViewParentName;
-            allViewRect.SetParent(panelRect, false);
-            allViewRect.ResetToFullScreen();
-            panelEditorData.AllViewParent = allViewRect;
-
-            // 添加AllPopupView节点
-            var allPopupViewObject = new GameObject();
-            var allPopupViewRect   = allPopupViewObject.GetOrAddComponent<RectTransform>();
-            allPopupViewObject.name = YIUIConstHelper.Const.UIAllPopupViewParentName;
-            allPopupViewRect.SetParent(panelRect, false);
-            allPopupViewRect.ResetToFullScreen();
-            panelEditorData.AllPopupViewParent = allPopupViewRect;
-
             panelObject.SetLayerRecursively(LayerMask.NameToLayer("UI"));
-
             return panelObject;
         }
     }

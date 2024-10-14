@@ -107,6 +107,11 @@ namespace YIUIFramework
                 return false;
             }
 
+            if (obj == null)
+            {
+                return false;
+            }
+
             var checkInstance = PrefabUtility.IsPartOfPrefabInstance(obj);
             if (checkInstance)
             {

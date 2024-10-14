@@ -17,6 +17,17 @@ namespace YIUIFramework
         [HideLabel]
         [BoxGroup("面板拆分数据", centerLabel: true)]
         [OdinSerialize]
+        #if UNITY_EDITOR
+        [ShowIf("ShowIfPanelSplit")]
+        #endif
         internal UIPanelSplitData PanelSplitData = new();
+
+        #if UNITY_EDITOR
+
+        private bool ShowIfPanelSplit()
+        {
+            return PanelSplitData.AllViewParent != null || PanelSplitData.AllPopupViewParent != null;
+        }
+        #endif
     }
 }

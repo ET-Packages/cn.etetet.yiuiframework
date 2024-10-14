@@ -40,8 +40,8 @@ namespace YIUIFramework.Editor
 
             var newSource = UIMenuItemHelper.CopyGameObject(loadSource);
             var cdeTable  = newSource.GetComponent<UIBindCDETable>();
-            newSource.name                    = newSource.name.Replace(YIUIConstHelper.Const.UISource, "");
-            cdeTable.IsSplitData              = false;
+            newSource.name       = newSource.name.Replace(YIUIConstHelper.Const.UISource, "");
+            cdeTable.IsSplitData = false;
             var splitData = cdeTable.PanelSplitData;
 
             string savePath = "";
@@ -59,15 +59,22 @@ namespace YIUIFramework.Editor
             AllViewSaveAsPrefabAsset(oldSplitData.AllCreateView, splitData.AllCreateView, savePath);
             AllViewSaveAsPrefabAsset(oldSplitData.AllPopupView, splitData.AllPopupView, savePath);
 
-            //拆分后新的
+            //拆分后新的Panel
             var newPath = $"{savePath}/{newSource.name}.prefab";
             SaveAsPrefabAsset(newSource, newPath);
             Object.DestroyImmediate(newSource);
 
-            //老的重新关联 覆盖老数据
-            PrefabUtility.SaveAsPrefabAsset(oldSource, path);
-            Object.DestroyImmediate(oldSource);
+            var reserve = YIUIConstHelper.Const.SourceSplitReserve;
+            if (reserve)
+            {
+                PrefabUtility.SaveAsPrefabAsset(oldSource, path);
+            }
+            else
+            {
+                AssetDatabase.DeleteAsset(path);
+            }
 
+            Object.DestroyImmediate(oldSource);
             UnityTipsHelper.Show($"源数据拆分完毕");
             AssetDatabase.Refresh();
         }

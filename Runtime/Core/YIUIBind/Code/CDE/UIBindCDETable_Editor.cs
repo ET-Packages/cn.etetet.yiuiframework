@@ -212,7 +212,7 @@ namespace YIUIFramework
             ShowPackagesCreateBtn();
             OnValueChangedEUICodeType();
             OnValueChangedEPanelLayer();
-            if (UICodeType == EUICodeType.Panel && IsSplitData)
+            if (UICodeType == EUICodeType.Panel)
             {
                 PanelSplitData.Panel = gameObject;
                 if (!PanelSplitData.AutoCheck()) return false;

@@ -64,95 +64,132 @@ namespace YIUIFramework
         [LabelText("YIUI项目ET系统")]
         public string UIETSystemPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUISystem"; //玩家可编写的核心代码部分 ET系统
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI框架所处位置")]
         public string UIFrameworkPath = "Assets/../Packages/cn.etetet.yiuiframework";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目代码模板")]
         public string UITemplatePath = "Assets/../Packages/cn.etetet.yiuiframework/Editor/YIUIAutoTool/Template";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目Root预制")]
         public string UIRootPrefabPath = "Packages/cn.etetet.yiuiframework/Editor/UIRootPrefab/YIUIRoot.prefab";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPackages = "Packages";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIETPackagesFormat = "cn.etetet.";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIRootName = "YIUIRoot";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UILayerRootName = "YIUILayerRoot";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIRootPkgName = "Common";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPanelName = "Panel";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UICommonName = "Common";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIViewName = "View";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIParentName = "Parent";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPrefabs = "Prefabs";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPrefabsCN = "预制";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UISprites = "Sprites";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UISpritesCN = "精灵";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAtlas = "Atlas";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAtlasCN = "图集";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UISource = "Source";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UISourceCN = "源文件";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAtlasIgnore = "AtlasIgnore"; //图集忽略文件夹名称
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
-        public string UISpritesAtlas1 = "Atlas1"; //图集1 不需要华丽的取名 每个包内的自定义图集就按顺序就好 当然你也可以自定义其他
+        public string UISpritesAtlas1 = "Atlas1"; //图集1 不需要华丽的取名 每个包内的自定义图集就按顺序就好 自动创建的默认名称
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAllViewParentName = "AllViewParent";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIAllPopupViewParentName = "AllPopupViewParent";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIYIUIPanelSourceName = "YIUIPanelSource";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIPanelSourceName = "PanelSource";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIYIUIViewName = "YIUIView";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIViewParentName = "ViewParent";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIYIUIViewParentName = "YIUIViewParent";
+
+        #endregion
+
+        #region 源文件生成
+
+        [BoxGroup("生成", CenterLabel = true)]
+        [LabelText("源文件拆分后是否保留")]
+        public bool SourceSplitReserve = false;
 
         #endregion
 

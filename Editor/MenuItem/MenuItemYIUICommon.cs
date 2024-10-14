@@ -17,8 +17,7 @@ namespace YIUIFramework.Editor
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (activeObject.name != YIUIConstHelper.Const.UIPrefabs ||
-                !path.Contains(YIUIConstHelper.Const.UIProjectResPath))
+            if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
                 UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
                 return;
@@ -36,13 +35,7 @@ namespace YIUIFramework.Editor
             var createCommon = CreateYIUICommon();
             PrefabUtility.SaveAsPrefabAsset(createCommon, savePath);
             Object.DestroyImmediate(createCommon);
-
-            AssetDatabase.SaveAssets();
-            EditorApplication.ExecuteMenuItem("Assets/Refresh");
-            var selectPath = savePath.Replace("Assets/../", "");
-            var assetObj = AssetDatabase.LoadAssetAtPath<Object>(selectPath);
-            EditorGUIUtility.PingObject(assetObj);
-            Selection.activeObject = assetObj;
+            UIMenuItemHelper.SelectAssetAtPath(savePath);
         }
 
         [MenuItem("GameObject/YIUI/Create UICommon", false, 3)]

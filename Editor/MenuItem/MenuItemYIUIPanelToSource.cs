@@ -133,12 +133,7 @@ namespace YIUIFramework.Editor
 
                 //防止修改了生成的view路径 所以改为全局查找
                 //var viewPath = $"{m_PanelPath}/{YIUIConstHelper.Const.UIPrefabs}/{viewName}.prefab";
-
-                var viewPath = "";
-                foreach (string guid in AssetDatabase.FindAssets($"{viewName} t:Prefab", null))
-                {
-                    viewPath = AssetDatabase.GUIDToAssetPath(guid);
-                }
+                var viewPath = UIMenuItemHelper.GetOnlyPrefabAssetsPath(viewName);
 
                 if (string.IsNullOrEmpty(viewPath))
                 {

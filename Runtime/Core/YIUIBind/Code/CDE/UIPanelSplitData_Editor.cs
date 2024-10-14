@@ -17,6 +17,7 @@ namespace YIUIFramework
 
         internal bool ShowCreatePanelViewEnum()
         {
+            if (!ShowAutoCheckBtn()) return false;
             return (AllCommonView.Count + AllCreateView.Count + AllPopupView.Count) >= 1;
         }
 
@@ -249,16 +250,13 @@ namespace YIUIFramework
                     continue;
                 }
 
-                var    viewName   = current.name.Replace(YIUIConstHelper.Const.UIParentName, "");
-                var    viewPrefab = AssetDatabase.FindAssets($"{viewName} t:Prefab", null);
-                string viewPath;
-                if (viewPrefab is not { Length: > 0 })
+                var viewName = current.name.Replace(YIUIConstHelper.Const.UIParentName, "");
+
+                var viewPath = GetOnlyPrefabAssetsPath(viewName, false);
+
+                if (string.IsNullOrEmpty(viewPath))
                 {
                     viewPath = ViewSaveAsPrefabAsset(current);
-                }
-                else
-                {
-                    viewPath = AssetDatabase.GUIDToAssetPath(viewPrefab[0]);
                 }
 
                 if (string.IsNullOrEmpty(viewPath))
@@ -337,17 +335,7 @@ namespace YIUIFramework
             var path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(source.gameObject);
             if (string.IsNullOrEmpty(path))
             {
-                var prefab = AssetDatabase.FindAssets($"{source.gameObject.name} t:Prefab", null);
-                if (prefab is { Length: >= 1 })
-                {
-                    if (prefab.Length >= 2)
-                    {
-                        UnityTipsHelper.ShowErrorContext(source,
-                            $"{source.name} 存在[{prefab.Length}]个同名预制体 请检查\n如果是才生成的新预制必须修改命名 不能用默认名称");
-                    }
-
-                    path = AssetDatabase.GUIDToAssetPath(prefab[0]);
-                }
+                path = GetOnlyPrefabAssetsPath(source.gameObject.name);
             }
 
             var loadSource = (GameObject)AssetDatabase.LoadAssetAtPath(path, typeof(Object));
@@ -493,6 +481,57 @@ namespace YIUIFramework
                     Debug.LogError($"{current.parent?.parent?.name}的{current.parent?.name}下的ViewParent: [{current.name}] 重复存在 已移除 请检查",
                         current);
                 }
+            }
+        }
+
+        internal static string GetOnlyPrefabAssetsPath(string assetName, bool tips = true)
+        {
+            var allResult = AssetDatabase.FindAssets($"{assetName} t:Prefab", null);
+            if (allResult == null)
+            {
+                if (tips)
+                    Debug.LogError($"未找到预制体 {assetName}");
+                return null;
+            }
+
+            if (allResult.Length == 1)
+            {
+                return AssetDatabase.GUIDToAssetPath(allResult[0]);
+            }
+
+            var allPath = new List<string>();
+            foreach (var guid in allResult)
+            {
+                var path     = AssetDatabase.GUIDToAssetPath(guid);
+                var fileName = Path.GetFileNameWithoutExtension(path);
+                if (fileName == assetName)
+                {
+                    allPath.Add(path);
+                }
+            }
+
+            if (allPath.Count <= 0)
+            {
+                if (tips)
+                    Debug.LogError($"未找到预制体 {assetName}");
+                return null;
+            }
+
+            if (allPath.Count >= 2)
+            {
+                for (int i = 0; i < allPath.Count; i++)
+                {
+                    Debug.LogError($"[{i + 1}] 找到多个预制体 {assetName} 请检查 命名不能有重复!!!\n[{i + 1}] {allPath[i]}", LoadAssetAtPath(allPath[i]));
+                }
+            }
+
+            return allPath[0];
+
+            GameObject LoadAssetAtPath(string path)
+            {
+                var selectPath = path.Replace("Assets/../", "");
+                var assetObj   = (GameObject)AssetDatabase.LoadAssetAtPath(selectPath, typeof(Object));
+                return assetObj;
             }
         }
     }

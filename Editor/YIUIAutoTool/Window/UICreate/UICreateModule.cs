@@ -174,16 +174,7 @@ namespace YIUIFramework.Editor
             var path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(cdeTable);
             if (string.IsNullOrEmpty(path))
             {
-                var prefab = AssetDatabase.FindAssets($"{cdeTable.gameObject.name} t:Prefab", null);
-                if (prefab is { Length: >= 1 })
-                {
-                    if (prefab.Length >= 2)
-                    {
-                        UnityTipsHelper.ShowErrorContext(cdeTable,
-                            $"{cdeTable.gameObject.name} 存在[{prefab.Length}]个同名预制体 请检查\n如果是才生成的新预制必须修改命名 不能用默认名称");
-                    }
-                    path = AssetDatabase.GUIDToAssetPath(prefab[0]);
-                }
+                path = UIMenuItemHelper.GetOnlyPrefabAssetsPath(cdeTable.gameObject.name);
             }
 
             var pkgName = GetPkgName(path);

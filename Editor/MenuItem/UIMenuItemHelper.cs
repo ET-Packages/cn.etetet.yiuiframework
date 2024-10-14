@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace YIUIFramework.Editor
@@ -48,6 +49,11 @@ namespace YIUIFramework.Editor
             EditorGUIUtility.PingObject(assetObj);
             Selection.activeObject = assetObj;
             return assetObj;
+        }
+
+        internal static string GetOnlyPrefabAssetsPath(string assetName, bool tips = true)
+        {
+            return UIPanelSplitData.GetOnlyPrefabAssetsPath(assetName, tips);
         }
     }
 }

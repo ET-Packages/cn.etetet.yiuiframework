@@ -1,5 +1,7 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
@@ -198,25 +200,26 @@ namespace YIUIFramework.Editor
             return true;
         }
 
-        public static string GetPkgName(string path, string currentName = "")
+        //这个是模块名
+        //不是ET的包名
+        public static string GetPkgName(string path)
         {
-            if (!path.Replace("\\", "/").Contains(YIUIConstHelper.Const.UIProjectResPath))
+            var resPath = $"{YIUIConstHelper.Const.UIProjectResPath}/";
+            if (!path.Replace("\\", "/").Contains(resPath))
             {
                 return null;
             }
 
-            var parentInfo = System.IO.Directory.GetParent(path);
-            if (parentInfo == null)
+            var relativePath = path.Substring(path.IndexOf(resPath, StringComparison.Ordinal) + resPath.Length);
+
+            var splitPath = relativePath.Split('/');
+
+            if (splitPath.Length <= 1)
             {
-                return currentName;
+                return null;
             }
 
-            if (parentInfo.Name == YIUIConstHelper.Const.UIProjectName)
-            {
-                return currentName;
-            }
-
-            return GetPkgName(parentInfo.FullName, parentInfo.Name);
+            return splitPath[0];
         }
 
         //收集所有公共组件

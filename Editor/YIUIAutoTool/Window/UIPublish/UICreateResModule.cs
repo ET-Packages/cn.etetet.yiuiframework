@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
@@ -11,6 +12,8 @@ namespace YIUIFramework.Editor
         [InfoBox("UI所在的ET分包中的包名[cn.etetet.{0}]，可以没有 没有时生成在Unity/Assets/下")]
         [LabelText("新增模块指定分包名")]
         public string PackageName;
+
+        private StringPrefs m_LastPackageName = new("UICreateResModule_LastPackageName");
 
         [InfoBox("UI所对应的模块名 不是ET分包名称 全分包建议名称唯一")]
         [LabelText("新增模块名称")]
@@ -33,6 +36,8 @@ namespace YIUIFramework.Editor
                 return;
             }
 
+            packageName = packageName.Replace(" ", "").Replace("cn.etetet.", "");
+
             createName = NameUtility.ToFirstUpper(createName);
 
             string basePath = "";
@@ -42,6 +47,14 @@ namespace YIUIFramework.Editor
             }
             else
             {
+                var packageFullName = $"{YIUIConstHelper.Const.UIETPackagesFormat}{packageName}";
+                var packagePath     = $"{Application.dataPath}/../Packages/{packageFullName}";
+                if (!System.IO.Directory.Exists(packagePath))
+                {
+                    UnityTipsHelper.ShowError($"目标包不存在 请检查包名是否正确: {packageFullName}");
+                    return;
+                }
+
                 basePath = $"{string.Format(YIUIConstHelper.Const.UIProjectPackageResPath, packageName)}/{createName}";
             }
 
@@ -62,6 +75,16 @@ namespace YIUIFramework.Editor
             MenuItemYIUIPanelSource.CreateYIUIPanelByPath(sourcePath, createName);
 
             YIUIAutoTool.CloseWindowRefresh();
+        }
+
+        public override void Initialize()
+        {
+            PackageName = m_LastPackageName;
+        }
+
+        public override void OnDestroy()
+        {
+            m_LastPackageName.Value = PackageName;
         }
     }
 }

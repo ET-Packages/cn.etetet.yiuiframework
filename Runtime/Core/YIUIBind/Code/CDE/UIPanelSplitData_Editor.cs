@@ -361,8 +361,7 @@ namespace YIUIFramework
             var newPath = $"{savePath}/{viewName}.prefab";
             PrefabUtility.SaveAsPrefabAsset(view, newPath);
             Object.DestroyImmediate(view);
-            AssetDatabase.SaveAssets();
-            EditorApplication.ExecuteMenuItem("Assets/Refresh");
+            SelectAssetAtPath(newPath, false);
             return newPath.Replace("Assets/../", "");
         }
 
@@ -482,6 +481,30 @@ namespace YIUIFramework
                         current);
                 }
             }
+        }
+
+        internal static GameObject SelectAssetAtPath(string assetPath, bool select = true)
+        {
+            AssetDatabase.SaveAssets();
+            EditorApplication.ExecuteMenuItem("Assets/Refresh");
+            var selectPath = assetPath.Replace("Assets/../", "");
+            var assetObj   = (GameObject)AssetDatabase.LoadAssetAtPath(selectPath, typeof(Object));
+            var cde        = assetObj.GetComponent<UIBindCDETable>();
+            if (cde == null)
+            {
+                Debug.LogError($"{assetObj.name} 没有找到CDE 这是必须的 请检查");
+            }
+            else
+            {
+                cde.AutoCheck();
+            }
+            if (select)
+            {
+                EditorGUIUtility.PingObject(assetObj);
+                Selection.activeObject = assetObj;
+            }
+
+            return assetObj;
         }
 
         internal static string GetOnlyPrefabAssetsPath(string assetName, bool tips = true)

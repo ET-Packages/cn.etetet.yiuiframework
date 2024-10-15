@@ -108,9 +108,7 @@ namespace YIUIFramework.Editor
                 viewRect.SetParent(activeObject.transform, false);
                 EditorUtility.SetDirty(activeObject);
             }
-
             viewRect.ResetToFullScreen();
-
             viewObject.SetLayerRecursively(LayerMask.NameToLayer("UI"));
             return viewObject;
         }

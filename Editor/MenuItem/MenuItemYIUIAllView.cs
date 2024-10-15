@@ -50,6 +50,7 @@ namespace YIUIFramework.Editor
             panelCdeTable.PanelSplitData.AllViewParent = viewRect;
             panelCdeTable.PanelSplitData.AllCommonView.Clear();
             panelCdeTable.PanelSplitData.AllCreateView.Clear();
+            EditorUtility.SetDirty(panelCdeTable);
             return allViewObject;
         }
     }

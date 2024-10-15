@@ -49,6 +49,7 @@ namespace YIUIFramework.Editor
 
             panelCdeTable.PanelSplitData.AllPopupViewParent = viewRect;
             panelCdeTable.PanelSplitData.AllPopupView.Clear();
+            EditorUtility.SetDirty(panelCdeTable);
             return allViewObject;
         }
     }

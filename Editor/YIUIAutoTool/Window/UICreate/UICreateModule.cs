@@ -171,10 +171,12 @@ namespace YIUIFramework.Editor
 
         public static bool InitVoName(UIBindCDETable cdeTable)
         {
-            var path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(cdeTable);
+            //var path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(cdeTable);
+            var path = UIMenuItemHelper.GetOnlyPrefabAssetsPath(cdeTable.gameObject.name);
             if (string.IsNullOrEmpty(path))
             {
-                path = UIMenuItemHelper.GetOnlyPrefabAssetsPath(cdeTable.gameObject.name);
+                UnityTipsHelper.ShowErrorContext(cdeTable, $"没有找到预制 {cdeTable.gameObject.name}");
+                return false;
             }
 
             var pkgName = GetPkgName(path);

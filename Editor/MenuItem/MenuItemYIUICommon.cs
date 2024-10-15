@@ -62,6 +62,7 @@ namespace YIUIFramework.Editor
             if (activeObject != null)
             {
                 viewRect.SetParent(activeObject.transform, false);
+                EditorUtility.SetDirty(activeObject);
             }
 
             commonObject.SetLayerRecursively(LayerMask.NameToLayer("UI"));

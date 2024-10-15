@@ -66,6 +66,7 @@ namespace YIUIFramework.Editor
             if (activeObject != null)
             {
                 panelRect.SetParent(activeObject.transform, false);
+                EditorUtility.SetDirty(activeObject);
             }
             panelRect.ResetToFullScreen();
 

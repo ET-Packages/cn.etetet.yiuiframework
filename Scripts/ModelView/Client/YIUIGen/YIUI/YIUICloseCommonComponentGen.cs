@@ -13,7 +13,7 @@ namespace ET.Client
     [ComponentOf(typeof(YIUIChild))]
     public partial class YIUICloseCommonComponent : Entity, IDestroy, IAwake, IYIUIBind, IYIUIInitialize
     {
-        public const string PkgName = "Prefabs";
+        public const string PkgName = "YIUI";
         public const string ResName = "YIUICloseCommon";
 
         public EntityRef<YIUIChild> u_UIBase;

@@ -13,16 +13,16 @@ namespace YIUIFramework.Editor
         public static string Get(UIBindCDETable cdeTable)
         {
             var sb = SbPool.Get();
-            cdeTable.GetEventTable(sb);
+            cdeTable.GetViewEnum(sb);
             return SbPool.PutAndToStr(sb);
         }
 
-        private static void GetEventTable(this UIBindCDETable self, StringBuilder sb)
+        private static void GetViewEnum(this UIBindCDETable self, StringBuilder sb)
         {
             var splitData = self.PanelSplitData;
             if (splitData == null) return;
-            if (!splitData.ShowCreatePanelViewEnum()) return;
             if (!splitData.CreatePanelViewEnum) return;
+            if (splitData.AllCommonView.Count + splitData.AllCreateView.Count + splitData.AllPopupView.Count <= 0) return;
             var index = 1;
 
             sb.Append("    /// <summary>\n    /// 由YIUI工具自动创建 请勿修改\n    /// 当前Panel所有可用view枚举\n    /// </summary>\n");

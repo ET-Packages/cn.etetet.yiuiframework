@@ -19,6 +19,8 @@ namespace ET.Client
         public ETTask _LastOpenETTask;
         public ETTask _LastCloseETTask;
 
+        public YIUIBindVo UIBindVo;
+
         private EntityRef<YIUIChild> _uiBase;
         private YIUIChild            _UIBase => _uiBase;
 
@@ -28,7 +30,11 @@ namespace ET.Client
             {
                 if (_UIBase == null)
                 {
-                    _uiBase = this.GetParent<YIUIChild>();
+                    var yiuiChild = this.GetParent<YIUIChild>();
+                    if (yiuiChild is { IsDisposed: false })
+                    {
+                        _uiBase = yiuiChild;
+                    }
                 }
 
                 return _UIBase;
@@ -58,7 +64,7 @@ namespace ET.Client
         /// </summary>
         public EWindowOption WindowOption = EWindowOption.None;
 
-        public bool    m_FirstOpenTween;
-        public bool    m_FirstCloseTween;
+        public bool m_FirstOpenTween;
+        public bool m_FirstCloseTween;
     }
 }

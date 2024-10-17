@@ -56,12 +56,26 @@ namespace ET.Client
 
         public void ResetUI(YIUIChild uiBase)
         {
-            m_UIBase = uiBase;
+            if (uiBase is { IsDisposed: false })
+            {
+                m_UIBase = uiBase;
+            }
+            else
+            {
+                m_UIBase = default;
+            }
         }
 
         public void ResetEntity(Entity entity)
         {
-            m_OwnerUIEntity = entity;
+            if (entity is { IsDisposed: false })
+            {
+                m_OwnerUIEntity = entity;
+            }
+            else
+            {
+                m_OwnerUIEntity = default;
+            }
         }
     }
 }

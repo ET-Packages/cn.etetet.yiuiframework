@@ -14,6 +14,8 @@ namespace ET.Client
     [ComponentOf(typeof(YIUIChild))]
     public partial class YIUIPanelComponent : Entity, IAwake, IYIUIInitialize, IDestroy
     {
+        public YIUIBindVo UIBindVo;
+
         private EntityRef<YIUIChild> _uiBase;
         private YIUIChild            _UIBase => _uiBase;
 
@@ -23,7 +25,11 @@ namespace ET.Client
             {
                 if (_UIBase == null)
                 {
-                    _uiBase = this.GetParent<YIUIChild>();
+                    var yiuiChild = this.GetParent<YIUIChild>();
+                    if (yiuiChild is { IsDisposed: false })
+                    {
+                        _uiBase = yiuiChild;
+                    }
                 }
 
                 return _UIBase;

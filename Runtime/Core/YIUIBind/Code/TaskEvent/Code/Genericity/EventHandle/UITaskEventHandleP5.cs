@@ -82,7 +82,7 @@ namespace YIUIFramework
         {
             OnEventInvokeType        = null;
             UITaskEventParamDelegate = null;
-            m_Trigger                = null;
+            m_Trigger                = default;
             if (m_UITaskEventList == null || m_UITaskEventNode == null) return;
             m_UITaskEventList.Remove(m_UITaskEventNode);
             m_UITaskEventNode = null;

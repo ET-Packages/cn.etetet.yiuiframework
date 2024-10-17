@@ -85,7 +85,7 @@ namespace YIUIFramework
         {
             OnEventInvokeType    = null;
             UIEventParamDelegate = null;
-            m_Trigger            = null;
+            m_Trigger            = default;
             if (m_UIEventList == null || m_UIEventNode == null) return;
             m_UIEventList.Remove(m_UIEventNode);
             m_UIEventNode = null;

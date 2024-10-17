@@ -16,6 +16,7 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this YIUIPanelComponent self)
         {
+            self.UIBindVo = self.UIBase.UIBindVo;
         }
 
         [EntitySystem]
@@ -30,7 +31,7 @@ namespace ET.Client
             self.StopCountDownDestroyPanel();
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeDestroyPanel
                                                  {
-                                                     PanelName = self.UIBase.UIBindVo.ComponentType.Name
+                                                     PanelName = self.UIBindVo.ComponentType.Name
                                                  });
         }
     }

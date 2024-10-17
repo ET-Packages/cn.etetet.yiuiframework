@@ -21,7 +21,11 @@ namespace ET.Client
             {
                 if (_UIBase == null)
                 {
-                    _uiBase = this.GetParent<YIUIChild>();
+                    var yiuiChild = this.GetParent<YIUIChild>();
+                    if (yiuiChild is { IsDisposed: false })
+                    {
+                        _uiBase = yiuiChild;
+                    }
                 }
 
                 return _UIBase;

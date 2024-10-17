@@ -24,7 +24,7 @@ namespace ET.Client
         [EntitySystem]
         private static void Destroy(this YIUILoadComponent self)
         {
-            YIUILoadComponent.m_InstRef = null;
+            YIUILoadComponent.m_InstRef = default;
         }
 
         public static async ETTask<bool> Initialize(this YIUILoadComponent self)

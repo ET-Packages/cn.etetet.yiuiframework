@@ -20,6 +20,7 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this YIUIWindowComponent self)
         {
+            self.UIBindVo = self.UIBase.UIBindVo;
         }
 
         [EntitySystem]

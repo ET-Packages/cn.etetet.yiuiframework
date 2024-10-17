@@ -27,7 +27,7 @@ namespace ET.Client
             YIUIBindHelper.Reset();
             YIUISingletonHelper.DisposeAll();
             self.ResetRoot();
-            YIUIMgrComponent.m_InstRef = null;
+            YIUIMgrComponent.m_InstRef = default;
         }
     }
 }

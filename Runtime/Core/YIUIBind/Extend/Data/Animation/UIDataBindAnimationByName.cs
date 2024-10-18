@@ -69,6 +69,11 @@ namespace YIUIFramework
 
         protected override void OnValueChanged()
         {
+            if (!UIOperationHelper.IsPlaying())
+            {
+                return;
+            }
+
             if (m_Animation == null) return;
 
             var dataValue = GetFirstValue<string>();

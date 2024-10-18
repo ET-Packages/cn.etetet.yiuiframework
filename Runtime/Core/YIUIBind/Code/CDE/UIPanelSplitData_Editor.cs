@@ -346,18 +346,7 @@ namespace YIUIFramework
                 return "";
             }
 
-            string savePath = "";
-            if (UIOperationHelper.CheckUIIsPackages(loadSource, false))
-            {
-                var etPkgName = UIOperationHelper.GetETPackagesName(loadSource, false);
-                savePath =
-                        $"{string.Format(YIUIConstHelper.Const.UIProjectPackageResPath, etPkgName)}/{pkgName}/{YIUIConstHelper.Const.UIPrefabs}";
-            }
-            else
-            {
-                savePath = $"{YIUIConstHelper.Const.UIProjectResPath}/{pkgName}/{YIUIConstHelper.Const.UIPrefabs}";
-            }
-
+            var savePath = Path.GetDirectoryName(path);
             var newPath = $"{savePath}/{viewName}.prefab";
             PrefabUtility.SaveAsPrefabAsset(view, newPath);
             Object.DestroyImmediate(view);

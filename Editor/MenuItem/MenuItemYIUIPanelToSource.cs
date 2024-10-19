@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using ET;
 using UnityEditor;
 using UnityEngine;
@@ -24,25 +25,22 @@ namespace YIUIFramework.Editor
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
+            var containsPath = $"/{YIUIConstHelper.Const.UIProjectResPath}/";
+            if (!path.Contains(containsPath))
             {
-                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPanelName} 下右键选择一个Panel 进行转换");
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/ 下右键选择一个Panel 进行转换");
                 return;
             }
 
-            string panelPath;
-
-            var parts = path.Split(new string[] { "/Prefabs" }, StringSplitOptions.None);
-
-            if (parts.Length > 1)
-            {
-                panelPath = string.Join("/", parts, 0, parts.Length - 1);
-            }
-            else
+            var parts = path.Split(new[] { containsPath }, StringSplitOptions.None);
+            if (parts.Length < 2)
             {
                 Log.Error("路径中没有找到预制件。");
                 return;
             }
+
+            var pathRoot = parts[0];
+            var pkgName  = parts[1].Split('/')[0];
 
             var panelCdeTable = activeObject.GetComponent<UIBindCDETable>();
             if (panelCdeTable == null)
@@ -75,7 +73,7 @@ namespace YIUIFramework.Editor
             }
 
             var newSourceName = $"{panelCdeTable.name}{YIUIConstHelper.Const.UISource}";
-            var savePath      = $"{panelPath}/{YIUIConstHelper.Const.UISource}/{newSourceName}.prefab";
+            var savePath      = $"{pathRoot}{containsPath}{pkgName}/{YIUIConstHelper.Const.UISource}/{newSourceName}.prefab";
 
             //TODO 有人不按要求操作直接不使用view 关联了其他组件 这个组件的引用逆向时会无法关联
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
@@ -103,6 +101,11 @@ namespace YIUIFramework.Editor
             newSource.name          = $"{loadPanel.name}{YIUIConstHelper.Const.UISource}";
 
             CorrelationView(oldCdeTable);
+            var pathRoot = Path.GetDirectoryName(savePath);
+            if (!Directory.Exists(pathRoot))
+            {
+                Directory.CreateDirectory(pathRoot);
+            }
 
             PrefabUtility.SaveAsPrefabAsset(newSource, savePath);
             Object.DestroyImmediate(newSource);

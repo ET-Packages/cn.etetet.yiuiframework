@@ -25,6 +25,7 @@ namespace YIUIFramework.Editor
             if (newGameObj.name.EndsWith("(Clone)"))
                 newGameObj.name = newGameObj.name.Replace("(Clone)", "");
 
+            EditorUtility.SetDirty(parent != null ? parent : newGameObj);
             return newGameObj;
         }
 

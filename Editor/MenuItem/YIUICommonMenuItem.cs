@@ -3,19 +3,27 @@ using UnityEngine;
 
 namespace YIUIFramework.Editor
 {
-    internal static class YIUICommonMenuItem
+    internal static partial class YIUICommonMenuItem
     {
-        private static void CreateTarget(string targetName)
+        public static GameObject CreateTarget(string path, string targetName)
         {
             var activeObject = Selection.activeObject as GameObject;
             if (activeObject == null)
             {
                 UnityTipsHelper.ShowError($"请选择一个对象 右键创建");
-                return;
+                return null;
             }
 
-            var path = $"Packages/cn.etetet.yiuiframework/Editor/TemplatePrefabs/YIUI/{targetName}.prefab";
-            Selection.activeObject = UIMenuItemHelper.CloneGameObjectByPath(path, activeObject.transform);
+            var clonePath = $"{path}/{targetName}.prefab";
+            var obj       = UIMenuItemHelper.CloneGameObjectByPath(clonePath, activeObject.transform);
+            Selection.activeObject = obj;
+            return obj;
+        }
+
+        internal static GameObject CreateTarget(string targetName)
+        {
+            var path = $"Packages/cn.etetet.yiuiframework/Editor/TemplatePrefabs/YIUI";
+            return CreateTarget(path, targetName);
         }
 
         [MenuItem("GameObject/YIUI/UIBlockBG", false, 100000)]
@@ -52,6 +60,24 @@ namespace YIUIFramework.Editor
         private static void CreateButton_NoText()
         {
             CreateTarget("YIUIButton_NoText");
+        }
+
+        [MenuItem("GameObject/YIUI/Click_Event", false, 110001)]
+        private static void CreateClick_Event()
+        {
+            var obj = CreateTarget("UIBlockBG");
+            obj.name = "ClickEvent";
+            obj.AddComponent<YIUIClickEffect>();
+            obj.AddComponent<UIEventBindClick>();
+        }
+
+        [MenuItem("GameObject/YIUI/Click_Task", false, 110002)]
+        private static void CreateClick_Task()
+        {
+            var obj = CreateTarget("UIBlockBG");
+            obj.name = "ClickTask";
+            obj.AddComponent<YIUIClickEffect>();
+            obj.AddComponent<UITaskEventBindClick>();
         }
     }
 }

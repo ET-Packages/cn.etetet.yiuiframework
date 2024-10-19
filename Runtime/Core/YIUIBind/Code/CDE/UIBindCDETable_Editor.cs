@@ -65,7 +65,7 @@ namespace YIUIFramework
         [MinValue(0.01)]
         public float CachePanelTime = 10;
 
-        private bool ShowCachePanelTime => PanelOption.HasFlag(EPanelOption.TimeCache);
+        private bool ShowCachePanelTime => PanelOption.HasFlag(EPanelOption.TimeCache) && !PanelOption.HasFlag(EPanelOption.ForeverCache);
 
         [LabelText("同层级时 优先级高的在前面")] //相同时后开的在前
         [ShowIf("UICodeType", EUICodeType.Panel)]

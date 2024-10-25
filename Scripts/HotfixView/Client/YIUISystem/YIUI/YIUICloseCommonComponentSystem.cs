@@ -46,7 +46,7 @@ namespace ET.Client
 
         #region YIUIEvent开始
 
-        [YIUIInvoke]
+        [YIUIInvoke(YIUICloseCommonComponent.OnEventCloseInvoke)]
         private static async ETTask OnEventCloseInvoke(this YIUICloseCommonComponent self)
         {
             await self.CloseUI(self.Parent);

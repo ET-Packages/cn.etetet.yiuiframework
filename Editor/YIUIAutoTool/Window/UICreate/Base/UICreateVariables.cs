@@ -64,10 +64,10 @@ namespace YIUIFramework.Editor
                 if (string.IsNullOrEmpty(name)) continue;
                 var uiEventBase = value.Value;
                 if (uiEventBase == null) continue;
-                sb.AppendFormat("        public {0} {1};\r\n", uiEventBase.GetEventType(),
-                                name);
-                sb.AppendFormat("        public {0} {1};\r\n",
-                                uiEventBase.GetEventHandleType(), $"{name}Handle");
+                sb.AppendFormat("        public {0} {1};\r\n", uiEventBase.GetEventType(), name);
+                sb.AppendFormat("        public {0} {1};\r\n", uiEventBase.GetEventHandleType(), $"{name}Handle");
+                var onEvent = $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke";
+                sb.AppendFormat("        public const string {0} = \"{1}.{0}\";\r\n", onEvent, $"{self.ResName}Component");
             }
         }
 
@@ -93,9 +93,9 @@ namespace YIUIFramework.Editor
 
                 existName.Add(newName);
                 sb.AppendFormat("        public {0} {1};\r\n",
-                                $"EntityRef<{YIUIConstHelper.Const.UINamespace}.{resName}Component>", newName);
+                    $"EntityRef<{YIUIConstHelper.Const.UINamespace}.{resName}Component>", newName);
                 sb.AppendFormat("        public {0} {1} => {2};\r\n",
-                                $"{YIUIConstHelper.Const.UINamespace}.{resName}Component", newName.Replace(NameUtility.FirstName, ""), newName);
+                    $"{YIUIConstHelper.Const.UINamespace}.{resName}Component", newName.Replace(NameUtility.FirstName, ""), newName);
             }
         }
 

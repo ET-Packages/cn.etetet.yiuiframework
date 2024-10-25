@@ -63,7 +63,8 @@ namespace YIUIFramework.Editor
                 var uiEventBase = value.Value;
                 if (uiEventBase == null) continue;
                 sb.AppendFormat("            self.{1} = self.UIBase.EventTable.FindEvent<{0}>(\"{1}\");\r\n", uiEventBase.GetEventType(), name);
-                sb.AppendFormat("            self.{0} = self.{1}.Add(self,\"{2}\");\r\n", $"{name}Handle", name, $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke");
+                var onEvent      = $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke";
+                sb.AppendFormat("            self.{0} = self.{1}.Add(self,{2});\r\n", $"{name}Handle", name, $"{self.ResName}Component.{onEvent}");
             }
         }
 

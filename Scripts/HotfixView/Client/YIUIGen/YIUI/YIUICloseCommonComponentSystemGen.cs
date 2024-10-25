@@ -28,7 +28,7 @@ namespace ET.Client
             self.u_UIBase = self.GetParent<YIUIChild>();
 
             self.u_EventClose = self.UIBase.EventTable.FindEvent<UITaskEventP0>("u_EventClose");
-            self.u_EventCloseHandle = self.u_EventClose.Add(self,"OnEventCloseInvoke");
+            self.u_EventCloseHandle = self.u_EventClose.Add(self,YIUICloseCommonComponent.OnEventCloseInvoke);
 
         }
     }

@@ -20,6 +20,7 @@ namespace ET.Client
         public YIUIChild UIBase => u_UIBase;
         public UITaskEventP0 u_EventClose;
         public UITaskEventHandleP0 u_EventCloseHandle;
+        public const string OnEventCloseInvoke = "YIUICloseCommonComponent.OnEventCloseInvoke";
 
     }
 }

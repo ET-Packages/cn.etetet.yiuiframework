@@ -194,20 +194,20 @@ namespace YIUIFramework.Editor
                 if (string.IsNullOrEmpty(name)) continue;
                 var uiEventBase = value.Value;
                 if (uiEventBase == null) continue;
-                var    onEvent              = $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke";
-                var    component            = $"{cdeTable.ResName}Component";
-                var    eventParam           = GetEventMethodParam(uiEventBase);
-                var    eventParamType       = GetEventMethodParamType(uiEventBase);
-                var    systemEventParam     = string.IsNullOrEmpty(eventParam) ? "" : $",{eventParam}";
-                var    systemEventParamType = string.IsNullOrEmpty(eventParamType) ? "" : $",{eventParamType}";
-                
+                var onEvent              = $"OnEvent{name.Replace($"{NameUtility.FirstName}{NameUtility.EventName}", "")}Invoke";
+                var component            = $"{cdeTable.ResName}Component";
+                var eventParam           = GetEventMethodParam(uiEventBase);
+                var eventParamType       = GetEventMethodParamType(uiEventBase);
+                var systemEventParam     = string.IsNullOrEmpty(eventParam) ? "" : $",{eventParam}";
+                var systemEventParamType = string.IsNullOrEmpty(eventParamType) ? "" : $",{eventParamType}";
+
                 var check = $"{onEvent}(this {component} self{systemEventParam})";
-                
+
                 string content;
                 if (uiEventBase.IsTaskEvent)
                 {
                     content = @$"
-        [YIUIInvoke]
+        [YIUIInvoke({$"{component}.{onEvent}"})]
         private static async ETTask {onEvent}(this {component} self{systemEventParam})
         {{
             
@@ -218,7 +218,7 @@ namespace YIUIFramework.Editor
                 else
                 {
                     content = @$"
-        [YIUIInvoke]
+        [YIUIInvoke({$"{component}.{onEvent}"})]
         private static void {onEvent}(this {component} self{systemEventParam})
         {{
 

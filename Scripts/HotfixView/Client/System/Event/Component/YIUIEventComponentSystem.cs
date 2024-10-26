@@ -31,26 +31,26 @@ namespace ET.Client
         {
             self._AllEventInfo = new();
 
-            var types = CodeTypes.Instance.GetTypes(typeof(YIUIEventAttribut));
+            var types = CodeTypes.Instance.GetTypes(typeof(YIUIEventAttribute));
             foreach (var type in types)
             {
-                var eventAttribut = type.GetCustomAttribute<YIUIEventAttribut>(false);
-                var obj           = (IYIUICommonEvent)Activator.CreateInstance(type);
-                var eventType     = eventAttribut.EventType;
-                var componentName = eventAttribut.ComponentType.Name;
-                var info          = new YIUIEventInfo(eventType, componentName, obj);
+                var eventAttribute = type.GetCustomAttribute<YIUIEventAttribute>(false);
+                var obj            = (IYIUICommonEvent)Activator.CreateInstance(type);
+                var eventType      = eventAttribute.EventType;
+                var componentName  = eventAttribute.ComponentType.Name;
+                var info           = new YIUIEventInfo(eventType, componentName, obj);
 
-                if (!self._AllEventInfo.ContainsKey(eventAttribut.EventType))
+                if (!self._AllEventInfo.ContainsKey(eventAttribute.EventType))
                 {
-                    self._AllEventInfo.Add(eventAttribut.EventType, new Dictionary<string, List<YIUIEventInfo>>());
+                    self._AllEventInfo.Add(eventAttribute.EventType, new Dictionary<string, List<YIUIEventInfo>>());
                 }
 
-                if (!self._AllEventInfo[eventAttribut.EventType].ContainsKey(componentName))
+                if (!self._AllEventInfo[eventAttribute.EventType].ContainsKey(componentName))
                 {
-                    self._AllEventInfo[eventAttribut.EventType].Add(componentName, new List<YIUIEventInfo>());
+                    self._AllEventInfo[eventAttribute.EventType].Add(componentName, new List<YIUIEventInfo>());
                 }
 
-                var infoList = self._AllEventInfo[eventAttribut.EventType][componentName];
+                var infoList = self._AllEventInfo[eventAttribute.EventType][componentName];
 
                 infoList.Add(info);
             }

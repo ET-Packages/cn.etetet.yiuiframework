@@ -111,7 +111,14 @@ public class YIUIEntitySystemCodeFixProvider : CodeFixProvider
             returnType = methodNameArr[1];
             if (returnType.Contains("async"))
             {
-                returnValue = "await ETTask.CompletedTask;\nreturn default;";
+                if (returnType.Contains("ETTask<"))
+                {
+                    returnValue = "await ETTask.CompletedTask;\nreturn default;";
+                }
+                else
+                {
+                    returnValue = "await ETTask.CompletedTask;";
+                }
             }
             else
             {

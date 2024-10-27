@@ -58,8 +58,7 @@ namespace YIUIFramework
                     return;
                 }
 
-                await (YIUIInvokeSystem.Instance.Invoke<Entity, P1, P2, P3, P4, P5, ETTask>(Trigger, OnEventInvokeType, p1, p2, p3, p4, p5) ?? ETTask.CompletedTask);
-                return;
+                await YIUIInvokeSystem.Instance.InvokeTask(Trigger, OnEventInvokeType, p1, p2, p3, p4, p5);
             }
             else if (UITaskEventParamDelegate != null)
             {

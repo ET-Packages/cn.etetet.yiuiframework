@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,11 @@ namespace ET;
 
 public static class YIUIEntitySystemAnalyzerRule
 {
-    private const string Title = "YIUI Entity类存在未生成的事件函数";
+    private const string Title = "YIUI Entity类存在未实现的事件函数";
 
-    private const string MessageFormat = "YIUI Entity类: {0} 存在未生成的事件函数";
+    private const string MessageFormat = "YIUI Entity类: {0} 存在未实现的事件函数";
 
-    private const string Description = "YIUI Entity类存在未生成的事件函数.";
+    private const string Description = "YIUI Entity类存在未实现的事件函数.";
 
     public static readonly DiagnosticDescriptor Rule =
             new(YIUIDiagnosticIds.YIUIEntitySystemAnalyzerRuleId,
@@ -63,55 +64,30 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
 
     private static ImmutableArray<ETSystemData> SupportedETSystemDatas => ImmutableArray.Create(new ETSystemData(Definition.EntitySystemOfAttribute, Definition.EntitySystemAttribute, Definition.EntityType, Definition.EntitySystemAttributeMetaName,
 
-        //IDynamicEvent
-        new SystemMethodData(YIUIDefinition.IDynamicEventInterface, YIUIDefinition.IDynamicEventMethod),
+        //
+        new SystemMethodData("ET.Client.IYIUIWindowClose", "YIUIWindowClose", "async ETTask", "bool"),
+        new SystemMethodData("ET.Client.IYIUIBackClose", "YIUIBackClose", "async ETTask", "ET.Client.YIUIEventPanelInfo"),
+        new SystemMethodData("ET.Client.IYIUIBackOpen", "YIUIBackOpen", "async ETTask", "ET.Client.YIUIEventPanelInfo"),
+        new SystemMethodData("ET.Client.IYIUIBackHomeClose", "YIUIBackHomeClose", "async ETTask", "ET.Client.YIUIEventPanelInfo"),
 
-        //IYIUIBackClose
-        new SystemMethodData(YIUIDefinition.IYIUIBackCloseInterface, YIUIDefinition.IYIUIBackCloseMethod),
+        //async ETTask<bool>
+        new SystemMethodData("ET.Client.IYIUIClose", "YIUIClose", "async ETTask<bool>"),
+        new SystemMethodData("ET.Client.IYIUIOpen", "YIUIOpen", "async ETTask<bool>"),
+        new SystemMethodData("ET.Client.IYIUIDisClose", "YIUIDisClose", "async ETTask<bool>"),
 
-        //IYIUIBackHomeClose
-        new SystemMethodData(YIUIDefinition.IYIUIBackHomeCloseInterface, YIUIDefinition.IYIUIBackHomeCloseMethod),
+        //async ETTask
+        new SystemMethodData("ET.IDynamicEvent", "DynamicEvent", "async ETTask"),
+        new SystemMethodData("ET.Client.IYIUIBackHomeOpen", "YIUIBackHomeOpen", "async ETTask"),
+        new SystemMethodData("ET.Client.IYIUICloseTween", "YIUICloseTween", "async ETTask"),
+        new SystemMethodData("ET.Client.IYIUIOpenTween", "YIUIOpenTween", "async ETTask"),
 
-        //IYIUIBackHomeOpen
-        new SystemMethodData(YIUIDefinition.IYIUIBackHomeOpenInterface, YIUIDefinition.IYIUIBackHomeOpenMethod),
-
-        //IYIUIBackOpen
-        new SystemMethodData(YIUIDefinition.IYIUIBackOpenInterface, YIUIDefinition.IYIUIBackOpenMethod),
-
-        //IYIUIClose
-        new SystemMethodData(YIUIDefinition.IYIUICloseInterface, YIUIDefinition.IYIUICloseMethod),
-
-        //IYIUIWindowClose
-        //new SystemMethodData(YIUIDefinition.IYIUIWindowCloseInterface, YIUIDefinition.IYIUIWindowCloseMethod),
-        //IYIUIDisable
-        new SystemMethodData(YIUIDefinition.IYIUIDisableInterface, YIUIDefinition.IYIUIDisableMethod),
-
-        //IYIUIDisClose
-        new SystemMethodData(YIUIDefinition.IYIUIDisCloseInterface, YIUIDefinition.IYIUIDisCloseMethod),
-
-        //IYIUIEnable
-        new SystemMethodData(YIUIDefinition.IYIUIEnableInterface, YIUIDefinition.IYIUIEnableMethod),
-
-        //IYIUIInitialize
-        new SystemMethodData(YIUIDefinition.IYIUIInitializeInterface, YIUIDefinition.IYIUIInitializeMethod),
-
-        //IYIUIOpen
-        new SystemMethodData(YIUIDefinition.IYIUIOpenInterface, YIUIDefinition.IYIUIOpenMethod),
-
-        //IYIUICloseTweenEnd
-        new SystemMethodData(YIUIDefinition.IYIUICloseTweenEndInterface, YIUIDefinition.IYIUICloseTweenEndMethod),
-
-        //IYIUICloseTween
-        new SystemMethodData(YIUIDefinition.IYIUICloseTweenInterface, YIUIDefinition.IYIUICloseTweenMethod),
-
-        //IYIUIOpenTweenEnd
-        new SystemMethodData(YIUIDefinition.IYIUIOpenTweenEndInterface, YIUIDefinition.IYIUIOpenTweenEndMethod),
-
-        //IYIUIOpenTween
-        new SystemMethodData(YIUIDefinition.IYIUIOpenTweenInterface, YIUIDefinition.IYIUIOpenTweenMethod),
-
-        //IYIUIBind
-        new SystemMethodData(YIUIDefinition.IYIUIBindInterface, YIUIDefinition.IYIUIBindMethod)));
+        //void
+        new SystemMethodData("ET.Client.IYIUIBind", "YIUIBind"),
+        new SystemMethodData("ET.Client.IYIUIDisable", "YIUIDisable"),
+        new SystemMethodData("ET.Client.IYIUIEnable", "YIUIEnable"),
+        new SystemMethodData("ET.Client.IYIUIInitialize", "YIUIInitialize"),
+        new SystemMethodData("ET.Client.IYIUICloseTweenEnd", "YIUICloseTweenEnd"),
+        new SystemMethodData("ET.Client.IYIUIOpenTweenEnd", "YIUIOpenTweenEnd")));
 
     private class ETSystemData
     {
@@ -133,13 +109,27 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
 
     private struct SystemMethodData
     {
-        public string InterfaceName;
-        public string MethodName;
+        public string   InterfaceName;
+        public string   MethodName;
+        public string   MethodReturnType;
+        public string   ExtraParameter;
+        public string[] ExtraParameterTypes;
 
-        public SystemMethodData(string interfaceName, string methodName)
+        public SystemMethodData(string interfaceName, string methodName, string methodReturnType = "", string extraParameter = "")
         {
-            this.InterfaceName = interfaceName;
-            this.MethodName    = methodName;
+            InterfaceName = interfaceName;
+            MethodName    = methodName;
+            if (!string.IsNullOrEmpty(methodReturnType))
+            {
+                MethodReturnType = $"{methodName}|{methodReturnType}";
+            }
+            else
+            {
+                MethodReturnType = methodName;
+            }
+
+            ExtraParameter      = extraParameter;
+            ExtraParameterTypes = extraParameter.Split('/');
         }
     }
 
@@ -205,14 +195,24 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
             {
                 if (interfaceTypeSymbol.IsInterface(systemMethodData.InterfaceName))
                 {
-                    var methodName = systemMethodData.MethodName.Split('|')[0];
+                    var methodName = systemMethodData.MethodName;
+                    var str        = new StringBuilder();
 
                     if (interfaceTypeSymbol.IsGenericType)
                     {
-                        var typeArgs = ImmutableArray.Create<ITypeSymbol>(entityTypeSymbol).AddRange(interfaceTypeSymbol.TypeArguments);
-                        if (!namedTypeSymbol.HasMethodWithParams(methodName, typeArgs.ToArray()))
+                        bool has = false;
+                        if (!string.IsNullOrEmpty(systemMethodData.ExtraParameter))
                         {
-                            StringBuilder str = new();
+                            has = !HasMethodWithExtraParams(namedTypeSymbol, methodName, entityTypeSymbol, interfaceTypeSymbol.TypeArguments, systemMethodData.ExtraParameterTypes);
+                        }
+                        else
+                        {
+                            var typeArgs = ImmutableArray.Create<ITypeSymbol>(entityTypeSymbol).AddRange(interfaceTypeSymbol.TypeArguments);
+                            has = !namedTypeSymbol.HasMethodWithParams(methodName, typeArgs.ToArray());
+                        }
+
+                        if (has)
+                        {
                             str.Append(entityTypeSymbol);
                             str.Append("/");
                             str.Append(etSystemData.SystemAttributeShowName);
@@ -222,21 +222,38 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
                                 str.Append(typeArgument);
                             }
 
-                            AddProperty(ref builder, $"{systemMethodData.MethodName}`{interfaceTypeSymbol.TypeArguments.Length}", str.ToString());
+                            if (!string.IsNullOrEmpty(systemMethodData.ExtraParameter))
+                            {
+                                str.Append("/");
+                                str.Append(systemMethodData.ExtraParameter);
+                            }
+
+                            AddProperty(ref builder, systemMethodData.MethodReturnType, str.ToString());
                         }
                     }
                     else
                     {
-                        if (interfaceTypeSymbol.IsInterface(Definition.IGetComponentInterface))
+                        bool has = false;
+                        if (!string.IsNullOrEmpty(systemMethodData.ExtraParameter))
                         {
-                            if (!namedTypeSymbol.HasMethodWithParams(methodName, entityTypeSymbol.ToString(), "System.Type"))
-                            {
-                                AddProperty(ref builder, systemMethodData.MethodName, $"{entityTypeSymbol}/{etSystemData.SystemAttributeShowName}/System.Type");
-                            }
+                            has = !HasMethodWithExtraParams(namedTypeSymbol, methodName, entityTypeSymbol, interfaceTypeSymbol.TypeArguments, systemMethodData.ExtraParameterTypes);
                         }
-                        else if (!namedTypeSymbol.HasMethodWithParams(methodName, entityTypeSymbol))
+                        else
                         {
-                            AddProperty(ref builder, systemMethodData.MethodName, $"{entityTypeSymbol}/{etSystemData.SystemAttributeShowName}");
+                            has = !namedTypeSymbol.HasMethodWithParams(methodName, entityTypeSymbol);
+                        }
+
+                        if (has)
+                        {
+                            str.Append(entityTypeSymbol);
+                            str.Append("/");
+                            str.Append(etSystemData.SystemAttributeShowName);
+                            if (!string.IsNullOrEmpty(systemMethodData.ExtraParameter))
+                            {
+                                str.Append($"/{systemMethodData.ExtraParameter}");
+                            }
+
+                            AddProperty(ref builder, systemMethodData.MethodReturnType, str.ToString());
                         }
                     }
 
@@ -244,6 +261,76 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
                 }
             }
         }
+    }
+
+    private readonly List<string> m_tempArgumentList = new();
+
+    //额外参数判断
+    public bool HasMethodWithExtraParams(INamedTypeSymbol namedTypeSymbol, string methodName, ITypeSymbol? self, ImmutableArray<ITypeSymbol> typeArguments, string[] extraParameterTypes)
+    {
+        m_tempArgumentList.Clear();
+
+        if (self != null)
+        {
+            m_tempArgumentList.Add(self.ToString());
+        }
+
+        if (typeArguments != null)
+        {
+            foreach (ITypeSymbol? typeArgument in typeArguments)
+            {
+                if (typeArgument != null)
+                {
+                    m_tempArgumentList.Add(typeArgument.ToString());
+                }
+            }
+        }
+
+        if (extraParameterTypes is { Length: > 0 })
+        {
+            m_tempArgumentList.AddRange(extraParameterTypes);
+        }
+
+        foreach (var member in namedTypeSymbol.GetMembers())
+        {
+            if (member is not IMethodSymbol methodSymbol)
+            {
+                continue;
+            }
+
+            if (methodSymbol.Name != methodName)
+            {
+                continue;
+            }
+
+            if (m_tempArgumentList.Count != methodSymbol.Parameters.Length)
+            {
+                continue;
+            }
+
+            if (m_tempArgumentList.Count == 0)
+            {
+                return true;
+            }
+
+            bool isEqual = true;
+
+            for (int i = 0; i < m_tempArgumentList.Count; i++)
+            {
+                if (m_tempArgumentList[i] != methodSymbol.Parameters[i].Type.ToString())
+                {
+                    isEqual = false;
+                    break;
+                }
+            }
+
+            if (isEqual)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void AddProperty(ref ImmutableDictionary<string, string?>.Builder? builder, string methodMetaName, string methodArgs)

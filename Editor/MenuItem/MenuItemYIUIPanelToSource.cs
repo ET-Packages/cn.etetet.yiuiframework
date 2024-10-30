@@ -25,7 +25,7 @@ namespace YIUIFramework.Editor
 
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            var containsPath = $"/{YIUIConstHelper.Const.UIProjectResPath}/";
+            var containsPath = $"{YIUIConstHelper.Const.UIProjectResPath}/";
             if (!path.Contains(containsPath))
             {
                 UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/ 下右键选择一个Panel 进行转换");

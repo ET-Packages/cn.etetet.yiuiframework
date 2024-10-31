@@ -91,7 +91,7 @@ public class YIUIEntitySystemCodeFixProvider : CodeFixProvider
 
     private static MethodDeclarationSyntax? CreateEntitySystemMethodSyntax(string methodName, string methodArgs)
     {
-        string[] methodNameArr = methodName.Split('|');
+        string[] methodNameArr = methodName.Split('`')[0].Split('|');
         string[] methodArgsArr = methodArgs.Split('/');
         string   systemAttr    = methodArgsArr[1];
         string   args          = String.Empty;

@@ -213,6 +213,7 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
 
                         if (has)
                         {
+                            var args = new StringBuilder();
                             str.Append(entityTypeSymbol);
                             str.Append("/");
                             str.Append(etSystemData.SystemAttributeShowName);
@@ -220,6 +221,7 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
                             {
                                 str.Append("/");
                                 str.Append(typeArgument);
+                                args.Append(typeArgument);
                             }
 
                             if (!string.IsNullOrEmpty(systemMethodData.ExtraParameter))
@@ -228,7 +230,7 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
                                 str.Append(systemMethodData.ExtraParameter);
                             }
 
-                            AddProperty(ref builder, systemMethodData.MethodReturnType, str.ToString());
+                            AddProperty(ref builder, $"{systemMethodData.MethodReturnType}`{args}", str.ToString());
                         }
                     }
                     else
@@ -349,7 +351,10 @@ public class YIUIEntitySystemAnalyzer : DiagnosticAnalyzer
             builder.Add(Definition.EntitySystemInterfaceSequence, methodMetaName);
         }
 
-        builder.Add(methodMetaName, methodArgs);
+        if (!builder.ContainsKey(methodMetaName))
+        {
+            builder.Add(methodMetaName, methodArgs);
+        }
     }
 
     private void ReportNeedGenerateSystem(SymbolAnalysisContext context, INamedTypeSymbol namedTypeSymbol, ref ImmutableDictionary<string, string?>.Builder? builder)

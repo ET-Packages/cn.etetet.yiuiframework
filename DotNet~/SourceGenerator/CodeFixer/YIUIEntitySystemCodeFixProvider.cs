@@ -113,7 +113,7 @@ public class YIUIEntitySystemCodeFixProvider : CodeFixProvider
             {
                 if (returnType.Contains("ETTask<"))
                 {
-                    returnValue = "await ETTask.CompletedTask;\nreturn default;";
+                    returnValue = "await ETTask.CompletedTask;\nthrow new NotImplementedException();";
                 }
                 else
                 {
@@ -122,7 +122,7 @@ public class YIUIEntitySystemCodeFixProvider : CodeFixProvider
             }
             else
             {
-                returnValue = "return default;";
+                returnValue = "throw new NotImplementedException();";
             }
         }
         else

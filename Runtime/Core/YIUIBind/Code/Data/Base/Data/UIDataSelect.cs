@@ -25,7 +25,13 @@ namespace YIUIFramework
         [ShowInInspector]
         [LabelText("值")]
         [ReadOnly]
-        private string m_DataValue;
+        private string m_DataValue
+        {
+            get
+            {
+                return m_Data?.GetValueToString();
+            }
+        }
         #endif
 
         [SerializeField]
@@ -48,9 +54,6 @@ namespace YIUIFramework
             m_Data     = uiData;
             m_DataName = m_Data.Name;
             m_DataType = m_Data.DataValue.UIBindDataType;
-            #if UNITY_EDITOR
-            m_DataValue = m_Data.GetValueToString();
-            #endif
         }
 
         public void ChangeName(string name)

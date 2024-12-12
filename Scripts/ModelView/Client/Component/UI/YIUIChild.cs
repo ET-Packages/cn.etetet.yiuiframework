@@ -69,7 +69,7 @@ namespace ET.Client
         public YIUIBindVo UIBindVo => m_UIBindVo;
 
         /// <summary>
-        /// 当前显示状态  显示/隐藏
+        /// 对象本身是否被激活
         /// 不要使用这个设置显影
         /// 应该使用控制器 或调用方法 SetActive();
         /// </summary>
@@ -81,5 +81,18 @@ namespace ET.Client
                 return OwnerGameObject.activeSelf;
             }
         }
+
+        /// <summary>
+        /// 对象及其所有父对象是否都被激活
+        /// </summary>
+        public bool ActiveInHierarchy
+        {
+            get
+            {
+                if (OwnerGameObject == null) return false;
+                return OwnerGameObject.activeInHierarchy;
+            }
+        }
+        
     }
 }

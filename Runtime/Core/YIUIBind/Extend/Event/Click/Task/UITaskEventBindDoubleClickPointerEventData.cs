@@ -13,9 +13,9 @@ namespace YIUIFramework
     /// 只要是任何可以被射线检测的物体都可以响应点击事件
     /// </summary>
     [InfoBox("提示: 可用事件参数 1个 , Object(PointerEventData)")]
-    [LabelText("点击<PointerEventData>")]
-    [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click PointerEventData】 UITaskEventBindClickPointerEventData")]
-    public class UITaskEventBindClickPointerEventData : UITaskEventBindClick
+    [LabelText("双击<PointerEventData>")]
+    [AddComponentMenu("YIUIBind/TaskEvent/双击 【DoubleClick PointerEventData】 UITaskEventBindDoubleClickPointerEventData")]
+    public class UITaskEventBindDoubleClickPointerEventData : UITaskEventBindDoubleClick
     {
         [NonSerialized]
         private readonly List<EUIEventParamType> m_FilterParamType = new() { EUIEventParamType.Object };

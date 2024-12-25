@@ -13,10 +13,14 @@ namespace YIUIFramework
     /// 与按钮无关
     /// 只要是任何可以被射线检测的物体都可以响应点击事件
     /// </summary>
-    [LabelText("点击<null>")]
-    [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click】 UITaskEventBindClick")]
-    public class UITaskEventBindClick : UIEventBind, IPointerClickHandler
+    [LabelText("双击<null>")]
+    [AddComponentMenu("YIUIBind/TaskEvent/双击 【DoubleClick】 UITaskEventBindDoubleClick")]
+    public class UITaskEventBindDoubleClick : UIEventBind, IPointerClickHandler
     {
+        [SerializeField]
+        [LabelText("双击间隔时间")]
+        private float m_DoubleClickInterval = 0.3f;
+
         [SerializeField]
         [LabelText("拖拽时不响应点击")]
         private bool m_SkipWhenDrag;
@@ -28,6 +32,8 @@ namespace YIUIFramework
         [SerializeField]
         [LabelText("响应中 屏蔽所有操作")]
         private bool m_BanLayerOption = true;
+
+        private float m_LastClickTime = 0f;
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -45,7 +51,16 @@ namespace YIUIFramework
 
             if (ClickTasking) return;
 
-            TaskEvent(eventData).NoContext();
+            float timeSinceLastClick = Time.time - m_LastClickTime;
+
+            if (timeSinceLastClick <= m_DoubleClickInterval)
+            {
+                TaskEvent(eventData).NoContext();
+                m_LastClickTime = 0;
+                return;
+            }
+
+            m_LastClickTime = Time.time;
         }
 
         protected override bool IsTaskEvent => true;

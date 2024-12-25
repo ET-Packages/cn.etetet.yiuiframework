@@ -22,7 +22,7 @@ namespace YIUIFramework
         private string m_ExtraParam;
 
         [NonSerialized]
-        private List<EUIEventParamType> m_FilterParamType = new List<EUIEventParamType> { EUIEventParamType.String, };
+        private readonly List<EUIEventParamType> m_FilterParamType = new() { EUIEventParamType.String, };
 
         protected override List<EUIEventParamType> GetFilterParamType => m_FilterParamType;
 

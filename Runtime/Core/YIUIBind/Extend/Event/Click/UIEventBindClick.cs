@@ -50,7 +50,7 @@ namespace YIUIFramework
         protected override bool IsTaskEvent => false;
 
         [NonSerialized]
-        private List<EUIEventParamType> m_BaseFilterParamType = new List<EUIEventParamType> { };
+        private readonly List<EUIEventParamType> m_BaseFilterParamType = new();
 
         protected override List<EUIEventParamType> GetFilterParamType => m_BaseFilterParamType;
 

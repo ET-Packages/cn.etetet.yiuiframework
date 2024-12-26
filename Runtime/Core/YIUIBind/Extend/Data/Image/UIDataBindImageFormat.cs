@@ -159,10 +159,16 @@ namespace YIUIFramework
 
             ReleaseLastSprite();
 
-            if (gameObject == null || m_Image == null)
+            if (this == null || gameObject == null)
             {
                 EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = sprite });
-                Logger.LogError($"{resName} 加载过程中 对象被摧毁了 gameObject == null || m_Image == null");
+                return;
+            }
+
+            if (m_Image == null)
+            {
+                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = sprite });
+                Logger.LogError($"{resName} 加载过程中 对象被摧毁了 m_Image == null");
                 return;
             }
 

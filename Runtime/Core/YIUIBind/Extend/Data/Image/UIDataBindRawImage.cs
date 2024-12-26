@@ -107,10 +107,16 @@ namespace YIUIFramework
 
             ReleaseLastTexture2D();
 
-            if (gameObject == null || m_RawImage == null)
+            if (this == null || gameObject == null)
             {
                 EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = texture2d });
-                Logger.LogError($"{resName} 加载过程中 对象被摧毁了 gameObject == null || m_Image == null");
+                return;
+            }
+
+            if (m_RawImage == null)
+            {
+                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = texture2d });
+                Logger.LogError($"{resName} 加载过程中 对象被摧毁了 m_Image == null");
                 return;
             }
 

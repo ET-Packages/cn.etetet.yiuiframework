@@ -6,8 +6,7 @@ namespace YIUIFramework.Editor
 {
     public class UnityIconsWindow : EditorWindow
     {
-        [MenuItem(("ET/YIUI Unity内置图标"))]
-        private static void ShowWindow()
+        public static void ShowWindow()
         {
             var window                           = GetWindow<UnityIconsWindow>();
             window.minSize      = window.maxSize = new Vector2(1280, 720);

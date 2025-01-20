@@ -265,16 +265,14 @@ namespace ET
             }
         }
 
-        private readonly List<string> m_tempArgumentList = new();
-
         //额外参数判断
-        public bool HasMethodWithExtraParams(INamedTypeSymbol namedTypeSymbol, string methodName, ITypeSymbol? self, ImmutableArray<ITypeSymbol> typeArguments, string[] extraParameterTypes)
+        private bool HasMethodWithExtraParams(INamedTypeSymbol namedTypeSymbol, string methodName, ITypeSymbol? self, ImmutableArray<ITypeSymbol> typeArguments, string[] extraParameterTypes)
         {
-            m_tempArgumentList.Clear();
+            var tempArgumentList = new List<string>();
 
             if (self != null)
             {
-                m_tempArgumentList.Add(self.ToString());
+                tempArgumentList.Add(self.ToString());
             }
 
             if (typeArguments != null)
@@ -283,14 +281,14 @@ namespace ET
                 {
                     if (typeArgument != null)
                     {
-                        m_tempArgumentList.Add(typeArgument.ToString());
+                        tempArgumentList.Add(typeArgument.ToString());
                     }
                 }
             }
 
             if (extraParameterTypes is { Length: > 0 })
             {
-                m_tempArgumentList.AddRange(extraParameterTypes);
+                tempArgumentList.AddRange(extraParameterTypes);
             }
 
             foreach (var member in namedTypeSymbol.GetMembers())
@@ -305,31 +303,25 @@ namespace ET
                     continue;
                 }
 
-                if (m_tempArgumentList.Count != methodSymbol.Parameters.Length)
-                {
-                    continue;
-                }
-
-                if (m_tempArgumentList.Count == 0)
+                if (tempArgumentList.Count == 0)
                 {
                     return true;
                 }
 
-                bool isEqual = true;
-
-                for (int i = 0; i < m_tempArgumentList.Count; i++)
+                if (tempArgumentList.Count != methodSymbol.Parameters.Length)
                 {
-                    if (m_tempArgumentList[i] != methodSymbol.Parameters[i].Type.ToString())
+                    return false;
+                }
+
+                for (int i = 0; i < tempArgumentList.Count; i++)
+                {
+                    if (tempArgumentList[i] != methodSymbol.Parameters[i].Type.ToString())
                     {
-                        isEqual = false;
-                        break;
+                        return false;
                     }
                 }
 
-                if (isEqual)
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;

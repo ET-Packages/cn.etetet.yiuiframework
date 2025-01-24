@@ -14,7 +14,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = this.Id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component);
             return component;
         }
 
@@ -29,7 +29,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component);
             return component as K;
         }
 
@@ -44,7 +44,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, p1);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, p1);
             return component as K;
         }
 
@@ -59,7 +59,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, p1, p2);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, p1, p2);
             return component as K;
         }
 
@@ -74,7 +74,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, p1, p2, p3);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, p1, p2, p3);
             return component as K;
         }
 
@@ -89,7 +89,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, p1, p2, p3, p4);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, p1, p2, p3, p4);
             return component as K;
         }
 
@@ -104,7 +104,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id              = id;
             component.ComponentParent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, p1, p2, p3, p4, p5);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, p1, p2, p3, p4, p5);
             return component as K;
         }
 
@@ -140,71 +140,37 @@ namespace ET
 
         public async ETTask<Entity> AddChildAsync(Type type, bool isFromPool = false)
         {
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component);
-            return component;
+            return await AddChildWithIdAsync(type, IdGenerater.Instance.GenerateId(), isFromPool);
         }
 
         public async ETTask<T> AddChildAsync<T>(bool isFromPool = false) where T : Entity, IAwakeAsync
         {
-            var type      = typeof(T);
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component);
-            return component as T;
+            return await AddChildWithIdAsync<T>(IdGenerater.Instance.GenerateId(), isFromPool);
         }
 
         public async ETTask<T> AddChildAsync<T, A>(A a, bool isFromPool = false) where T : Entity, IAwakeAsync<A>
         {
-            var type      = typeof(T);
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a);
-            return component as T;
+            return await AddChildWithIdAsync<T, A>(IdGenerater.Instance.GenerateId(), a, isFromPool);
         }
 
         public async ETTask<T> AddChildAsync<T, A, B>(A a, B b, bool isFromPool = false) where T : Entity, IAwakeAsync<A, B>
         {
-            var type      = typeof(T);
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b);
-            return component as T;
+            return await AddChildWithIdAsync<T, A, B>(IdGenerater.Instance.GenerateId(), a, b, isFromPool);
         }
 
         public async ETTask<T> AddChildAsync<T, A, B, C>(A a, B b, C c, bool isFromPool = false) where T : Entity, IAwakeAsync<A, B, C>
         {
-            var type      = typeof(T);
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b, c);
-            return component as T;
+            return await AddChildWithIdAsync<T, A, B, C>(IdGenerater.Instance.GenerateId(), a, b, c, isFromPool);
         }
 
         public async ETTask<T> AddChildAsync<T, A, B, C, D>(A a, B b, C c, D d, bool isFromPool = false) where T : Entity, IAwakeAsync<A, B, C, D>
         {
-            var type      = typeof(T);
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b, c, d);
-            return component as T;
+            return await AddChildWithIdAsync<T, A, B, C, D>(IdGenerater.Instance.GenerateId(), a, b, c, d, isFromPool);
         }
 
         public async ETTask<T> AddChildAsync<T, A, B, C, D, E>(A a, B b, C c, D d, E e, bool isFromPool = false) where T : Entity, IAwakeAsync<A, B, C, D, E>
         {
-            var type      = typeof(T);
-            var component = Create(type, isFromPool);
-            component.Id     = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b, c, d, e);
-            return component as T;
+            return await AddChildWithIdAsync<T, A, B, C, D, E>(IdGenerater.Instance.GenerateId(), a, b, c, d, e, isFromPool);
         }
 
         public async ETTask<Entity> AddChildWithIdAsync(Type type, long id, bool isFromPool = false)
@@ -212,7 +178,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component);
             return component;
         }
 
@@ -222,7 +188,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component);
             return component as T;
         }
 
@@ -232,7 +198,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, a);
             return component as T;
         }
 
@@ -242,7 +208,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, a, b);
             return component as T;
         }
 
@@ -252,7 +218,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b, c);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, a, b, c);
             return component as T;
         }
 
@@ -262,7 +228,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b, c, d);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, a, b, c, d);
             return component as T;
         }
 
@@ -272,7 +238,7 @@ namespace ET
             var component = Create(type, isFromPool);
             component.Id     = id;
             component.Parent = this;
-            await EntitySystemSingleton.Instance.AwakeAsync(component, a, b, c, d, e);
+            await EntityAwakeAsyncSystem.EntityAwakeAsync(component, a, b, c, d, e);
             return component as T;
         }
     }

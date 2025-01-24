@@ -64,7 +64,7 @@ namespace ET
 
         private static ImmutableArray<ETSystemData> SupportedETSystemDatas => ImmutableArray.Create(new ETSystemData(Definition.EntitySystemOfAttribute, Definition.EntitySystemAttribute, Definition.EntityType, Definition.EntitySystemAttributeMetaName,
 
-            //
+            //自定义
             new SystemMethodData("ET.Client.IYIUIWindowClose", "YIUIWindowClose", "async ETTask", "bool"),
             new SystemMethodData("ET.Client.IYIUIBackClose", "YIUIBackClose", "async ETTask", "ET.Client.YIUIEventPanelInfo"),
             new SystemMethodData("ET.Client.IYIUIBackOpen", "YIUIBackOpen", "async ETTask", "ET.Client.YIUIEventPanelInfo"),
@@ -76,6 +76,7 @@ namespace ET
             new SystemMethodData("ET.Client.IYIUIDisClose", "YIUIDisClose", "async ETTask<bool>"),
 
             //async ETTask
+            new SystemMethodData("ET.IAwakeAsync", "AwakeAsyncSystem", "async ETTask"),
             new SystemMethodData("ET.IDynamicEvent", "DynamicEvent", "async ETTask"),
             new SystemMethodData("ET.Client.IYIUIBackHomeOpen", "YIUIBackHomeOpen", "async ETTask"),
             new SystemMethodData("ET.Client.IYIUICloseTween", "YIUICloseTween", "async ETTask"),

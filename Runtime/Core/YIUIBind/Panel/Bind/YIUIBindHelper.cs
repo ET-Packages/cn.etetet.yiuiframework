@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ET;
 using UnityEngine;
+using ET;
 
 namespace YIUIFramework
 {
@@ -14,20 +14,19 @@ namespace YIUIFramework
         /// 根据创建时的类获取
         /// type 限制为 ui的component
         /// </summary>
-        private static Dictionary<Type, YIUIBindVo> g_UITypeToPkgInfo = new Dictionary<Type, YIUIBindVo>();
+        private static Dictionary<Type, YIUIBindVo> g_UITypeToPkgInfo = new();
 
         /// <summary>
         /// 根据 pkg + res 双字典获取
         /// </summary>
-        private static Dictionary<string, Dictionary<string, YIUIBindVo>> g_UIPathToPkgInfo =
-                new Dictionary<string, Dictionary<string, YIUIBindVo>>();
+        private static Dictionary<string, Dictionary<string, YIUIBindVo>> g_UIPathToPkgInfo = new();
 
         /// <summary>
         /// 因为使用yooasset 规定所有资源唯一
         /// 所以这里可以抛弃pkg+res 直接使用res 可以拿到对应的资源
         /// 如果你的不是唯一的 请删除这个方法不要使用
         /// </summary>
-        private static Dictionary<string, YIUIBindVo> g_UIToPkgInfo = new Dictionary<string, YIUIBindVo>();
+        private static Dictionary<string, YIUIBindVo> g_UIToPkgInfo = new();
 
         //改为dll过后 提供给外部的方法
         //1 从UI工具中自动生成绑定代码
@@ -39,8 +38,7 @@ namespace YIUIFramework
 
         /// <summary>
         /// 初始化获取到所有UI相关的绑定关系
-        /// Editor下是反射
-        /// 其他 是序列化的文件 打包的时候一定要生成一次文件
+        /// 由SG自动生成
         /// </summary>
         public static bool InitAllBind()
         {
@@ -66,7 +64,7 @@ namespace YIUIFramework
 
             var binds = InternalGameGetUIBindVoFunc?.Invoke();
 
-            if (binds == null || binds.Length <= 0)
+            if (binds is not { Length: > 0 })
             {
                 //如果才接入框架 第一个UI都没有生成是无法运行的 先生成一个UI吧
                 Log.Error("没有找到绑定信息 或者 没有绑定信息 请检查 或 参考文档");
@@ -100,13 +98,10 @@ namespace YIUIFramework
 
             var dic = g_UIPathToPkgInfo[pkgName];
 
-            if (dic.ContainsKey(resName))
+            if (!dic.TryAdd(resName, vo))
             {
                 Debug.LogError($"重复资源 请检查 {pkgName} {resName}");
-                return;
             }
-
-            dic.Add(resName, vo);
         }
 
         /// <summary>

@@ -337,7 +337,7 @@ namespace YIUIFramework
         [EnumToggleButtons]
         [ShowIf(nameof(ShowIfCDEInspector))]
         [OnValueChanged(nameof(OnValueChangedCDEInspector))]
-        private EYIUICDEInspectorType _EditorStyle = EYIUICDEInspectorType.Data;
+        private EYIUICDEInspectorType _CDEInspectorType = EYIUICDEInspectorType.Data;
 
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [ShowInInspector]
@@ -347,7 +347,7 @@ namespace YIUIFramework
         [NonSerialized]
         [HideReferenceObjectPicker]
         [ShowIf(nameof(ShowIfCDEInspector))]
-        private Component _ShowComponent;
+        private Component _InspectorComponent;
 
         private bool ShowIfCDEInspector()
         {
@@ -357,16 +357,16 @@ namespace YIUIFramework
         [OnInspectorInit]
         private void OnValueChangedCDEInspector()
         {
-            switch (_EditorStyle)
+            switch (_CDEInspectorType)
             {
                 case EYIUICDEInspectorType.Component:
-                    _ShowComponent = ComponentTable;
+                    _InspectorComponent = ComponentTable;
                     break;
                 case EYIUICDEInspectorType.Data:
-                    _ShowComponent = DataTable;
+                    _InspectorComponent = DataTable;
                     break;
                 case EYIUICDEInspectorType.Event:
-                    _ShowComponent = EventTable;
+                    _InspectorComponent = EventTable;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -399,8 +399,8 @@ namespace YIUIFramework
         private bool ShowAddComponentTable()
         {
             if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
-            if (_EditorStyle != EYIUICDEInspectorType.Component) return false;
-            return _ShowComponent == null;
+            if (_CDEInspectorType != EYIUICDEInspectorType.Component) return false;
+            return _InspectorComponent == null;
         }
 
         [Button("添加数据表", 30)]
@@ -419,8 +419,8 @@ namespace YIUIFramework
         private bool ShowAddDataTable()
         {
             if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
-            if (_EditorStyle != EYIUICDEInspectorType.Data) return false;
-            return _ShowComponent == null;
+            if (_CDEInspectorType != EYIUICDEInspectorType.Data) return false;
+            return _InspectorComponent == null;
         }
 
         [Button("添加事件表", 30)]
@@ -439,8 +439,8 @@ namespace YIUIFramework
         private bool ShowAddEventTable()
         {
             if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
-            if (_EditorStyle != EYIUICDEInspectorType.Event) return false;
-            return _ShowComponent == null;
+            if (_CDEInspectorType != EYIUICDEInspectorType.Event) return false;
+            return _InspectorComponent == null;
         }
 
         #endregion

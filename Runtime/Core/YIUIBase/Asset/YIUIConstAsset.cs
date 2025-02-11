@@ -185,11 +185,15 @@ namespace YIUIFramework
 
         #endregion
 
-        #region 源文件生成
+        #region 基础设置
 
-        [BoxGroup("生成", CenterLabel = true)]
+        [BoxGroup("基础设置", CenterLabel = true)]
         [LabelText("源文件拆分后是否保留")]
         public bool SourceSplitReserve = false;
+
+        [BoxGroup("基础设置", CenterLabel = true)]
+        [LabelText("使用老的CDEInspector显示模式")]
+        public bool DisplayOldCDEInspector = false;
 
         #endregion
 

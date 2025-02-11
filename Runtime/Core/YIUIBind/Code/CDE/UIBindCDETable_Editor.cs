@@ -335,6 +335,7 @@ namespace YIUIFramework
         [HideLabel]
         [NonSerialized]
         [EnumToggleButtons]
+        [ShowIf(nameof(ShowIfCDEInspector))]
         [OnValueChanged(nameof(OnValueChangedCDEInspector))]
         private EYIUICDEInspectorType _EditorStyle = EYIUICDEInspectorType.Data;
 
@@ -345,7 +346,13 @@ namespace YIUIFramework
         [HideLabel]
         [NonSerialized]
         [HideReferenceObjectPicker]
+        [ShowIf(nameof(ShowIfCDEInspector))]
         private Component _ShowComponent;
+
+        private bool ShowIfCDEInspector()
+        {
+            return !YIUIConstHelper.Const.DisplayOldCDEInspector;
+        }
 
         [OnInspectorInit]
         private void OnValueChangedCDEInspector()
@@ -370,11 +377,11 @@ namespace YIUIFramework
         private void YIUICDEHideInInspector()
         {
             if (ComponentTable != null)
-                ComponentTable.hideFlags = HideFlags.HideInInspector;
+                ComponentTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
             if (DataTable != null)
-                DataTable.hideFlags = HideFlags.HideInInspector;
+                DataTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
             if (EventTable != null)
-                EventTable.hideFlags = HideFlags.HideInInspector;
+                EventTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
         }
 
         [Button("添加组件表", 30)]
@@ -385,12 +392,13 @@ namespace YIUIFramework
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             ComponentTable           = gameObject.GetOrAddComponent<UIBindComponentTable>();
-            ComponentTable.hideFlags = HideFlags.HideInInspector;
+            ComponentTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
             OnValueChangedCDEInspector();
         }
 
         private bool ShowAddComponentTable()
         {
+            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
             if (_EditorStyle != EYIUICDEInspectorType.Component) return false;
             return _ShowComponent == null;
         }
@@ -403,13 +411,14 @@ namespace YIUIFramework
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             DataTable           = gameObject.GetOrAddComponent<UIBindDataTable>();
-            DataTable.hideFlags = HideFlags.HideInInspector;
+            DataTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
 
             OnValueChangedCDEInspector();
         }
 
         private bool ShowAddDataTable()
         {
+            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
             if (_EditorStyle != EYIUICDEInspectorType.Data) return false;
             return _ShowComponent == null;
         }
@@ -422,13 +431,14 @@ namespace YIUIFramework
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             EventTable           = gameObject.GetOrAddComponent<UIBindEventTable>();
-            EventTable.hideFlags = HideFlags.HideInInspector;
+            EventTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
 
             OnValueChangedCDEInspector();
         }
 
         private bool ShowAddEventTable()
         {
+            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
             if (_EditorStyle != EYIUICDEInspectorType.Event) return false;
             return _ShowComponent == null;
         }

@@ -317,7 +317,7 @@ namespace YIUIFramework
 
         #region CDE显示
 
-        private enum EYIUIEditorStyle
+        private enum EYIUICDEInspectorType
         {
             [LabelText("[C]组件")]
             Component,
@@ -336,7 +336,7 @@ namespace YIUIFramework
         [NonSerialized]
         [EnumToggleButtons]
         [OnValueChanged(nameof(OnValueChangedCDEInspector))]
-        private EYIUIEditorStyle _EditorStyle = EYIUIEditorStyle.Data;
+        private EYIUICDEInspectorType _EditorStyle = EYIUICDEInspectorType.Data;
 
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [ShowInInspector]
@@ -352,13 +352,13 @@ namespace YIUIFramework
         {
             switch (_EditorStyle)
             {
-                case EYIUIEditorStyle.Component:
+                case EYIUICDEInspectorType.Component:
                     _ShowComponent = ComponentTable;
                     break;
-                case EYIUIEditorStyle.Data:
+                case EYIUICDEInspectorType.Data:
                     _ShowComponent = DataTable;
                     break;
-                case EYIUIEditorStyle.Event:
+                case EYIUICDEInspectorType.Event:
                     _ShowComponent = EventTable;
                     break;
                 default:
@@ -391,7 +391,7 @@ namespace YIUIFramework
 
         private bool ShowAddComponentTable()
         {
-            if (_EditorStyle != EYIUIEditorStyle.Component) return false;
+            if (_EditorStyle != EYIUICDEInspectorType.Component) return false;
             return _ShowComponent == null;
         }
 
@@ -410,7 +410,7 @@ namespace YIUIFramework
 
         private bool ShowAddDataTable()
         {
-            if (_EditorStyle != EYIUIEditorStyle.Data) return false;
+            if (_EditorStyle != EYIUICDEInspectorType.Data) return false;
             return _ShowComponent == null;
         }
 
@@ -429,7 +429,7 @@ namespace YIUIFramework
 
         private bool ShowAddEventTable()
         {
-            if (_EditorStyle != EYIUIEditorStyle.Event) return false;
+            if (_EditorStyle != EYIUICDEInspectorType.Event) return false;
             return _ShowComponent == null;
         }
 

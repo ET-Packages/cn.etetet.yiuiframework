@@ -16,19 +16,17 @@ namespace YIUIFramework
     //[DetailedInfoBox("UI CDE总表 点击展开详细介绍", @"李胜扬")]
     [Serializable]
     [LabelText("UI CDE总表")]
-    [AddComponentMenu("YIUIBind/★★★★★UI CDE Table 总表★★★★★")]
+    [DisallowMultipleComponent]
+    [AddComponentMenu("YIUIBind/★★★★★YIUI CDE Table 总表★★★★★")]
     public sealed partial class UIBindCDETable : SerializedMonoBehaviour
     {
-        [InlineButton("AddComponentTable", "Add")]
-        [EnableIf("@UIOperationHelper.CommonShowIf()")]
+        [HideInInspector]
         public UIBindComponentTable ComponentTable;
 
-        [InlineButton("AddDataTable", "Add")]
-        [EnableIf("@UIOperationHelper.CommonShowIf()")]
+        [HideInInspector]
         public UIBindDataTable DataTable;
 
-        [InlineButton("AddEventTable", "Add")]
-        [EnableIf("@UIOperationHelper.CommonShowIf()")]
+        [HideInInspector]
         public UIBindEventTable EventTable;
 
         [LabelText("UI包名")]

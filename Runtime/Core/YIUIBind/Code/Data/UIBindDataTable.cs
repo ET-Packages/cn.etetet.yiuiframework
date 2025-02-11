@@ -13,9 +13,10 @@ using UnityEngine;
 namespace YIUIFramework
 {
     //[DetailedInfoBox("UI 数据表 点击展开详细介绍", @"李胜扬")]
-    [LabelText("UI 数据表")]
+    [HideLabel]
     [Serializable]
-    [AddComponentMenu("YIUIBind/★★★UI Data Table 数据表★★★")]
+    [DisallowMultipleComponent]
+    [AddComponentMenu("YIUIBind/★★★YIUI Data Table 数据表★★★")]
     public sealed partial class UIBindDataTable : SerializedMonoBehaviour
     {
         [OdinSerialize]

@@ -385,6 +385,7 @@ namespace YIUIFramework
         }
 
         [Button("添加组件表", 30)]
+        [GUIColor(0, 1, 1)]
         [ShowIf(nameof(ShowAddComponentTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
@@ -404,6 +405,7 @@ namespace YIUIFramework
         }
 
         [Button("添加数据表", 30)]
+        [GUIColor(0, 1, 1)]
         [ShowIf(nameof(ShowAddDataTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
@@ -424,6 +426,7 @@ namespace YIUIFramework
         }
 
         [Button("添加事件表", 30)]
+        [GUIColor(0, 1, 1)]
         [ShowIf(nameof(ShowAddEventTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]

@@ -384,7 +384,7 @@ namespace YIUIFramework
                 EventTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
         }
 
-        [Button("添加组件表", 30)]
+        [Button("添加组件表", 25, Icon = SdfIconType.Boxes, IconAlignment = IconAlignment.LeftOfText)]
         [GUIColor(0, 1, 1)]
         [ShowIf(nameof(ShowAddComponentTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
@@ -399,13 +399,13 @@ namespace YIUIFramework
 
         private bool ShowAddComponentTable()
         {
-            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
+            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return ComponentTable == null;
             if (_CDEInspectorType != EYIUICDEInspectorType.Component) return false;
             return _InspectorComponent == null;
         }
 
-        [Button("添加数据表", 30)]
-        [GUIColor(0, 1, 1)]
+        [Button("添加数据表", 25, Icon = SdfIconType.HddRack, IconAlignment = IconAlignment.LeftOfText)]
+        [GUIColor(1, 0, 1)]
         [ShowIf(nameof(ShowAddDataTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
@@ -420,13 +420,13 @@ namespace YIUIFramework
 
         private bool ShowAddDataTable()
         {
-            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
+            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return DataTable == null;
             if (_CDEInspectorType != EYIUICDEInspectorType.Data) return false;
             return _InspectorComponent == null;
         }
 
-        [Button("添加事件表", 30)]
-        [GUIColor(0, 1, 1)]
+        [Button("添加事件表", 25, Icon = SdfIconType.LightningCharge, IconAlignment = IconAlignment.LeftOfText)]
+        [GUIColor(0, 1, 0)]
         [ShowIf(nameof(ShowAddEventTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
@@ -441,7 +441,7 @@ namespace YIUIFramework
 
         private bool ShowAddEventTable()
         {
-            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return false;
+            if (YIUIConstHelper.Const.DisplayOldCDEInspector) return EventTable == null;
             if (_CDEInspectorType != EYIUICDEInspectorType.Event) return false;
             return _InspectorComponent == null;
         }

@@ -15,6 +15,7 @@ namespace YIUIFramework
 {
     //[DetailedInfoBox("UI CDE总表 点击展开详细介绍", @"李胜扬")]
     [Serializable]
+    [HideMonoScript]
     [LabelText("UI CDE总表")]
     [DisallowMultipleComponent]
     [AddComponentMenu("YIUIBind/★★★★★YIUI CDE Table 总表★★★★★")]

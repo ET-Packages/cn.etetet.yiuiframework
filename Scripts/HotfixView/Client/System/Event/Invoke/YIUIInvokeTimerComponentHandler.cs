@@ -16,7 +16,30 @@ namespace ET.Client
     {
         public override async ETTask Handle(YIUIInvokeWaitAsync args)
         {
-            await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
+            if (args.CancellationToken != null)
+            {
+                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
+            }
+            else
+            {
+                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync(args.Time).NewContext(args.CancellationToken);
+            }
+        }
+    }
+
+    [Invoke(EYIUIInvokeType.Async)]
+    public class YIUIInvokeTimerComponentWaitSecondAsyncHandler : AInvokeHandler<YIUIInvokeWaitSecondAsync, ETTask>
+    {
+        public override async ETTask Handle(YIUIInvokeWaitSecondAsync args)
+        {
+            if (args.CancellationToken != null)
+            {
+                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)args.Time * 1000);
+            }
+            else
+            {
+                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)args.Time * 1000).NewContext(args.CancellationToken);
+            }
         }
     }
 }

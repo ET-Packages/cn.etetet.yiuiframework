@@ -98,7 +98,15 @@ namespace YIUIFramework
     //等指定毫秒
     public struct YIUIInvokeWaitAsync
     {
-        public long Time;
+        public long                Time;
+        public ETCancellationToken CancellationToken;
+    }
+
+    //等指定秒
+    public struct YIUIInvokeWaitSecondAsync
+    {
+        public float               Time;
+        public ETCancellationToken CancellationToken;
     }
 
     //协程锁

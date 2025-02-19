@@ -26,5 +26,17 @@ namespace ET
             if (self.Parent == parent) return;
             parent.AddChild(self);
         }
+
+        //跳过分析器用的 慎用 除非你知道你在做什么
+        public static K GetParentComponent<K>(this Entity self) where K : Entity
+        {
+            return self.Parent.GetComponent<K>();
+        }
+
+        //跳过分析器用的 慎用 除非你知道你在做什么
+        public static K GetParentChild<K>(this Entity self, int id) where K : Entity
+        {
+            return self.Parent.GetChild<K>(id);
+        }
     }
 }

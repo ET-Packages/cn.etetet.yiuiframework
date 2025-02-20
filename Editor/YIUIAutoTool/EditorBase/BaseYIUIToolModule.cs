@@ -9,16 +9,16 @@ namespace YIUIFramework.Editor
     public abstract class BaseYIUIToolModule : BaseCreateModule
     {
         [HideInInspector]
-        public OdinMenuEditorWindow AutoTool { get; internal set; }
+        public OdinMenuEditorWindow AutoTool { get; set; }
 
         [HideInInspector]
-        public OdinMenuTree Tree { get; internal set; }
+        public OdinMenuTree Tree { get; set; }
 
         [HideInInspector]
-        public string ModuleName { get; internal set; }
+        public string ModuleName { get; set; }
 
         [HideInInspector]
-        public object UserData { get; internal set; }
+        public object UserData { get; set; }
 
         public virtual void SelectionMenu()
         {

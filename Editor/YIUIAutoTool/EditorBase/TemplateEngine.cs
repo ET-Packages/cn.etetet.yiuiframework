@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,8 +33,10 @@ namespace YIUIFramework.Editor
         /// <param name="valueDic2"></param>
         /// <param name="readTemplateCache"></param>
         /// <returns></returns>
-        public static string Do(string                     templatePath, Dictionary<string, string> valueDic,
-                                Dictionary<string, string> valueDic2,    bool                       readTemplateCache = true)
+        public static string Do(string                     templatePath,
+                                Dictionary<string, string> valueDic,
+                                Dictionary<string, string> valueDic2,
+                                bool                       readTemplateCache = true)
         {
             if (!string.IsNullOrEmpty(TemplateBasePath))
             {
@@ -96,7 +98,9 @@ namespace YIUIFramework.Editor
         /// <param name="fieldOrPropNames"></param>
         /// <param name="afterProcessItem">后处理函数</param>
         /// <returns></returns>
-        public static string DoList<TItemType>(string                          itemTemplateStr, TItemType[] list, string[] fieldOrPropNames,
+        public static string DoList<TItemType>(string                          itemTemplateStr,
+                                               TItemType[]                     list,
+                                               string[]                        fieldOrPropNames,
                                                Func<string, TItemType, string> afterProcessItem = null)
         {
             Type itemType = typeof(TItemType);
@@ -185,7 +189,8 @@ namespace YIUIFramework.Editor
                     Directory.CreateDirectory(dir);
                 }
 
-                File.WriteAllText(path, clsStr, Encoding.UTF8);
+                var encoding = new UTF8Encoding(false);
+                File.WriteAllText(path, clsStr, encoding);
                 Debug.Log(path + "创建成功");
                 return true;
             }
@@ -295,7 +300,10 @@ namespace YIUIFramework.Editor
         /// 指定区域内进行检查写入
         /// 需要区域内不存在才写入
         /// </summary>
-        private static bool RegionCheckReplace2(string path, string signKey, string checkContent, string valueContent,
+        private static bool RegionCheckReplace2(string path,
+                                                string signKey,
+                                                string checkContent,
+                                                string valueContent,
                                                 bool   otherRetain = true)
         {
             //获取文件 
@@ -398,7 +406,8 @@ namespace YIUIFramework.Editor
                     Directory.CreateDirectory(dir);
                 }
 
-                File.WriteAllText(path, clsStr, Encoding.UTF8);
+                var encoding = new UTF8Encoding(false);
+                File.WriteAllText(path, clsStr, encoding);
                 Debug.Log(path + "重写成功");
                 return true;
             }

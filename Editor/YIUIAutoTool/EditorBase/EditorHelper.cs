@@ -96,10 +96,7 @@ namespace YIUIFramework.Editor
 
         public static Type[] GetTypesByInterface(string fullName)
         {
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
-            {
-                return a.GetTypes().Where(t => GetInterfaceByName(t, fullName) != null);
-            }).ToArray();
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => { return a.GetTypes().Where(t => GetInterfaceByName(t, fullName) != null); }).ToArray();
         }
 
         public static Type GetInterfaceByName(Type type, string fullName)
@@ -181,7 +178,8 @@ namespace YIUIFramework.Editor
                     Directory.CreateDirectory(dir);
                 }
 
-                File.WriteAllText(path, contents, Encoding.UTF8);
+                var encoding = new UTF8Encoding(false);
+                File.WriteAllText(path, contents, encoding);
                 if (log)
                     Debug.Log(path + "创建成功");
                 return true;

@@ -3,6 +3,7 @@ using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using ET;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 
 namespace YIUIFramework
@@ -109,6 +110,8 @@ namespace YIUIFramework
 
             if (obj == null)
             {
+                if (log)
+                    Debug.LogError($"传入的对象为空");
                 return false;
             }
 
@@ -200,6 +203,17 @@ namespace YIUIFramework
             return "";
         }
 
+        #endif
+
+        #if UNITY_EDITOR
+        public static bool CurrentPrefabIsSelf(GameObject obj)
+        {
+            if (obj == null) return false;
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (prefabStage == null) return false;
+            if (prefabStage.prefabContentsRoot != obj) return false;
+            return true;
+        }
         #endif
     }
 }

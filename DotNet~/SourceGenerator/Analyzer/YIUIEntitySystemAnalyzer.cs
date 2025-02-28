@@ -76,7 +76,7 @@ namespace ET
             new SystemMethodData("ET.Client.IYIUIDisClose", "YIUIDisClose", "async ETTask<bool>"),
 
             //async ETTask
-            new SystemMethodData("ET.IAwakeAsync", "AwakeAsyncSystem", "async ETTask"),
+            new SystemMethodData("ET.IAwakeAsync", "AwakeAsync", "async ETTask"),
             new SystemMethodData("ET.IDynamicEvent", "DynamicEvent", "async ETTask"),
             new SystemMethodData("ET.Client.IYIUIBackHomeOpen", "YIUIBackHomeOpen", "async ETTask"),
             new SystemMethodData("ET.Client.IYIUICloseTween", "YIUICloseTween", "async ETTask"),

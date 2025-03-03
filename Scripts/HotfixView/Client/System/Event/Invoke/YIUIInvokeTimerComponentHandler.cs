@@ -34,11 +34,11 @@ namespace ET.Client
         {
             if (args.CancellationToken != null)
             {
-                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)args.Time * 1000);
+                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000));
             }
             else
             {
-                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)args.Time * 1000).NewContext(args.CancellationToken);
+                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000)).NewContext(args.CancellationToken);
             }
         }
     }

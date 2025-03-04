@@ -13,10 +13,12 @@ namespace ET.Client
     {
         internal static void Destroy(GameObject obj)
         {
+            if (obj == null) return;
+            UnityEngine.Object.Destroy(obj);
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeReleaseInstantiate
-                                                 {
-                                                     obj = obj
-                                                 });
+            {
+                obj = obj
+            });
         }
     }
 }

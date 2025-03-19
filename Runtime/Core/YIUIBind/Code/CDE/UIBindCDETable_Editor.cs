@@ -12,6 +12,24 @@ namespace YIUIFramework
     //Editor
     public sealed partial class UIBindCDETable
     {
+        [PropertyOrder(-1000)]
+        [GUIColor(0, 1, 0)]
+        [ButtonGroup]
+        [Button("查看Component代码", 20)]
+        private void OpenComponentScript()
+        {
+            ScriptHelper.OpenScript($"{this.ResName}Component");
+        }
+
+        [PropertyOrder(-1000)]
+        [GUIColor(1, 0.6f, 0.4f)]
+        [ButtonGroup]
+        [Button("查看System代码", 20)]
+        private void OpenSystemScript()
+        {
+            ScriptHelper.OpenScript($"{this.ResName}ComponentSystem");
+        }
+        
         #region 界面参数
 
         [LabelText("组件类型")]

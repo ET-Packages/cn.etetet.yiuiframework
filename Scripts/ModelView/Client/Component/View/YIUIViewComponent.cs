@@ -28,6 +28,10 @@ namespace ET.Client
                     {
                         _uiBase = yiuiChild;
                     }
+                    else
+                    {
+                        _uiBase = default;
+                    }
                 }
 
                 return _UIBase;
@@ -43,7 +47,15 @@ namespace ET.Client
             {
                 if (_OwnerUIEntity == null)
                 {
-                    _ownerUIEntity = UIBase?.OwnerUIEntity;
+                    var uiEntity = UIBase?.OwnerUIEntity;
+                    if (uiEntity is { IsDisposed: false })
+                    {
+                        _ownerUIEntity = uiEntity;
+                    }
+                    else
+                    {
+                        _ownerUIEntity = default;
+                    }
                 }
 
                 return _OwnerUIEntity;
@@ -59,7 +71,15 @@ namespace ET.Client
             {
                 if (_UIWindow == null)
                 {
-                    _uiWindow = UIBase?.GetComponent<YIUIWindowComponent>();
+                    var window = UIBase?.GetComponent<YIUIWindowComponent>();
+                    if (window is { IsDisposed: false })
+                    {
+                        _uiWindow = window;
+                    }
+                    else
+                    {
+                        _uiWindow = default;
+                    }
                 }
 
                 return _UIWindow;

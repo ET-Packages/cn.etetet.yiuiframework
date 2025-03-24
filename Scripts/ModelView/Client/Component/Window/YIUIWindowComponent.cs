@@ -35,6 +35,10 @@ namespace ET.Client
                     {
                         _uiBase = yiuiChild;
                     }
+                    else
+                    {
+                        _uiBase = default;
+                    }
                 }
 
                 return _UIBase;
@@ -50,7 +54,15 @@ namespace ET.Client
             {
                 if (_OwnerUIEntity == null)
                 {
-                    _ownerUIEntity = UIBase?.OwnerUIEntity;
+                    var uiEntity = UIBase?.OwnerUIEntity;
+                    if (uiEntity is { IsDisposed: false })
+                    {
+                        _ownerUIEntity = uiEntity;
+                    }
+                    else
+                    {
+                        _ownerUIEntity = default;
+                    }
                 }
 
                 return _OwnerUIEntity;

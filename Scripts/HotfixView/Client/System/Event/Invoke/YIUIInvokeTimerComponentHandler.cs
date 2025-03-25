@@ -16,7 +16,7 @@ namespace ET.Client
     {
         public override async ETTask Handle(YIUIInvokeWaitAsync args)
         {
-            if (args.CancellationToken != null)
+            if (args.CancellationToken == null)
             {
                 await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
             }
@@ -32,7 +32,7 @@ namespace ET.Client
     {
         public override async ETTask Handle(YIUIInvokeWaitSecondAsync args)
         {
-            if (args.CancellationToken != null)
+            if (args.CancellationToken == null)
             {
                 await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000));
             }

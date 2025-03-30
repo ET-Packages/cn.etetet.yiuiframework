@@ -74,6 +74,12 @@ namespace ET.Client
                 obj.SetActive(true);
             }
 
+            if (parentEntity is { IScene: null })
+            {
+                Log.Error($"{parentEntity.GetType()} 不是场景实体 无法创建");
+                return null;
+            }
+
             var uiBase    = parentEntity.AddChild<YIUIChild, YIUIBindVo, GameObject>(vo, obj);
             var component = uiBase.AddComponent(vo.ComponentType);
             cdeTable.CreateComponent(component);

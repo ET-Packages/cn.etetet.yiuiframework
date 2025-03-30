@@ -32,6 +32,12 @@ namespace YIUIFramework
             }
             else
             {
+                if (!UIOperationHelper.IsPlaying())
+                {
+                    gameObject.SetActive(result);
+                    return;
+                }
+
                 if (m_CanvasGroup == null)
                 {
                     m_CanvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
@@ -104,8 +110,8 @@ namespace YIUIFramework
                 yield return null;
                 leftTime -= Time.deltaTime;
                 var alpha = Mathf.Lerp(alphaStart,
-                                       alphaTarget,
-                                       1.0f - (leftTime / m_TransitionTime));
+                    alphaTarget,
+                    1.0f - (leftTime / m_TransitionTime));
                 group.alpha = alpha;
             }
 

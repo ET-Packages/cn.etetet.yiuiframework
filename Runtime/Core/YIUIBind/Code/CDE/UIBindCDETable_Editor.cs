@@ -13,13 +13,28 @@ namespace YIUIFramework
     public sealed partial class UIBindCDETable
     {
         #if ENABLE_VIEW && UNITY_EDITOR
+
+        [NonSerialized]
+        private GameObject m_YIUIChildViewGO;
+
         [PropertyOrder(int.MinValue)]
         [ReadOnly]
-        [NonSerialized]
         [ShowInInspector]
         [HideInEditorMode]
         [LabelText("ViewGO")]
-        public GameObject YIUIChildViewGO;
+        public GameObject YIUIChildViewGO
+        {
+            get
+            {
+                if (m_YIUIChildViewGO == null)
+                {
+                    m_YIUIChildViewGO = Entity?.ViewGO;
+                }
+
+                return m_YIUIChildViewGO;
+            }
+        }
+
         #endif
 
         [PropertyOrder(-1000)]

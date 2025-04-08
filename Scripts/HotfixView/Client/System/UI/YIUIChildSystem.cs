@@ -64,13 +64,10 @@ namespace ET.Client
             self.m_UIBindVo               = uiBindVo;
             self.UIResName                = uiBindVo.ResName;
             self.m_UIBaseInit             = true;
+            self.CDETable.m_EntityRef     = self;
             self.CDETable.UIBaseStart     = self.UIBaseStart;
             self.CDETable.UIBaseOnDestroy = self.UIBaseOnDestroy;
             self.AddUIDataComponent();
-
-            #if ENABLE_VIEW && UNITY_EDITOR
-            self.CDETable.YIUIChildViewGO = self.ViewGO;
-            #endif
         }
 
         //根据UI类型添加其他组件

@@ -21,6 +21,11 @@ namespace YIUIFramework
     [AddComponentMenu("YIUIBind/★★★★★YIUI CDE Table 总表★★★★★")]
     public sealed partial class UIBindCDETable : SerializedMonoBehaviour
     {
+        [NonSerialized]
+        public EntityRef<Entity> m_EntityRef;
+
+        public Entity Entity => m_EntityRef;
+
         [HideInInspector]
         public UIBindComponentTable ComponentTable;
 

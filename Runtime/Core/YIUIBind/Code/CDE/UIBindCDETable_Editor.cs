@@ -12,6 +12,16 @@ namespace YIUIFramework
     //Editor
     public sealed partial class UIBindCDETable
     {
+        #if ENABLE_VIEW && UNITY_EDITOR
+        [PropertyOrder(int.MinValue)]
+        [ReadOnly]
+        [NonSerialized]
+        [ShowInInspector]
+        [HideInEditorMode]
+        [LabelText("ViewGO")]
+        public GameObject YIUIChildViewGO;
+        #endif
+
         [PropertyOrder(-1000)]
         [GUIColor(0, 1, 0)]
         [ButtonGroup]
@@ -29,7 +39,7 @@ namespace YIUIFramework
         {
             ScriptHelper.OpenScript($"{this.ResName}ComponentSystem");
         }
-        
+
         #region 界面参数
 
         [LabelText("组件类型")]

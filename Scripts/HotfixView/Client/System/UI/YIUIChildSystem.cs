@@ -26,8 +26,8 @@ namespace ET.Client
         [EntitySystem]
         private static void Destroy(this YIUIChild self)
         {
-            if (self.OwnerGameObject != null)
-                UnityEngine.Object.Destroy(self.OwnerGameObject);
+            if (self.OwnerGameObject == null) return;
+            UnityEngine.Object.Destroy(self.OwnerGameObject);
         }
 
         //设置当前拥有的这个实际UI 之后初始化
@@ -67,6 +67,10 @@ namespace ET.Client
             self.CDETable.UIBaseStart     = self.UIBaseStart;
             self.CDETable.UIBaseOnDestroy = self.UIBaseOnDestroy;
             self.AddUIDataComponent();
+
+            #if ENABLE_VIEW && UNITY_EDITOR
+            self.CDETable.YIUIChildViewGO = self.ViewGO;
+            #endif
         }
 
         //根据UI类型添加其他组件
@@ -148,9 +152,14 @@ namespace ET.Client
                 YIUIEventSystem.Bind(self.OwnerUIEntity);
                 YIUIEventSystem.Initialize(self.OwnerUIEntity);
                 if (self.ActiveSelf)
+                {
                     self.UIBaseOnEnable();
+                }
                 else
+                {
                     self.UIBaseOnDisable();
+                }
+
                 self.CDETable.UIBaseOnEnable  = self.UIBaseOnEnable;
                 self.CDETable.UIBaseOnDisable = self.UIBaseOnDisable;
             }
@@ -190,12 +199,14 @@ namespace ET.Client
         private static void UIBaseOnDestroy(this YIUIChild self)
         {
             if (!self.IsDisposed)
+            {
                 self.Parent.RemoveChild(self.Id);
+            }
 
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeReleaseInstantiate
-                                                 {
-                                                     obj = self.OwnerGameObject
-                                                 });
+            {
+                obj = self.OwnerGameObject
+            });
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if TextMeshPro
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -22,9 +23,9 @@ namespace YIUIFramework
 
         [NonSerialized]
         private List<EUIEventParamType> m_FilterParamType = new List<EUIEventParamType>
-                                                            {
-                                                                EUIEventParamType.Int
-                                                            };
+        {
+            EUIEventParamType.Int
+        };
 
         protected override List<EUIEventParamType> GetFilterParamType => m_FilterParamType;
 
@@ -57,3 +58,4 @@ namespace YIUIFramework
         }
     }
 }
+#endif

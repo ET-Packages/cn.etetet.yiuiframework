@@ -1,26 +1,23 @@
-﻿using ET;
 using System;
-using UnityEngine;
-using UnityEngine.UI;
-using Sirenix.OdinInspector;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using ET;
+using Sirenix.OdinInspector;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace YIUIFramework
 {
     /// <summary>
     /// 长按
-    /// 当长按时间超过配置时间时触发
-    /// 只会触发一次, 主要用于 如长按技能图标 显示一个Tips说明这种需求
-    /// 如果你想要的是按下后持续触发 那这个就不合适
     /// </summary>
     [LabelText("长按<obj>")]
-    [AddComponentMenu("YIUIBind/Event/长按 【Press】 UIEventBindPress")]
-    public class UIEventBindPress : UIEventBind, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+    [AddComponentMenu("YIUIBind/Event/持续长按 【Press】 UIEventBindKeepPress")]
+    public class UIEventBindKeepPress : UIEventBind, IPointerDownHandler, IPointerMoveHandler, IPointerUpHandler, IPointerExitHandler
     {
         [SerializeField]
-        [LabelText("长按时间")]
-        private float m_PressTime = 0.5f; //按下后大于这个时间就会触发长按回调
+        [LabelText("长按回调间隔时间")]
+        private float m_PressTime = 0.5f; //长按后每X时间回调一次 直到抬起会一直回调
 
         [SerializeField]
         [LabelText("按钮范围内长按才有效")]
@@ -78,7 +75,13 @@ namespace YIUIFramework
                 return;
             }
 
-            ET.EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeCountDownAdd { TimerCallback = PressEnd, TotalTime = m_PressTime });
+            ET.EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeCountDownAdd { TimerCallback = PressEnd, TotalTime = 0, Interval = m_PressTime });
+        }
+
+        public void OnPointerMove(PointerEventData eventData)
+        {
+            if (!m_PointerDown) return;
+            m_PointerEventData = eventData;
         }
 
         public void OnPointerUp(PointerEventData eventData)

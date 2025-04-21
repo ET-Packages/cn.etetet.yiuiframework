@@ -7,14 +7,20 @@ namespace ET.Client
     {
         public override void Handle(YIUIInvokeCountDownAdd args)
         {
-            if (args.TotalTime <= 0)
+            if (args.TotalTime < 0)
             {
-                Log.Error($"总时长必须大于 0");
+                Log.Error($"总时长必须>= 0  (0=无限)");
                 return;
             }
 
             if (args.Interval <= 0)
             {
+                if (args.TotalTime <= 0)
+                {
+                    Log.Error($"没有间隔,总时长不能<=0");
+                    return;
+                }
+
                 //没有间隔则默认使用一次性回调
                 args.Interval = args.TotalTime;
             }
@@ -28,14 +34,20 @@ namespace ET.Client
     {
         public override bool Handle(YIUIInvokeCountDownAdd args)
         {
-            if (args.TotalTime <= 0)
+            if (args.TotalTime < 0)
             {
-                Log.Error($"总时长必须大于 0");
+                Log.Error($"总时长必须>= 0  (0=无限)");
                 return false;
             }
 
             if (args.Interval <= 0)
             {
+                if (args.TotalTime <= 0)
+                {
+                    Log.Error($"没有间隔,总时长不能<=0");
+                    return false;
+                }
+
                 //没有间隔则默认使用一次性回调
                 args.Interval = args.TotalTime;
             }

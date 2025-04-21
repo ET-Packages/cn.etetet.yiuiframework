@@ -25,6 +25,7 @@ namespace YIUIFramework
         [LabelText("所有绑定数据 最终数据")]
         [ReadOnly]
         [PropertyOrder(-9)]
+        [OnStateUpdate("@$property.State.Expanded = true")]
         private Dictionary<string, Component> m_AllBindDic = new Dictionary<string, Component>();
 
         public IReadOnlyDictionary<string, Component> AllBindDic => m_AllBindDic;

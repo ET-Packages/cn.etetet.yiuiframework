@@ -18,8 +18,11 @@ namespace ET.Client
         //目前这个只是在UI动画上使用 其他地方请自行实现
         private static async ETTask GetAwaiter(this Tweener tweener)
         {
-            var task = ETTask.Create();
-            tweener.onComplete += () => { task.SetResult(); };
+            var task = ETTask.Create(true);
+            tweener.onComplete += () =>
+            {
+                task.SetResult();
+            };
             await task;
         }
 

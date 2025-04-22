@@ -14,8 +14,7 @@ namespace ET.Client
                 return;
             }
 
-            var iYIUIOpenTweenEndSystems
-                    = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIOpenTweenEndSystem));
+            var iYIUIOpenTweenEndSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIOpenTweenEndSystem));
             if (iYIUIOpenTweenEndSystems == null)
             {
                 return;
@@ -37,8 +36,6 @@ namespace ET.Client
                     Log.Error(e);
                 }
             }
-
-            return;
         }
     }
 }

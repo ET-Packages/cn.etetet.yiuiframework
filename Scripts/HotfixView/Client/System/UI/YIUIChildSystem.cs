@@ -148,17 +148,26 @@ namespace ET.Client
             {
                 YIUIEventSystem.Bind(self.OwnerUIEntity);
                 YIUIEventSystem.Initialize(self.OwnerUIEntity);
-                if (self.ActiveSelf)
+
+                if (self.OwnerUIEntity is IYIUIEnable)
                 {
-                    self.UIBaseOnEnable();
-                }
-                else
-                {
-                    self.UIBaseOnDisable();
+                    if (self.ActiveSelf)
+                    {
+                        self.UIBaseOnEnable();
+                    }
+
+                    self.CDETable.UIBaseOnEnable = self.UIBaseOnEnable;
                 }
 
-                self.CDETable.UIBaseOnEnable  = self.UIBaseOnEnable;
-                self.CDETable.UIBaseOnDisable = self.UIBaseOnDisable;
+                if (self.OwnerUIEntity is IYIUIDisable)
+                {
+                    if (!self.ActiveSelf)
+                    {
+                        self.UIBaseOnDisable();
+                    }
+
+                    self.CDETable.UIBaseOnDisable = self.UIBaseOnDisable;
+                }
             }
             catch (Exception e)
             {

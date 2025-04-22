@@ -16,9 +16,6 @@ namespace ET.Client
     [ComponentOf(typeof(YIUIChild))]
     public partial class YIUIWindowComponent : Entity, IAwake, IDestroy
     {
-        public ETTask _LastOpenETTask;
-        public ETTask _LastCloseETTask;
-
         public YIUIBindVo UIBindVo;
 
         private EntityRef<YIUIChild> _uiBase;

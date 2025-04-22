@@ -48,7 +48,13 @@ namespace ET.Client
                 }
             }
 
-            var successPanel = await YIUIEventSystem.Close(info.OwnerUIEntity);
+            var successPanel = true;
+
+            if (info.OwnerUIEntity is IYIUIClose)
+            {
+                successPanel = await YIUIEventSystem.Close(info.OwnerUIEntity);
+            }
+
             if (info.UIWindow is { WindowCloseTweenBefor: true })
                 await YIUIEventSystem.WindowClose(info.UIWindow, successPanel);
             if (!successPanel)

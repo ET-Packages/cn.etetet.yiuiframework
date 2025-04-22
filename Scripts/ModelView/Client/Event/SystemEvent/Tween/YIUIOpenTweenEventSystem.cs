@@ -7,17 +7,17 @@ namespace ET.Client
     /// </summary>
     public static partial class YIUIEventSystem
     {
-        public static async ETTask<bool> OpenTween(Entity component)
+        public static async ETTask OpenTween(Entity component)
         {
             if (component == null || component.IsDisposed)
             {
-                return true;
+                return;
             }
 
             var iYIUIOpenTweenSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIOpenTweenSystem));
             if (iYIUIOpenTweenSystems == null)
             {
-                return false; //没有则执行默认
+                return;
             }
 
             foreach (IYIUIOpenTweenSystem aYIUIOpenTweenSystem in iYIUIOpenTweenSystems)
@@ -36,8 +36,6 @@ namespace ET.Client
                     Log.Error(e);
                 }
             }
-
-            return true;
         }
     }
 }

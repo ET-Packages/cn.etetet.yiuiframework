@@ -59,7 +59,7 @@ namespace ET.Client
 
                 m_OpenTween      = OwnerUIEntity is IYIUIOpenTween;
                 m_CheckOpenTween = true;
-                return m_OpenTweenEnd;
+                return m_OpenTween;
             }
         }
 
@@ -78,7 +78,7 @@ namespace ET.Client
 
                 m_CloseTween      = OwnerUIEntity is IYIUICloseTween;
                 m_CheckCloseTween = true;
-                return m_CloseTweenEnd;
+                return m_CloseTween;
             }
         }
     }

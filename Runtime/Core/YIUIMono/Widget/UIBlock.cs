@@ -7,6 +7,7 @@ namespace YIUIFramework
     /// 不可见的一个图，用来阻挡UI的投射。
     /// </summary>
     [AddComponentMenu("YIUIFramework/Widget/阻挡UI 【UIBlock】")]
+    [RequireComponent(typeof(CanvasRenderer))]
     public class UIBlock : Graphic, ICanvasRaycastFilter
     {
         public override bool raycastTarget

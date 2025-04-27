@@ -56,7 +56,10 @@ namespace ET.Client
             }
 
             if (info.UIWindow is { WindowCloseTweenBefor: true })
+            {
                 await YIUIEventSystem.WindowClose(info.UIWindow, successPanel);
+            }
+
             if (!successPanel)
             {
                 Log.Info($"<color=yellow> 关闭事件返回不允许关闭Panel UI: {panelName} </color>");
@@ -64,20 +67,28 @@ namespace ET.Client
             }
 
             if (info.UIWindow is { WindowLastClose: false })
+            {
                 await info.UIWindow.InternalOnWindowCloseTween(tween);
+            }
 
             if (!ignoreElse)
+            {
                 await self.RemoveUIAddElse(info);
+            }
 
             if (info.UIWindow is { WindowLastClose: true })
+            {
                 await info.UIWindow.InternalOnWindowCloseTween(tween);
+            }
 
             //必须后关闭所有view 没有动画 也不管会不会失败
             //如果你有其他特殊需求 请自行处理
             await info.UIPanel.CloseAllView(false);
 
             if (info.UIWindow is { WindowCloseTweenBefor: false })
+            {
                 await YIUIEventSystem.WindowClose(info.UIWindow, true);
+            }
 
             self.RemoveUI(info);
 

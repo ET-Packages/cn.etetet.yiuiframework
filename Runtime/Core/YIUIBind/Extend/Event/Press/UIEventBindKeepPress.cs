@@ -43,7 +43,7 @@ namespace YIUIFramework
             m_Selectable ??= GetComponent<Selectable>();
         }
 
-        private void OnDestroy()
+        private new void OnDestroy()
         {
             RemoveCountDown();
         }

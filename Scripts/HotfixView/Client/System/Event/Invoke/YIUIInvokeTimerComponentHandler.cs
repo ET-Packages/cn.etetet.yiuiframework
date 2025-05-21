@@ -7,7 +7,12 @@ namespace ET.Client
     {
         public override async ETTask Handle(YIUIInvokeWaitFrameAsync args)
         {
-            await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitFrameAsync();
+            if (YIUIMgrComponent.Inst == null)
+            {
+                return;
+            }
+
+            await YIUIMgrComponent.Inst.Root().GetComponent<TimerComponent>().WaitFrameAsync();
         }
     }
 
@@ -16,13 +21,18 @@ namespace ET.Client
     {
         public override async ETTask Handle(YIUIInvokeWaitAsync args)
         {
+            if (YIUIMgrComponent.Inst == null)
+            {
+                return;
+            }
+
             if (args.CancellationToken == null)
             {
-                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
+                await YIUIMgrComponent.Inst.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
             }
             else
             {
-                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync(args.Time).NewContext(args.CancellationToken);
+                await YIUIMgrComponent.Inst.Root().GetComponent<TimerComponent>().WaitAsync(args.Time).NewContext(args.CancellationToken);
             }
         }
     }
@@ -32,13 +42,18 @@ namespace ET.Client
     {
         public override async ETTask Handle(YIUIInvokeWaitSecondAsync args)
         {
+            if (YIUIMgrComponent.Inst == null)
+            {
+                return;
+            }
+
             if (args.CancellationToken == null)
             {
-                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000));
+                await YIUIMgrComponent.Inst.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000));
             }
             else
             {
-                await YIUIMgrComponent.Inst?.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000)).NewContext(args.CancellationToken);
+                await YIUIMgrComponent.Inst.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000)).NewContext(args.CancellationToken);
             }
         }
     }

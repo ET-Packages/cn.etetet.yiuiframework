@@ -14,7 +14,8 @@
     {
         public override async ETTask<bool> Handle(YIUIInvokeClosePanel args)
         {
-            return await YIUIMgrComponent.Inst?.ClosePanelAsync(args.PanelName, args.Tween, args.IgnoreElse);
+            if (YIUIMgrComponent.Inst == null) return false;
+            return await YIUIMgrComponent.Inst.ClosePanelAsync(args.PanelName, args.Tween, args.IgnoreElse);
         }
     }
 

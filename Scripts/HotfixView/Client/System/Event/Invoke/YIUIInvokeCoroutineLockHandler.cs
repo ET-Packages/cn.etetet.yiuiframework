@@ -8,12 +8,14 @@ namespace ET.Client
     {
         public override async ETTask<Entity> Handle(YIUIInvokeCoroutineLock args)
         {
+            if (YIUIMgrComponent.Inst == null) return null;
             var lockType = args.LockType;
             if (lockType <= 0)
             {
                 lockType = CoroutineLockType.YIUIFramework;
             }
-            var coroutineLock = await YIUIMgrComponent.Inst?.Root().GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
+
+            var coroutineLock = await YIUIMgrComponent.Inst.Root().GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
             return coroutineLock;
         }
     }

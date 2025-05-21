@@ -5,7 +5,12 @@
     {
         public override async ETTask<bool> Handle(YIUIInvokeRootOpenPanel args)
         {
-            return await args.Root?.OpenPanelAsync(args.PanelName) != null;
+            if (args.Root == null)
+            {
+                return false;
+            }
+
+            return await args.Root.OpenPanelAsync(args.PanelName) != null;
         }
     }
 
@@ -14,7 +19,12 @@
     {
         public override void Handle(YIUIInvokeRootOpenPanel args)
         {
-            args.Root?.OpenPanelAsync(args.PanelName).NoContext();
+            if (args.Root == null)
+            {
+                return;
+            }
+
+            args.Root.OpenPanelAsync(args.PanelName).NoContext();
         }
     }
 }

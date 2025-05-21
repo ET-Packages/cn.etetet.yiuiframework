@@ -14,6 +14,13 @@ namespace ET
             return xEqual && yEqual && zEqual;
         }
 
+        public static bool ApproximatelyXZ(this float3 a, float3 b, float epsilon = 0.001f)
+        {
+            bool xEqual = math.abs(a.x - b.x) < epsilon;
+            bool zEqual = math.abs(a.z - b.z) < epsilon;
+            return xEqual && zEqual;
+        }
+
         public static bool Approximately(this float2 a, float2 b, float epsilon = 0.001f)
         {
             bool xEqual = math.abs(a.x - b.x) < epsilon;

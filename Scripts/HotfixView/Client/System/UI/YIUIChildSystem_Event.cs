@@ -33,7 +33,7 @@ namespace ET.Client
         //其中有一个子类失败则返回失败
         public static async ETTask<bool> OpenAllChild(this YIUIChild self)
         {
-            using var coroutineLock = await YIUIMgrComponent.Inst?.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, self.GetHashCode());
+            using var coroutineLock = await YIUIMgrComponent.Inst.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, self.GetHashCode());
 
             bool result = true;
 
@@ -80,7 +80,7 @@ namespace ET.Client
 
         public static async ETTask<bool> CloseAllChild(this YIUIChild self)
         {
-            using var coroutineLock = await YIUIMgrComponent.Inst?.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, self.GetHashCode());
+            using var coroutineLock = await YIUIMgrComponent.Inst.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, self.GetHashCode());
 
             bool result = true;
 

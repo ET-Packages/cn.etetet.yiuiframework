@@ -14,7 +14,8 @@
     {
         public override async ETTask<bool> Handle(YIUIInvokeHomePanel args)
         {
-            return await YIUIMgrComponent.Inst?.HomePanel(args.PanelName, args.Tween, args.ForceHome);
+            if (YIUIMgrComponent.Inst == null) return false;
+            return await YIUIMgrComponent.Inst.HomePanel(args.PanelName, args.Tween, args.ForceHome);
         }
     }
 }

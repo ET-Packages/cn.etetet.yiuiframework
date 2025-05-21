@@ -28,6 +28,7 @@ namespace YIUIFramework
         [PropertyOrder(-99)]
         protected string m_EventName = null;
 
+        public string EventName => this.m_EventName;
         /// <summary>
         /// 当前的UI事件
         /// </summary>

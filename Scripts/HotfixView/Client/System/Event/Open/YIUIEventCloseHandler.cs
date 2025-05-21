@@ -6,6 +6,7 @@
     {
         protected override async ETTask Run(Scene scene, YIUIEventPanelCloseBefore arg)
         {
+            if (YIUIEventComponent.Inst == null) return;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
             await scene.DynamicEvent(arg);
         }
@@ -17,6 +18,7 @@
     {
         protected override async ETTask Run(Scene scene, YIUIEventPanelCloseAfter arg)
         {
+            if (YIUIEventComponent.Inst == null) return;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
             await scene.DynamicEvent(arg);
         }
@@ -28,6 +30,7 @@
     {
         protected override async ETTask Run(Scene scene, YIUIEventPanelDestroy arg)
         {
+            if (YIUILoadComponent.Inst == null) return;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
             await scene.DynamicEvent(arg);
         }

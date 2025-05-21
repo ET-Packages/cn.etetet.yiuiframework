@@ -27,6 +27,7 @@ namespace ET.Client
         /// </summary>
         public static bool Remove(this CountDownMgr self, CountDownTimerCallback timerCallback)
         {
+            if (self == null) return false;
             if (!self.m_CallbackGuidDic.ContainsKey(timerCallback))
             {
                 return false;

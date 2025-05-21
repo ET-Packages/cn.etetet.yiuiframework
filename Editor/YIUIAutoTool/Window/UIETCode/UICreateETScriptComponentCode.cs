@@ -40,7 +40,7 @@ namespace YIUIFramework.Editor
         private string GetLife(UICreateETScriptData codeData)
         {
             var life = "";
-            foreach (EETLifeTpye lifeEnum in Enum.GetValues(typeof(EETLifeTpye)))
+            foreach (EETLifeType lifeEnum in Enum.GetValues(typeof(EETLifeType)))
             {
                 if (codeData.LifeTpye.HasFlag(lifeEnum))
                 {
@@ -51,21 +51,21 @@ namespace YIUIFramework.Editor
             return life;
         }
 
-        private string SwitchLife(EETLifeTpye life)
+        private string SwitchLife(EETLifeType life)
         {
             switch (life)
             {
-                case EETLifeTpye.All:
+                case EETLifeType.All:
                     break;
-                case EETLifeTpye.Def:
+                case EETLifeType.Def:
                     break;
-                case EETLifeTpye.None:
+                case EETLifeType.None:
                     break;
-                case EETLifeTpye.IAwake:
+                case EETLifeType.IAwake:
                     return ", IAwake";
-                case EETLifeTpye.IUpdate:
+                case EETLifeType.IUpdate:
                     return ", IUpdate";
-                case EETLifeTpye.IDestroy:
+                case EETLifeType.IDestroy:
                     return ", IDestroy";
                 default:
                     Debug.LogError($"是否新增了类型 请检查 {life}");

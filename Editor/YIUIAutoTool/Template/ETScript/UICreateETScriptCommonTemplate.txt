@@ -8,7 +8,7 @@ namespace ${Namespace}
     /// Date    ${CreateDate}
     /// Desc    ${Desc}
     /// </summary>
-	public class ${Name}${ComponentType} : Entity${Life}
+	public partial class ${Name}${ComponentType} : Entity${Life}
 	{
 
 	}

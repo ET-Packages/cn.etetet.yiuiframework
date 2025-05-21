@@ -9,8 +9,8 @@ namespace YIUIFramework.Editor
         public string           Namespace; //命名空间
         public string           Name;
         public string           Desc;
-        public EETComponentTpye ComponentTpye;
-        public EETLifeTpye      LifeTpye;
+        public EETComponentType ComponentTpye;
+        public EETLifeType      LifeTpye;
         public string           ComponentPath;
         public string           SystemPath;
     }

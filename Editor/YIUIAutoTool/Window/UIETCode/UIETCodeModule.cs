@@ -8,7 +8,7 @@ using UnityEngine;
 namespace YIUIFramework.Editor
 {
     [Flags]
-    public enum EETLifeTpye
+    public enum EETLifeType
     {
         [LabelText("所有")]
         All = -1,
@@ -29,7 +29,7 @@ namespace YIUIFramework.Editor
         IDestroy = 1 << 3,
     }
 
-    public enum EETComponentTpye
+    public enum EETComponentType
     {
         Component = 0,
         Child     = 1,
@@ -58,11 +58,11 @@ namespace YIUIFramework.Editor
 
         [EnumToggleButtons, HideLabel]
         [BoxGroup("组件类型")]
-        public EETComponentTpye ComponentTpye = EETComponentTpye.Component;
+        public EETComponentType ComponentType = EETComponentType.Component;
 
         [EnumToggleButtons, HideLabel]
         [BoxGroup("生命周期")]
-        public EETLifeTpye LifeTpye = EETLifeTpye.Def;
+        public EETLifeType LifeType = EETLifeType.Def;
 
         private const string ParentFolderPath = "Assets/";
 
@@ -96,8 +96,8 @@ namespace YIUIFramework.Editor
                 Namespace     = GetNamespace(),
                 Name          = ComponentName,
                 Desc          = ComponentDesc,
-                ComponentTpye = ComponentTpye,
-                LifeTpye      = LifeTpye,
+                ComponentTpye = this.ComponentType,
+                LifeTpye      = this.LifeType,
                 ComponentPath = ParentFolderPath + ComponentPath,
                 SystemPath    = ParentFolderPath + SystemPath,
             };
@@ -105,7 +105,7 @@ namespace YIUIFramework.Editor
             new UICreateETScriptComponentCode(out var resultComponent, YIUIAutoTool.Author, data);
             if (resultComponent)
             {
-                if ((int)LifeTpye != 0)
+                if ((int)this.LifeType != 0)
                 {
                     new UICreateETScriptSystemCode(out var resultSystem, YIUIAutoTool.Author, data);
                 }

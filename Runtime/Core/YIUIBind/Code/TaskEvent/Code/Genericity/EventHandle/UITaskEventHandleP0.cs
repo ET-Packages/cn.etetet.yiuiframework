@@ -68,7 +68,7 @@ namespace YIUIFramework
                 }
                 catch (Exception e)
                 {
-                    Logger.LogError($"委托:{UITaskEventParamDelegate.GetType().Name} 委托回调错误: {e.Message}");
+                    Logger.LogError($"委托:{UITaskEventParamDelegate.GetType().Name} 委托回调错误: {e}");
                 }
             }
             else

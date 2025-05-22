@@ -91,7 +91,7 @@ namespace YIUIFramework.Editor
             }
             catch (Exception e)
             {
-                Debug.LogError($"获取所有模块错误 请检查 err={e.Message}{e.StackTrace}");
+                Debug.LogError($"获取所有模块错误 请检查 err={e}{e.StackTrace}");
                 return;
             }
 

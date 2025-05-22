@@ -178,11 +178,11 @@ namespace YIUIFramework.Editor
             }
             catch (IOException e)
             {
-                Debug.LogError($"无法删除文件: \n{path}\n{e.Message}");
+                Debug.LogError($"无法删除文件: \n{path}\n{e}");
             }
             catch (UnauthorizedAccessException e)
             {
-                Debug.LogError($"没有权限删除文件: \n{path}\n{e.Message}");
+                Debug.LogError($"没有权限删除文件: \n{path}\n{e}");
             }
 
             var directoryPath = Path.GetDirectoryName(path);
@@ -205,11 +205,11 @@ namespace YIUIFramework.Editor
                     }
                     catch (IOException e)
                     {
-                        Debug.LogError($"无法删除文件夹: \n{directoryPath}\n{e.Message}");
+                        Debug.LogError($"无法删除文件夹: \n{directoryPath}\n{e}");
                     }
                     catch (UnauthorizedAccessException e)
                     {
-                        Debug.LogError($"没有权限删除文件夹: \n{directoryPath}\n{e.Message}");
+                        Debug.LogError($"没有权限删除文件夹: \n{directoryPath}\n{e}");
                     }
                 }
                 else

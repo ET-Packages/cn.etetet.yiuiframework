@@ -22,7 +22,7 @@ namespace YIUIFramework
     public sealed partial class UIBindComponentTable : SerializedMonoBehaviour
     {
         [OdinSerialize]
-        [LabelText("所有绑定数据 最终数据")]
+        [LabelText("最终数据")]
         [ReadOnly]
         [PropertyOrder(-9)]
         [OnStateUpdate("@$property.State.Expanded = true")]

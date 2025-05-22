@@ -25,8 +25,8 @@ namespace YIUIFramework
         [HideLabel]
         [ShowInInspector]
         [Title("所有数据", TitleAlignment = TitleAlignments.Centered)]
-        [DictionaryDrawerSettings(KeyLabel = "数据名称", ValueLabel = "数据内容", IsReadOnly = true,
-            DisplayMode = DictionaryDisplayOptions.ExpandedFoldout)]
+        [OnStateUpdate("@$property.State.Expanded = true")]
+        [DictionaryDrawerSettings(KeyLabel = "数据名称", ValueLabel = "数据内容", IsReadOnly = true, DisplayMode = DictionaryDisplayOptions.ExpandedFoldout)]
         private Dictionary<string, UIData> m_DataDic = new Dictionary<string, UIData>();
 
         public IReadOnlyDictionary<string, UIData> DataDic => m_DataDic;

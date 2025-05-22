@@ -23,10 +23,11 @@ namespace YIUIFramework
     {
         [OdinSerialize]
         [ShowInInspector]
-        [LabelText("所有事件")]
+        [HideLabel]
         [Searchable]
-        [DictionaryDrawerSettings(KeyLabel = "事件名称", ValueLabel = "事件内容", IsReadOnly = true,
-            DisplayMode = DictionaryDisplayOptions.ExpandedFoldout)]
+        [Title("所有事件", TitleAlignment = TitleAlignments.Centered)]
+        [OnStateUpdate("@$property.State.Expanded = true")]
+        [DictionaryDrawerSettings(KeyLabel = "事件名称", ValueLabel = "事件内容", IsReadOnly = true, DisplayMode = DictionaryDisplayOptions.ExpandedFoldout)]
         [Delayed]
         private Dictionary<string, UIEventBase> m_EventDic = new Dictionary<string, UIEventBase>();
 

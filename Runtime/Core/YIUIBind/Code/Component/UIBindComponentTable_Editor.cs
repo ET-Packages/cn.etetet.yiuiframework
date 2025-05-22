@@ -12,12 +12,14 @@ namespace YIUIFramework
     //Editor
     public sealed partial class UIBindComponentTable
     {
-        [OdinSerialize]
-        [LabelText("所有绑定数据 编辑数据")]
         [Searchable]
-        [HideReferenceObjectPicker]
+        [OdinSerialize]
         [PropertyOrder(-10)]
+        [LabelText("编辑数据")]
+        [HideReferenceObjectPicker]
         [ShowIf("@UIOperationHelper.CommonShowIf()")]
+        [OnStateUpdate("@$property.State.Expanded = true")]
+        [Title("所有绑定数据", TitleAlignment = TitleAlignments.Centered)]
         private List<UIBindPairData> m_AllBindPair = new List<UIBindPairData>();
 
         [GUIColor(0, 1, 1)]

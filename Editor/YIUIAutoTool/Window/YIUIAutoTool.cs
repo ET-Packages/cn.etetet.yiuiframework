@@ -23,7 +23,7 @@ namespace YIUIFramework.Editor
     public class YIUIAutoTool : OdinMenuEditorWindow
     {
         [MenuItem("ET/YIUI 自动化工具")]
-        private static void OpenWindow()
+        public static void OpenWindow()
         {
             var window = GetWindow<YIUIAutoTool>("YIUI");
             if (window != null)
@@ -32,7 +32,7 @@ namespace YIUIFramework.Editor
 
         //[MenuItem("ET/关闭 YIUI 自动化工具")]
         //错误时使用的 面板出现了错误 会导致如何都打不开 就需要先关闭
-        private static void CloseWindow()
+        public static void CloseWindow()
         {
             GetWindow<YIUIAutoTool>()?.Close();
         }

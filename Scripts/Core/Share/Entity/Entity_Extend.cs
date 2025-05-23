@@ -12,6 +12,7 @@ namespace ET
             if (component == null)
             {
                 Log.Error($"{self.GetType().Name} 目标没有这个组件 {typeof(K).Name}");
+                return default;
             }
 
             return component;

@@ -12,7 +12,7 @@
             {
                 if (logError)
                 {
-                    Log.Error($"ETTaskSafely.Await: task is null");
+                    Log.Error($"ETTaskSafely.Await: 这个异步是空的无法等待 请检查");
                 }
 
                 return ETTask.CompletedTask;
@@ -27,7 +27,7 @@
             {
                 if (logError)
                 {
-                    Log.Error($"ETTaskSafely.Await: task is null");
+                    Log.Error($"ETTaskSafely.Await: 这个异步是空的无法等待 请检查");
                 }
 
                 return defaultValue;

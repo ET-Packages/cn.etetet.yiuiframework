@@ -44,7 +44,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Scrollbar = GetComponent<Scrollbar>();
+            m_Scrollbar ??= GetComponent<Scrollbar>();
             if (m_Scrollbar == null) return;
 
             var dataValue = GetFirstValue<float>();

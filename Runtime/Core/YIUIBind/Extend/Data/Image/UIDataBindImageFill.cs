@@ -42,7 +42,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Image = GetComponent<Image>();
+            m_Image ??= GetComponent<Image>();
             if (m_Image == null) return;
 
             var dataValue = GetFirstValue<float>();

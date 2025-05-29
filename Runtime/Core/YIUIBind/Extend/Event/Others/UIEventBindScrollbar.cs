@@ -21,25 +21,27 @@ namespace YIUIFramework
         protected override bool IsTaskEvent => false;
 
         [NonSerialized]
-        private List<EUIEventParamType> m_FilterParamType = new List<EUIEventParamType>
-                                                            {
-                                                                EUIEventParamType.Float
-                                                            };
+        private readonly List<EUIEventParamType> m_FilterParamType = new()
+        {
+            EUIEventParamType.Float
+        };
 
         protected override List<EUIEventParamType> GetFilterParamType => m_FilterParamType;
 
         private void Awake()
         {
-            m_Scrollbar = GetComponent<Scrollbar>();
+            m_Scrollbar ??= GetComponent<Scrollbar>();
         }
 
         private void OnEnable()
         {
+            if (m_Scrollbar == null) return;
             m_Scrollbar.onValueChanged.AddListener(OnValueChanged);
         }
 
         private void OnDisable()
         {
+            if (m_Scrollbar == null) return;
             m_Scrollbar.onValueChanged.RemoveListener(OnValueChanged);
         }
 

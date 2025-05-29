@@ -30,7 +30,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Dropdown = GetComponent<Dropdown>();
+            m_Dropdown ??= GetComponent<Dropdown>();
             if (m_Dropdown != null)
             {
                 m_Dropdown.onValueChanged.RemoveListener(OnDropdownValueChanged);

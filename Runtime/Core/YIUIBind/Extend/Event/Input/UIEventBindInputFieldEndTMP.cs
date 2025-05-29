@@ -22,7 +22,7 @@ namespace YIUIFramework
         protected override bool IsTaskEvent => false;
 
         [NonSerialized]
-        private List<EUIEventParamType> m_FilterParamType = new List<EUIEventParamType>
+        private readonly List<EUIEventParamType> m_FilterParamType = new()
         {
             EUIEventParamType.String
         };
@@ -31,16 +31,18 @@ namespace YIUIFramework
 
         private void Awake()
         {
-            m_InputField = GetComponent<TMP_InputField>();
+            m_InputField ??= GetComponent<TMP_InputField>();
         }
 
         private void OnEnable()
         {
+            if (m_InputField == null) return;
             m_InputField.onEndEdit.AddListener(OnValueChanged);
         }
 
         private void OnDisable()
         {
+            if (m_InputField == null) return;
             m_InputField.onEndEdit.RemoveListener(OnValueChanged);
         }
 

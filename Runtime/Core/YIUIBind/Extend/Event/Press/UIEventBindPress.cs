@@ -28,7 +28,7 @@ namespace YIUIFramework
 
         [SerializeField]
         [LabelText("有效范围")]
-        private Vector2 m_EffectiveRange = new Vector2(50, 50); //按下时记录一个位置,触发时判断位置与按下位置范围 (进一步判断范围)
+        private Vector2 m_EffectiveRange = new(50, 50); //按下时记录一个位置,触发时判断位置与按下位置范围 (进一步判断范围)
 
         [SerializeField]
         [LabelText("可选组件")]
@@ -37,7 +37,7 @@ namespace YIUIFramework
         protected override bool IsTaskEvent => false;
 
         [NonSerialized]
-        private List<EUIEventParamType> m_FilterParamType = new List<EUIEventParamType> { EUIEventParamType.Object };
+        private readonly List<EUIEventParamType> m_FilterParamType = new() { EUIEventParamType.Object };
 
         protected override List<EUIEventParamType> GetFilterParamType => m_FilterParamType;
 
@@ -61,14 +61,14 @@ namespace YIUIFramework
             m_UIEvent?.Invoke(m_PointerEventData as object);
         }
 
-        private bool             m_PointerDown;
-        private Vector2          m_LastPos;
+        private bool m_PointerDown;
+        private Vector2 m_LastPos;
         private PointerEventData m_PointerEventData;
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            m_PointerDown      = true;
-            m_LastPos          = Input.mousePosition;
+            m_PointerDown = true;
+            m_LastPos = Input.mousePosition;
             m_PointerEventData = eventData;
 
             if (m_PressTime <= 0)
@@ -94,7 +94,7 @@ namespace YIUIFramework
             }
 
             m_PointerEventData = null;
-            m_PointerDown      = false;
+            m_PointerDown = false;
         }
 
         private void PressEnd(double residuetime, double elapsetime, double totaltime)

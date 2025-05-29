@@ -8,8 +8,8 @@ using UnityEngine.UI;
 namespace YIUIFramework
 {
     [LabelText("双击<null>")]
-    [AddComponentMenu("YIUIBind/Event/双击 【DoubleClick】 UIEventBindDoubleCick")]
-    public class UIEventBindDoubleCick : UIEventBind, IPointerClickHandler
+    [AddComponentMenu("YIUIBind/Event/双击 【DoubleClick】 UIEventBindDoubleClick")]
+    public class UIEventBindDoubleClick : UIEventBind, IPointerClickHandler
     {
         [SerializeField]
         [LabelText("双击间隔时间")]

@@ -21,7 +21,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Selectable = GetComponent<Selectable>();
+            m_Selectable ??= GetComponent<Selectable>();
         }
 
         protected override void OnValueChanged()

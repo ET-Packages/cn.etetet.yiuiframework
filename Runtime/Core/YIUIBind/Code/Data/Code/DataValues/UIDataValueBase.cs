@@ -92,7 +92,9 @@ namespace YIUIFramework
             SetValueFrom(value);
             InvokeValueChangAction();
             if (notify)
+            {
                 InvokeValueChangAction(value, oldValue);
+            }
             return true;
         }
 

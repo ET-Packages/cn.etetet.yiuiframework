@@ -5,7 +5,12 @@
     {
         public override void Handle(YIUIInvokeDestroyPanel args)
         {
-            YIUIMgrComponent.Inst?.DestroyPanel(args.PanelName);
+            if (YIUIMgrComponent.Inst == null || YIUIMgrComponent.Inst.IsDisposed)
+            {
+                return;
+            }
+
+            YIUIMgrComponent.Inst.DestroyPanel(args.PanelName);
         }
     }
 }

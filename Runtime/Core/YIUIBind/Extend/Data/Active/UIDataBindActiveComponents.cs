@@ -25,8 +25,7 @@ namespace YIUIFramework
 
         protected override void OnValueChanged()
         {
-            if (m_Targets == null)
-                return;
+            if (m_Targets == null) return;
 
             var result = GetResult();
 

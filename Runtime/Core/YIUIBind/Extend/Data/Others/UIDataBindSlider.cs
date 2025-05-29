@@ -63,7 +63,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Slider = GetComponent<Slider>();
+            m_Slider ??= GetComponent<Slider>();
             if (m_Slider == null) return;
 
             var dataValue = GetFirstValue<float>();

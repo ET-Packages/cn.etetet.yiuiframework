@@ -29,7 +29,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_RectTransform = GetComponent<RectTransform>();
+            m_RectTransform ??= GetComponent<RectTransform>();
         }
 
         protected override void OnValueChanged()

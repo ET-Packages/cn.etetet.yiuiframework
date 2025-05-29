@@ -21,25 +21,27 @@ namespace YIUIFramework
         protected override bool IsTaskEvent => false;
 
         [NonSerialized]
-        private List<EUIEventParamType> m_FilterParamType = new List<EUIEventParamType>
-                                                            {
-                                                                EUIEventParamType.Int
-                                                            };
+        private readonly List<EUIEventParamType> m_FilterParamType = new()
+        {
+            EUIEventParamType.Int
+        };
 
         protected override List<EUIEventParamType> GetFilterParamType => m_FilterParamType;
 
         private void Awake()
         {
-            m_Dropdown = GetComponent<Dropdown>();
+            m_Dropdown ??= GetComponent<Dropdown>();
         }
 
         private void OnEnable()
         {
+            if (m_Dropdown == null) return;
             m_Dropdown.onValueChanged.AddListener(OnValueChanged);
         }
 
         private void OnDisable()
         {
+            if (m_Dropdown == null) return;
             m_Dropdown.onValueChanged.RemoveListener(OnValueChanged);
         }
 

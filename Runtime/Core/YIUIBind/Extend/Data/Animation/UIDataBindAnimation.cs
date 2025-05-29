@@ -25,7 +25,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Animation = GetComponent<Animation>();
+            m_Animation ??= GetComponent<Animation>();
             if (m_Animation != null)
             {
                 m_Animation.playAutomatically = false;

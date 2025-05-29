@@ -8,7 +8,10 @@
         {
             if (YIUIEventComponent.Inst == null) return;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
-            await scene.DynamicEvent(arg);
+            if (scene is { IsDisposed: false })
+            {
+                await scene.DynamicEvent(arg);
+            }
         }
     }
 
@@ -20,7 +23,10 @@
         {
             if (YIUIEventComponent.Inst == null) return;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
-            await scene.DynamicEvent(arg);
+            if (scene is { IsDisposed: false })
+            {
+                await scene.DynamicEvent(arg);
+            }
         }
     }
 
@@ -32,7 +38,10 @@
         {
             if (YIUILoadComponent.Inst == null) return;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
-            await scene.DynamicEvent(arg);
+            if (scene is { IsDisposed: false })
+            {
+                await scene.DynamicEvent(arg);
+            }
         }
     }
 }

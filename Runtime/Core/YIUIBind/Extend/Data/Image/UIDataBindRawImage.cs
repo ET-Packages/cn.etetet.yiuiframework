@@ -42,7 +42,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_RawImage = GetComponent<RawImage>();
+            m_RawImage ??= GetComponent<RawImage>();
             if (!m_ChangeEnabled && !m_RawImage.enabled)
             {
                 Logger.LogError($"{name} 当前禁止修改Enabled 且当前处于隐藏状态 可能会出现问题 请检查");

@@ -21,7 +21,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Toggle = GetComponent<Toggle>();
+            m_Toggle ??= GetComponent<Toggle>();
         }
 
         protected override void OnValueChanged()

@@ -30,7 +30,7 @@ namespace YIUIFramework
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
-            m_Graphic = GetComponent<Graphic>();
+            m_Graphic ??= GetComponent<Graphic>();
         }
 
         protected override void OnValueChanged()

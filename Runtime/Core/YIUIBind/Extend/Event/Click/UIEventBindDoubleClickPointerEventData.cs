@@ -8,8 +8,8 @@ namespace YIUIFramework
 {
     [InfoBox("提示: 可用事件参数 1个 , Object(PointerEventData)")]
     [LabelText("双击<PointerEventData>")]
-    [AddComponentMenu("YIUIBind/Event/双击 【DoubleCick PointerEventData】 UIEventBindDoubleClickPointerEventData")]
-    public class UIEventBindDoubleClickPointerEventData : UIEventBindDoubleCick
+    [AddComponentMenu("YIUIBind/Event/双击 【DoubleClick PointerEventData】 UIEventBindDoubleClickPointerEventData")]
+    public class UIEventBindDoubleClickPointerEventData : UIEventBindDoubleClick
     {
         [NonSerialized]
         private readonly List<EUIEventParamType> m_FilterParamType = new() { EUIEventParamType.Object };

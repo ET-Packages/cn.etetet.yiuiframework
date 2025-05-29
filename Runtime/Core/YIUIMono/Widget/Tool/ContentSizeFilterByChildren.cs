@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,17 +8,33 @@ namespace YIUIFramework
     [AddComponentMenu("YIUIFramework/Widget/自适应大小To子物体 【ContentSizeFilterByChildren】")]
     public class ContentSizeFilterByChildren : UIBehaviour, ILayoutElement, ILayoutSelfController, ILayoutGroup
     {
+        [LabelText("自适应模式")]
         public enum FitMode
         {
+            [LabelText("Width_宽")]
             Width,
+
+            [LabelText("Height_高")]
             Height,
+
+            [LabelText("Both_宽高")]
             Both
         }
 
+        [LabelText("大小模式")]
         public enum SizeMode
         {
-            Add,
-            Max
+            [LabelText("Add_所有最高优先级大小相加")]
+            Add, //查询 GameObject 上实现 ILayoutElement 的所有组件。使用具有最高优先级且具有此设置值的那个。如果多个组件具有此设置并且具有相同的优先级，则使用其中的最大值
+
+            [LabelText("Max_最大子物体的大小")]
+            Max,
+
+            [LabelText("RectAdd_所有Rect值大小相加")]
+            RectAdd, //直接取当前rect显示的值
+
+            [LabelText("RectMax_最大子物体Rect的大小")]
+            RectMax, //直接取当前rect显示的值
         }
 
         [SerializeField]
@@ -39,6 +56,7 @@ namespace YIUIFramework
         }
 
         [SerializeField]
+        [LabelText("最大限制")]
         protected float m_MaxSize = int.MaxValue;
 
         public float maxSize
@@ -54,6 +72,7 @@ namespace YIUIFramework
         }
 
         [SerializeField]
+        [LabelText("布局优先级")]
         protected int m_layoutPriority = 1;
 
         public int layoutPriority
@@ -69,6 +88,7 @@ namespace YIUIFramework
         }
 
         [SerializeField]
+        [LabelText("最小宽度")]
         protected float m_minWidth = -1;
 
         public float minWidth
@@ -84,6 +104,7 @@ namespace YIUIFramework
         }
 
         [SerializeField]
+        [LabelText("最小高度")]
         protected float m_minHeight = -1;
 
         public float minHeight
@@ -99,7 +120,12 @@ namespace YIUIFramework
         }
 
         [SerializeField]
+        [LabelText("间隔")]
         protected float m_Space = 0;
+
+        [SerializeField]
+        [LabelText("偏移")]
+        protected float m_Offset = 0;
 
         [System.NonSerialized]
         private RectTransform m_Rect;
@@ -109,7 +135,10 @@ namespace YIUIFramework
             get
             {
                 if (m_Rect == null)
+                {
                     m_Rect = GetComponent<RectTransform>();
+                }
+
                 return m_Rect;
             }
         }
@@ -118,12 +147,15 @@ namespace YIUIFramework
 
         public void AutoSize()
         {
-            if (m_Fit == FitMode.Width || m_Fit == FitMode.Both)
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
-                                                        ((ILayoutElement)this).preferredWidth);
-            if (m_Fit == FitMode.Height || m_Fit == FitMode.Both)
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
-                                                        ((ILayoutElement)this).preferredHeight);
+            if (m_Fit is FitMode.Width or FitMode.Both)
+            {
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, ((ILayoutElement)this).preferredWidth);
+            }
+
+            if (m_Fit is FitMode.Height or FitMode.Both)
+            {
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, ((ILayoutElement)this).preferredHeight);
+            }
         }
 
         void ILayoutController.SetLayoutHorizontal()
@@ -149,10 +181,10 @@ namespace YIUIFramework
             get
             {
                 float size = -1;
-                float max  = -2;
-                if (m_Fit == FitMode.Width || m_Fit == FitMode.Both)
+                float max = -2;
+                if (m_Fit is FitMode.Width or FitMode.Both)
                 {
-                    max  = 0;
+                    max = 0;
                     size = 0;
                     float spacing = m_Space;
                     if (m_LayoutGroup != null)
@@ -169,33 +201,58 @@ namespace YIUIFramework
                         if (child.gameObject.activeSelf)
                         {
                             var ignore = child.GetComponent<ILayoutIgnorer>();
-                            if (ignore != null && ignore.ignoreLayout)
-                                continue;
+                            if (ignore != null && ignore.ignoreLayout) continue;
 
-                            if (m_Size == SizeMode.Add)
+                            switch (m_Size)
                             {
-                                size += Mathf.Max(0, LayoutUtility.GetPreferredWidth(child));
+                                case SizeMode.Add:
+                                    size += Mathf.Max(0, LayoutUtility.GetPreferredWidth(child));
 
-                                if (One == 0)
-                                    size += spacing;
-                                if (One == 1)
-                                    One = 0;
-                            }
+                                    if (One == 0)
+                                    {
+                                        size += spacing;
+                                    }
 
-                            //else if (m_Size == SizeMode.Max)
-                            //{
-                            //    size = size + Mathf.Max(size, LayoutUtility.GetPreferredWidth(child));
-                            //    break;
-                            //}
-                            else if (m_Size == SizeMode.Max)
-                            {
-                                max = Mathf.Max(max, LayoutUtility.GetPreferredWidth(child) + size);
+                                    if (One == 1)
+                                    {
+                                        One = 0;
+                                    }
+
+                                    break;
+                                case SizeMode.Max:
+                                    max = Mathf.Max(max, LayoutUtility.GetPreferredWidth(child) + size);
+
+                                    break;
+                                case SizeMode.RectAdd:
+                                    size += child.rect.width;
+                                    if (One == 0)
+                                    {
+                                        size += spacing;
+                                    }
+
+                                    if (One == 1)
+                                    {
+                                        One = 0;
+                                    }
+
+                                    break;
+                                case SizeMode.RectMax:
+                                    max = Mathf.Max(max, child.rect.width + size);
+
+                                    break;
+                                default:
+                                    Debug.LogError($"未实现的功能 {m_Size}");
+                                    break;
                             }
                         }
                     }
 
-                    if (m_Size == SizeMode.Max)
+                    if (m_Size is SizeMode.Max or SizeMode.RectMax)
+                    {
                         size = max;
+                    }
+
+                    size += m_Offset;
 
                     size = Mathf.Min(maxSize, size);
                     if (minWidth > 0)
@@ -229,8 +286,8 @@ namespace YIUIFramework
             get
             {
                 float size = -1;
-                float max  = 0;
-                if (m_Fit == FitMode.Height || m_Fit == FitMode.Both)
+                float max = 0;
+                if (m_Fit is FitMode.Height or FitMode.Both)
                 {
                     size = 0;
                     float spacing = m_Space;
@@ -249,27 +306,59 @@ namespace YIUIFramework
                         if (child.gameObject.activeSelf)
                         {
                             var ignore = child.GetComponent<ILayoutIgnorer>();
-                            if (ignore != null && ignore.ignoreLayout)
-                                continue;
+                            if (ignore != null && ignore.ignoreLayout) continue;
 
-                            if (m_Size == SizeMode.Add)
+                            switch (m_Size)
                             {
-                                size += Mathf.Max(0, LayoutUtility.GetPreferredHeight(child));
+                                case SizeMode.Add:
+                                    size += Mathf.Max(0, LayoutUtility.GetPreferredHeight(child));
 
-                                if (One == 0)
-                                    size += spacing;
-                                if (One == 1)
-                                    One = 0;
-                            }
-                            else if (m_Size == SizeMode.Max)
-                            {
-                                max = Mathf.Max(max, LayoutUtility.GetPreferredHeight(child) + size);
+                                    if (One == 0)
+                                    {
+                                        size += spacing;
+                                    }
+
+                                    if (One == 1)
+                                    {
+                                        One = 0;
+                                    }
+
+                                    break;
+                                case SizeMode.Max:
+                                    max = Mathf.Max(max, LayoutUtility.GetPreferredHeight(child) + size);
+
+                                    break;
+                                case SizeMode.RectAdd:
+                                    size += child.rect.height;
+                                    if (One == 0)
+                                    {
+                                        size += spacing;
+                                    }
+
+                                    if (One == 1)
+                                    {
+                                        One = 0;
+                                    }
+
+                                    break;
+                                case SizeMode.RectMax:
+                                    max = Mathf.Max(max, child.rect.height + size);
+
+                                    break;
+                                default:
+                                    Debug.LogError($"未实现的功能 {m_Size}");
+                                    break;
                             }
                         }
                     }
 
-                    if (m_Size == SizeMode.Max)
+                    if (m_Size is SizeMode.Max or SizeMode.RectMax)
+                    {
                         size = max;
+                    }
+
+                    size += m_Offset;
+
                     size = Mathf.Min(maxSize, size);
                     if (minHeight > 0)
                     {
@@ -310,12 +399,17 @@ namespace YIUIFramework
         protected override void OnEnable()
         {
             base.OnEnable();
-            LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
+            ForceRebuild();
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+            ForceRebuild();
+        }
+
+        public void ForceRebuild()
+        {
             LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
         }
 
@@ -323,12 +417,13 @@ namespace YIUIFramework
         {
             m_LayoutGroup = GetComponent<HorizontalOrVerticalLayoutGroup>();
         }
+
         #if UNITY_EDITOR
         protected override void OnValidate()
         {
             OnEnable();
             m_LayoutGroup = GetComponent<HorizontalOrVerticalLayoutGroup>();
-            LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
+            ForceRebuild();
         }
         #endif
     }

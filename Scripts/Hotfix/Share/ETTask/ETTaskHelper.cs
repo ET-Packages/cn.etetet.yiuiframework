@@ -9,19 +9,45 @@ namespace ET
     {
         public static async ETTask WaitUntil(this Entity self, Func<bool> func)
         {
-            while (true)
+            var timer = self?.Root()?.GetComponent<TimerComponent>();
+            if (timer == null)
             {
-                await self.Root().GetComponent<TimerComponent>().WaitFrameAsync();
-                if (func == null || func.Invoke()) return;
+                return;
             }
+
+            await timer.WaitUntil(func);
         }
 
         public static async ETTask WaitUntil(this TimerComponent self, Func<bool> func)
         {
+            EntityRef<TimerComponent> timer = self;
+
             while (true)
             {
-                await self.WaitFrameAsync();
-                if (func == null || func.Invoke()) return;
+                if (timer.Entity == null)
+                {
+                    return;
+                }
+
+                await timer.Entity.WaitFrameAsync();
+
+                if (func == null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    if (func.Invoke())
+                    {
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"WaitUntil Error: {e}");
+                    return;
+                }
             }
         }
     }

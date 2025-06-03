@@ -9,8 +9,8 @@ namespace ET.Client
         /// 可能没有
         /// </summary>
         public static PanelInfo GetTopPanel(this YIUIMgrComponent self,
-                                            EPanelLayer           layer        = EPanelLayer.Any,
-                                            EPanelOption          ignoreOption = EPanelOption.None)
+                                            EPanelLayer layer = EPanelLayer.Any,
+                                            EPanelOption ignoreOption = EPanelOption.None)
         {
             const int layerCount = (int)EPanelLayer.Count;
 
@@ -50,10 +50,10 @@ namespace ET.Client
         /// 关闭这个层级上的最前面的一个UI 异步
         /// </summary>
         public static async ETTask<bool> CloseLayerTopPanelAsync(this YIUIMgrComponent self,
-                                                                 EPanelLayer           layer,
-                                                                 EPanelOption          ignoreOption = EPanelOption.IgnoreClose,
-                                                                 bool                  tween        = true,
-                                                                 bool                  ignoreElse   = false)
+                                                                 EPanelLayer layer,
+                                                                 EPanelOption ignoreOption = EPanelOption.IgnoreClose,
+                                                                 bool tween = true,
+                                                                 bool ignoreElse = false)
         {
             var topPanel = self.GetTopPanel(layer, ignoreOption);
             if (topPanel == null)
@@ -68,10 +68,10 @@ namespace ET.Client
         /// 关闭指定层级上的 最上层UI 同步
         /// </summary>
         public static void CloseLayerTopPanel(this YIUIMgrComponent self,
-                                              EPanelLayer           layer,
-                                              EPanelOption          ignoreOption = EPanelOption.IgnoreClose,
-                                              bool                  tween        = true,
-                                              bool                  ignoreElse   = false)
+                                              EPanelLayer layer,
+                                              EPanelOption ignoreOption = EPanelOption.IgnoreClose,
+                                              bool tween = true,
+                                              bool ignoreElse = false)
         {
             self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse).NoContext();
         }
@@ -80,10 +80,10 @@ namespace ET.Client
         /// 关闭Panel层级上的最上层UI 异步
         /// </summary>
         public static async ETTask<bool> CloseTopPanelAsync(this YIUIMgrComponent self,
-                                                            EPanelLayer           layer        = EPanelLayer.Panel,
-                                                            EPanelOption          ignoreOption = EPanelOption.IgnoreClose,
-                                                            bool                  tween        = true,
-                                                            bool                  ignoreElse   = false)
+                                                            EPanelLayer layer = EPanelLayer.Panel,
+                                                            EPanelOption ignoreOption = EPanelOption.IgnoreClose,
+                                                            bool tween = true,
+                                                            bool ignoreElse = false)
         {
             return await self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse);
         }
@@ -92,15 +92,25 @@ namespace ET.Client
         /// 关闭目标层级上的所有UI
         /// </summary>
         public static async ETTask CloseAll(this YIUIMgrComponent self,
-                                            EPanelLayer           layer        = EPanelLayer.Any,
-                                            EPanelOption          ignoreOption = EPanelOption.IgnoreClose,
-                                            bool                  tween        = false,
-                                            bool                  ignoreElse   = true)
+                                            EPanelLayer layer = EPanelLayer.Any,
+                                            EPanelOption ignoreOption = EPanelOption.IgnoreClose,
+                                            bool tween = false,
+                                            bool ignoreElse = true)
         {
+            EntityRef<YIUIMgrComponent> selfRef = self;
+
             while (true)
             {
+                self = selfRef;
+                if (self == null)
+                {
+                    return;
+                }
+
                 if (!await self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse))
+                {
                     break;
+                }
             }
         }
     }

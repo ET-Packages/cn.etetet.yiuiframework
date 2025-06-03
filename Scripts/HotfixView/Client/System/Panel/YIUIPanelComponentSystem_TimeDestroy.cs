@@ -28,9 +28,11 @@ namespace ET.Client
         {
             try
             {
+                EntityRef<YIUIPanelComponent> selfRef = self;
+
                 ETCancellationToken oldCancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
 
-                await self.Root().GetComponent<TimerComponent>().WaitAsync((long)(self.CachePanelTime * 1000));
+                await ETTaskSafely.Await(selfRef.Entity?.Root()?.GetComponent<TimerComponent>()?.WaitAsync((long)(selfRef.Entity?.CachePanelTime * 1000 ?? 0)));
 
                 if (oldCancellationToken != null && oldCancellationToken.IsCancel()) //取消倒计时
                 {

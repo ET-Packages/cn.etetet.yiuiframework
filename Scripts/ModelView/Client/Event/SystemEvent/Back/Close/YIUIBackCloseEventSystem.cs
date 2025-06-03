@@ -23,6 +23,7 @@ namespace ET.Client
                 return;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIBackCloseSystem aYIUIBackCloseSystem in iYIUIBackCloseSystems)
             {
                 if (aYIUIBackCloseSystem == null)
@@ -32,7 +33,7 @@ namespace ET.Client
 
                 try
                 {
-                    await aYIUIBackCloseSystem.Run(component, addPanelInfo);
+                    await aYIUIBackCloseSystem.Run(componentRef, addPanelInfo);
                 }
                 catch (Exception e)
                 {

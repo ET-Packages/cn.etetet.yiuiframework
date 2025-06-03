@@ -35,10 +35,10 @@ namespace ET.Client
             foreach (var type in types)
             {
                 var eventAttribute = type.GetCustomAttribute<YIUIEventAttribute>(false);
-                var obj            = (IYIUICommonEvent)Activator.CreateInstance(type);
-                var eventType      = eventAttribute.EventType;
-                var componentName  = eventAttribute.ComponentType.Name;
-                var info           = new YIUIEventInfo(eventType, componentName, obj);
+                var obj = (IYIUICommonEvent)Activator.CreateInstance(type);
+                var eventType = eventAttribute.EventType;
+                var componentName = eventAttribute.ComponentType.Name;
+                var info = new YIUIEventInfo(eventType, componentName, obj);
 
                 if (!self._AllEventInfo.ContainsKey(eventAttribute.EventType))
                 {
@@ -69,9 +69,10 @@ namespace ET.Client
                 return;
             }
 
+            EntityRef<Scene> sceneRef = self.Scene();
             foreach (var info in eventInfos)
             {
-                await info.UIEvent.Run(self.Root(), data);
+                await info.UIEvent.Run(sceneRef, data);
             }
         }
     }

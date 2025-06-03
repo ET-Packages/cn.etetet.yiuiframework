@@ -20,14 +20,18 @@ namespace ET.Client
             self.m_PanelCfgMap.TryGetValue(panelName, out var info);
             if (info?.UIBase == null) return true; //没有也算成功关闭
 
+            EntityRef<YIUIMgrComponent> selfRef = self;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, coroutineLockCode);
 
+            self = selfRef;
+
             EventSystem.Instance?.Publish(self.Root(),
                 new YIUIEventPanelCloseBefore
                 {
-                    UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
+                    UIPkgName = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
                     PanelLayer = info.PanelLayer,
                 });
 
@@ -73,6 +77,7 @@ namespace ET.Client
 
             if (!ignoreElse)
             {
+                self = selfRef;
                 await self.RemoveUIAddElse(info);
             }
 
@@ -90,6 +95,7 @@ namespace ET.Client
                 await YIUIEventSystem.WindowClose(info.UIWindow, true);
             }
 
+            self = selfRef;
             self.RemoveUI(info);
 
             return true;
@@ -112,7 +118,7 @@ namespace ET.Client
             EventSystem.Instance?.Publish(self.Root(),
                 new YIUIEventPanelCloseBefore
                 {
-                    UIPkgName  = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
+                    UIPkgName = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,
                     PanelLayer = info.PanelLayer,
                 });
 
@@ -165,10 +171,11 @@ namespace ET.Client
             {
                 if (forceHome != null)
                 {
+                    EntityRef<YIUIRootComponent> rootRef = forceHome;
                     await self.CloseAll(EPanelLayer.Panel, EPanelOption.IgnoreClose, tween);
                     return await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeRootOpenPanel, ETTask<bool>>(new YIUIInvokeRootOpenPanel
                     {
-                        Root      = forceHome,
+                        Root = rootRef,
                         PanelName = homeName
                     });
                 }

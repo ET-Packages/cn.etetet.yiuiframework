@@ -75,6 +75,8 @@ namespace ET.Client
                 return null;
             }
 
+            EntityRef<YIUIPanelComponent> selfRef = self;
+
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, resName.GetHashCode());
 
             var data = YIUIBindHelper.GetBindVoByResName(resName);
@@ -86,6 +88,7 @@ namespace ET.Client
                 return null;
             }
 
+            self = selfRef;
             var viewParent = self.GetViewParent(resName);
             if (viewParent == null)
             {
@@ -100,6 +103,7 @@ namespace ET.Client
 
             var view = await YIUIFactory.InstantiateAsync(vo, self.UIBase.OwnerUIEntity, viewParent);
 
+            self = selfRef;
             self.m_ExistView.Add(resName, view);
             return view;
         }
@@ -112,6 +116,8 @@ namespace ET.Client
                 return null;
             }
 
+            EntityRef<YIUIPanelComponent> selfRef = self;
+
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, typeof(T).GetHashCode());
 
             var data = YIUIBindHelper.GetBindVoByType<T>();
@@ -123,7 +129,8 @@ namespace ET.Client
                 return null;
             }
 
-            var viewName   = vo.ResName;
+            var viewName = vo.ResName;
+            self = selfRef;
             var viewParent = self.GetViewParent(viewName);
             if (viewParent == null)
             {
@@ -138,6 +145,7 @@ namespace ET.Client
 
             var view = await YIUIFactory.InstantiateAsync(vo, self.UIBase.OwnerUIEntity, viewParent);
 
+            self = selfRef;
             self.m_ExistView.Add(viewName, view);
             return view;
         }
@@ -159,7 +167,7 @@ namespace ET.Client
                 return (false, null);
             }
 
-            var viewName   = vo.ResName;
+            var viewName = vo.ResName;
             var viewParent = self.GetViewParent(viewName);
             if (viewParent == null)
             {
@@ -247,6 +255,9 @@ namespace ET.Client
                 return;
             }
 
+            EntityRef<YIUIPanelComponent> selfRef = self;
+            EntityRef<Entity> viewRef = view;
+
             //View只有切换没有关闭
             var skipTween = view.GetParent<YIUIChild>().GetComponent<YIUIWindowComponent>().WindowSkipOtherCloseTween;
 
@@ -256,6 +267,7 @@ namespace ET.Client
 
                 var tween = true;
                 var skipClose = false;
+
                 //View 没有自动回退功能  比如AView 关闭 自动吧上一个BView 给打开 没有这种需求 也不能有这个需求
                 //只能有 打开一个新View 上一个View的自动处理 99% 都是吧上一个隐藏即可
                 //外部就只需要关心 打开 A B C 即可
@@ -285,7 +297,8 @@ namespace ET.Client
                 }
             }
 
-            self.u_CurrentOpenView = view;
+            self = selfRef;
+            self.u_CurrentOpenView = viewRef.Entity;
         }
 
         /// <summary>
@@ -295,7 +308,7 @@ namespace ET.Client
         {
             foreach (Entity view in self.m_ExistView.Values)
             {
-                var uibase        = view.GetParent<YIUIChild>();
+                var uibase = view.GetParent<YIUIChild>();
                 var viewComponent = uibase?.GetComponent<YIUIViewComponent>();
                 if (viewComponent != null && uibase is { ActiveSelf: true })
                 {

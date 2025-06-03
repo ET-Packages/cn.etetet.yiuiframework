@@ -23,6 +23,7 @@ namespace ET.Client
                 return false;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIDisCloseSystem aYIUIBanCloseSystem in iYIUIBanCloseSystems)
             {
                 if (aYIUIBanCloseSystem == null)
@@ -32,7 +33,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aYIUIBanCloseSystem.Run(component);
+                    return await aYIUIBanCloseSystem.Run(componentRef);
                 }
                 catch (Exception e)
                 {

@@ -20,6 +20,7 @@ namespace ET.Client
                 return;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUICloseTweenSystem aYIUICloseTweenSystem in iYIUICloseTweenSystems)
             {
                 if (aYIUICloseTweenSystem == null)
@@ -29,7 +30,7 @@ namespace ET.Client
 
                 try
                 {
-                    await aYIUICloseTweenSystem.Run(component);
+                    await aYIUICloseTweenSystem.Run(componentRef);
                 }
                 catch (Exception e)
                 {

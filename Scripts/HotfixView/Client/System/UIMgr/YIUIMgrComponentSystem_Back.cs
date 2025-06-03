@@ -27,6 +27,7 @@ namespace ET.Client
             var layerList = self.GetLayerPanelInfoList(EPanelLayer.Panel);
             var skipTween = info.UIWindow.WindowSkipOtherCloseTween;
 
+            EntityRef<YIUIMgrComponent> selfRef = self;
             for (var i = layerList.Count - 1; i >= 0; i--)
             {
                 var child = layerList[i];
@@ -55,23 +56,25 @@ namespace ET.Client
                         break;
                 }
 
+                self = selfRef;
+
                 EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseBefore
                 {
-                    UIPkgName       = child.PkgName,
-                    UIResName       = child.ResName,
+                    UIPkgName = child.PkgName,
+                    UIResName = child.ResName,
                     UIComponentName = child.Name,
-                    StackOption     = true,
-                    PanelLayer      = child.PanelLayer,
+                    StackOption = true,
+                    PanelLayer = child.PanelLayer,
                 });
 
                 if (child.OwnerUIEntity is IYIUIBackClose)
                 {
                     await YIUIEventSystem.BackClose(child.OwnerUIEntity, new YIUIEventPanelInfo
                     {
-                        UIPkgName       = info.PkgName,
-                        UIResName       = info.ResName,
+                        UIPkgName = info.PkgName,
+                        UIResName = info.ResName,
                         UIComponentName = info.Name,
-                        PanelLayer      = info.PanelLayer,
+                        PanelLayer = info.PanelLayer,
                     });
                 }
 
@@ -107,13 +110,15 @@ namespace ET.Client
                         break;
                 }
 
+                self = selfRef;
+
                 EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseAfter
                 {
-                    UIPkgName       = child.PkgName,
-                    UIResName       = child.ResName,
+                    UIPkgName = child.PkgName,
+                    UIResName = child.ResName,
                     UIComponentName = child.Name,
-                    StackOption     = true,
-                    PanelLayer      = child.PanelLayer,
+                    StackOption = true,
+                    PanelLayer = child.PanelLayer,
                 });
             }
         }
@@ -133,6 +138,8 @@ namespace ET.Client
             var layerList = self.GetLayerPanelInfoList(EPanelLayer.Panel);
             var skipTween = info.UIWindow.WindowSkipOtherOpenTween;
 
+            EntityRef<YIUIMgrComponent> selfRef = self;
+
             for (var i = layerList.Count - 1; i >= 0; i--)
             {
                 var child = layerList[i];
@@ -142,13 +149,15 @@ namespace ET.Client
                     continue;
                 }
 
+                self = selfRef;
+
                 EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenBefore
                 {
-                    UIPkgName       = child.PkgName,
-                    UIResName       = child.ResName,
+                    UIPkgName = child.PkgName,
+                    UIResName = child.ResName,
                     UIComponentName = child.Name,
-                    StackOption     = true,
-                    PanelLayer      = child.PanelLayer,
+                    StackOption = true,
+                    PanelLayer = child.PanelLayer,
                 });
 
                 var isBreak = true;
@@ -180,20 +189,22 @@ namespace ET.Client
                 {
                     await YIUIEventSystem.BackOpen(child.OwnerUIEntity, new YIUIEventPanelInfo
                     {
-                        UIPkgName       = info.PkgName,
-                        UIResName       = info.ResName,
+                        UIPkgName = info.PkgName,
+                        UIResName = info.ResName,
                         UIComponentName = info.Name,
-                        PanelLayer      = info.PanelLayer,
+                        PanelLayer = info.PanelLayer,
                     });
                 }
 
+                self = selfRef;
+
                 EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenAfter
                 {
-                    UIPkgName       = child.PkgName,
-                    UIResName       = child.ResName,
+                    UIPkgName = child.PkgName,
+                    UIResName = child.ResName,
                     UIComponentName = child.Name,
-                    StackOption     = true,
-                    PanelLayer      = child.PanelLayer,
+                    StackOption = true,
+                    PanelLayer = child.PanelLayer,
                 });
 
                 if (isBreak)
@@ -208,10 +219,12 @@ namespace ET.Client
                 return false; //home的UI必须在panel层
             }
 
-            var layerList           = self.GetLayerPanelInfoList(EPanelLayer.Panel);
+            var layerList = self.GetLayerPanelInfoList(EPanelLayer.Panel);
             var skipOtherCloseTween = home.UIWindow.WindowSkipOtherCloseTween;
-            var skipHomeOpenTween   = home.UIWindow.WindowSkipHomeOpenTween;
-            var skipHomeBack        = home.UIWindow.WindowSkipHomeBack;
+            var skipHomeOpenTween = home.UIWindow.WindowSkipHomeOpenTween;
+            var skipHomeBack = home.UIWindow.WindowSkipHomeBack;
+
+            EntityRef<YIUIMgrComponent> selfRef = self;
 
             for (var i = layerList.Count - 1; i >= 0; i--)
             {
@@ -219,23 +232,25 @@ namespace ET.Client
 
                 if (child != home)
                 {
+                    self = selfRef;
+
                     EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseBefore
                     {
-                        UIPkgName       = child.PkgName,
-                        UIResName       = child.ResName,
+                        UIPkgName = child.PkgName,
+                        UIResName = child.ResName,
                         UIComponentName = child.Name,
-                        StackOption     = true,
-                        PanelLayer      = child.PanelLayer,
+                        StackOption = true,
+                        PanelLayer = child.PanelLayer,
                     });
 
                     if (!skipHomeBack && child.OwnerUIEntity is IYIUIBackClose)
                     {
                         await YIUIEventSystem.BackClose(child.OwnerUIEntity, new YIUIEventPanelInfo
                         {
-                            UIPkgName       = home.PkgName,
-                            UIResName       = home.ResName,
+                            UIPkgName = home.PkgName,
+                            UIResName = home.ResName,
                             UIComponentName = home.Name,
-                            PanelLayer      = home.PanelLayer,
+                            PanelLayer = home.PanelLayer,
                         });
                     }
 
@@ -243,12 +258,14 @@ namespace ET.Client
                     {
                         await YIUIEventSystem.BackHomeClose(child.OwnerUIEntity, new YIUIEventPanelInfo
                         {
-                            UIPkgName       = home.PkgName,
-                            UIResName       = home.ResName,
+                            UIPkgName = home.PkgName,
+                            UIResName = home.ResName,
                             UIComponentName = home.Name,
-                            PanelLayer      = home.PanelLayer,
+                            PanelLayer = home.PanelLayer,
                         });
                     }
+
+                    self = selfRef;
 
                     if (skipOtherCloseTween)
                     {
@@ -263,13 +280,15 @@ namespace ET.Client
                         }
                     }
 
+                    self = selfRef;
+
                     EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseAfter
                     {
-                        UIPkgName       = child.PkgName,
-                        UIResName       = child.ResName,
+                        UIPkgName = child.PkgName,
+                        UIResName = child.ResName,
                         UIComponentName = child.Name,
-                        StackOption     = true,
-                        PanelLayer      = child.PanelLayer,
+                        StackOption = true,
+                        PanelLayer = child.PanelLayer,
                     });
 
                     continue;
@@ -277,11 +296,11 @@ namespace ET.Client
 
                 EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenBefore
                 {
-                    UIPkgName       = child.PkgName,
-                    UIResName       = child.ResName,
+                    UIPkgName = child.PkgName,
+                    UIResName = child.ResName,
                     UIComponentName = child.Name,
-                    StackOption     = true,
-                    PanelLayer      = child.PanelLayer,
+                    StackOption = true,
+                    PanelLayer = child.PanelLayer,
                 });
 
                 switch (child.UIPanel.StackOption)
@@ -309,10 +328,10 @@ namespace ET.Client
                 {
                     await YIUIEventSystem.BackOpen(child.OwnerUIEntity, new YIUIEventPanelInfo
                     {
-                        UIPkgName       = child.PkgName,
-                        UIResName       = child.ResName,
+                        UIPkgName = child.PkgName,
+                        UIResName = child.ResName,
                         UIComponentName = child.Name,
-                        PanelLayer      = child.PanelLayer,
+                        PanelLayer = child.PanelLayer,
                     });
                 }
 
@@ -321,13 +340,15 @@ namespace ET.Client
                     await YIUIEventSystem.BackHomeOpen(child.OwnerUIEntity);
                 }
 
+                self = selfRef;
+
                 EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenAfter
                 {
-                    UIPkgName       = child.PkgName,
-                    UIResName       = child.ResName,
+                    UIPkgName = child.PkgName,
+                    UIResName = child.ResName,
                     UIComponentName = child.Name,
-                    StackOption     = true,
-                    PanelLayer      = child.PanelLayer,
+                    StackOption = true,
+                    PanelLayer = child.PanelLayer,
                 });
             }
 

@@ -53,6 +53,7 @@ namespace ET
                 return;
             }
 
+            EntityRef<Entity> selfRef = self;
             foreach (IAwakeAsyncSystem aAwakeAsyncSystem in iAwakeSystems)
             {
                 if (aAwakeAsyncSystem == null)
@@ -62,7 +63,7 @@ namespace ET
 
                 try
                 {
-                    await aAwakeAsyncSystem.Run(self);
+                    await aAwakeAsyncSystem.Run(selfRef);
                 }
                 catch (Exception e)
                 {
@@ -84,6 +85,7 @@ namespace ET
                 return;
             }
 
+            EntityRef<Entity> selfRef = self;
             foreach (IAwakeAsyncSystem<P1> aAwakeAsyncSystem in iAwakeAsyncSystems)
             {
                 if (aAwakeAsyncSystem == null)
@@ -93,7 +95,7 @@ namespace ET
 
                 try
                 {
-                    await aAwakeAsyncSystem.Run(self, p1);
+                    await aAwakeAsyncSystem.Run(selfRef, p1);
                 }
                 catch (Exception e)
                 {
@@ -115,6 +117,7 @@ namespace ET
                 return;
             }
 
+            EntityRef<Entity> selfRef = self;
             foreach (IAwakeAsyncSystem<P1, P2> aAwakeAsyncSystem in iAwakeAsyncSystems)
             {
                 if (aAwakeAsyncSystem == null)
@@ -124,7 +127,7 @@ namespace ET
 
                 try
                 {
-                    await aAwakeAsyncSystem.Run(self, p1, p2);
+                    await aAwakeAsyncSystem.Run(selfRef, p1, p2);
                 }
                 catch (Exception e)
                 {
@@ -146,6 +149,7 @@ namespace ET
                 return;
             }
 
+            EntityRef<Entity> selfRef = self;
             foreach (IAwakeAsyncSystem<P1, P2, P3> aAwakeAsyncSystem in iAwakeAsyncSystems)
             {
                 if (aAwakeAsyncSystem == null)
@@ -155,7 +159,7 @@ namespace ET
 
                 try
                 {
-                    await aAwakeAsyncSystem.Run(self, p1, p2, p3);
+                    await aAwakeAsyncSystem.Run(selfRef, p1, p2, p3);
                 }
                 catch (Exception e)
                 {
@@ -177,6 +181,7 @@ namespace ET
                 return;
             }
 
+            EntityRef<Entity> selfRef = self;
             foreach (IAwakeAsyncSystem<P1, P2, P3, P4> aAwakeAsyncSystem in iAwakeAsyncSystems)
             {
                 if (aAwakeAsyncSystem == null)
@@ -186,7 +191,7 @@ namespace ET
 
                 try
                 {
-                    await aAwakeAsyncSystem.Run(self, p1, p2, p3, p4);
+                    await aAwakeAsyncSystem.Run(selfRef, p1, p2, p3, p4);
                 }
                 catch (Exception e)
                 {
@@ -208,6 +213,7 @@ namespace ET
                 return;
             }
 
+            EntityRef<Entity> selfRef = self;
             foreach (IAwakeAsyncSystem<P1, P2, P3, P4, P5> aAwakeAsyncSystem in iAwakeAsyncSystems)
             {
                 if (aAwakeAsyncSystem == null)
@@ -217,7 +223,7 @@ namespace ET
 
                 try
                 {
-                    await aAwakeAsyncSystem.Run(self, p1, p2, p3, p4, p5);
+                    await aAwakeAsyncSystem.Run(selfRef, p1, p2, p3, p4, p5);
                 }
                 catch (Exception e)
                 {

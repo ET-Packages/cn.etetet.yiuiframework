@@ -36,8 +36,10 @@ namespace ET.Client
         /// <param name="time">需要禁止的时间</param>
         public static async ETTask BanLayerOptionCountDown(this YIUIMgrComponent self, long time)
         {
+            EntityRef<YIUIMgrComponent> selfRef = self;
             var code = self.BanLayerOptionForever();
             await self.Root().GetComponent<TimerComponent>().WaitAsync(time);
+            self = selfRef;
             self.RecoverLayerOptionForever(code);
         }
 

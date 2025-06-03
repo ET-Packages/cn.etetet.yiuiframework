@@ -11,6 +11,7 @@
         //关闭自己 异步
         public static async ETTask<bool> CloseAsync(this YIUIViewComponent self, bool tween = true)
         {
+            EntityRef<YIUIViewComponent> selfRef = self;
             var view = self?.OwnerUIEntity;
             if (view != null)
             {
@@ -21,6 +22,7 @@
                     success = await YIUIEventSystem.Close(view);
                 }
 
+                self = selfRef;
                 if (self.UIWindow is { WindowCloseTweenBefor: true })
                 {
                     await YIUIEventSystem.WindowClose(self.UIWindow, success);
@@ -28,12 +30,17 @@
 
                 if (!success)
                 {
+                    self = selfRef;
                     Log.Info($"<color=yellow> 关闭事件返回不允许关闭View UI: {self.UIBase?.OwnerGameObject.name} </color>");
                     return false;
                 }
             }
 
+            self = selfRef;
+
             await self.UIWindow.InternalOnWindowCloseTween(tween);
+
+            self = selfRef;
 
             self.UIBase.SetActive(false);
 
@@ -51,8 +58,8 @@
             EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeViewClosePanel
             {
                 ViewComponent = self,
-                Tween         = tween,
-                IgnoreElse    = ignoreElse
+                Tween = tween,
+                IgnoreElse = ignoreElse
             });
         }
 
@@ -62,8 +69,8 @@
             return await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeViewClosePanel, ETTask<bool>>(new YIUIInvokeViewClosePanel
             {
                 ViewComponent = self,
-                Tween         = tween,
-                IgnoreElse    = ignoreElse
+                Tween = tween,
+                IgnoreElse = ignoreElse
             });
         }
     }

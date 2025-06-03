@@ -7,7 +7,9 @@
         protected override async ETTask Run(Scene scene, YIUIEventPanelCloseBefore arg)
         {
             if (YIUIEventComponent.Inst == null) return;
+            EntityRef<Scene> sceneRef = scene;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
+            scene = sceneRef;
             if (scene is { IsDisposed: false })
             {
                 await scene.DynamicEvent(arg);
@@ -22,7 +24,9 @@
         protected override async ETTask Run(Scene scene, YIUIEventPanelCloseAfter arg)
         {
             if (YIUIEventComponent.Inst == null) return;
+            EntityRef<Scene> sceneRef = scene;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
+            scene = sceneRef;
             if (scene is { IsDisposed: false })
             {
                 await scene.DynamicEvent(arg);
@@ -37,7 +41,9 @@
         protected override async ETTask Run(Scene scene, YIUIEventPanelDestroy arg)
         {
             if (YIUILoadComponent.Inst == null) return;
+            EntityRef<Scene> sceneRef = scene;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
+            scene = sceneRef;
             if (scene is { IsDisposed: false })
             {
                 await scene.DynamicEvent(arg);

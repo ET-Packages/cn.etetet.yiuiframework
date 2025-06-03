@@ -16,13 +16,13 @@ namespace ET.Client
                 return;
             }
 
-            var iYIUIBackHomeOpenSystems
-                    = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIBackHomeOpenSystem));
+            var iYIUIBackHomeOpenSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIBackHomeOpenSystem));
             if (iYIUIBackHomeOpenSystems == null)
             {
                 return;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIBackHomeOpenSystem aYIUIBackHomeOpenSystem in iYIUIBackHomeOpenSystems)
             {
                 if (aYIUIBackHomeOpenSystem == null)
@@ -32,7 +32,7 @@ namespace ET.Client
 
                 try
                 {
-                    await aYIUIBackHomeOpenSystem.Run(component);
+                    await aYIUIBackHomeOpenSystem.Run(componentRef);
                 }
                 catch (Exception e)
                 {

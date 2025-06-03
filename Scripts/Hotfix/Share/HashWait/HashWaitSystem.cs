@@ -30,8 +30,9 @@ namespace ET
                 return HashWaitError.Error;
             }
 
+            EntityRef<HashWait> selfRef = self;
             var cancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
-
+            self = selfRef.Entity;
             var task = ETTask<HashWaitError>.Create(true);
             self.m_HashWaitTasks.Add(hashCode, task);
 
@@ -47,7 +48,7 @@ namespace ET
 
             void CancelAction()
             {
-                self.Notify(hashCode, HashWaitError.Cancel, false);
+                selfRef.Entity?.Notify(hashCode, HashWaitError.Cancel, false);
             }
         }
 
@@ -60,7 +61,7 @@ namespace ET
 
             if (waitFrame)
             {
-                Notfiy(self.Root(), task, error).NoContext();
+                Notify(self.Root(), task, error).NoContext();
             }
             else
             {
@@ -68,7 +69,7 @@ namespace ET
             }
         }
 
-        private static async ETTask Notfiy(Scene scene, ETTask<HashWaitError> task, HashWaitError error)
+        private static async ETTask Notify(Scene scene, ETTask<HashWaitError> task, HashWaitError error)
         {
             await scene?.GetComponent<TimerComponent>().WaitFrameAsync();
             task?.SetResult(error);

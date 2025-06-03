@@ -33,11 +33,15 @@ namespace ET.Client
         //其中有一个子类失败则返回失败
         public static async ETTask<bool> OpenAllChild(this YIUIChild self)
         {
+            EntityRef<YIUIChild> selfRef = self;
+
             using var coroutineLock = await YIUIMgrComponent.Inst.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, self.GetHashCode());
 
             bool result = true;
 
             using ListComponent<ETTask> listTask = ListComponent<ETTask>.Create();
+
+            self = selfRef;
 
             foreach (var kv in self.OwnerUIEntity.Children)
             {
@@ -54,7 +58,7 @@ namespace ET.Client
 
             async ETTask Open(Entity component)
             {
-                var task        = ETTask.Create(true);
+                var task = ETTask.Create(true);
                 var childResult = await YIUIEventSystem.Open(component);
                 if (!childResult)
                 {
@@ -80,11 +84,15 @@ namespace ET.Client
 
         public static async ETTask<bool> CloseAllChild(this YIUIChild self)
         {
+            EntityRef<YIUIChild> selfRef = self;
+
             using var coroutineLock = await YIUIMgrComponent.Inst.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIFramework, self.GetHashCode());
 
             bool result = true;
 
             using ListComponent<ETTask> listTask = ListComponent<ETTask>.Create();
+
+            self = selfRef;
 
             foreach (var kv in self.OwnerUIEntity.Children)
             {
@@ -101,7 +109,7 @@ namespace ET.Client
 
             async ETTask Close(Entity component)
             {
-                var task        = ETTask.Create(true);
+                var task = ETTask.Create(true);
                 var childResult = await YIUIEventSystem.Close(component);
                 if (!childResult)
                 {

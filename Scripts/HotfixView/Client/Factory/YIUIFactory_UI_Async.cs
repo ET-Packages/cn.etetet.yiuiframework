@@ -74,14 +74,14 @@ namespace ET.Client
 
         public static async ETTask<Entity> CreateAsync(YIUIBindVo vo, Entity parentEntity)
         {
+            EntityRef<Entity> parentEntityRef = parentEntity;
             var obj = await YIUILoadComponent.Inst?.LoadAssetAsyncInstantiate(vo.PkgName, vo.ResName);
             if (obj == null)
             {
                 Debug.LogError($"没有加载到这个资源 {vo.PkgName}/{vo.ResName}");
                 return null;
             }
-
-            return CreateByObjVo(vo, obj, parentEntity);
+            return CreateByObjVo(vo, obj, parentEntityRef);
         }
     }
 }

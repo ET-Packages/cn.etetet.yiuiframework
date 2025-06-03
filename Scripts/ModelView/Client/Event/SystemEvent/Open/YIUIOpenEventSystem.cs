@@ -21,6 +21,7 @@ namespace ET.Client
                 return true;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIOpenSystem aOpenSystem in iOpenSystems)
             {
                 if (aOpenSystem == null)
@@ -30,7 +31,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aOpenSystem.Run(component);
+                    return await aOpenSystem.Run(componentRef);
                 }
                 catch (Exception e)
                 {
@@ -49,6 +50,7 @@ namespace ET.Client
                 return true;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIOpenSystem<P1> aOpenSystem in iOpenSystems)
             {
                 if (aOpenSystem == null)
@@ -58,7 +60,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aOpenSystem.Run(component, p1);
+                    return await aOpenSystem.Run(componentRef, p1);
                 }
                 catch (Exception e)
                 {
@@ -77,6 +79,7 @@ namespace ET.Client
                 return true;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIOpenSystem<P1, P2> aOpenSystem in iOpenSystems)
             {
                 if (aOpenSystem == null)
@@ -86,7 +89,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aOpenSystem.Run(component, p1, p2);
+                    return await aOpenSystem.Run(componentRef, p1, p2);
                 }
                 catch (Exception e)
                 {
@@ -105,6 +108,7 @@ namespace ET.Client
                 return true;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIOpenSystem<P1, P2, P3> aOpenSystem in iOpenSystems)
             {
                 if (aOpenSystem == null)
@@ -114,7 +118,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aOpenSystem.Run(component, p1, p2, p3);
+                    return await aOpenSystem.Run(componentRef, p1, p2, p3);
                 }
                 catch (Exception e)
                 {
@@ -133,6 +137,7 @@ namespace ET.Client
                 return true;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIOpenSystem<P1, P2, P3, P4> aOpenSystem in iOpenSystems)
             {
                 if (aOpenSystem == null)
@@ -142,7 +147,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aOpenSystem.Run(component, p1, p2, p3, p4);
+                    return await aOpenSystem.Run(componentRef, p1, p2, p3, p4);
                 }
                 catch (Exception e)
                 {
@@ -153,8 +158,7 @@ namespace ET.Client
             return true;
         }
 
-        public static async ETTask<bool> Open<P1, P2, P3, P4, P5>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4,
-                                                                  P5     p5)
+        public static async ETTask<bool> Open<P1, P2, P3, P4, P5>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
             var iOpenSystems
                     = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof(IYIUIOpenSystem<P1, P2, P3, P4, P5>));
@@ -163,6 +167,7 @@ namespace ET.Client
                 return true;
             }
 
+            EntityRef<Entity> componentRef = component;
             foreach (IYIUIOpenSystem<P1, P2, P3, P4, P5> aOpenSystem in iOpenSystems)
             {
                 if (aOpenSystem == null)
@@ -172,7 +177,7 @@ namespace ET.Client
 
                 try
                 {
-                    return await aOpenSystem.Run(component, p1, p2, p3, p4, p5);
+                    return await aOpenSystem.Run(componentRef, p1, p2, p3, p4, p5);
                 }
                 catch (Exception e)
                 {

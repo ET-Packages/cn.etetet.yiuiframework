@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if ET10
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -35,3 +36,4 @@ namespace ET
         }
     }
 }
+#endif

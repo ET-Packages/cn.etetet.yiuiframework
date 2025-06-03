@@ -6,6 +6,27 @@ using Sirenix.OdinInspector;
 namespace YIUIFramework.Editor
 {
     [Flags]
+    [LabelText("ET")]
+    [YIUIEnumUnityMacro]
+    public enum EYIUIETMacroType : long
+    {
+        [LabelText("所有")]
+        ALL = -1,
+
+        [LabelText("无")]
+        NONE = 0,
+
+        [LabelText("ET10")]
+        ET10 = 1,
+
+        [LabelText("已初始化")]
+        INITED = 1 << 1,
+
+        [LabelText("可视化")]
+        ENABLE_VIEW = 1 << 2,
+    }
+
+    [Flags]
     [LabelText("YIUI")]
     [YIUIEnumUnityMacro]
     public enum EYIUIMacroType : long
@@ -42,24 +63,6 @@ namespace YIUIFramework.Editor
 
         [LabelText("绑定使用反射 运行时使用AppDomain程序集 全部")]
         YIUIMACRO_BIND_BYUNITYDLL_ALL = 1 << 8, //默认只找ET.ModelView 开了这个会找全部的程序集
-    }
-
-    [Flags]
-    [LabelText("ET")]
-    [YIUIEnumUnityMacro]
-    public enum EYIUIETMacroType : long
-    {
-        [LabelText("所有")]
-        ALL = -1,
-
-        [LabelText("无")]
-        NONE = 0,
-
-        [LabelText("已初始化")]
-        INITED = 1,
-
-        [LabelText("可视化")]
-        ENABLE_VIEW = 1 << 1,
     }
 }
 #endif

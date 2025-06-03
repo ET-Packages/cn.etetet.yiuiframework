@@ -65,7 +65,7 @@ namespace YIUIFramework
 
             if (string.IsNullOrEmpty(m_Format))
             {
-                var data  = DataSelectDic.First().Value;
+                var data = DataSelectDic.First().Value;
                 var value = GetDataToString(data);
                 BaseSetEnabled(!string.IsNullOrEmpty(value));
                 SetText(value);
@@ -90,10 +90,9 @@ namespace YIUIFramework
                 {
                     SetText(string.Format(m_Format, m_ParamList));
                 }
-                catch (FormatException exp)
+                catch (Exception e)
                 {
-                    Logger.LogError($"{name} 字符串拼接Format 出错请检查是否有拼写错误  {m_Format}");
-                    Logger.LogError(exp.Message, this);
+                    Logger.LogError($"{name} 字符串拼接Format 出错请检查是否有拼写错误  {m_Format} , {e}", this.gameObject);
                 }
             }
         }
@@ -119,7 +118,7 @@ namespace YIUIFramework
 
         protected abstract void OnInit();
         protected abstract void SetEnabled(bool value);
-        protected abstract void SetText(string  value);
+        protected abstract void SetText(string value);
         protected abstract bool ExistText();
     }
 }

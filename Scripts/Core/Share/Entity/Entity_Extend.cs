@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ET
 {
@@ -38,6 +39,16 @@ namespace ET
         public static K GetParentChild<K>(this Entity self, int id) where K : Entity
         {
             return self.Parent.GetChild<K>(id);
+        }
+
+        //快捷移除所有子类
+        public static void RemoveAllChild(this Entity self)
+        {
+            if (self.ChildrenCount() <= 0) return;
+            foreach (long unitId in self.Children.Keys.ToArray())
+            {
+                self.RemoveChild(unitId);
+            }
         }
     }
 }

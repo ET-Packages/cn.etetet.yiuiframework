@@ -5,7 +5,7 @@ namespace ET
     /// <summary>
     /// 数值紧凑显示辅助类
     /// </summary>
-    public static partial class NumberCompactHelper
+    public static partial class NumberDisplayHelper
     {
         // 后缀定义（可扩展）
         [StaticField]

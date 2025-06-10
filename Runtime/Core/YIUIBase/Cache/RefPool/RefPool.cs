@@ -9,8 +9,7 @@ namespace YIUIFramework
     /// </summary>
     public static partial class RefPool
     {
-        private static readonly Dictionary<Type, RefCollection>
-                s_RefCollections = new Dictionary<Type, RefCollection>();
+        private static readonly Dictionary<Type, RefCollection> s_RefCollections = new();
 
         public static int Count
         {

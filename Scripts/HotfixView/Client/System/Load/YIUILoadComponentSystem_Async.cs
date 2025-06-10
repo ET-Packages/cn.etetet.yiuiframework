@@ -18,49 +18,33 @@ namespace ET.Client
         {
             var load = LoadHelper.GetLoad(pkgName, resName);
             load.AddRefCount();
-            var loadObj = load.Object;
-            if (loadObj != null)
+            if (load.Object != null)
             {
-                return (T)loadObj;
+                return (T)load.Object;
             }
 
-            if (load.WaitAsync)
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoad, load.NameCode);
+
+            if (load.Object != null)
             {
-                await self.Root().GetComponent<TimerComponent>().WaitUntil(() => !load.WaitAsync);
-
-                loadObj = load.Object;
-
-                if (loadObj != null)
-                {
-                    return (T)loadObj;
-                }
-                else
-                {
-                    load.RemoveRefCount();
-                    return null;
-                }
+                return (T)load.Object;
             }
-
-            load.SetWaitAsync(true);
 
             var (obj, hashCode) = await YIUILoadDI.LoadAssetAsyncFunc(pkgName, resName, typeof(T));
 
             if (obj == null)
             {
-                load.SetWaitAsync(false);
                 load.RemoveRefCount();
                 return null;
             }
 
             if (!LoadHelper.AddLoadHandle(obj, load))
             {
-                load.SetWaitAsync(false);
                 load.RemoveRefCount();
                 return null;
             }
 
             load.ResetHandle(obj, hashCode);
-            load.SetWaitAsync(false);
             return (T)obj;
         }
 

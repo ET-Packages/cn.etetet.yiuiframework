@@ -6,18 +6,16 @@ namespace ET.Client
     [EnableClass]
     public static partial class LoadHelper
     {
-        [StaticField]
-        private static string s_NullPkgName = "Default";
+        private const string c_NullPkgName = "Default";
 
         [StaticField]
-        private static Dictionary<string, Dictionary<string, LoadHandle>> m_AllLoadDic =
-                new Dictionary<string, Dictionary<string, LoadHandle>>();
+        private static readonly Dictionary<string, Dictionary<string, LoadHandle>> m_AllLoadDic = new();
 
         public static LoadHandle GetLoad(string pkgName, string resName)
         {
             if (string.IsNullOrEmpty(pkgName))
             {
-                pkgName = s_NullPkgName;
+                pkgName = c_NullPkgName;
             }
 
             if (!m_AllLoadDic.ContainsKey(pkgName))
@@ -41,23 +39,19 @@ namespace ET.Client
         {
             if (string.IsNullOrEmpty(pkgName))
             {
-                pkgName = s_NullPkgName;
+                pkgName = c_NullPkgName;
             }
 
-            if (!m_AllLoadDic.ContainsKey(pkgName))
+            if (!m_AllLoadDic.TryGetValue(pkgName, out var pkgDic))
             {
                 return false;
             }
 
-            var pkgDic = m_AllLoadDic[pkgName];
-
-            if (!pkgDic.ContainsKey(resName))
+            if (!pkgDic.Remove(resName, out LoadHandle load))
             {
                 return false;
             }
 
-            var load = pkgDic[resName];
-            pkgDic.Remove(resName);
             RemoveLoadHandle(load);
             RefPool.Put(load);
             return true;

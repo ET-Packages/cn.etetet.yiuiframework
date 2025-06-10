@@ -46,7 +46,7 @@ namespace YIUIFramework
             if (m_CreateInterval > 0)
             {
                 using var coroutineLock = await EventSystem.Instance.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = this.GetHashCode() });
-                
+
                 if (m_LastCreateTime > 0)
                 {
                     var waitTime = m_LastCreateTime - UnityEngine.Time.time;

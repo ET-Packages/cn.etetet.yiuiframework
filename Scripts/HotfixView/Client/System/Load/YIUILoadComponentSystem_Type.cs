@@ -40,48 +40,33 @@ namespace ET.Client
         {
             var load = LoadHelper.GetLoad(pkgName, resName);
             load.AddRefCount();
-            var loadObj = load.Object;
-            if (loadObj != null)
+            if (load.Object != null)
             {
-                return loadObj;
+                return load.Object;
             }
 
-            if (load.WaitAsync)
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoad, load.NameCode);
+
+            if (load.Object != null)
             {
-                await self.Root().GetComponent<TimerComponent>().WaitUntil(() => !load.WaitAsync);
-
-                loadObj = load.Object;
-                if (loadObj != null)
-                {
-                    return loadObj;
-                }
-                else
-                {
-                    load.RemoveRefCount();
-                    return null;
-                }
+                return load.Object;
             }
-
-            load.SetWaitAsync(true);
 
             var (obj, hashCode) = await YIUILoadDI.LoadAssetAsyncFunc(pkgName, resName, assetType);
 
             if (obj == null)
             {
-                load.SetWaitAsync(false);
                 load.RemoveRefCount();
                 return null;
             }
 
             if (!LoadHelper.AddLoadHandle(obj, load))
             {
-                load.SetWaitAsync(false);
                 load.RemoveRefCount();
                 return null;
             }
 
             load.ResetHandle(obj, hashCode);
-            load.SetWaitAsync(false);
             return obj;
         }
 
@@ -90,11 +75,7 @@ namespace ET.Client
             self.LoadAssetAsyncAction(pkgName, resName, assetType, action).NoContext();
         }
 
-        private static async ETTask LoadAssetAsyncAction(this YIUILoadComponent self,
-                                                         string                 pkgName,
-                                                         string                 resName,
-                                                         Type                   assetType,
-                                                         Action<UnityObject>    action)
+        private static async ETTask LoadAssetAsyncAction(this YIUILoadComponent self, string pkgName, string resName, Type assetType, Action<UnityObject> action)
         {
             var asset = await self.LoadAssetAsync(pkgName, resName, assetType);
             if (asset == null)

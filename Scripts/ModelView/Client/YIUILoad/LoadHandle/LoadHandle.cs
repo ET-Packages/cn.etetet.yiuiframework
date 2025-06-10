@@ -1,4 +1,5 @@
-﻿using YIUIFramework;
+﻿using System;
+using YIUIFramework;
 using UnityObject = UnityEngine.Object;
 
 namespace ET.Client
@@ -12,11 +13,14 @@ namespace ET.Client
         internal int Handle { get; private set; }
         internal int RefCount { get; private set; }
         public UnityObject Object { get; private set; }
+        private long m_NameCode;
+        public long NameCode => m_NameCode;
 
         internal void SetGroupHandle(string pkgName, string resName)
         {
             PkgName = pkgName;
             ResName = resName;
+            m_NameCode = IdGenerater.Instance.GenerateId();
         }
 
         public void Recycle()
@@ -25,6 +29,7 @@ namespace ET.Client
             ResName = string.Empty;
             Handle = 0;
             RefCount = 0;
+            m_NameCode = 0;
             Object = null;
         }
 
@@ -56,13 +61,6 @@ namespace ET.Client
             }
 
             LoadHelper.PutLoad(PkgName, ResName);
-        }
-
-        public bool WaitAsync { get; private set; }
-
-        public void SetWaitAsync(bool value)
-        {
-            WaitAsync = value;
         }
     }
 }

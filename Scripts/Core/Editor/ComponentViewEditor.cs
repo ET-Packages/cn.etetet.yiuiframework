@@ -2,6 +2,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using YIUIFramework.Editor;
 
 namespace ET
 {
@@ -16,12 +17,12 @@ namespace ET
             EditorGUILayout.Space(20, false);
             if (GUILayout.Button("查看Component代码"))
             {
-                ScriptHelper.OpenScript(componentName);
+                YIUIScriptHelper.OpenScript(componentName);
             }
 
             if (GUILayout.Button("查看System代码"))
             {
-                ScriptHelper.OpenScript($"{componentName}System");
+                YIUIScriptHelper.OpenScript($"{componentName}System");
             }
 
             EditorGUILayout.Space(20, false);

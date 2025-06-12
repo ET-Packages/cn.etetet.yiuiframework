@@ -6,7 +6,7 @@ namespace ET
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("")]
-    public partial class GameObjectEntityRef : MonoBehaviour
+    public partial class YIUIGameObjectEntityRef : MonoBehaviour
     {
         public EntityRef<Entity> EntityRef;
         public Entity Entity => EntityRef;

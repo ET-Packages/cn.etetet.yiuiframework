@@ -8,14 +8,67 @@ namespace YIUIFramework
 {
     public abstract partial class UIEventBind
     {
+        [GUIColor(0, 1, 0)]
+        [ButtonGroup("UIEventBind")]
+        [Button("跳转到实现", 20)]
+        [PropertyOrder(-100)]
+        private void SkipEventSystem()
+        {
+            if (m_UIEvent == null)
+            {
+                Logger.LogError($"未选择事件");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(m_EventName))
+            {
+                Logger.LogError($"事件名称为Null");
+                return;
+            }
+
+            var cde = EventTable.gameObject.GetComponent<UIBindCDETable>();
+            if (cde == null)
+            {
+                Logger.LogError($"没有找到UIBindCDETable组件");
+                return;
+            }
+
+            var resName = cde.ResName;
+            if (string.IsNullOrEmpty(resName))
+            {
+                resName = EventTable.gameObject.name.Replace("(Clone)", "");
+            }
+
+            var searchName = $"On{m_EventName.Replace("u_", "")}Invoke";
+
+            try
+            {
+                Editor.YIUIScriptHelper.OpenScript($"{resName}ComponentSystem", searchName);
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+                throw;
+            }
+        }
+
         [GUIColor(0, 1, 1)]
+        [ButtonGroup("UIEventBind")]
         [Button("响应点击 只能响应无参方法", 20)]
         [PropertyOrder(-100)]
+        [ShowIf(nameof(ShowIfTestClick))]
         private void TestOnClick()
         {
             if (m_UIEvent == null)
             {
                 Logger.LogError($"未选择事件");
+                return;
+            }
+
+            if (m_UIEvent.AllEventParamType.Count > 0)
+            {
+                Logger.LogError($"只能响应无参方法");
+                return;
             }
 
             try
@@ -34,6 +87,21 @@ namespace YIUIFramework
                 Logger.LogError(e);
                 throw;
             }
+        }
+
+        private bool ShowIfTestClick()
+        {
+            if (m_UIEvent == null)
+            {
+                return false;
+            }
+
+            if (m_UIEvent.AllEventParamType.Count > 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private const string c_ErrorTips = "当前事件表中无符合参数条件的事件";
@@ -105,7 +173,7 @@ namespace YIUIFramework
             if (uiEvent == m_UIEvent)
             {
                 m_EventName = null;
-                m_UIEvent   = null;
+                m_UIEvent = null;
             }
             else
             {

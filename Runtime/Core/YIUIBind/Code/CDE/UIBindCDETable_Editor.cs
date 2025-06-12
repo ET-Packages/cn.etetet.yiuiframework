@@ -6,10 +6,10 @@ using Sirenix.Serialization;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using YIUIFramework.Editor;
 
 namespace YIUIFramework
 {
-    //Editor
     public sealed partial class UIBindCDETable
     {
         #if ENABLE_VIEW && UNITY_EDITOR
@@ -43,7 +43,7 @@ namespace YIUIFramework
         [Button("查看Component代码", 20)]
         private void OpenComponentScript()
         {
-            ScriptHelper.OpenScript($"{this.ResName}Component");
+            YIUIScriptHelper.OpenScript($"{this.ResName}Component");
         }
 
         [PropertyOrder(-1000)]
@@ -52,7 +52,7 @@ namespace YIUIFramework
         [Button("查看System代码", 20)]
         private void OpenSystemScript()
         {
-            ScriptHelper.OpenScript($"{this.ResName}ComponentSystem");
+            YIUIScriptHelper.OpenScript($"{this.ResName}ComponentSystem");
         }
 
         #region 界面参数

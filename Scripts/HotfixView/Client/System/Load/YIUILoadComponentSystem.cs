@@ -18,21 +18,16 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this YIUILoadComponent self)
         {
-            YIUILoadComponent.m_InstRef = self;
         }
 
         [EntitySystem]
         private static void Destroy(this YIUILoadComponent self)
         {
-            YIUILoadComponent.m_InstRef = default;
         }
 
         public static async ETTask<bool> Initialize(this YIUILoadComponent self)
         {
-            return await EventSystem.Instance.Invoke<YIUIInvokeLoadInitialize, ETTask<bool>>(new YIUIInvokeLoadInitialize
-            {
-                LoadComponent = self
-            });
+            return await EventSystem.Instance.InvokeEntity<YIUIInvokeEntity_LoadInitialize, ETTask<bool>>(self, new YIUIInvokeEntity_LoadInitialize());
         }
     }
 }

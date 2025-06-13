@@ -7,13 +7,11 @@
         [EntitySystem]
         private static void Awake(this CountDownMgr self)
         {
-            CountDownMgr.Inst = self;
         }
 
         [EntitySystem]
         private static void Destroy(this CountDownMgr self)
         {
-            CountDownMgr.Inst = null;
         }
 
         [EntitySystem]

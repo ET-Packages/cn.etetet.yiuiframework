@@ -108,7 +108,7 @@ namespace ET.Client
 
             if (info.UIBase == null)
             {
-                var uiCom = await YIUIFactory.CreatePanelAsync(info, parentEntity);
+                var uiCom = await YIUIFactory.CreatePanelAsync(self.Scene(), info, parentEntity);
                 if (uiCom == null)
                 {
                     Debug.LogError($"面板[{panelName}]没有创建成功，packName={info.PkgName}, resName={info.ResName}");

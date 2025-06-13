@@ -1,33 +1,34 @@
 ﻿namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeClosePanelSyncHandler : AInvokeHandler<YIUIInvokeClosePanel>
+    public class YIUIInvokeClosePanelSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_ClosePanel>
     {
-        public override void Handle(YIUIInvokeClosePanel args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_ClosePanel args)
         {
-            YIUIMgrComponent.Inst?.ClosePanel(args.PanelName, args.Tween, args.IgnoreElse);
+            entity.YIUIMgr()?.ClosePanel(args.PanelName, args.Tween, args.IgnoreElse);
         }
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeClosePanelAsyncHandler : AInvokeHandler<YIUIInvokeClosePanel, ETTask<bool>>
+    public class YIUIInvokeClosePanelAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_ClosePanel, ETTask<bool>>
     {
-        public override async ETTask<bool> Handle(YIUIInvokeClosePanel args)
+        public override async ETTask<bool> Handle(Entity entity, YIUIInvokeEntity_ClosePanel args)
         {
-            if (YIUIMgrComponent.Inst == null) return false;
-            return await YIUIMgrComponent.Inst.ClosePanelAsync(args.PanelName, args.Tween, args.IgnoreElse);
+            var yiuiMgr = entity.YIUIMgr();
+            if (yiuiMgr == null) return false;
+            return await yiuiMgr.ClosePanelAsync(args.PanelName, args.Tween, args.IgnoreElse);
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeViewClosePanelSyncHandler : AInvokeHandler<YIUIInvokeViewClosePanel>
+    public class YIUIInvokeViewClosePanelSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_ViewClosePanel>
     {
-        public override void Handle(YIUIInvokeViewClosePanel args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_ViewClosePanel args)
         {
-            var panel = args.ViewComponent?.Parent?.Parent?.Parent?.GetComponent<YIUIPanelComponent>();
+            var panel = entity?.Parent?.Parent?.Parent?.GetComponent<YIUIPanelComponent>();
             if (panel == null)
             {
-                Log.Error($"错误当前view的结构不满足标准 无法向上找到Panel 并且关闭 请检查 {args.ViewComponent?.UIBase?.UIName}");
+                Log.Error($"错误当前view的结构不满足标准 无法向上找到Panel 并且关闭 请检查 {entity}");
                 return;
             }
 
@@ -36,14 +37,14 @@
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeViewClosePanelAsyncHandler : AInvokeHandler<YIUIInvokeViewClosePanel, ETTask<bool>>
+    public class YIUIInvokeViewClosePanelAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_ViewClosePanel, ETTask<bool>>
     {
-        public override async ETTask<bool> Handle(YIUIInvokeViewClosePanel args)
+        public override async ETTask<bool> Handle(Entity entity, YIUIInvokeEntity_ViewClosePanel args)
         {
-            var panel = args.ViewComponent?.Parent?.Parent?.Parent?.GetComponent<YIUIPanelComponent>();
+            var panel = entity?.Parent?.Parent?.Parent?.GetComponent<YIUIPanelComponent>();
             if (panel == null)
             {
-                Log.Error($"错误当前view的结构不满足标准 无法向上找到Panel 并且关闭 请检查 {args.ViewComponent?.UIBase?.UIName}");
+                Log.Error($"错误当前view的结构不满足标准 无法向上找到Panel 并且关闭 请检查 {entity}");
                 return false;
             }
 

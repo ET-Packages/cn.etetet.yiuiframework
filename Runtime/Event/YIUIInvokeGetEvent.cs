@@ -3,23 +3,23 @@ using UnityObject = UnityEngine.Object;
 
 namespace YIUIFramework
 {
-    public struct YIUIInvokeGetUIRoot
+    public struct YIUIInvokeEntity_GetUIRoot
     {
     }
 
-    public struct YIUIInvokeGetUICanvasRoot
+    public struct YIUIInvokeEntity_GetUICanvasRoot
     {
     }
 
-    public struct YIUIInvokeGetUILayerRoot
+    public struct YIUIInvokeEntity_GetUILayerRoot
     {
     }
 
-    public struct YIUIInvokeGetUICamera
+    public struct YIUIInvokeEntity_GetUICamera
     {
     }
 
-    public struct YIUIInvokeGetUICanvas
+    public struct YIUIInvokeEntity_GetUICanvas
     {
     }
 }

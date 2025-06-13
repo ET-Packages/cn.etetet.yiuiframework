@@ -99,7 +99,7 @@ namespace ET.Client
                 return;
             }
 
-            var foreverCode = self.WindowAllowOptionByTween ? 0 : EventSystem.Instance?.YIUIInvokeSync<YIUIInvokeBanLayerOptionForever, long>(new YIUIInvokeBanLayerOptionForever()) ?? 0;
+            var foreverCode = self.WindowAllowOptionByTween ? 0 : EventSystem.Instance?.YIUIInvokeEntitySync<YIUIInvokeEntity_BanLayerOptionForever, long>(self, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0;
 
             try
             {
@@ -113,7 +113,7 @@ namespace ET.Client
             {
                 if (!self.WindowAllowOptionByTween)
                 {
-                    EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRecoverLayerOptionForever
+                    EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_RecoverLayerOptionForever
                     {
                         ForeverCode = foreverCode
                     });
@@ -131,7 +131,7 @@ namespace ET.Client
                 return;
             }
 
-            var foreverCode = self.WindowAllowOptionByTween ? 0 : EventSystem.Instance?.YIUIInvokeSync<YIUIInvokeBanLayerOptionForever, long>(new YIUIInvokeBanLayerOptionForever()) ?? 0;
+            var foreverCode = self.WindowAllowOptionByTween ? 0 : EventSystem.Instance?.YIUIInvokeEntitySync<YIUIInvokeEntity_BanLayerOptionForever, long>(self, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0;
 
             try
             {
@@ -145,7 +145,7 @@ namespace ET.Client
             {
                 if (!self.WindowAllowOptionByTween)
                 {
-                    EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRecoverLayerOptionForever
+                    EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_RecoverLayerOptionForever
                     {
                         ForeverCode = foreverCode
                     });

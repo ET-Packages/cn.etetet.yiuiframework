@@ -51,7 +51,7 @@ namespace ET.Client
 
         private static void RemoveUIReset(this YIUIPanelComponent self)
         {
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRemoveUIReset
+            EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_RemoveUIReset
             {
                 PanelName = self.UIBase.UIName
             });

@@ -12,60 +12,60 @@ namespace ET.Client
 {
     public static partial class YIUIFactory
     {
-        public static T Instantiate<T>(Entity parentEntity, Transform parent = null) where T : Entity
+        public static T Instantiate<T>(Scene scene, Entity parentEntity, Transform parent = null) where T : Entity
         {
             var data = YIUIBindHelper.GetBindVoByType<T>();
             if (data == null) return null;
             var vo = data.Value;
 
-            return Instantiate<T>(vo, parentEntity, parent);
+            return Instantiate<T>(scene, vo, parentEntity, parent);
         }
 
-        public static T Instantiate<T>(YIUIBindVo vo, Entity parentEntity, Transform parent = null) where T : Entity
+        public static T Instantiate<T>(Scene scene, YIUIBindVo vo, Entity parentEntity, Transform parent = null) where T : Entity
         {
-            var instance = (T)Create(vo, parentEntity);
+            var instance = (T)Create(scene, vo, parentEntity);
             if (instance == null) return null;
 
-            SetParent(instance.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            SetParent(instance.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : scene.YIUIMgr().UICache);
 
             return instance;
         }
 
-        public static Entity Instantiate(Type uiType, Entity parentEntity, Transform parent = null)
+        public static Entity Instantiate(Scene scene, Type uiType, Entity parentEntity, Transform parent = null)
         {
             var data = YIUIBindHelper.GetBindVoByType(uiType);
             if (data == null) return null;
             var vo = data.Value;
 
-            return Instantiate(vo, parentEntity, parent);
+            return Instantiate(scene, vo, parentEntity, parent);
         }
 
-        public static Entity Instantiate(YIUIBindVo vo, Entity parentEntity, Transform parent = null)
+        public static Entity Instantiate(Scene scene, YIUIBindVo vo, Entity parentEntity, Transform parent = null)
         {
-            var instance = Create(vo, parentEntity);
+            var instance = Create(scene, vo, parentEntity);
             if (instance == null) return null;
 
-            SetParent(instance.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            SetParent(instance.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : scene.YIUIMgr().UICache);
 
             return instance;
         }
 
-        public static Entity Instantiate(string pkgName, string resName, Entity parentEntity, Transform parent = null)
+        public static Entity Instantiate(Scene scene, string pkgName, string resName, Entity parentEntity, Transform parent = null)
         {
             var data = YIUIBindHelper.GetBindVoByPath(pkgName, resName);
             if (data == null) return null;
             var vo = data.Value;
 
-            return Instantiate(vo, parentEntity, parent);
+            return Instantiate(scene, vo, parentEntity, parent);
         }
 
-        public static Entity Instantiate(string resName, Entity parentEntity, Transform parent = null)
+        public static Entity Instantiate(Scene scene, string resName, Entity parentEntity, Transform parent = null)
         {
             var data = YIUIBindHelper.GetBindVoByResName(resName);
             if (data == null) return null;
             var vo = data.Value;
 
-            return Instantiate(vo, parentEntity, parent);
+            return Instantiate(scene, vo, parentEntity, parent);
         }
     }
 }

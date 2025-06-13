@@ -5,15 +5,17 @@ using UnityObject = UnityEngine.Object;
 namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeLoadSyncHandler : AInvokeHandler<YIUIInvokeLoad, UnityObject>
+    public class YIUIInvokeLoadSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_Load, UnityObject>
     {
-        public override UnityObject Handle(YIUIInvokeLoad args)
+        public override UnityObject Handle(Entity entity, YIUIInvokeEntity_Load args)
         {
-            if (YIUILoadComponent.Inst == null) return null;
+            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+
+            if (loadRef.Entity == null) return null;
 
             var resName = args.ResName;
 
-            var obj = YIUILoadComponent.Inst.LoadAsset(args.PkgName, resName, args.LoadType);
+            var obj = loadRef.Entity.LoadAsset(args.PkgName, resName, args.LoadType);
 
             if (obj == null)
             {
@@ -26,15 +28,17 @@ namespace ET.Client
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeLoadAsyncHandler : AInvokeHandler<YIUIInvokeLoad, ETTask<UnityObject>>
+    public class YIUIInvokeLoadAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_Load, ETTask<UnityObject>>
     {
-        public override async ETTask<UnityObject> Handle(YIUIInvokeLoad args)
+        public override async ETTask<UnityObject> Handle(Entity entity, YIUIInvokeEntity_Load args)
         {
-            if (YIUILoadComponent.Inst == null) return null;
+            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+
+            if (loadRef.Entity == null) return null;
 
             var resName = args.ResName;
 
-            var obj = await YIUILoadComponent.Inst.LoadAssetAsync(args.PkgName, resName, args.LoadType);
+            var obj = await loadRef.Entity.LoadAssetAsync(args.PkgName, resName, args.LoadType);
 
             if (obj == null)
             {
@@ -47,23 +51,25 @@ namespace ET.Client
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeLoadSpriteSyncHandler : AInvokeHandler<YIUIInvokeLoadSprite, Sprite>
+    public class YIUIInvokeLoadSpriteSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadSprite, Sprite>
     {
-        public override Sprite Handle(YIUIInvokeLoadSprite args)
+        public override Sprite Handle(Entity entity, YIUIInvokeEntity_LoadSprite args)
         {
-            if (YIUILoadComponent.Inst == null) return null;
+            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+
+            if (loadRef.Entity == null) return null;
 
             var resName = args.ResName;
 
             #if UNITY_EDITOR
-            if (!YIUILoadComponent.Inst.VerifyAssetValidity(resName))
+            if (!loadRef.Entity.VerifyAssetValidity(resName))
             {
                 Log.Error($"验证资产有效性 没有这个资源 图片无法加载 请检查 {resName}");
                 return null;
             }
             #endif
 
-            var sprite = YIUILoadComponent.Inst.LoadAsset<Sprite>(resName);
+            var sprite = loadRef.Entity.LoadAsset<Sprite>(resName);
 
             if (sprite == null)
             {
@@ -76,23 +82,25 @@ namespace ET.Client
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeLoadSpriteAsyncHandler : AInvokeHandler<YIUIInvokeLoadSprite, ETTask<Sprite>>
+    public class YIUIInvokeLoadSpriteAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadSprite, ETTask<Sprite>>
     {
-        public override async ETTask<Sprite> Handle(YIUIInvokeLoadSprite args)
+        public override async ETTask<Sprite> Handle(Entity entity, YIUIInvokeEntity_LoadSprite args)
         {
-            if (YIUILoadComponent.Inst == null) return null;
+            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+
+            if (loadRef.Entity == null) return null;
 
             var resName = args.ResName;
 
             #if UNITY_EDITOR
-            if (!YIUILoadComponent.Inst.VerifyAssetValidity(resName))
+            if (!loadRef.Entity.VerifyAssetValidity(resName))
             {
                 Log.Error($"验证资产有效性 没有这个资源 图片无法加载 请检查 {resName}");
                 return null;
             }
             #endif
 
-            var sprite = await YIUILoadComponent.Inst.LoadAssetAsync<Sprite>(resName);
+            var sprite = await loadRef.Entity.LoadAssetAsync<Sprite>(resName);
 
             if (sprite == null)
             {
@@ -105,23 +113,25 @@ namespace ET.Client
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeLoadTexture2DSyncHandler : AInvokeHandler<YIUIInvokeLoadTexture2D, Texture2D>
+    public class YIUIInvokeLoadTexture2DSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadTexture2D, Texture2D>
     {
-        public override Texture2D Handle(YIUIInvokeLoadTexture2D args)
+        public override Texture2D Handle(Entity entity, YIUIInvokeEntity_LoadTexture2D args)
         {
-            if (YIUILoadComponent.Inst == null) return null;
+            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+
+            if (loadRef.Entity == null) return null;
 
             var resName = args.ResName;
 
             #if UNITY_EDITOR
-            if (!YIUILoadComponent.Inst.VerifyAssetValidity(resName))
+            if (!loadRef.Entity.VerifyAssetValidity(resName))
             {
                 Log.Error($"验证资产有效性 没有这个资源 图片无法加载 请检查 {resName}");
                 return null;
             }
             #endif
 
-            var texture2D = YIUILoadComponent.Inst.LoadAsset<Texture2D>(resName);
+            var texture2D = loadRef.Entity.LoadAsset<Texture2D>(resName);
 
             if (texture2D == null)
             {
@@ -134,23 +144,25 @@ namespace ET.Client
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeLoadTexture2DAsyncHandler : AInvokeHandler<YIUIInvokeLoadTexture2D, ETTask<Texture2D>>
+    public class YIUIInvokeLoadTexture2DAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadTexture2D, ETTask<Texture2D>>
     {
-        public override async ETTask<Texture2D> Handle(YIUIInvokeLoadTexture2D args)
+        public override async ETTask<Texture2D> Handle(Entity entity, YIUIInvokeEntity_LoadTexture2D args)
         {
-            if (YIUILoadComponent.Inst == null) return null;
+            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+
+            if (loadRef.Entity == null) return null;
 
             var resName = args.ResName;
 
             #if UNITY_EDITOR
-            if (!YIUILoadComponent.Inst.VerifyAssetValidity(resName))
+            if (!loadRef.Entity.VerifyAssetValidity(resName))
             {
                 Log.Error($"验证资产有效性 没有这个资源 图片无法加载 请检查 {resName}");
                 return null;
             }
             #endif
 
-            var texture2D = await YIUILoadComponent.Inst.LoadAssetAsync<Texture2D>(resName);
+            var texture2D = await loadRef.Entity.LoadAssetAsync<Texture2D>(resName);
 
             if (texture2D == null)
             {

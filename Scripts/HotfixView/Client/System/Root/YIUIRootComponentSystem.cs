@@ -13,6 +13,7 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this YIUIRootComponent self)
         {
+            self.m_YIUIMgrRef = self.YIUIMgr();
             self.AddComponent<HashWait>();
         }
     }

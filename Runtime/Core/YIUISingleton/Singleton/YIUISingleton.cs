@@ -7,8 +7,10 @@ namespace YIUIFramework
     /// <summary>
     /// 单例
     /// </summary>
-    public abstract class YIUISingleton<T> : IYIUIManagerAsyncInit where T : YIUISingleton<T>, new()
+    public abstract class YIUISingleton<T> : IYIUIEntity, IYIUIManagerAsyncInit where T : YIUISingleton<T>, new()
     {
+        public EntityRef<Entity> EntityRef { get; set; }
+
         private static T g_Inst;
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace YIUIFramework
             }
 
             YIUISingletonHelper.Remove(g_Inst);
-            g_Inst     = default;
+            g_Inst = default;
             m_Disposed = true;
             OnDispose();
             return true;

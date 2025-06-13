@@ -4,6 +4,8 @@
 // Data: 2023年2月12日
 //------------------------------------------------------------
 
+using System;
+using ET;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -17,6 +19,11 @@ namespace YIUIFramework
     [HideReferenceObjectPicker]
     public abstract class UIDataBind : SerializedMonoBehaviour
     {
+        [NonSerialized]
+        private EntityRef<Entity> m_EntityRef;
+
+        protected Entity Entity => m_EntityRef;
+
         [Required("必须选择")]
         [SerializeField]
         [HideLabel]
@@ -55,11 +62,16 @@ namespace YIUIFramework
 
         //会被上一级的UIDataTable初始化
         //也可以被自己初始化 根据顺序
-        internal void Initialize(bool refresh = false)
+        internal void Initialize(Entity entity, bool refresh = false)
         {
             if (!refresh && m_Binded) return;
 
             m_Binded = true;
+            if (entity != null)
+            {
+                m_EntityRef = entity;
+            }
+
             RefreshDataTable();
             UnBindData();
             BindData();
@@ -70,6 +82,7 @@ namespace YIUIFramework
         {
             UnBindData();
             m_Binded = false;
+            m_EntityRef = default;
         }
 
         /// <summary>

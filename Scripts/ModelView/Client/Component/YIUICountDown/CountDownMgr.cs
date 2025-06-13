@@ -28,9 +28,6 @@ namespace ET.Client
     [ComponentOf(typeof(YIUIMgrComponent))]
     public partial class CountDownMgr : Entity, IAwake, ILateUpdate, IDestroy
     {
-        [StaticField]
-        public static CountDownMgr Inst; //为什么没用ET的单例因为ET的单例不能update 其次单例不是entity不能调用相关API
-
         /// <summary>
         /// 所有需要被倒计时的目标
         /// 这个可以一对多

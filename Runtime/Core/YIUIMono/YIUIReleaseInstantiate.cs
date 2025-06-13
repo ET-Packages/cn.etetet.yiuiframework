@@ -14,9 +14,12 @@ namespace YIUIFramework
     [EnableClass]
     public class YIUIReleaseInstantiate : MonoBehaviour
     {
+        public EntityRef<Entity> m_EntityRef;
+
         private void OnDestroy()
         {
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeReleaseInstantiate { obj = gameObject });
+            if (YIUISingletonHelper.IsQuitting || m_EntityRef.Entity == null) return;
+            EventSystem.Instance?.YIUIInvokeEntitySync(m_EntityRef, new YIUIInvokeEntity_ReleaseInstantiate { obj = gameObject });
         }
     }
 }

@@ -101,7 +101,7 @@ namespace ET.Client
                 return baseView;
             }
 
-            var view = await YIUIFactory.InstantiateAsync(vo, self.UIBase.OwnerUIEntity, viewParent);
+            var view = await YIUIFactory.InstantiateAsync(self.Scene(), vo, self.UIBase.OwnerUIEntity, viewParent);
 
             self = selfRef;
             self.m_ExistView.Add(resName, view);
@@ -143,7 +143,7 @@ namespace ET.Client
                 return baseView;
             }
 
-            var view = await YIUIFactory.InstantiateAsync(vo, self.UIBase.OwnerUIEntity, viewParent);
+            var view = await YIUIFactory.InstantiateAsync(self.Scene(), vo, self.UIBase.OwnerUIEntity, viewParent);
 
             self = selfRef;
             self.m_ExistView.Add(viewName, view);

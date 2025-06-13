@@ -12,75 +12,85 @@ namespace ET.Client
 {
     public static partial class YIUIFactory
     {
-        public static async ETTask<T> InstantiateAsync<T>(Entity parentEntity, Transform parent = null) where T : Entity
+        public static async ETTask<T> InstantiateAsync<T>(Scene scene, Entity parentEntity, Transform parent = null) where T : Entity
         {
             var data = YIUIBindHelper.GetBindVoByType<T>();
             if (data == null) return null;
             var vo = data.Value;
 
-            return await InstantiateAsync<T>(vo, parentEntity, parent);
+            return await InstantiateAsync<T>(scene, vo, parentEntity, parent);
         }
 
-        public static async ETTask<T> InstantiateAsync<T>(YIUIBindVo vo, Entity parentEntity, Transform parent = null) where T : Entity
+        public static async ETTask<T> InstantiateAsync<T>(Scene scene, YIUIBindVo vo, Entity parentEntity, Transform parent = null) where T : Entity
         {
-            var uiCom = await CreateAsync(vo, parentEntity);
-            SetParent(uiCom.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            EntityRef<Scene> sceneRef = scene;
+            var uiCom = await CreateAsync(scene, vo, parentEntity);
+            scene = sceneRef;
+            SetParent(uiCom.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : scene.YIUIMgr().UICache);
             return (T)uiCom;
         }
 
-        public static async ETTask<Entity> InstantiateAsync(YIUIBindVo vo, Entity parentEntity, Transform parent = null)
+        public static async ETTask<Entity> InstantiateAsync(Scene scene, YIUIBindVo vo, Entity parentEntity, Transform parent = null)
         {
-            var uiCom = await CreateAsync(vo, parentEntity);
-            SetParent(uiCom.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : YIUIMgrComponent.Inst.UICache);
+            EntityRef<Scene> sceneRef = scene;
+            var uiCom = await CreateAsync(scene, vo, parentEntity);
+            scene = sceneRef;
+            SetParent(uiCom.GetParent<YIUIChild>().OwnerRectTransform, parent ? parent : scene.YIUIMgr().UICache);
             return uiCom;
         }
 
-        public static async ETTask<Entity> InstantiateAsync(Type uiType, Entity parentEntity, Transform parent = null)
+        public static async ETTask<Entity> InstantiateAsync(Scene scene, Type uiType, Entity parentEntity, Transform parent = null)
         {
             var data = YIUIBindHelper.GetBindVoByType(uiType);
             if (data == null) return null;
             var vo = data.Value;
 
-            return await InstantiateAsync(vo, parentEntity, parent);
+            return await InstantiateAsync(scene, vo, parentEntity, parent);
         }
 
-        public static async ETTask<Entity> InstantiateAsync(string    pkgName, string resName, Entity parentEntity,
+        public static async ETTask<Entity> InstantiateAsync(Scene scene,
+                                                            string pkgName,
+                                                            string resName,
+                                                            Entity parentEntity,
                                                             Transform parent = null)
         {
             var data = YIUIBindHelper.GetBindVoByPath(pkgName, resName);
             if (data == null) return null;
             var vo = data.Value;
 
-            return await InstantiateAsync(vo, parentEntity, parent);
+            return await InstantiateAsync(scene, vo, parentEntity, parent);
         }
 
-        public static async ETTask<Entity> InstantiateAsync(string    resName, Entity parentEntity,
+        public static async ETTask<Entity> InstantiateAsync(Scene scene,
+                                                            string resName,
+                                                            Entity parentEntity,
                                                             Transform parent = null)
         {
             var data = YIUIBindHelper.GetBindVoByResName(resName);
             if (data == null) return null;
             var vo = data.Value;
 
-            return await InstantiateAsync(vo, parentEntity, parent);
+            return await InstantiateAsync(scene, vo, parentEntity, parent);
         }
 
-        public static async ETTask<Entity> CreatePanelAsync(PanelInfo panelInfo, Entity parentEntity)
+        public static async ETTask<Entity> CreatePanelAsync(Scene scene, PanelInfo panelInfo, Entity parentEntity)
         {
             var bingVo = YIUIBindHelper.GetBindVoByPath(panelInfo.PkgName, panelInfo.ResName);
             if (bingVo == null) return null;
-            var uiCom = await CreateAsync(bingVo.Value, parentEntity);
+            var uiCom = await CreateAsync(scene, bingVo.Value, parentEntity);
             return uiCom;
         }
 
-        public static async ETTask<Entity> CreateAsync(YIUIBindVo vo, Entity parentEntity)
+        public static async ETTask<Entity> CreateAsync(Scene scene, YIUIBindVo vo, Entity parentEntity)
         {
             EntityRef<Entity> parentEntityRef = parentEntity;
-            var obj = await YIUILoadComponent.Inst?.LoadAssetAsyncInstantiate(vo.PkgName, vo.ResName);
+            var obj = await scene.YIUILoad()?.LoadAssetAsyncInstantiate(vo.PkgName, vo.ResName);
             if (obj == null)
             {
                 Debug.LogError($"没有加载到这个资源 {vo.PkgName}/{vo.ResName}");
                 return null;
             }
+
             return CreateByObjVo(vo, obj, parentEntityRef);
         }
     }

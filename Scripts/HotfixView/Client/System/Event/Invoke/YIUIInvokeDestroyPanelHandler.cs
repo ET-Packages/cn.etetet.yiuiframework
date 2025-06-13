@@ -1,16 +1,16 @@
 ﻿namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeDestroyPanelHandler : AInvokeHandler<YIUIInvokeDestroyPanel>
+    public class YIUIInvokeDestroyPanelHandler : AInvokeEntityHandler<YIUIInvokeEntity_DestroyPanel>
     {
-        public override void Handle(YIUIInvokeDestroyPanel args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_DestroyPanel args)
         {
-            if (YIUIMgrComponent.Inst == null || YIUIMgrComponent.Inst.IsDisposed)
+            if (entity.IsDisposed)
             {
                 return;
             }
 
-            YIUIMgrComponent.Inst.DestroyPanel(args.PanelName);
+            entity.YIUIMgr().DestroyPanel(args.PanelName);
         }
     }
 }

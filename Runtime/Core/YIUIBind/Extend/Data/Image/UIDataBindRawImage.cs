@@ -80,7 +80,7 @@ namespace YIUIFramework
 
         private async ETTask ChangeTexture2D(string resName)
         {
-            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = GetHashCode() });
+            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(Entity, new YIUIInvokeEntity_CoroutineLock { Lock = GetHashCode() });
 
             if (m_LastResName == resName)
             {
@@ -96,7 +96,7 @@ namespace YIUIFramework
                 return;
             }
 
-            var texture2d = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoadTexture2D, ETTask<Texture2D>>(new YIUIInvokeLoadTexture2D { ResName = resName });
+            var texture2d = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_LoadTexture2D, ETTask<Texture2D>>(Entity, new YIUIInvokeEntity_LoadTexture2D { ResName = resName });
 
             if (texture2d == null)
             {
@@ -109,21 +109,23 @@ namespace YIUIFramework
 
             if (this == null || gameObject == null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = texture2d });
+                EventSystem.Instance?.YIUIInvokeEntitySync(Entity, new YIUIInvokeEntity_Release { obj = texture2d });
                 return;
             }
 
             if (m_RawImage == null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = texture2d });
+                EventSystem.Instance?.YIUIInvokeEntitySync(Entity, new YIUIInvokeEntity_Release { obj = texture2d });
                 Logger.LogError($"{resName} 加载过程中 对象被摧毁了 m_Image == null");
                 return;
             }
 
-            m_LastTexture2D    = texture2d;
+            m_LastTexture2D = texture2d;
             m_RawImage.texture = texture2d;
             if (m_SetNativeSize)
+            {
                 m_RawImage.SetNativeSize();
+            }
 
             SetEnabled(true);
             m_LastResName = resName;
@@ -146,7 +148,7 @@ namespace YIUIFramework
         {
             if (m_LastTexture2D != null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = m_LastTexture2D });
+                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeEntity_Release { obj = m_LastTexture2D });
                 m_LastTexture2D = null;
             }
         }

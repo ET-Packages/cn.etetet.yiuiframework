@@ -2,6 +2,11 @@
 
 namespace YIUIFramework
 {
+    public interface IYIUIEntity
+    {
+        EntityRef<Entity> EntityRef { get; set; }
+    }
+
     public interface IYIUIManager : IYIUISingleton
     {
         /// <summary>

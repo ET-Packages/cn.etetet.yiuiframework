@@ -1,11 +1,11 @@
 ﻿namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeRemoveUIResetHandler : AInvokeHandler<YIUIInvokeRemoveUIReset>
+    public class YIUIInvokeRemoveUIResetHandler : AInvokeEntityHandler<YIUIInvokeEntity_RemoveUIReset>
     {
-        public override void Handle(YIUIInvokeRemoveUIReset args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_RemoveUIReset args)
         {
-            YIUIMgrComponent.Inst?.RemoveUIReset(args.PanelName);
+            entity.YIUIMgr()?.RemoveUIReset(args.PanelName);
         }
     }
 }

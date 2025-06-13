@@ -5,112 +5,112 @@ using UnityObject = UnityEngine.Object;
 
 namespace YIUIFramework
 {
-    public struct YIUIInvokeGetAssetInfo
+    public struct YIUIInvokeEntity_GetAssetInfo
     {
         public string Location;
-        public Type   AssetType;
+        public Type AssetType;
     }
 
-    public struct YIUIInvokeGetAssetInfoByGUID
+    public struct YIUIInvokeEntity_GetAssetInfoByGUID
     {
         public string AssetGUID;
-        public Type   AssetType;
+        public Type AssetType;
     }
 
     // 加载任意实例化 to Vo
-    public struct YIUIInvokeLoadInstantiateByVo
+    public struct YIUIInvokeEntity_LoadInstantiateByVo
     {
         public YIUIBindVo BindVo;
-        public Entity     ParentEntity;
-        public Transform  ParentTransform;
+        public Entity ParentEntity;
+        public Transform ParentTransform;
     }
 
     //实例化一个GameObject
-    public struct YIUIInvokeInstantiateGameObject
+    public struct YIUIInvokeEntity_InstantiateGameObject
     {
         public string PkgName;
         public string ResName;
     }
 
     //回收YIUI实例化资源
-    public struct YIUIInvokeReleaseInstantiate
+    public struct YIUIInvokeEntity_ReleaseInstantiate
     {
         public GameObject obj;
     }
 
     // 回收YIUI资源
-    public struct YIUIInvokeRelease
+    public struct YIUIInvokeEntity_Release
     {
         public UnityObject obj;
     }
 
     // 加载任意
-    public struct YIUIInvokeLoad
+    public struct YIUIInvokeEntity_Load
     {
-        public Type   LoadType;
+        public Type LoadType;
         public string PkgName;
         public string ResName;
     }
 
     // 加载图片
-    public struct YIUIInvokeLoadSprite
+    public struct YIUIInvokeEntity_LoadSprite
     {
         public string ResName;
     }
 
-    public struct YIUIInvokeLoadTexture2D
+    public struct YIUIInvokeEntity_LoadTexture2D
     {
         public string ResName;
     }
 
     //屏蔽所有YIUI操作
-    public struct YIUIInvokeBanLayerOptionForever
+    public struct YIUIInvokeEntity_BanLayerOptionForever
     {
     }
 
     //恢复指定屏蔽的操作
-    public struct YIUIInvokeRecoverLayerOptionForever
+    public struct YIUIInvokeEntity_RecoverLayerOptionForever
     {
         public long ForeverCode;
     }
 
     //添加倒计时
-    public struct YIUIInvokeCountDownAdd
+    public struct YIUIInvokeEntity_CountDownAdd
     {
         public CountDownTimerCallback TimerCallback;
-        public double                 TotalTime;
-        public double                 Interval;
-        public bool                   StartCallback;
-        public bool                   Forever;
+        public double TotalTime;
+        public double Interval;
+        public bool StartCallback;
+        public bool Forever;
     }
 
     //移除倒计时
-    public struct YIUIInvokeCountDownRemove
+    public struct YIUIInvokeEntity_CountDownRemove
     {
         public CountDownTimerCallback TimerCallback;
     }
 
     //等一帧 (1毫秒)
-    public struct YIUIInvokeWaitFrameAsync
+    public struct YIUIInvokeEntity_WaitFrameAsync
     {
     }
 
     //等指定毫秒
-    public struct YIUIInvokeWaitAsync
+    public struct YIUIInvokeEntity_WaitAsync
     {
-        public long                Time;
+        public long Time;
         public ETCancellationToken CancellationToken;
     }
 
     //等指定秒
-    public struct YIUIInvokeWaitSecondAsync
+    public struct YIUIInvokeEntity_WaitSecondAsync
     {
-        public float               Time;
+        public float Time;
         public ETCancellationToken CancellationToken;
     }
 
     //协程锁
-    public struct YIUIInvokeCoroutineLock
+    public struct YIUIInvokeEntity_CoroutineLock
     {
         public long LockType;
         public long Lock;

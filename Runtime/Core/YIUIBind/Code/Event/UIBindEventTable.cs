@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using ET;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -21,6 +22,22 @@ namespace YIUIFramework
     [AddComponentMenu("")]
     public sealed partial class UIBindEventTable : SerializedMonoBehaviour
     {
+        [NonSerialized]
+        private EntityRef<Entity> m_EntityRef;
+
+        internal Entity Entity
+        {
+            get
+            {
+                return m_EntityRef;
+            }
+            set
+            {
+                m_EntityRef = value;
+                InitEventTable();
+            }
+        }
+
         [OdinSerialize]
         [ShowInInspector]
         [HideLabel]
@@ -82,11 +99,6 @@ namespace YIUIFramework
             ClearAllEvents();
         }
 
-        private void Awake()
-        {
-            InitEventTable();
-        }
-
         #region 递归初始化所有绑定数据
 
         private void InitEventTable()
@@ -94,7 +106,7 @@ namespace YIUIFramework
             InitializeBinds(transform);
         }
 
-        private static void InitializeBinds(Transform transform)
+        private void InitializeBinds(Transform transform)
         {
             #if YIUIMACRO_BIND_INITIALIZE
             Logger.LogErrorContext(transform,$"{transform.name} 初始化调用所有子类 UIEventBind 绑定");
@@ -104,7 +116,7 @@ namespace YIUIFramework
             transform.GetComponents(binds);
             foreach (var bind in binds)
             {
-                bind.Initialize(true);
+                bind.Initialize(Entity, true);
             }
 
             ListPool<UIEventBind>.Put(binds);
@@ -115,7 +127,7 @@ namespace YIUIFramework
             }
         }
 
-        private static void InitializeBindsDeep(Transform transform)
+        private void InitializeBindsDeep(Transform transform)
         {
             if (transform.HasComponent<UIBindEventTable>())
             {
@@ -126,7 +138,7 @@ namespace YIUIFramework
             transform.GetComponents(binds);
             foreach (var bind in binds)
             {
-                bind.Initialize(true);
+                bind.Initialize(Entity, true);
             }
 
             ListPool<UIEventBind>.Put(binds);

@@ -1,21 +1,22 @@
 ﻿namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeHomePanelHandler : AInvokeHandler<YIUIInvokeHomePanel>
+    public class YIUIInvokeHomePanelHandler : AInvokeEntityHandler<YIUIInvokeEntity_HomePanel>
     {
-        public override void Handle(YIUIInvokeHomePanel args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_HomePanel args)
         {
-            YIUIMgrComponent.Inst?.HomePanel(args.PanelName, args.Tween, args.ForceHome).NoContext();
+            entity?.YIUIMgr()?.HomePanel(args.PanelName, args.Tween, args.ForceHome).NoContext();
         }
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeHomePanelWaitHandler : AInvokeHandler<YIUIInvokeHomePanel, ETTask<bool>>
+    public class YIUIInvokeHomePanelWaitHandler : AInvokeEntityHandler<YIUIInvokeEntity_HomePanel, ETTask<bool>>
     {
-        public override async ETTask<bool> Handle(YIUIInvokeHomePanel args)
+        public override async ETTask<bool> Handle(Entity entity, YIUIInvokeEntity_HomePanel args)
         {
-            if (YIUIMgrComponent.Inst == null) return false;
-            return await YIUIMgrComponent.Inst.HomePanel(args.PanelName, args.Tween, args.ForceHome);
+            var yiuiMgr = entity?.YIUIMgr();
+            if (yiuiMgr == null) return false;
+            return await yiuiMgr.HomePanel(args.PanelName, args.Tween, args.ForceHome);
         }
     }
 }

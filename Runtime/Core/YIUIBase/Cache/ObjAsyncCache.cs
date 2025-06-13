@@ -9,18 +9,19 @@ namespace YIUIFramework
     /// </summary>
     public class ObjAsyncCache<T>
     {
+        private EntityRef<Entity> m_EntityRef;
+        public Entity Entity => m_EntityRef;
+
         private readonly Stack<T> m_Pool;
         private readonly Func<ETTask<T>> m_CreateCallback;
 
         private float m_CreateInterval = 0f;
         private float m_LastCreateTime = 0f;
 
-        public ObjAsyncCache(Func<ETTask<T>> createCallback, int capacity = 0, float createInterval = 0f)
+        public ObjAsyncCache(Entity entity, Func<ETTask<T>> createCallback, int capacity = 0, float createInterval = 0f)
         {
-            m_Pool = capacity > 0
-                    ? new Stack<T>(capacity)
-                    : new Stack<T>();
-
+            m_EntityRef = entity;
+            m_Pool = capacity > 0 ? new Stack<T>(capacity) : new Stack<T>();
             m_CreateInterval = createInterval;
             m_CreateCallback = createCallback;
         }
@@ -45,14 +46,14 @@ namespace YIUIFramework
 
             if (m_CreateInterval > 0)
             {
-                using var coroutineLock = await EventSystem.Instance.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = this.GetHashCode() });
+                using var coroutineLock = await EventSystem.Instance.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(Entity, new YIUIInvokeEntity_CoroutineLock { Lock = this.GetHashCode() });
 
                 if (m_LastCreateTime > 0)
                 {
                     var waitTime = m_LastCreateTime - UnityEngine.Time.time;
                     if (waitTime > 0)
                     {
-                        await EventSystem.Instance.YIUIInvokeAsync<YIUIInvokeWaitAsync, ETTask>(new YIUIInvokeWaitAsync
+                        await EventSystem.Instance.YIUIInvokeEntityAsync<YIUIInvokeEntity_WaitAsync, ETTask>(Entity, new YIUIInvokeEntity_WaitAsync
                         {
                             Time = (long)(waitTime * 1000)
                         });

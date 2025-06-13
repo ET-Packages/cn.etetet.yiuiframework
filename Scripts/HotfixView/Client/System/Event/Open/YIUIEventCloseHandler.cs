@@ -55,7 +55,7 @@
                 return;
             }
 
-            if (YIUILoadComponent.Inst == null) return;
+            if (scene.YIUILoad() == null) return;
             EntityRef<Scene> sceneRef = scene;
             await YIUIEventComponent.Inst.Run(arg.UIComponentName, arg);
             scene = sceneRef;

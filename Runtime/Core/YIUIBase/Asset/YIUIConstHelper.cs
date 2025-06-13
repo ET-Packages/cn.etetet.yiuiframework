@@ -21,9 +21,9 @@ namespace YIUIFramework
         public static YIUIConstAsset Const => m_YIUIConstAsset;
         #endif
 
-        public static async ETTask<bool> LoadAsset()
+        public static async ETTask<bool> LoadAsset(Scene scene)
         {
-            m_YIUIConstAsset = await OdinSerializationHelper.RuntimeLoad<YIUIConstAsset>(YIUIConstAssetName);
+            m_YIUIConstAsset = await OdinSerializationHelper.RuntimeLoad<YIUIConstAsset>(scene, YIUIConstAssetName);
             return m_YIUIConstAsset != null;
         }
 
@@ -65,7 +65,7 @@ namespace YIUIFramework
         private static YIUIConstAsset CreateAsset()
         {
             var constAsset = new YIUIConstAsset();
-            var bytes      = Sirenix.Serialization.SerializationUtility.SerializeValue(constAsset, DataFormat.JSON);
+            var bytes = Sirenix.Serialization.SerializationUtility.SerializeValue(constAsset, DataFormat.JSON);
             WriteAllBytes($"{Application.dataPath}/../{YIUIConstAssetPath}", bytes);
             return constAsset;
         }

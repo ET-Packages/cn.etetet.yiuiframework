@@ -3,9 +3,9 @@
 namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeCountDownAddSyncHandler : AInvokeHandler<YIUIInvokeCountDownAdd>
+    public class YIUIInvokeCountDownAddSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_CountDownAdd>
     {
-        public override void Handle(YIUIInvokeCountDownAdd args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_CountDownAdd args)
         {
             if (args.TotalTime < 0)
             {
@@ -25,14 +25,14 @@ namespace ET.Client
                 args.Interval = args.TotalTime;
             }
 
-            CountDownMgr.Inst?.Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback);
+            entity?.YIUICountDown()?.Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback);
         }
     }
 
     [Invoke(EYIUIInvokeType.SyncHandler_1)]
-    public class YIUIInvokeCountDownAddSyncHandler_1 : AInvokeHandler<YIUIInvokeCountDownAdd, bool>
+    public class YIUIInvokeCountDownAddSyncHandler_1 : AInvokeEntityHandler<YIUIInvokeEntity_CountDownAdd, bool>
     {
-        public override bool Handle(YIUIInvokeCountDownAdd args)
+        public override bool Handle(Entity entity, YIUIInvokeEntity_CountDownAdd args)
         {
             if (args.TotalTime < 0)
             {
@@ -52,25 +52,25 @@ namespace ET.Client
                 args.Interval = args.TotalTime;
             }
 
-            return CountDownMgr.Inst?.Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback) ?? false;
+            return entity?.YIUICountDown()?.Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback) ?? false;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeCountDownRemoveSyncHandler : AInvokeHandler<YIUIInvokeCountDownRemove>
+    public class YIUIInvokeCountDownRemoveSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_CountDownRemove>
     {
-        public override void Handle(YIUIInvokeCountDownRemove args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_CountDownRemove args)
         {
-            CountDownMgr.Inst?.Remove(args.TimerCallback);
+            entity?.YIUICountDown()?.Remove(args.TimerCallback);
         }
     }
 
     [Invoke(EYIUIInvokeType.SyncHandler_1)]
-    public class YIUIInvokeCountDownRemoveSyncHandler_1 : AInvokeHandler<YIUIInvokeCountDownRemove, bool>
+    public class YIUIInvokeCountDownRemoveSyncHandler_1 : AInvokeEntityHandler<YIUIInvokeEntity_CountDownRemove, bool>
     {
-        public override bool Handle(YIUIInvokeCountDownRemove args)
+        public override bool Handle(Entity entity, YIUIInvokeEntity_CountDownRemove args)
         {
-            return CountDownMgr.Inst?.Remove(args.TimerCallback) ?? false;
+            return entity?.YIUICountDown()?.Remove(args.TimerCallback) ?? false;
         }
     }
 }

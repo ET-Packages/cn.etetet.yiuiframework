@@ -3,20 +3,20 @@
 namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeBanLayerOptionForeverHandler : AInvokeHandler<YIUIInvokeBanLayerOptionForever, long>
+    public class YIUIInvokeBanLayerOptionForeverHandler : AInvokeEntityHandler<YIUIInvokeEntity_BanLayerOptionForever, long>
     {
-        public override long Handle(YIUIInvokeBanLayerOptionForever args)
+        public override long Handle(Entity entity, YIUIInvokeEntity_BanLayerOptionForever args)
         {
-            return YIUIMgrComponent.Inst?.BanLayerOptionForever() ?? 0;
+            return entity.YIUIMgr()?.BanLayerOptionForever() ?? 0;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeRecoverLayerOptionForeverHandler : AInvokeHandler<YIUIInvokeRecoverLayerOptionForever>
+    public class YIUIInvokeRecoverLayerOptionForeverHandler : AInvokeEntityHandler<YIUIInvokeEntity_RecoverLayerOptionForever>
     {
-        public override void Handle(YIUIInvokeRecoverLayerOptionForever args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_RecoverLayerOptionForever args)
         {
-            YIUIMgrComponent.Inst?.RecoverLayerOptionForever(args.ForeverCode);
+            entity.YIUIMgr()?.RecoverLayerOptionForever(args.ForeverCode);
         }
     }
 }

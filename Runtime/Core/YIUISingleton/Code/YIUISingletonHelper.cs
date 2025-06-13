@@ -14,7 +14,10 @@ namespace YIUIFramework
     /// </summary>
     public static class YIUISingletonHelper
     {
-        private static List<IYIUISingleton> g_Singles = new List<IYIUISingleton>();
+        private static EntityRef<Entity> m_YIUIMgrRef;
+        public static Entity YIUIMgr => m_YIUIMgrRef;
+
+        private static readonly List<IYIUISingleton> g_Singles = new();
 
         public static bool Disposing { get; private set; } = true;
 
@@ -62,10 +65,11 @@ namespace YIUIFramework
             }
 
             g_Singles.Clear();
+            m_YIUIMgrRef = default;
         }
 
         //初始化
-        public static async ETTask InitializeAll()
+        public static async ETTask InitializeAll(Entity entity)
         {
             if (IsQuitting)
             {
@@ -75,6 +79,7 @@ namespace YIUIFramework
 
             //Debug.Log($"SingletonMgr.初始化所有单例");
             Disposing = false;
+            m_YIUIMgrRef = entity;
             await RegisterAll();
         }
 
@@ -95,11 +100,11 @@ namespace YIUIFramework
             var allSingleton = AssemblyHelper.GetClassesWithAttribute<YIUISingletonAttribute>();
 
             allSingleton.Sort((x, y) =>
-                              {
-                                  var xAttr = x.GetCustomAttribute<YIUISingletonAttribute>();
-                                  var yAttr = y.GetCustomAttribute<YIUISingletonAttribute>();
-                                  return xAttr.Order.CompareTo(yAttr.Order);
-                              });
+            {
+                var xAttr = x.GetCustomAttribute<YIUISingletonAttribute>();
+                var yAttr = y.GetCustomAttribute<YIUISingletonAttribute>();
+                return xAttr.Order.CompareTo(yAttr.Order);
+            });
 
             foreach (var singleton in allSingleton)
             {
@@ -115,6 +120,17 @@ namespace YIUIFramework
                 try
                 {
                     instValue = instProperty.GetValue(null);
+
+                    if (typeof(IYIUIEntity).IsAssignableFrom(singleton))
+                    {
+                        var entityRefProperty = singleton.GetProperty("EntityRef",
+                            BindingFlags.Public | BindingFlags.Instance);
+
+                        if (entityRefProperty != null && instValue is IYIUIEntity entityInstance)
+                        {
+                            entityInstance.EntityRef = m_YIUIMgrRef;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {

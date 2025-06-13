@@ -4,47 +4,47 @@ using YIUIFramework;
 namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeGetUIRootHandler : AInvokeHandler<YIUIInvokeGetUIRoot, GameObject>
+    public class YIUIInvokeGetUIRootHandler : AInvokeEntityHandler<YIUIInvokeEntity_GetUIRoot, GameObject>
     {
-        public override GameObject Handle(YIUIInvokeGetUIRoot args)
+        public override GameObject Handle(Entity entity, YIUIInvokeEntity_GetUIRoot args)
         {
-            return YIUIMgrComponent.Inst?.UIRoot;
+            return entity?.YIUIMgr()?.UIRoot;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeGetUICanvasRootHandler : AInvokeHandler<YIUIInvokeGetUICanvasRoot, GameObject>
+    public class YIUIInvokeGetUICanvasRootHandler : AInvokeEntityHandler<YIUIInvokeEntity_GetUICanvasRoot, GameObject>
     {
-        public override GameObject Handle(YIUIInvokeGetUICanvasRoot args)
+        public override GameObject Handle(Entity entity, YIUIInvokeEntity_GetUICanvasRoot args)
         {
-            return YIUIMgrComponent.Inst?.UICanvasRoot;
+            return entity?.YIUIMgr()?.UICanvasRoot;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeGetUILayerRootHandler : AInvokeHandler<YIUIInvokeGetUILayerRoot, RectTransform>
+    public class YIUIInvokeGetUILayerRootHandler : AInvokeEntityHandler<YIUIInvokeEntity_GetUILayerRoot, RectTransform>
     {
-        public override RectTransform Handle(YIUIInvokeGetUILayerRoot args)
+        public override RectTransform Handle(Entity entity, YIUIInvokeEntity_GetUILayerRoot args)
         {
-            return YIUIMgrComponent.Inst?.UILayerRoot;
+            return entity?.YIUIMgr()?.UILayerRoot;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeGetUICameraHandler : AInvokeHandler<YIUIInvokeGetUICamera, Camera>
+    public class YIUIInvokeGetUICameraHandler : AInvokeEntityHandler<YIUIInvokeEntity_GetUICamera, Camera>
     {
-        public override Camera Handle(YIUIInvokeGetUICamera args)
+        public override Camera Handle(Entity entity, YIUIInvokeEntity_GetUICamera args)
         {
-            return YIUIMgrComponent.Inst?.UICamera;
+            return entity?.YIUIMgr()?.UICamera;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeGetUICanvasHandler : AInvokeHandler<YIUIInvokeGetUICanvas, Canvas>
+    public class YIUIInvokeGetUICanvasHandler : AInvokeEntityHandler<YIUIInvokeEntity_GetUICanvas, Canvas>
     {
-        public override Canvas Handle(YIUIInvokeGetUICanvas args)
+        public override Canvas Handle(Entity entity, YIUIInvokeEntity_GetUICanvas args)
         {
-            return YIUIMgrComponent.Inst?.UICanvas;
+            return entity?.YIUIMgr()?.UICanvas;
         }
     }
 }

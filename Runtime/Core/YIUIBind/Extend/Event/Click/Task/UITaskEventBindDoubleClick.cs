@@ -76,12 +76,12 @@ namespace YIUIFramework
         private void Awake()
         {
             m_Selectable ??= GetComponent<Selectable>();
-            ClickTasking =   false;
+            ClickTasking = false;
         }
 
         private async ETTask TaskEvent(PointerEventData eventData)
         {
-            var banLayerCode = m_BanLayerOption ? ET.EventSystem.Instance?.YIUIInvokeSync<YIUIInvokeBanLayerOptionForever, long>(new YIUIInvokeBanLayerOptionForever()) ?? 0 : 0;
+            var banLayerCode = m_BanLayerOption ? ET.EventSystem.Instance?.YIUIInvokeEntitySync<YIUIInvokeEntity_BanLayerOptionForever, long>(Entity, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0 : 0;
 
             ClickTasking = true;
 
@@ -100,7 +100,7 @@ namespace YIUIFramework
 
                 if (m_BanLayerOption)
                 {
-                    ET.EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRecoverLayerOptionForever { ForeverCode = banLayerCode });
+                    ET.EventSystem.Instance?.YIUIInvokeEntitySync(Entity, new YIUIInvokeEntity_RecoverLayerOptionForever { ForeverCode = banLayerCode });
                 }
             }
         }

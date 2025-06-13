@@ -22,9 +22,29 @@ namespace YIUIFramework
     public sealed partial class UIBindCDETable : SerializedMonoBehaviour
     {
         [NonSerialized]
-        public EntityRef<Entity> m_EntityRef;
+        private EntityRef<Entity> m_EntityRef;
 
-        public Entity Entity => m_EntityRef;
+        internal Entity Entity
+        {
+            get
+            {
+                return m_EntityRef;
+            }
+            set
+            {
+                m_EntityRef = value;
+
+                if (DataTable != null)
+                {
+                    DataTable.Entity = value;
+                }
+
+                if (EventTable != null)
+                {
+                    EventTable.Entity = value;
+                }
+            }
+        }
 
         [HideInInspector]
         public UIBindComponentTable ComponentTable;

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ET;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -8,6 +10,11 @@ namespace YIUIFramework
     [ExecuteInEditMode]
     public abstract partial class UIEventBind : SerializedMonoBehaviour
     {
+        [NonSerialized]
+        private EntityRef<Entity> m_EntityRef;
+
+        protected Entity Entity => m_EntityRef;
+
         [OdinSerialize]
         [ReadOnly]
         [HideReferenceObjectPicker]
@@ -29,6 +36,7 @@ namespace YIUIFramework
         protected string m_EventName = null;
 
         public string EventName => this.m_EventName;
+
         /// <summary>
         /// 当前的UI事件
         /// </summary>
@@ -65,11 +73,15 @@ namespace YIUIFramework
 
         private bool m_Binded;
 
-        internal void Initialize(bool refresh = false)
+        internal void Initialize(Entity entity, bool refresh = false)
         {
             if (!refresh && m_Binded) return;
 
             m_Binded = true;
+            if (entity != null)
+            {
+                m_EntityRef = entity;
+            }
             OnRefreshEvent();
         }
 

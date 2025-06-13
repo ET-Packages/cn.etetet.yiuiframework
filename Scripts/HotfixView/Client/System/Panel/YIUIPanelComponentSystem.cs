@@ -35,7 +35,7 @@ namespace ET.Client
 
             self.StopCountDownDestroyPanel();
 
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeDestroyPanel
+            EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_DestroyPanel
             {
                 PanelName = self.UIBindVo.ComponentType.Name
             });

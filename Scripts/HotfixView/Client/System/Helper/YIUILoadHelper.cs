@@ -1,0 +1,17 @@
+﻿using ET.Client;
+
+namespace ET
+{
+    public static class YIUILoadHelper
+    {
+        public static YIUILoadComponent YIUILoad(this Entity entity)
+        {
+            return entity.YIUIMgr()?.GetComponent<YIUILoadComponent>(true);
+        }
+
+        public static YIUILoadComponent YIUILoad(this Scene scene)
+        {
+            return scene.YIUIMgr()?.GetComponent<YIUILoadComponent>(true);
+        }
+    }
+}

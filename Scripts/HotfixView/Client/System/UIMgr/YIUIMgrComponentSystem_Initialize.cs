@@ -14,7 +14,7 @@ namespace ET.Client
             var loadResult = await self.AddComponent<YIUILoadComponent>().Initialize();
             if (!loadResult) return false;
             
-            var constResult = await YIUIConstHelper.LoadAsset();
+            var constResult = await YIUIConstHelper.LoadAsset(selfRef.Entity.Scene());
             if (!constResult) return false;
 
             //初始化UI绑定
@@ -27,7 +27,7 @@ namespace ET.Client
             self.AddComponent<CountDownMgr>();
 
             //初始化所有YIUI相关 单例
-            await YIUISingletonHelper.InitializeAll();
+            await YIUISingletonHelper.InitializeAll(self);
 
             self = selfRef;
             //初始化YIUIRoot

@@ -11,11 +11,11 @@ namespace ET.Client
 {
     public static partial class YIUIFactory
     {
-        internal static void Destroy(GameObject obj)
+        internal static void Destroy(Scene scene, GameObject obj)
         {
             if (obj == null) return;
             UnityEngine.Object.Destroy(obj);
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeReleaseInstantiate
+            EventSystem.Instance?.YIUIInvokeEntitySync(scene, new YIUIInvokeEntity_ReleaseInstantiate
             {
                 obj = obj
             });

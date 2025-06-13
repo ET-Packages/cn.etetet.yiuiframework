@@ -132,7 +132,7 @@ namespace YIUIFramework
 
         private async ETTask ChangeSprite(string resName)
         {
-            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeCoroutineLock, ETTask<Entity>>(new YIUIInvokeCoroutineLock { Lock = this.GetHashCode() });
+            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(Entity, new YIUIInvokeEntity_CoroutineLock { Lock = this.GetHashCode() });
 
             if (m_LastSpriteName == resName)
             {
@@ -148,7 +148,7 @@ namespace YIUIFramework
                 return;
             }
 
-            var sprite = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoadSprite, ETTask<Sprite>>(new YIUIInvokeLoadSprite { ResName = resName });
+            var sprite = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_LoadSprite, ETTask<Sprite>>(Entity, new YIUIInvokeEntity_LoadSprite { ResName = resName });
 
             if (sprite == null)
             {
@@ -161,21 +161,23 @@ namespace YIUIFramework
 
             if (this == null || gameObject == null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = sprite });
+                EventSystem.Instance?.YIUIInvokeEntitySync(Entity, new YIUIInvokeEntity_Release { obj = sprite });
                 return;
             }
 
             if (m_Image == null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = sprite });
+                EventSystem.Instance?.YIUIInvokeEntitySync(Entity, new YIUIInvokeEntity_Release { obj = sprite });
                 Logger.LogError($"{resName} 加载过程中 对象被摧毁了 m_Image == null");
                 return;
             }
 
-            m_LastSprite   = sprite;
+            m_LastSprite = sprite;
             m_Image.sprite = sprite;
             if (m_SetNativeSize)
+            {
                 m_Image.SetNativeSize();
+            }
 
             SetEnabled(true);
             m_LastSpriteName = resName;
@@ -198,7 +200,7 @@ namespace YIUIFramework
         {
             if (m_LastSprite != null)
             {
-                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeRelease { obj = m_LastSprite });
+                EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeEntity_Release { obj = m_LastSprite });
                 m_LastSprite = null;
             }
         }

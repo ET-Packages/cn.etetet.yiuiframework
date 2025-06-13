@@ -49,23 +49,23 @@ namespace ET.Client
                 return;
             }
 
-            self.OwnerGameObject    = ownerGameObject;
+            self.OwnerGameObject = ownerGameObject;
             self.OwnerRectTransform = self.OwnerGameObject.GetComponent<RectTransform>();
-            self.CDETable           = self.OwnerGameObject.GetComponent<UIBindCDETable>();
+            self.CDETable = self.OwnerGameObject.GetComponent<UIBindCDETable>();
             if (self.CDETable == null)
             {
                 Debug.LogError($"{self.OwnerGameObject.name} 没有UIBindCDETable组件 这是必须的");
                 return;
             }
 
-            self.ComponentTable           = self.CDETable.ComponentTable;
-            self.DataTable                = self.CDETable.DataTable;
-            self.EventTable               = self.CDETable.EventTable;
-            self.m_UIBindVo               = uiBindVo;
-            self.UIResName                = uiBindVo.ResName;
-            self.m_UIBaseInit             = true;
-            self.CDETable.m_EntityRef     = self;
-            self.CDETable.UIBaseStart     = self.UIBaseStart;
+            self.ComponentTable = self.CDETable.ComponentTable;
+            self.DataTable = self.CDETable.DataTable;
+            self.EventTable = self.CDETable.EventTable;
+            self.m_UIBindVo = uiBindVo;
+            self.UIResName = uiBindVo.ResName;
+            self.m_UIBaseInit = true;
+            self.CDETable.Entity = self;
+            self.CDETable.UIBaseStart = self.UIBaseStart;
             self.CDETable.UIBaseOnDestroy = self.UIBaseOnDestroy;
             self.AddUIDataComponent();
         }
@@ -209,7 +209,7 @@ namespace ET.Client
                 self.Parent.RemoveChild(self.Id);
             }
 
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeReleaseInstantiate
+            EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_ReleaseInstantiate
             {
                 obj = self.OwnerGameObject
             });

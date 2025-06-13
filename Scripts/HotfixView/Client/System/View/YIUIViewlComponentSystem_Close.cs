@@ -55,9 +55,8 @@
         //标准view 可快捷关闭panel 需要满足panel的结构 同步
         public static void ClosePanel(this YIUIViewComponent self, bool tween = true, bool ignoreElse = false)
         {
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeViewClosePanel
+            EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_ViewClosePanel
             {
-                ViewComponent = self,
                 Tween = tween,
                 IgnoreElse = ignoreElse
             });
@@ -66,9 +65,8 @@
         //标准view 可快捷关闭panel 需要满足panel的结构 异步
         public static async ETTask<bool> ClosePanelAsync(this YIUIViewComponent self, bool tween = true, bool ignoreElse = false)
         {
-            return await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeViewClosePanel, ETTask<bool>>(new YIUIInvokeViewClosePanel
+            return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_ViewClosePanel, ETTask<bool>>(self, new YIUIInvokeEntity_ViewClosePanel
             {
-                ViewComponent = self,
                 Tween = tween,
                 IgnoreElse = ignoreElse
             });

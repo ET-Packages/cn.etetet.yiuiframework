@@ -12,5 +12,7 @@ namespace ET.Client
     [ComponentOf]
     public partial class YIUIRootComponent : Entity, IAwake
     {
+        public EntityRef<YIUIMgrComponent> m_YIUIMgrRef;
+        public YIUIMgrComponent YIUIMgr => m_YIUIMgrRef;
     }
 }

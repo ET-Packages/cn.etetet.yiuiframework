@@ -9,30 +9,30 @@
 
         public static async ETTask<bool> CloseAsync(this YIUIPanelComponent self, bool tween = true, bool ignoreElse = false)
         {
-            return await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeClosePanel, ETTask<bool>>(new YIUIInvokeClosePanel
-                                                                                                   {
-                                                                                                       PanelName  = self.UIBase.UIName,
-                                                                                                       Tween      = tween,
-                                                                                                       IgnoreElse = ignoreElse
-                                                                                                   });
+            return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_ClosePanel, ETTask<bool>>(self, new YIUIInvokeEntity_ClosePanel
+            {
+                PanelName = self.UIBase.UIName,
+                Tween = tween,
+                IgnoreElse = ignoreElse
+            });
         }
 
-        public static void Home<T>(this YIUIPanelComponent self, bool tween = true) where T : Entity
+        public static async ETTask<bool> Home<T>(this YIUIPanelComponent self, bool tween = true) where T : Entity
         {
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeHomePanel
-                                                 {
-                                                     PanelName = typeof(T).Name,
-                                                     Tween     = tween
-                                                 });
+            return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_HomePanel, ETTask<bool>>(self, new YIUIInvokeEntity_HomePanel
+            {
+                PanelName = typeof(T).Name,
+                Tween = tween
+            });
         }
 
-        public static void Home(this YIUIPanelComponent self, string homeName, bool tween = true)
+        public static async ETTask<bool> Home(this YIUIPanelComponent self, string homeName, bool tween = true)
         {
-            EventSystem.Instance?.YIUIInvokeSync(new YIUIInvokeHomePanel
-                                                 {
-                                                     PanelName = homeName,
-                                                     Tween     = tween
-                                                 });
+            return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_HomePanel, ETTask<bool>>(self, new YIUIInvokeEntity_HomePanel
+            {
+                PanelName = homeName,
+                Tween = tween
+            });
         }
     }
 }

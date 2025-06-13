@@ -1,30 +1,30 @@
 ﻿namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeRootOpenPanelAsyncHandler : AInvokeHandler<YIUIInvokeRootOpenPanel, ETTask<bool>>
+    public class YIUIInvokeRootOpenPanelAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_SceneOpenPanel, ETTask<bool>>
     {
-        public override async ETTask<bool> Handle(YIUIInvokeRootOpenPanel args)
+        public override async ETTask<bool> Handle(Entity entity, YIUIInvokeEntity_SceneOpenPanel args)
         {
-            if (args.Root == null)
+            if (entity.IsDisposed)
             {
                 return false;
             }
 
-            return await args.Root.OpenPanelAsync(args.PanelName) != null;
+            return await entity.YIUIRoot().OpenPanelAsync(args.PanelName) != null;
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeRootOpenPanelSyncHandler : AInvokeHandler<YIUIInvokeRootOpenPanel>
+    public class YIUIInvokeRootOpenPanelSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_SceneOpenPanel>
     {
-        public override void Handle(YIUIInvokeRootOpenPanel args)
+        public override void Handle(Entity entity, YIUIInvokeEntity_SceneOpenPanel args)
         {
-            if (args.Root == null)
+            if (entity.IsDisposed)
             {
                 return;
             }
 
-            args.Root.OpenPanelAsync(args.PanelName).NoContext();
+            entity.YIUIRoot().OpenPanelAsync(args.PanelName).NoContext();
         }
     }
 }

@@ -9,10 +9,5 @@ namespace ET.Client
     [ComponentOf(typeof(YIUIMgrComponent))]
     public partial class YIUILoadComponent : Entity, IAwake, IDestroy
     {
-        [StaticField]
-        public static EntityRef<YIUILoadComponent> m_InstRef;
-
-        [StaticField]
-        public static YIUILoadComponent Inst => m_InstRef;
     }
 }

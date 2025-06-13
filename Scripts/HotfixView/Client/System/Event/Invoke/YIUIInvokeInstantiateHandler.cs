@@ -5,56 +5,56 @@ using UnityGameObject = UnityEngine.GameObject;
 namespace ET.Client
 {
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeLoadInstantiateAsyncHandler : AInvokeHandler<YIUIInvokeLoadInstantiate, ETTask<Entity>>
+    public class YIUIInvokeLoadInstantiateAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiate, ETTask<Entity>>
     {
-        public override async ETTask<Entity> Handle(YIUIInvokeLoadInstantiate args)
+        public override async ETTask<Entity> Handle(Entity entity, YIUIInvokeEntity_LoadInstantiate args)
         {
-            return await YIUIFactory.InstantiateAsync(args.LoadType, args.ParentEntity, args.ParentTransform);
+            return await YIUIFactory.InstantiateAsync(entity.Scene(), args.LoadType, args.ParentEntity, args.ParentTransform);
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeLoadInstantiateSyncHandler : AInvokeHandler<YIUIInvokeLoadInstantiate, Entity>
+    public class YIUIInvokeLoadInstantiateSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiate, Entity>
     {
-        public override Entity Handle(YIUIInvokeLoadInstantiate args)
+        public override Entity Handle(Entity entity, YIUIInvokeEntity_LoadInstantiate args)
         {
-            return YIUIFactory.Instantiate(args.LoadType, args.ParentEntity, args.ParentTransform);
+            return YIUIFactory.Instantiate(entity.Scene(), args.LoadType, args.ParentEntity, args.ParentTransform);
         }
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeLoadInstantiateByVoAsyncHandler : AInvokeHandler<YIUIInvokeLoadInstantiateByVo, ETTask<Entity>>
+    public class YIUIInvokeLoadInstantiateByVoAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiateByVo, ETTask<Entity>>
     {
-        public override async ETTask<Entity> Handle(YIUIInvokeLoadInstantiateByVo args)
+        public override async ETTask<Entity> Handle(Entity entity, YIUIInvokeEntity_LoadInstantiateByVo args)
         {
-            return await YIUIFactory.InstantiateAsync(args.BindVo, args.ParentEntity, args.ParentTransform);
+            return await YIUIFactory.InstantiateAsync(entity.Scene(), args.BindVo, args.ParentEntity, args.ParentTransform);
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeLoadInstantiateByVoSyncHandler : AInvokeHandler<YIUIInvokeLoadInstantiateByVo, Entity>
+    public class YIUIInvokeLoadInstantiateByVoSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiateByVo, Entity>
     {
-        public override Entity Handle(YIUIInvokeLoadInstantiateByVo args)
+        public override Entity Handle(Entity entity, YIUIInvokeEntity_LoadInstantiateByVo args)
         {
-            return YIUIFactory.Instantiate(args.BindVo, args.ParentEntity, args.ParentTransform);
+            return YIUIFactory.Instantiate(entity.Scene(), args.BindVo, args.ParentEntity, args.ParentTransform);
         }
     }
 
     [Invoke(EYIUIInvokeType.Sync)]
-    public class YIUIInvokeInstantiateGameObjectSyncHandler : AInvokeHandler<YIUIInvokeInstantiateGameObject, UnityGameObject>
+    public class YIUIInvokeInstantiateGameObjectSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_InstantiateGameObject, UnityGameObject>
     {
-        public override UnityGameObject Handle(YIUIInvokeInstantiateGameObject args)
+        public override UnityGameObject Handle(Entity entity, YIUIInvokeEntity_InstantiateGameObject args)
         {
-            return YIUIFactory.InstantiateGameObject(args.PkgName, args.ResName);
+            return YIUIFactory.InstantiateGameObject(entity.Scene(), args.PkgName, args.ResName);
         }
     }
 
     [Invoke(EYIUIInvokeType.Async)]
-    public class YIUIInvokeInstantiateGameObjectAsyncHandler : AInvokeHandler<YIUIInvokeInstantiateGameObject, ETTask<UnityGameObject>>
+    public class YIUIInvokeInstantiateGameObjectAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_InstantiateGameObject, ETTask<UnityGameObject>>
     {
-        public override async ETTask<UnityGameObject> Handle(YIUIInvokeInstantiateGameObject args)
+        public override async ETTask<UnityGameObject> Handle(Entity entity, YIUIInvokeEntity_InstantiateGameObject args)
         {
-            return await YIUIFactory.InstantiateGameObjectAsync(args.PkgName, args.ResName);
+            return await YIUIFactory.InstantiateGameObjectAsync(entity.Scene(), args.PkgName, args.ResName);
         }
     }
 }

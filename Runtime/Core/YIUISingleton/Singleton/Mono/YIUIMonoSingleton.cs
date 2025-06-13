@@ -1,4 +1,5 @@
 ﻿using System;
+using ET;
 using UnityEngine;
 
 namespace YIUIFramework
@@ -42,7 +43,7 @@ namespace YIUIFramework
                     }
 
                     GameObject go = new GameObject();
-                    g_Inst  = go.AddComponent<T>();
+                    g_Inst = go.AddComponent<T>();
                     go.name = g_Inst.GetCreateName();
                     if (g_Inst.GetDontDestroyOnLoad())
                     {

@@ -53,12 +53,12 @@ namespace YIUIFramework
 
         #endif
 
-        public static async ETTask<T> RuntimeLoad<T>(string assetName, DataFormat dataFormat = DataFormat.JSON)
+        public static async ETTask<T> RuntimeLoad<T>(Scene scene, string assetName, DataFormat dataFormat = DataFormat.JSON)
         {
-            var loadResult = await EventSystem.Instance?.YIUIInvokeAsync<YIUIInvokeLoad, ETTask<UnityObject>>(new YIUIInvokeLoad
+            var loadResult = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_Load, ETTask<UnityObject>>(scene, new YIUIInvokeEntity_Load
             {
                 LoadType = typeof(TextAsset),
-                ResName  = assetName
+                ResName = assetName
             });
 
             if (loadResult == null)

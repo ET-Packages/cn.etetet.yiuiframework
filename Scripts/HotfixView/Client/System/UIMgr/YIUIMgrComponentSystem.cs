@@ -16,8 +16,7 @@ namespace ET.Client
         private static void Awake(this YIUIMgrComponent self)
         {
             self.AddComponent<YIUIEventComponent>();
-            self.m_RootRef             = self.Root()?.AddComponent<YIUIRootComponent>();
-            YIUIMgrComponent.m_InstRef = self;
+            self.m_RootRef = self.Root()?.AddComponent<YIUIRootComponent>();
         }
 
         [EntitySystem]
@@ -27,7 +26,6 @@ namespace ET.Client
             YIUIBindHelper.Reset();
             YIUISingletonHelper.DisposeAll();
             self.ResetRoot();
-            YIUIMgrComponent.m_InstRef = default;
         }
     }
 }

@@ -1,6 +1,5 @@
 #if ENABLE_VIEW
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -8,22 +7,14 @@ using YIUIFramework.Editor;
 
 namespace ET
 {
-    [CustomEditor(typeof(ComponentView))]
-    public class ComponentViewEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            var componentView = (ComponentView)target;
-            var component     = componentView.Component;
-
-            ComponentViewHelper.DrawScripButton(component);
-            ComponentViewHelper.DrawAction(component);
-        }
-    }
-
     public static partial class ComponentViewHelper
     {
-        public static void DrawScripButton(Entity entity)
+        static partial void OverrideDraw()
+        {
+            drawAction = YIUIDraw;
+        }
+
+        private static void DrawScripButton(Entity entity)
         {
             string componentName = entity.GetType().Name;
 
@@ -43,90 +34,11 @@ namespace ET
             EditorGUILayout.Space(20, false);
             EditorGUILayout.EndHorizontal();
         }
-    }
-    
-    public static partial class ComponentViewHelper
-    {
-        private static readonly List<ITypeDrawer> typeDrawers = new();
 
-        private static readonly Dictionary<Type, EntityDrawer> entityDrawerDict = new();
-
-        private static Action<Entity> drawAction;
-
-        static ComponentViewHelper()
+        private static void YIUIDraw(Entity entity)
         {
-            var assemblies        = AppDomain.CurrentDomain.GetAssemblies();
-            var systemGenericType = typeof(EntityDrawerSystem<>);
+            DrawScripButton(entity);
 
-            foreach (Assembly assembly in assemblies)
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (type.IsDefined(typeof(TypeDrawerAttribute)))
-                    {
-                        ITypeDrawer iTypeDrawer = (ITypeDrawer)Activator.CreateInstance(type);
-                        typeDrawers.Add(iTypeDrawer);
-                    }
-
-                    if (type.IsDefined(typeof(EntityDrawerAttribute)))
-                    {
-                        var baseType = type.BaseType;
-                        if (baseType is not { IsGenericType: true })
-                        {
-                            continue;
-                        }
-
-                        if (baseType.GetGenericTypeDefinition() != systemGenericType)
-                        {
-                            continue;
-                        }
-
-                        var entityType = baseType.GetGenericArguments()[0];
-                        var attribute  = type.GetCustomAttribute<EntityDrawerAttribute>();
-                        var iDrawer    = (IEntityDrawer)Activator.CreateInstance(type);
-                        var order      = attribute.Order;
-                        var drawerData = new EntityDrawer
-                        {
-                            EntityType     = entityType,
-                            Drawer         = iDrawer,
-                            Order          = order,
-                            SkipTypeDrawer = attribute.SkipTypeDrawer
-                        };
-
-                        if (entityDrawerDict.TryGetValue(entityType, out var drawer))
-                        {
-                            if (order > drawer.Order)
-                            {
-                                entityDrawerDict[entityType] = drawerData;
-                            }
-                        }
-                        else
-                        {
-                            entityDrawerDict.Add(entityType, drawerData);
-                        }
-                    }
-                }
-            }
-
-            drawAction = Draw;
-
-            OverrideDraw();
-        }
-
-        public static void DrawAction(Entity entity)
-        {
-            try
-            {
-                drawAction?.Invoke(entity);
-            }
-            catch (Exception e)
-            {
-                Debug.Log($"组件视图绘制错误: {entity.GetType().FullName}, {e}");
-            }
-        }
-
-        private static void Draw(Entity entity)
-        {
             EditorGUILayout.BeginVertical();
 
             EditorGUILayout.LongField("InstanceId: ", entity.InstanceId);
@@ -190,8 +102,6 @@ namespace ET
 
             EditorGUILayout.EndVertical();
         }
-
-        static partial void OverrideDraw();
     }
 }
 #endif

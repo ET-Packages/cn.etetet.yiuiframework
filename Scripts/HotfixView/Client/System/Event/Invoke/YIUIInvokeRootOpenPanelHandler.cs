@@ -10,7 +10,7 @@
                 return false;
             }
 
-            return await entity.YIUIRoot().OpenPanelAsync(args.PanelName) != null;
+            return await entity.YIUISceneRoot().OpenPanelAsync(args.PanelName) != null;
         }
     }
 
@@ -24,7 +24,7 @@
                 return;
             }
 
-            entity.YIUIRoot().OpenPanelAsync(args.PanelName).NoContext();
+            entity.YIUISceneRoot().OpenPanelAsync(args.PanelName).NoContext();
         }
     }
 }

@@ -7,9 +7,11 @@ namespace YIUIFramework
     /// <summary>
     /// 单例
     /// </summary>
-    public abstract class YIUISingleton<T> : IYIUIEntity, IYIUIManagerAsyncInit where T : YIUISingleton<T>, new()
+    public abstract class YIUISingleton<T> : IYIUIManagerAsyncInit where T : YIUISingleton<T>, new()
     {
-        public EntityRef<Entity> EntityRef { get; set; }
+        private EntityRef<Entity> EntityRef;
+
+        protected Entity Entity => EntityRef;
 
         private static T g_Inst;
 
@@ -48,6 +50,7 @@ namespace YIUIFramework
                     }
 
                     g_Inst = new T();
+                    g_Inst.EntityRef = YIUISingletonHelper.YIUIMgr;
                     g_Inst.OnInitSingleton();
                     YIUISingletonHelper.Add(g_Inst);
                 }

@@ -37,7 +37,7 @@ namespace ET.Client
         {
             if (self.m_IsWaitCompleted) return;
             self.m_IsWaitCompleted = true;
-            self.Root().YIUIRoot()?.GetComponent<HashWait>()?.Notify(self.m_WaitId, error);
+            self.Root().YIUISceneRoot()?.GetComponent<HashWait>()?.Notify(self.m_WaitId, error);
             self.m_WaitId = 0;
         }
 

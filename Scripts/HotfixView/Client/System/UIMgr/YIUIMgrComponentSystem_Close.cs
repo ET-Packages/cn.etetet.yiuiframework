@@ -28,6 +28,8 @@ namespace ET.Client
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
+            if (info.UIPanel == null) return true;
+
             self = selfRef;
 
             EventSystem.Instance?.Publish(self.Root(),

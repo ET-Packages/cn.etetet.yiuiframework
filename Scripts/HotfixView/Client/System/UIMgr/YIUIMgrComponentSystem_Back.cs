@@ -32,7 +32,7 @@ namespace ET.Client
             {
                 var child = layerList[i];
 
-                if (child == info)
+                if (child == info || child.UIPanel == null)
                 {
                     continue;
                 }

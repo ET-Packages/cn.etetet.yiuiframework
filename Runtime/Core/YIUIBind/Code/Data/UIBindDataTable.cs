@@ -22,22 +22,6 @@ namespace YIUIFramework
     [AddComponentMenu("")]
     public sealed partial class UIBindDataTable : SerializedMonoBehaviour
     {
-        [NonSerialized]
-        private EntityRef<Entity> m_EntityRef;
-
-        internal Entity Entity
-        {
-            get
-            {
-                return m_EntityRef;
-            }
-            set
-            {
-                m_EntityRef = value;
-                InitDataTable();
-            }
-        }
-
         [OdinSerialize]
         [HideLabel]
         [ShowInInspector]
@@ -47,6 +31,11 @@ namespace YIUIFramework
         private Dictionary<string, UIData> m_DataDic = new Dictionary<string, UIData>();
 
         public IReadOnlyDictionary<string, UIData> DataDic => m_DataDic;
+
+        private void Awake()
+        {
+            InitDataTable();
+        }
 
         public UIData FindData(string dataName)
         {
@@ -89,7 +78,7 @@ namespace YIUIFramework
             transform.GetComponents(binds);
             foreach (var bind in binds)
             {
-                bind.Initialize(m_EntityRef, true);
+                bind.Initialize(true);
             }
 
             ListPool<UIDataBind>.Put(binds);
@@ -111,7 +100,7 @@ namespace YIUIFramework
             transform.GetComponents(binds);
             foreach (var bind in binds)
             {
-                bind.Initialize(m_EntityRef, true);
+                bind.Initialize(true);
             }
 
             ListPool<UIDataBind>.Put(binds);

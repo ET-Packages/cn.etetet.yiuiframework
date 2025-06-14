@@ -15,7 +15,7 @@ namespace ET
         /// <summary>
         /// 从任意位置获取到UI根组件
         /// </summary>
-        public static YIUIRootComponent YIUIMgrRoot(this Entity entity)
+        public static YIUIRootComponent YIUIRoot(this Entity entity)
         {
             return entity?.Root()?.GetComponent<YIUIRootComponent>(true);
         }
@@ -23,7 +23,7 @@ namespace ET
         /// <summary>
         /// 获取指定场景的UI根组件
         /// </summary>
-        public static YIUIRootComponent YIUIRoot(this Entity entity)
+        public static YIUIRootComponent YIUISceneRoot(this Entity entity)
         {
             return entity.Scene()?.GetComponent<YIUIRootComponent>(true);
         }
@@ -31,7 +31,7 @@ namespace ET
         /// <summary>
         /// 获取指定场景的UI根组件
         /// </summary>
-        public static YIUIRootComponent YIUIRoot(this Scene scene)
+        public static YIUIRootComponent YIUISceneRoot(this Scene scene)
         {
             return scene?.GetComponent<YIUIRootComponent>(true);
         }

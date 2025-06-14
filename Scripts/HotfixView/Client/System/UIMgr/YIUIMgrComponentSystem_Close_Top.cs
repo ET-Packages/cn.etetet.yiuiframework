@@ -29,6 +29,11 @@ namespace ET.Client
 
                 foreach (var info in list)
                 {
+                    if (info.UIPanel == null)
+                    {
+                        continue;
+                    }
+
                     //有忽略操作 且满足条件 则这个界面无法获取到
                     if (ignoreOption != EPanelOption.None &&
                         (info.UIPanel.PanelOption & ignoreOption) != 0)

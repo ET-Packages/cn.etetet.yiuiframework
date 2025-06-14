@@ -22,22 +22,6 @@ namespace YIUIFramework
     [AddComponentMenu("")]
     public sealed partial class UIBindEventTable : SerializedMonoBehaviour
     {
-        [NonSerialized]
-        private EntityRef<Entity> m_EntityRef;
-
-        internal Entity Entity
-        {
-            get
-            {
-                return m_EntityRef;
-            }
-            set
-            {
-                m_EntityRef = value;
-                InitEventTable();
-            }
-        }
-
         [OdinSerialize]
         [ShowInInspector]
         [HideLabel]
@@ -49,6 +33,11 @@ namespace YIUIFramework
         private Dictionary<string, UIEventBase> m_EventDic = new Dictionary<string, UIEventBase>();
 
         public IReadOnlyDictionary<string, UIEventBase> EventDic => m_EventDic;
+
+        private void Awake()
+        {
+            InitEventTable();
+        }
 
         public UIEventBase FindEvent(string eventName)
         {
@@ -116,7 +105,7 @@ namespace YIUIFramework
             transform.GetComponents(binds);
             foreach (var bind in binds)
             {
-                bind.Initialize(Entity, true);
+                bind.Initialize(true);
             }
 
             ListPool<UIEventBind>.Put(binds);
@@ -138,7 +127,7 @@ namespace YIUIFramework
             transform.GetComponents(binds);
             foreach (var bind in binds)
             {
-                bind.Initialize(Entity, true);
+                bind.Initialize(true);
             }
 
             ListPool<UIEventBind>.Put(binds);

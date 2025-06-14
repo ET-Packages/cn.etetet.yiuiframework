@@ -7,6 +7,7 @@ namespace ET.Client
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_Release args)
         {
+            if (entity == null || entity.IsDisposed) return;
             entity.YIUILoad()?.Release(args.obj);
         }
     }
@@ -16,6 +17,7 @@ namespace ET.Client
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_ReleaseInstantiate args)
         {
+            if (entity == null || entity.IsDisposed) return;
             entity.YIUILoad()?.ReleaseInstantiate(args.obj);
         }
     }

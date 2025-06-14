@@ -33,16 +33,6 @@ namespace YIUIFramework
             set
             {
                 m_EntityRef = value;
-
-                if (DataTable != null)
-                {
-                    DataTable.Entity = value;
-                }
-
-                if (EventTable != null)
-                {
-                    EventTable.Entity = value;
-                }
             }
         }
 

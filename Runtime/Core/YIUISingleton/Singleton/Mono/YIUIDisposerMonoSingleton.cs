@@ -7,10 +7,8 @@ namespace YIUIFramework
 {
     //基类使用odin 方便做一些显示
     //没有的不需要的可以改为UnityEngine.MonoBehaviour
-    public abstract class YIUIDisposerMonoSingleton : SerializedMonoBehaviour, IYIUIEntity, IYIUIManagerAsyncInit
+    public abstract class YIUIDisposerMonoSingleton : SerializedMonoBehaviour, IYIUIManagerAsyncInit
     {
-        public EntityRef<Entity> EntityRef { get; set; }
-
         private bool m_Disposed;
         public bool Disposed => m_Disposed;
 

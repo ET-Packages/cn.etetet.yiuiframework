@@ -10,11 +10,6 @@ namespace YIUIFramework
     [ExecuteInEditMode]
     public abstract partial class UIEventBind : SerializedMonoBehaviour
     {
-        [NonSerialized]
-        private EntityRef<Entity> m_EntityRef;
-
-        protected Entity Entity => m_EntityRef;
-
         [OdinSerialize]
         [ReadOnly]
         [HideReferenceObjectPicker]
@@ -73,15 +68,11 @@ namespace YIUIFramework
 
         private bool m_Binded;
 
-        internal void Initialize(Entity entity, bool refresh = false)
+        internal void Initialize(bool refresh = false)
         {
             if (!refresh && m_Binded) return;
 
             m_Binded = true;
-            if (entity != null)
-            {
-                m_EntityRef = entity;
-            }
             OnRefreshEvent();
         }
 

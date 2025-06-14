@@ -15,7 +15,7 @@ namespace YIUIFramework
     public static class YIUISingletonHelper
     {
         private static EntityRef<Entity> m_YIUIMgrRef;
-        public static Entity YIUIMgr => m_YIUIMgrRef;
+        internal static Entity YIUIMgr => m_YIUIMgrRef;
 
         private static readonly List<IYIUISingleton> g_Singles = new();
 
@@ -120,17 +120,6 @@ namespace YIUIFramework
                 try
                 {
                     instValue = instProperty.GetValue(null);
-
-                    if (typeof(IYIUIEntity).IsAssignableFrom(singleton))
-                    {
-                        var entityRefProperty = singleton.GetProperty("EntityRef",
-                            BindingFlags.Public | BindingFlags.Instance);
-
-                        if (entityRefProperty != null && instValue is IYIUIEntity entityInstance)
-                        {
-                            entityInstance.EntityRef = m_YIUIMgrRef;
-                        }
-                    }
                 }
                 catch (Exception e)
                 {

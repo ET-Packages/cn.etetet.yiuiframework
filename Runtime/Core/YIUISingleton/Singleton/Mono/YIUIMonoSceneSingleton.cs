@@ -1,4 +1,5 @@
 ﻿using System;
+using ET;
 using UnityEngine;
 
 namespace YIUIFramework
@@ -11,6 +12,10 @@ namespace YIUIFramework
     /// </summary>
     public abstract class YIUIMonoSceneSingleton<T> : YIUIDisposerMonoSingleton where T : YIUIMonoSceneSingleton<T>
     {
+        private EntityRef<Entity> EntityRef;
+
+        protected Entity Entity => EntityRef;
+
         private static T g_Inst;
 
         /// <summary>
@@ -57,7 +62,8 @@ namespace YIUIFramework
                 return;
             }
 
-            g_Inst          = (T)this;
+            g_Inst = (T)this;
+            g_Inst.EntityRef = YIUISingletonHelper.YIUIMgr;
             gameObject.name = g_Inst.GetCreateName();
             if (g_Inst.GetDontDestroyOnLoad())
             {

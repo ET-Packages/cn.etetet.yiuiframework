@@ -207,12 +207,11 @@ namespace ET.Client
             if (!self.IsDisposed)
             {
                 self.Parent.RemoveChild(self.Id);
+                EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_ReleaseInstantiate
+                {
+                    obj = self.OwnerGameObject
+                });
             }
-
-            EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_ReleaseInstantiate
-            {
-                obj = self.OwnerGameObject
-            });
         }
 
         #endregion

@@ -6,12 +6,12 @@ namespace ET
     {
         public static YIUILoadComponent YIUILoad(this Entity entity)
         {
-            return entity.YIUIMgr()?.GetComponent<YIUILoadComponent>(true);
+            return entity?.YIUIMgr()?.GetComponent<YIUILoadComponent>();
         }
 
         public static YIUILoadComponent YIUILoad(this Scene scene)
         {
-            return scene.YIUIMgr()?.GetComponent<YIUILoadComponent>(true);
+            return scene?.YIUIMgr()?.GetComponent<YIUILoadComponent>();
         }
     }
 }

@@ -41,7 +41,10 @@ namespace YIUIFramework
             if (IsPlaying())
             {
                 if (log)
+                {
                     Debug.LogError($"当前正在运行时 请不要在运行时使用");
+                }
+
                 return false;
             }
 
@@ -72,7 +75,10 @@ namespace YIUIFramework
             if (IsPlaying())
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowError($"当前正在运行时 请不要在运行时使用");
+                }
+
                 return false;
             }
 
@@ -84,7 +90,10 @@ namespace YIUIFramework
             if (IsPlaying())
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"当前正在运行时 请不要在运行时使用");
+                }
+
                 return false;
             }
 
@@ -92,7 +101,10 @@ namespace YIUIFramework
             if (checkInstance)
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"不能对实体进行操作  必须进入预制体编辑!!!");
+                }
+
                 return false;
             }
 
@@ -104,14 +116,19 @@ namespace YIUIFramework
             if (IsPlaying())
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"当前正在运行时 请不要在运行时使用");
+                }
+
                 return false;
             }
 
             if (obj == null)
             {
                 if (log)
+                {
                     Debug.LogError($"传入的对象为空");
+                }
                 return false;
             }
 
@@ -119,7 +136,10 @@ namespace YIUIFramework
             if (checkInstance)
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"不能对实体进行操作  必须进入预制体编辑!!!");
+                }
+
                 return false;
             }
 
@@ -127,7 +147,10 @@ namespace YIUIFramework
             if (!checkAsset)
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"1: 必须是预制体 2: 不能在Hierarchy面板中使用 必须在Project面板下的预制体原件才能使用使用 ");
+                }
+
                 return false;
             }
 
@@ -140,7 +163,10 @@ namespace YIUIFramework
             if (IsPlaying())
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"当前正在运行时 请不要在运行时使用");
+                }
+
                 return false;
             }
 
@@ -148,7 +174,10 @@ namespace YIUIFramework
             if (checkInstance)
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"不能对实体进行操作  必须进入预制体编辑!!!");
+                }
+
                 return false;
             }
 
@@ -156,7 +185,10 @@ namespace YIUIFramework
             if (!checkAsset)
             {
                 if (log)
+                {
                     UnityTipsHelper.ShowErrorContext(obj, $"1: 必须是预制体 2: 不能在Hierarchy面板中使用 必须在Project面板下的预制体原件才能使用使用 ");
+                }
+
                 return false;
             }
 
@@ -176,17 +208,22 @@ namespace YIUIFramework
             return GetETPackagesName(prefabPath, log);
         }
 
-        public static string GetETPackagesName(string path, bool log = true)
+        public static string GetETPackagesName(string path, bool log = true, char separator = '/')
         {
             if (path.Contains(YIUIConstHelper.Const.UIPackages) && path.Contains(YIUIConstHelper.Const.UIETPackagesFormat))
             {
-                var pathSplit = path.Split('/');
+                var pathSplit = path.Split(separator);
 
                 for (int i = 0; i < pathSplit.Length; i++)
                 {
                     var name = pathSplit[i];
                     if (name.Contains(YIUIConstHelper.Const.UIPackages))
                     {
+                        if (i + 1 > pathSplit.Length - 1)
+                        {
+                            continue;
+                        }
+
                         var packageFullName      = pathSplit[i + 1];
                         var packageFullNameSplit = packageFullName.Split('.');
                         var packageName          = packageFullNameSplit[^1];

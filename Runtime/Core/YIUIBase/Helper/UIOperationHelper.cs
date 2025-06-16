@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using ET;
@@ -129,6 +130,7 @@ namespace YIUIFramework
                 {
                     Debug.LogError($"传入的对象为空");
                 }
+
                 return false;
             }
 
@@ -208,33 +210,33 @@ namespace YIUIFramework
             return GetETPackagesName(prefabPath, log);
         }
 
-        public static string GetETPackagesName(string path, bool log = true, char separator = '/')
+        const string PackagesToken = "Packages/";
+        const string ETFormat = "cn.etetet";
+
+        public static string GetETPackagesName(string path, bool log = true)
         {
-            if (path.Contains(YIUIConstHelper.Const.UIPackages) && path.Contains(YIUIConstHelper.Const.UIETPackagesFormat))
+            path = path.Replace('\\', '/');
+
+            if (path.Contains(PackagesToken) && path.Contains(ETFormat))
             {
-                var pathSplit = path.Split(separator);
-
-                for (int i = 0; i < pathSplit.Length; i++)
+                var packagesIndex = path.IndexOf(PackagesToken, StringComparison.Ordinal);
+                if (packagesIndex >= 0)
                 {
-                    var name = pathSplit[i];
-                    if (name.Contains(YIUIConstHelper.Const.UIPackages))
-                    {
-                        if (i + 1 > pathSplit.Length - 1)
-                        {
-                            continue;
-                        }
+                    var startIndex = packagesIndex + PackagesToken.Length;
+                    var endIndex = path.IndexOf('/', startIndex);
 
-                        var packageFullName      = pathSplit[i + 1];
-                        var packageFullNameSplit = packageFullName.Split('.');
-                        var packageName          = packageFullNameSplit[^1];
-                        return packageName;
-                    }
+                    var packageFullName = endIndex > 0
+                            ? path.Substring(startIndex, endIndex - startIndex)
+                            : path.Substring(startIndex);
+
+                    var lastDotIndex = packageFullName.LastIndexOf('.');
+                    return lastDotIndex >= 0 ? packageFullName.Substring(lastDotIndex + 1) : packageFullName;
                 }
             }
 
             if (log)
             {
-                Log.Error($"{path} 未找到预制体的包名 请检查预制体路径是否正确");
+                Log.Error($"{path} 未找到包名");
             }
 
             return "";

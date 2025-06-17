@@ -13,7 +13,7 @@ namespace ET.Client
         /// <param name="ignoreElse">忽略堆栈操作 -- 不要轻易忽略除非你明白 </param>
         public static async ETTask<bool> ClosePanelAsync(this YIUIMgrComponent self, string panelName, bool tween = true, bool ignoreElse = false)
         {
-            if (YIUISingletonHelper.IsQuitting) return true;
+            if (self.IsDisposed) return true;
 
             #if YIUIMACRO_PANEL_OPENCLOSE
             Debug.Log($"<color=yellow> 关闭UI: {panelName} </color>");
@@ -111,6 +111,8 @@ namespace ET.Client
         /// </summary>
         internal static bool DestroyPanel(this YIUIMgrComponent self, string panelName)
         {
+            if (self.IsDisposed) return true;
+
             if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info)) return false;
 
             if (!self.ContainsLayerPanelInfo(info.PanelLayer, info)) return false;

@@ -9,7 +9,7 @@ namespace ET.Client
     {
         public override UnityObject Handle(Entity entity, YIUIInvokeEntity_Load args)
         {
-            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+            EntityRef<YIUILoadComponent> loadRef = entity.YIUILoad();
 
             if (loadRef.Entity == null) return null;
 
@@ -32,7 +32,7 @@ namespace ET.Client
     {
         public override async ETTask<UnityObject> Handle(Entity entity, YIUIInvokeEntity_Load args)
         {
-            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+            EntityRef<YIUILoadComponent> loadRef = entity.YIUILoad();
 
             if (loadRef.Entity == null) return null;
 
@@ -55,7 +55,7 @@ namespace ET.Client
     {
         public override Sprite Handle(Entity entity, YIUIInvokeEntity_LoadSprite args)
         {
-            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+            EntityRef<YIUILoadComponent> loadRef = entity.YIUILoad();
 
             if (loadRef.Entity == null) return null;
 
@@ -86,7 +86,7 @@ namespace ET.Client
     {
         public override async ETTask<Sprite> Handle(Entity entity, YIUIInvokeEntity_LoadSprite args)
         {
-            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+            EntityRef<YIUILoadComponent> loadRef = entity.YIUILoad();
 
             if (loadRef.Entity == null) return null;
 
@@ -117,7 +117,7 @@ namespace ET.Client
     {
         public override Texture2D Handle(Entity entity, YIUIInvokeEntity_LoadTexture2D args)
         {
-            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+            EntityRef<YIUILoadComponent> loadRef = entity.YIUILoad();
 
             if (loadRef.Entity == null) return null;
 
@@ -148,7 +148,7 @@ namespace ET.Client
     {
         public override async ETTask<Texture2D> Handle(Entity entity, YIUIInvokeEntity_LoadTexture2D args)
         {
-            EntityRef<YIUILoadComponent> loadRef = entity?.YIUILoad();
+            EntityRef<YIUILoadComponent> loadRef = entity.YIUILoad();
 
             if (loadRef.Entity == null) return null;
 

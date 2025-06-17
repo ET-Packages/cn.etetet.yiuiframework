@@ -5,11 +5,6 @@
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_DestroyPanel args)
         {
-            if (entity.IsDisposed)
-            {
-                return;
-            }
-
             entity.YIUIMgr().DestroyPanel(args.PanelName);
         }
     }

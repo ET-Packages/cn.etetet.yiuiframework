@@ -17,14 +17,12 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this YIUIEventComponent self)
         {
-            YIUIEventComponent.Inst = self;
             self.Init();
         }
 
         [EntitySystem]
         private static void Destroy(this YIUIEventComponent self)
         {
-            YIUIEventComponent.Inst = null;
         }
 
         private static void Init(this YIUIEventComponent self)

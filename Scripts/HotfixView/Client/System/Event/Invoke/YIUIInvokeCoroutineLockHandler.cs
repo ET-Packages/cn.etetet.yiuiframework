@@ -8,14 +8,20 @@ namespace ET.Client
     {
         public override async ETTask<Entity> Handle(Entity entity, YIUIInvokeEntity_CoroutineLock args)
         {
-            if (entity == null) return null;
+            var root = entity?.Root();
+            if (root == null)
+            {
+                Log.Error($"没有找到root {entity.IsDisposed}");
+                return null;
+            }
+
             var lockType = args.LockType;
             if (lockType <= 0)
             {
                 lockType = CoroutineLockType.YIUIInvokeCoroutineLock;
             }
 
-            return await entity.Root().GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
+            return await root.GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
         }
     }
 }

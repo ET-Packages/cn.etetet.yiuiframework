@@ -5,11 +5,6 @@
     {
         public override async ETTask<bool> Handle(Entity entity, YIUIInvokeEntity_SceneOpenPanel args)
         {
-            if (entity.IsDisposed)
-            {
-                return false;
-            }
-
             return await entity.YIUISceneRoot().OpenPanelAsync(args.PanelName) != null;
         }
     }
@@ -19,11 +14,6 @@
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_SceneOpenPanel args)
         {
-            if (entity.IsDisposed)
-            {
-                return;
-            }
-
             entity.YIUISceneRoot().OpenPanelAsync(args.PanelName).NoContext();
         }
     }

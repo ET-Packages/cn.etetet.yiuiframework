@@ -9,7 +9,7 @@ namespace ET
         /// </summary>
         public static YIUIMgrComponent YIUIMgr(this Entity entity)
         {
-            return entity?.Root()?.GetComponent<YIUIMgrComponent>();
+            return entity.Root().GetComponent<YIUIMgrComponent>();
         }
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace ET
         /// </summary>
         public static YIUIRootComponent YIUIRoot(this Entity entity)
         {
-            return entity?.Root()?.GetComponent<YIUIRootComponent>();
+            return entity.Root().GetComponent<YIUIRootComponent>();
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace ET
         /// </summary>
         public static YIUIRootComponent YIUISceneRoot(this Entity entity)
         {
-            return entity?.Scene()?.GetComponent<YIUIRootComponent>();
+            return entity.Scene().GetComponent<YIUIRootComponent>();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace ET
         /// </summary>
         public static YIUIRootComponent YIUISceneRoot(this Scene scene)
         {
-            return scene?.GetComponent<YIUIRootComponent>();
+            return scene.GetComponent<YIUIRootComponent>();
         }
     }
 }

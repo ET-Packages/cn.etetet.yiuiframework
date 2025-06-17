@@ -6,12 +6,12 @@ namespace ET
     {
         public static CountDownMgr YIUICountDown(this Entity entity)
         {
-            return entity?.YIUIMgr()?.GetComponent<CountDownMgr>();
+            return entity.YIUIMgr().GetComponent<CountDownMgr>();
         }
 
         public static CountDownMgr YIUICountDown(this Scene scene)
         {
-            return scene?.YIUIMgr()?.GetComponent<CountDownMgr>();
+            return scene.YIUIMgr().GetComponent<CountDownMgr>();
         }
     }
 }

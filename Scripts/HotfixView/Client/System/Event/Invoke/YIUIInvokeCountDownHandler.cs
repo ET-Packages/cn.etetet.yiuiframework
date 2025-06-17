@@ -52,7 +52,7 @@ namespace ET.Client
                 args.Interval = args.TotalTime;
             }
 
-            return entity?.YIUICountDown()?.Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback) ?? false;
+            return entity.YIUICountDown().Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback);
         }
     }
 

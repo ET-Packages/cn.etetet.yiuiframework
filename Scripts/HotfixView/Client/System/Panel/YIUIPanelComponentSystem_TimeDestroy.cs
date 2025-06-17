@@ -30,7 +30,7 @@ namespace ET.Client
             {
                 EntityRef<YIUIPanelComponent> selfRef = self;
 
-                ETCancellationToken oldCancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
+                var oldCancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
 
                 await ETTaskSafely.Await(selfRef.Entity?.Root()?.GetComponent<TimerComponent>()?.WaitAsync((long)(selfRef.Entity?.CachePanelTime * 1000 ?? 0)));
 
@@ -53,7 +53,7 @@ namespace ET.Client
         {
             EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_RemoveUIReset
             {
-                PanelName = self.UIBase.UIName
+                PanelName = self.UIBindVo.ComponentType.Name
             });
         }
     }

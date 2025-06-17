@@ -11,7 +11,7 @@
         {
             return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_ClosePanel, ETTask<bool>>(self, new YIUIInvokeEntity_ClosePanel
             {
-                PanelName = self.UIBase.UIName,
+                PanelName = self.UIBindVo.ComponentType.Name,
                 Tween = tween,
                 IgnoreElse = ignoreElse
             });

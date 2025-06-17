@@ -7,11 +7,6 @@ namespace ET.Client
     {
         public override async ETTask Handle(Entity entity, YIUIInvokeEntity_WaitFrameAsync args)
         {
-            if (entity == null)
-            {
-                return;
-            }
-
             await entity.Root().GetComponent<TimerComponent>().WaitFrameAsync();
         }
     }
@@ -21,11 +16,6 @@ namespace ET.Client
     {
         public override async ETTask Handle(Entity entity, YIUIInvokeEntity_WaitAsync args)
         {
-            if (entity == null)
-            {
-                return;
-            }
-
             if (args.CancellationToken == null)
             {
                 await entity.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
@@ -42,11 +32,6 @@ namespace ET.Client
     {
         public override async ETTask Handle(Entity entity, YIUIInvokeEntity_WaitSecondAsync args)
         {
-            if (entity == null)
-            {
-                return;
-            }
-
             if (args.CancellationToken == null)
             {
                 await entity.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000));

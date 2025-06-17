@@ -15,9 +15,6 @@ namespace ET.Client
     [ComponentOf(typeof(YIUIMgrComponent))]
     public partial class YIUIEventComponent : Entity, IAwake, IDestroy
     {
-        [StaticField]
-        public static YIUIEventComponent Inst;
-
         public Dictionary<Type, Dictionary<string, List<YIUIEventInfo>>> _AllEventInfo;
     }
 }

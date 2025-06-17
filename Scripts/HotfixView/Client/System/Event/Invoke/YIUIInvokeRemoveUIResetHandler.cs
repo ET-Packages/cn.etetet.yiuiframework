@@ -5,7 +5,7 @@
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_RemoveUIReset args)
         {
-            entity.YIUIMgr()?.RemoveUIReset(args.PanelName);
+            entity.YIUIMgr().RemoveUIReset(args.PanelName);
         }
     }
 }

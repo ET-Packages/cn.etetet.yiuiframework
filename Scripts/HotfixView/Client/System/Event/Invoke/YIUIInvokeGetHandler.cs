@@ -8,7 +8,7 @@ namespace ET.Client
     {
         public override GameObject Handle(Entity entity, YIUIInvokeEntity_GetUIRoot args)
         {
-            return entity?.YIUIMgr()?.UIRoot;
+            return entity.YIUIMgr().UIRoot;
         }
     }
 
@@ -17,7 +17,7 @@ namespace ET.Client
     {
         public override GameObject Handle(Entity entity, YIUIInvokeEntity_GetUICanvasRoot args)
         {
-            return entity?.YIUIMgr()?.UICanvasRoot;
+            return entity.YIUIMgr().UICanvasRoot;
         }
     }
 
@@ -26,7 +26,7 @@ namespace ET.Client
     {
         public override RectTransform Handle(Entity entity, YIUIInvokeEntity_GetUILayerRoot args)
         {
-            return entity?.YIUIMgr()?.UILayerRoot;
+            return entity.YIUIMgr().UILayerRoot;
         }
     }
 
@@ -35,7 +35,7 @@ namespace ET.Client
     {
         public override Camera Handle(Entity entity, YIUIInvokeEntity_GetUICamera args)
         {
-            return entity?.YIUIMgr()?.UICamera;
+            return entity.YIUIMgr().UICamera;
         }
     }
 
@@ -44,7 +44,7 @@ namespace ET.Client
     {
         public override Canvas Handle(Entity entity, YIUIInvokeEntity_GetUICanvas args)
         {
-            return entity?.YIUIMgr()?.UICanvas;
+            return entity.YIUIMgr().UICanvas;
         }
     }
 }

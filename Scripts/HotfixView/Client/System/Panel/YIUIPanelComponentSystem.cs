@@ -28,11 +28,6 @@ namespace ET.Client
         [EntitySystem]
         private static void Destroy(this YIUIPanelComponent self)
         {
-            if (self.Scene().IsDisposed)
-            {
-                return;
-            }
-
             self.StopCountDownDestroyPanel();
 
             EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_DestroyPanel

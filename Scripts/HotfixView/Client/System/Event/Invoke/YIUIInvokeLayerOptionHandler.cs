@@ -7,7 +7,7 @@ namespace ET.Client
     {
         public override long Handle(Entity entity, YIUIInvokeEntity_BanLayerOptionForever args)
         {
-            return entity.YIUIMgr()?.BanLayerOptionForever() ?? 0;
+            return entity.YIUIMgr().BanLayerOptionForever();
         }
     }
 
@@ -16,7 +16,7 @@ namespace ET.Client
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_RecoverLayerOptionForever args)
         {
-            entity.YIUIMgr()?.RecoverLayerOptionForever(args.ForeverCode);
+            entity.YIUIMgr().RecoverLayerOptionForever(args.ForeverCode);
         }
     }
 }

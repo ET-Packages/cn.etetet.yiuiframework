@@ -86,48 +86,24 @@ namespace ET
         //向任意场景发送动态事件
         public static async ETTask DynamicEvent<P1>(this Entity self, P1 message) where P1 : struct
         {
-            if (self == null || self.IsDisposed)
-            {
-                Log.Error($"1 Entity = 空或已释放 请检查");
-                return;
-            }
-
             await self.DynamicEvent(0, message);
         }
 
         //向与传入的实体相同的场景发送动态事件
         public static async ETTask DynamicEvent<P1>(this Entity self, Entity entity, P1 message) where P1 : struct
         {
-            if (self == null || self.IsDisposed)
-            {
-                Log.Error($"2 Entity = 空或已释放 请检查");
-                return;
-            }
-
             await self.DynamicEvent(entity.IScene.SceneType, message);
         }
 
         //向目标场景发送动态事件
         public static async ETTask DynamicEvent<P1>(this Entity self, Scene scene, P1 message) where P1 : struct
         {
-            if (self == null || self.IsDisposed)
-            {
-                Log.Error($"3 Entity = 空或已释放 请检查");
-                return;
-            }
-
             await self.DynamicEvent(scene.SceneType, message);
         }
 
         //向指定场景发送动态事件
         public static async ETTask DynamicEvent<P1>(this Entity self, int sceneType, P1 message) where P1 : struct
         {
-            if (self == null || self.IsDisposed)
-            {
-                Log.Error($"4 Entity = 空或已释放 请检查");
-                return;
-            }
-
             await self.Fiber().EntitySystem.DynamicEvent(sceneType, message);
         }
     }

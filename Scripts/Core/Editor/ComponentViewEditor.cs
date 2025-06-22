@@ -35,8 +35,9 @@ namespace ET
             EditorGUILayout.EndHorizontal();
         }
 
-        private static void YIUIDraw(Entity entity)
+        private static void YIUIDraw(EntityRef<Entity> entityRef)
         {
+            Entity entity = entityRef.Entity;
             DrawScripButton(entity);
 
             EditorGUILayout.BeginVertical();

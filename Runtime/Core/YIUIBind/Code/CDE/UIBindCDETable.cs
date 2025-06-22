@@ -69,7 +69,7 @@ namespace YIUIFramework
         [PropertyOrder(1000)]
         [LabelText("运行时所有公共组件")] //动态生成后的子类(公共组件) 运行时使用
         [HideIf("@UIOperationHelper.CommonShowIf()")]
-        private Dictionary<string, Entity> m_AllChildUIOwner = new();
+        private Dictionary<string, EntityRef<Entity>> m_AllChildUIOwner = new();
 
         internal void AddUIOwner(string uiName, Entity uiBase)
         {
@@ -81,7 +81,7 @@ namespace YIUIFramework
 
         public Entity FindUIOwner(string uiName)
         {
-            if (this.m_AllChildUIOwner.TryGetValue(uiName, out Entity owner))
+            if (this.m_AllChildUIOwner.TryGetValue(uiName, out EntityRef<Entity> owner))
             {
                 return owner;
             }

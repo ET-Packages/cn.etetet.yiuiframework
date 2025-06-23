@@ -95,10 +95,6 @@ namespace ET.Client
 
             EntityRef<YIUIMgrComponent> selfRef = self;
 
-            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
-
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
-
             #if YIUIMACRO_PANEL_OPENCLOSE
             Debug.Log($"<color=yellow> 打开UI: {panelName} </color>");
             #endif
@@ -178,7 +174,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelAsync<T>(this YIUIMgrComponent self, Entity root) where T : Entity, IAwake, IYIUIOpen
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;
@@ -211,7 +227,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelParamAsync<T>(this YIUIMgrComponent self, Entity root, params object[] paramMore) where T : Entity, IYIUIOpen<ParamVo>
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;
@@ -248,7 +284,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelAsync<T, P1>(this YIUIMgrComponent self, Entity root, P1 p1) where T : Entity, IYIUIOpen<P1>
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;
@@ -281,7 +337,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelAsync<T, P1, P2>(this YIUIMgrComponent self, Entity root, P1 p1, P2 p2) where T : Entity, IYIUIOpen<P1, P2>
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;
@@ -314,7 +390,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelAsync<T, P1, P2, P3>(this YIUIMgrComponent self, Entity root, P1 p1, P2 p2, P3 p3) where T : Entity, IYIUIOpen<P1, P2, P3>
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;
@@ -347,7 +443,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelAsync<T, P1, P2, P3, P4>(this YIUIMgrComponent self, Entity root, P1 p1, P2 p2, P3 p3, P4 p4) where T : Entity, IYIUIOpen<P1, P2, P3, P4>
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;
@@ -380,7 +496,27 @@ namespace ET.Client
         internal static async ETTask<T> OpenPanelAsync<T, P1, P2, P3, P4, P5>(this YIUIMgrComponent self, Entity root, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5) where T : Entity, IYIUIOpen<P1, P2, P3, P4, P5>
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
-            var info = await self.OpenPanelStartAsync(self.GetPanelName<T>(), root ?? self);
+
+            var panelName = self.GetPanelName<T>();
+
+            if (string.IsNullOrEmpty(panelName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
+            if (!self.m_PanelCfgMap.TryGetValue(panelName, out var info))
+            {
+                Debug.LogError($"请检查 {panelName} 没有获取到PanelInfo  1. panel上使用特性 [YIUI(typeof(XXPanelComponent))]  2. 检查是否没有注册上");
+                return null;
+            }
+
+            var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
+
+            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            self = selfRef;
+            info = await self.OpenPanelStartAsync(panelName, root ?? self);
             if (info == null) return default;
 
             var success = false;

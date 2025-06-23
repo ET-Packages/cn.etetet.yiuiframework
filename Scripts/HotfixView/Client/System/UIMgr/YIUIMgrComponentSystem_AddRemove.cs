@@ -30,7 +30,9 @@ namespace ET.Client
             var infoList     = self.GetLayerPanelInfoList(panelLayer);
             var removeResult = infoList.Remove(panelInfo);
             if (removeResult)
+            {
                 uiRect.SetParent(self.UILayerRoot);
+            }
 
             /*
              * 使用Unity的层级作为前后显示
@@ -166,7 +168,7 @@ namespace ET.Client
         /// <summary>
         /// 移除一个UI (被直接摧毁的)
         /// </summary>
-        internal static void DestroylRemoveUI(this YIUIMgrComponent self, PanelInfo panelInfo)
+        internal static void DestroyRemoveUI(this YIUIMgrComponent self, PanelInfo panelInfo)
         {
             EventSystem.Instance?.Publish(self.Root(),
                                           new YIUIEventPanelCloseAfter()

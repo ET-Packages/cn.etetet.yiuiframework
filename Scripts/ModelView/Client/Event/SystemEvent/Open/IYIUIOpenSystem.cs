@@ -57,8 +57,7 @@ namespace ET.Client
 
     public interface IYIUIOpenSystem<A, B, C, D, E> : ISystemType
     {
-        ETTask<bool> Run(Entity o, A a, B b, C c, D d,
-                         E      e);
+        ETTask<bool> Run(Entity o, A a, B b, C c, D d, E e);
     }
 
     [EntitySystem]
@@ -179,13 +178,11 @@ namespace ET.Client
             return typeof(IYIUIOpenSystem<A, B, C, D, E>);
         }
 
-        async ETTask<bool> IYIUIOpenSystem<A, B, C, D, E>.Run(Entity o, A a, B b, C c, D d,
-                                                              E      e)
+        async ETTask<bool> IYIUIOpenSystem<A, B, C, D, E>.Run(Entity o, A a, B b, C c, D d, E e)
         {
             return await this.YIUIOpen((T)o, a, b, c, d, e);
         }
 
-        protected abstract ETTask<bool> YIUIOpen(T self, A a, B b, C c, D d,
-                                                 E e);
+        protected abstract ETTask<bool> YIUIOpen(T self, A a, B b, C c, D d, E e);
     }
 }

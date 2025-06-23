@@ -21,7 +21,7 @@ namespace YIUIFramework
     public struct YIUIInvokeEntity_LoadInstantiateByVo
     {
         public YIUIBindVo BindVo;
-        public Entity ParentEntity;
+        public EntityRef<Entity> ParentEntity;
         public Transform ParentTransform;
     }
 

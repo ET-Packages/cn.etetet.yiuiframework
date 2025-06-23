@@ -15,7 +15,6 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this YIUIMgrComponent self)
         {
-            self.AddComponent<YIUIEventComponent>();
             self.m_RootRef = self.Root()?.AddComponent<YIUIRootComponent>();
         }
 

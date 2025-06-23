@@ -32,7 +32,7 @@ namespace ET.Client
     {
         public string PanelName;
         public bool Tween;
-        public Scene ForceHome;
+        public EntityRef<Scene> ForceHome;
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace ET.Client
         public Type LoadType;
         public string PkgName;
         public string ResName;
-        public Entity ParentEntity;
+        public EntityRef<Entity> ParentEntity;
         public Transform ParentTransform;
     }
 

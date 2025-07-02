@@ -83,11 +83,11 @@ namespace ET.Client
                     case EPanelStackOption.Omit:
                         if (skipTween)
                         {
-                            child.UIPanel.Close(true, true);
+                            child.UIPanel.Close(true, true, true);
                         }
                         else
                         {
-                            await child.UIPanel.CloseAsync(true, true);
+                            await child.UIPanel.CloseAsync(true, true, true);
                         }
 
                         break;
@@ -269,11 +269,11 @@ namespace ET.Client
 
                     if (skipOtherCloseTween)
                     {
-                        self.ClosePanel(child.Name, false, true);
+                        self.ClosePanel(child.Name, false, true, true);
                     }
                     else
                     {
-                        var success = await self.ClosePanelAsync(child.Name, tween, true);
+                        var success = await self.ClosePanelAsync(child.Name, tween, true, true);
                         if (!success)
                         {
                             return false;

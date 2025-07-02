@@ -43,6 +43,7 @@ namespace ET.Client
         public string PanelName;
         public bool Tween;
         public bool IgnoreElse;
+        public bool IgnoreLock;
     }
 
     //由 当前panel的子集 任意view发起的关闭

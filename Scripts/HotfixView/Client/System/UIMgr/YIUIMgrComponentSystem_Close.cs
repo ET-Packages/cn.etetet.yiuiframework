@@ -11,7 +11,8 @@ namespace ET.Client
         /// <param name="panelName">名称</param>
         /// <param name="tween">是否调用关闭动画</param>
         /// <param name="ignoreElse">忽略堆栈操作 -- 不要轻易忽略除非你明白 </param>
-        public static async ETTask<bool> ClosePanelAsync(this YIUIMgrComponent self, string panelName, bool tween = true, bool ignoreElse = false)
+        /// <param name="ignoreLock">忽略锁 -- 不要轻易忽略除非你明白 </param>
+        public static async ETTask<bool> ClosePanelAsync(this YIUIMgrComponent self, string panelName, bool tween = true, bool ignoreElse = false, bool ignoreLock = false)
         {
             if (YIUISingletonHelper.IsQuitting || self.IsDisposed) return true;
 
@@ -23,10 +24,9 @@ namespace ET.Client
             if (info?.UIBase == null) return true; //没有也算成功关闭
 
             EntityRef<YIUIMgrComponent> selfRef = self;
-
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
-            
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>()?.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+
+            using var coroutineLock = ignoreLock ? null : await self.Root().GetComponent<CoroutineLockComponent>()?.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             if (info.UIPanel == null) return true;
 
@@ -133,9 +133,9 @@ namespace ET.Client
             return true;
         }
 
-        public static void ClosePanel(this YIUIMgrComponent self, string panelName, bool tween = true, bool ignoreElse = false)
+        public static void ClosePanel(this YIUIMgrComponent self, string panelName, bool tween = true, bool ignoreElse = false, bool ignoreLock = false)
         {
-            self.ClosePanelAsync(panelName, tween, ignoreElse).NoContext();
+            self.ClosePanelAsync(panelName, tween, ignoreElse, ignoreLock).NoContext();
         }
 
         /// <summary>
@@ -151,9 +151,9 @@ namespace ET.Client
         /// 同步关闭窗口
         /// 无法等待关闭动画
         /// </summary>
-        public static void ClosePanel<T>(this YIUIMgrComponent self, bool tween = true, bool ignoreElse = false) where T : Entity
+        public static void ClosePanel<T>(this YIUIMgrComponent self, bool tween = true, bool ignoreElse = false, bool ignoreLock = false) where T : Entity
         {
-            self.ClosePanelAsync(self.GetPanelName<T>(), tween, ignoreElse).NoContext();
+            self.ClosePanelAsync(self.GetPanelName<T>(), tween, ignoreElse, ignoreLock).NoContext();
         }
 
         /// <summary>

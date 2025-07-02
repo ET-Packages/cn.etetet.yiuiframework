@@ -2,18 +2,19 @@
 {
     public static partial class YIUIPanelComponentSystem
     {
-        public static void Close(this YIUIPanelComponent self, bool tween = true, bool ignoreElse = false)
+        public static void Close(this YIUIPanelComponent self, bool tween = true, bool ignoreElse = false, bool ignoreLock = false)
         {
-            self.CloseAsync(tween, ignoreElse).NoContext();
+            self.CloseAsync(tween, ignoreElse, ignoreLock).NoContext();
         }
 
-        public static async ETTask<bool> CloseAsync(this YIUIPanelComponent self, bool tween = true, bool ignoreElse = false)
+        public static async ETTask<bool> CloseAsync(this YIUIPanelComponent self, bool tween = true, bool ignoreElse = false, bool ignoreLock = false)
         {
             return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_ClosePanel, ETTask<bool>>(self, new YIUIInvokeEntity_ClosePanel
             {
                 PanelName = self.UIBindVo.ComponentType.Name,
                 Tween = tween,
-                IgnoreElse = ignoreElse
+                IgnoreElse = ignoreElse,
+                IgnoreLock = ignoreLock
             });
         }
 

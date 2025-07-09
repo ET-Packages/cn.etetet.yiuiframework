@@ -27,9 +27,9 @@ namespace YIUIFramework.Editor
     public class UIPublishPackageModuleData
     {
         public UIPublishModule PublishModule;
-        public string          PublishPath;
-        public string          ResPath;
-        public string          PkgName;
+        public string PublishPath;
+        public string ResPath;
+        public string PkgName;
     }
 
     public class UIPublishPackageModule : BaseYIUIToolModule
@@ -56,12 +56,14 @@ namespace YIUIFramework.Editor
         [LabelText("当前模块所有组件")]
         [ReadOnly]
         [ShowInInspector]
+        [OnStateUpdate("@$property.State.Expanded = true")]
         [ShowIf("m_UIPublishPackageData", EUIPublishPackageData.CDETable)]
         private List<UIBindCDETable> m_AllCDETable = new List<UIBindCDETable>();
 
         [LabelText("当前模块所有精灵")]
         [ReadOnly]
         [ShowInInspector]
+        [OnStateUpdate("@$property.State.Expanded = true")]
         [ShowIf("m_UIPublishPackageData", EUIPublishPackageData.Sprites)]
         private List<TextureImporter> m_AllTextureImporter = new List<TextureImporter>();
 
@@ -69,12 +71,14 @@ namespace YIUIFramework.Editor
         [LabelText("所有图集名称")]
         [ReadOnly]
         [HideInInspector]
+        [OnStateUpdate("@$property.State.Expanded = true")]
         [ShowIf("m_UIPublishPackageData", EUIPublishPackageData.Atlas)]
         public HashSet<string> m_AtlasName = new HashSet<string>();
 
         [LabelText("当前模块所有图集")]
         [ReadOnly]
         [ShowInInspector]
+        [OnStateUpdate("@$property.State.Expanded = true")]
         [ShowIf("m_UIPublishPackageData", EUIPublishPackageData.Atlas)]
         private List<SpriteAtlas> m_AllSpriteAtlas = new List<SpriteAtlas>();
 
@@ -133,9 +137,9 @@ namespace YIUIFramework.Editor
         private void SetData(UIPublishModule publishModule, string resPath, string pkgName)
         {
             m_UIPublishModule = publishModule;
-            m_UIAtlasModule   = ((YIUIAutoTool)publishModule.AutoTool).AtlasModule;
-            PkgName           = pkgName;
-            PkgPath           = $"{resPath}/{pkgName}";
+            m_UIAtlasModule = ((YIUIAutoTool)publishModule.AutoTool).AtlasModule;
+            PkgName = pkgName;
+            PkgPath = $"{resPath}/{pkgName}";
         }
 
         private void Refresh()
@@ -163,24 +167,24 @@ namespace YIUIFramework.Editor
         private void AddAllAssetsAtPath()
         {
             var publishPath = Data.PublishPath;
-            var resPath     = Data.ResPath;
-            var pkgName     = Data.PkgName;
+            var resPath = Data.ResPath;
+            var pkgName = Data.PkgName;
 
             //1 图集
             Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConstHelper.Const.UIAtlasCN}",
-                                    $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UIAtlas}", typeof(SpriteAtlas), true, false);
+                $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UIAtlas}", typeof(SpriteAtlas), true, false);
 
             //2 预制体
             Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConstHelper.Const.UIPrefabsCN}",
-                                    $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UIPrefabs}", typeof(UIBindCDETable), true, false);
+                $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UIPrefabs}", typeof(UIBindCDETable), true, false);
 
             //3 源文件
             Tree.AddAllAssetsAtPath($"{publishPath}/{YIUIConstHelper.Const.UISourceCN}",
-                                    $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UISource}", typeof(UIBindCDETable), true, false);
+                $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UISource}", typeof(UIBindCDETable), true, false);
 
             //4 精灵
             Tree.AddAllAssetImporterAtPath($"{publishPath}/{YIUIConstHelper.Const.UISpritesCN}",
-                                           $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UISprites}", typeof(TextureImporter), true, false);
+                $"{resPath}/{pkgName}/{YIUIConstHelper.Const.UISprites}", typeof(TextureImporter), true, false);
         }
 
         private void FindUIBindCDETableResources()
@@ -201,8 +205,7 @@ namespace YIUIFramework.Editor
 
         private void FindUITextureResources()
         {
-            var strings = AssetDatabase.GetAllAssetPaths()
-                                       .Where(x => x.StartsWith($"{PkgPath}/{YIUIConstHelper.Const.UISprites}", StringComparison.InvariantCultureIgnoreCase));
+            var strings = AssetDatabase.GetAllAssetPaths().Where(x => x.StartsWith($"{PkgPath}/{YIUIConstHelper.Const.UISprites}", StringComparison.InvariantCultureIgnoreCase));
 
             m_AtlasName.Clear();
 
@@ -213,14 +216,11 @@ namespace YIUIFramework.Editor
                     var atlasName = GetSpritesAtlasName(path);
                     if (string.IsNullOrEmpty(atlasName))
                     {
-                        Logger.LogError(texture,
-                                        $"此文件位置错误 {path}  必须在 {YIUIConstHelper.Const.UISprites}/XX 图集文件下 不可以直接在根目录");
+                        Logger.LogError(texture, $"此文件位置错误 {path}  必须在 {YIUIConstHelper.Const.UISprites}/XX 图集文件下 不可以直接在根目录");
                         continue;
                     }
 
-                    if (!m_AtlasName.Contains(atlasName))
-                        m_AtlasName.Add(atlasName);
-
+                    m_AtlasName.Add(atlasName);
                     m_AllTextureImporter.Add(texture);
                 }
             }
@@ -250,8 +250,8 @@ namespace YIUIFramework.Editor
         private void FindUISpriteAtlasResources()
         {
             var strings = AssetDatabase.GetAllAssetPaths().Where(x =>
-                                                                         x.StartsWith($"{PkgPath}/{YIUIConstHelper.Const.UIAtlas}",
-                                                                                      StringComparison.InvariantCultureIgnoreCase));
+                    x.StartsWith($"{PkgPath}/{YIUIConstHelper.Const.UIAtlas}",
+                        StringComparison.InvariantCultureIgnoreCase));
 
             foreach (var path in strings)
             {
@@ -293,45 +293,60 @@ namespace YIUIFramework.Editor
         {
             if (atlasName == YIUIConstHelper.Const.UIAtlasIgnore) return;
 
-            var atlasFillName = $"{PkgPath}/{YIUIConstHelper.Const.UIAtlas}/Atlas_{PkgName}_{atlasName}.spriteatlas";
+            var atlasFillName = $"{PkgPath}/{YIUIConstHelper.Const.UIAtlas}/Atlas_{PkgName}_{atlasName}.spriteatlasv2";
 
             if (!File.Exists(atlasFillName)) return;
 
             var spriteAtlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(atlasFillName);
+            var spriteAtlasAsset = SpriteAtlasAsset.Load(atlasFillName);
 
-            ResetAtlas(spriteAtlas, atlasName);
+            ResetAtlas(spriteAtlas, spriteAtlasAsset, atlasName, true);
         }
 
         public void CreateAtlas(string atlasName)
         {
             if (atlasName == YIUIConstHelper.Const.UIAtlasIgnore) return;
 
-            var atlasFillName = $"{PkgPath}/{YIUIConstHelper.Const.UIAtlas}/Atlas_{PkgName}_{atlasName}.spriteatlas";
+            var atlasFillName = $"{PkgPath}/{YIUIConstHelper.Const.UIAtlas}/Atlas_{PkgName}_{atlasName}.spriteatlasv2";
 
             if (File.Exists(atlasFillName)) return;
 
             var spriteAtlas = new SpriteAtlas();
-
-            ResetAtlas(spriteAtlas, atlasName);
+            var spriteAtlasAsset = new SpriteAtlasAsset();
+            ResetAtlas(spriteAtlas, spriteAtlasAsset, atlasName);
 
             if (!Directory.Exists(Path.GetDirectoryName(atlasFillName)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(atlasFillName));
             }
 
-            AssetDatabase.CreateAsset(spriteAtlas, atlasFillName);
+            SpriteAtlasAsset.Save(spriteAtlasAsset, atlasFillName);
+            AssetDatabase.Refresh();
+
+            SpriteAtlasImporter sai = (SpriteAtlasImporter)AssetImporter.GetAtPath(atlasFillName);
+            if (sai != null)
+            {
+                m_UIAtlasModule.ResetTargetBuildSetting(sai);
+                AssetDatabase.WriteImportSettingsIfDirty(atlasFillName);
+            }
         }
 
-        private void ResetAtlas(SpriteAtlas spriteAtlas, string atlasName)
+        private void ResetAtlas(SpriteAtlas spriteAtlas, SpriteAtlasAsset spriteAtlasAsset, string atlasName, bool reset = false)
         {
-            if (spriteAtlas == null) return;
+            if (spriteAtlas == null || spriteAtlasAsset == null) return;
 
-            m_UIAtlasModule.ResetTargetBuildSetting(spriteAtlas);
-
-            var packables = spriteAtlas.GetPackables();
-            spriteAtlas.Remove(packables);
+            if (reset && spriteAtlas != null)
+            {
+                var packables = spriteAtlas.GetPackables();
+                if (packables != null)
+                {
+                    spriteAtlasAsset.Remove(packables);
+                    spriteAtlas.Remove(packables);
+                }
+            }
 
             var itemPath = $"{PkgPath}/{YIUIConstHelper.Const.UISprites}/{atlasName}";
+            spriteAtlasAsset.Add(new[] { AssetDatabase.LoadMainAssetAtPath(itemPath) });
             spriteAtlas.Add(new[] { AssetDatabase.LoadMainAssetAtPath(itemPath) });
         }
 

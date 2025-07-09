@@ -112,7 +112,7 @@ namespace ET.Client
             #endif
 
             self = selfRef;
-            EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenBefore { UIPkgName = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name, PanelLayer = info.PanelLayer, });
+            await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelOpenBefore { UIPkgName = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name, PanelLayer = info.PanelLayer, });
 
             if (info.UIBase == null)
             {
@@ -177,7 +177,7 @@ namespace ET.Client
 
             self = selfRef;
 
-            EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenAfter
+            await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelOpenAfter
             {
                 Success = success, UIPkgName = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name, PanelLayer = info.PanelLayer,
             });

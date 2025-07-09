@@ -58,7 +58,7 @@ namespace ET.Client
 
                 self = selfRef;
 
-                EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseBefore
+                await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelCloseBefore
                 {
                     UIPkgName = child.PkgName,
                     UIResName = child.ResName,
@@ -112,7 +112,7 @@ namespace ET.Client
 
                 self = selfRef;
 
-                EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseAfter
+                await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelCloseAfter
                 {
                     UIPkgName = child.PkgName,
                     UIResName = child.ResName,
@@ -151,7 +151,7 @@ namespace ET.Client
 
                 self = selfRef;
 
-                EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenBefore
+                await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelOpenBefore
                 {
                     UIPkgName = child.PkgName,
                     UIResName = child.ResName,
@@ -198,7 +198,7 @@ namespace ET.Client
 
                 self = selfRef;
 
-                EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenAfter
+                await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelOpenAfter
                 {
                     UIPkgName = child.PkgName,
                     UIResName = child.ResName,
@@ -234,7 +234,7 @@ namespace ET.Client
                 {
                     self = selfRef;
 
-                    EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseBefore
+                    await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelCloseBefore
                     {
                         UIPkgName = child.PkgName,
                         UIResName = child.ResName,
@@ -282,7 +282,7 @@ namespace ET.Client
 
                     self = selfRef;
 
-                    EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelCloseAfter
+                    await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelCloseAfter
                     {
                         UIPkgName = child.PkgName,
                         UIResName = child.ResName,
@@ -294,7 +294,7 @@ namespace ET.Client
                     continue;
                 }
 
-                EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenBefore
+                await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelOpenBefore
                 {
                     UIPkgName = child.PkgName,
                     UIResName = child.ResName,
@@ -342,7 +342,7 @@ namespace ET.Client
 
                 self = selfRef;
 
-                EventSystem.Instance?.Publish(self.Root(), new YIUIEventPanelOpenAfter
+                await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelOpenAfter
                 {
                     UIPkgName = child.PkgName,
                     UIResName = child.ResName,

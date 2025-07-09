@@ -32,7 +32,7 @@ namespace ET.Client
 
             self = selfRef;
 
-            EventSystem.Instance?.Publish(self.Root(),
+            await EventSystem.Instance?.PublishAsync(self.Root(),
                 new YIUIEventPanelCloseBefore
                 {
                     UIPkgName = info.PkgName, UIResName = info.ResName, UIComponentName = info.Name,

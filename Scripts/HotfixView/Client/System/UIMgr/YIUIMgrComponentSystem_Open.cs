@@ -45,9 +45,21 @@ namespace ET.Client
         /// </summary>
         internal static PanelInfo GetPanelInfo(this YIUIMgrComponent self, string componentName)
         {
+            if (string.IsNullOrEmpty(componentName))
+            {
+                Debug.LogError($"<color=red> 无法打开 这是一个空名称 </color>");
+                return null;
+            }
+
             if (self.m_PanelCfgMap.TryGetValue(componentName, out var info))
             {
                 return info;
+            }
+
+            if (!componentName.EndsWith("PanelComponent"))
+            {
+                Debug.LogError($"<color=red> 组件名称必须以 PanelComponent结尾 </color>,{componentName} 不符合Panel组件命名规则");
+                return null;
             }
 
             var resName = componentName.Replace("Component", "");

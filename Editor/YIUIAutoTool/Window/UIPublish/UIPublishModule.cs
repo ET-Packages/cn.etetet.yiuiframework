@@ -23,8 +23,8 @@ namespace YIUIFramework.Editor
             Application.OpenURL("https://lib9kmxvq7k.feishu.cn/wiki/ES7Gwz4EAiVGKSkotY5cRbTznuh");
         }
 
-        internal const string m_PublishName        = "发布";
-        internal const string m_PublishCommonName  = "通用";
+        internal const string m_PublishName = "发布";
+        internal const string m_PublishCommonName = "通用";
         internal const string m_PublishPackageName = "ET包";
 
         [FolderPath]
@@ -40,7 +40,7 @@ namespace YIUIFramework.Editor
         [ShowInInspector]
         internal UICreateResModule CreateResModule = new UICreateResModule();
 
-        private Dictionary<string, List<string>> m_AllInfo = new();
+        private readonly Dictionary<string, List<string>> m_AllInfo = new();
 
         private int m_AllCount;
 
@@ -84,7 +84,7 @@ namespace YIUIFramework.Editor
                         foreach (var yiuiPkg in Directory.GetDirectories(packageRes))
                         {
                             list.Add(yiuiPkg);
-                            this.m_AllCount++;
+                            m_AllCount++;
                         }
                     }
                 }
@@ -106,7 +106,7 @@ namespace YIUIFramework.Editor
 
                 foreach (var folder in listInfo)
                 {
-                    var pkgName   = Path.GetFileName(folder);
+                    var pkgName = Path.GetFileName(folder);
                     var upperName = NameUtility.ToFirstUpper(pkgName);
                     if (upperName != pkgName)
                     {
@@ -124,9 +124,9 @@ namespace YIUIFramework.Editor
                     pkgMenu.UserData = new UIPublishPackageModuleData
                     {
                         PublishModule = this,
-                        PublishPath   = PublishPath,
-                        ResPath       = resPath,
-                        PkgName       = pkgName
+                        PublishPath = PublishPath,
+                        ResPath = resPath,
+                        PkgName = pkgName
                     };
                 }
             }
@@ -142,27 +142,38 @@ namespace YIUIFramework.Editor
             UnityTipsHelper.CallBack("确定发布全部YIUI?", () =>
             {
                 var index = 0;
-                foreach ((var resPath, var listInfo) in m_AllInfo)
+                var total = 0;
+                try
                 {
-                    foreach (var folder in listInfo)
+                    foreach ((var resPath, var listInfo) in m_AllInfo)
                     {
-                        var pkgName   = Path.GetFileName(folder);
-                        var upperName = NameUtility.ToFirstUpper(pkgName);
-                        if (upperName != pkgName)
+                        total += listInfo.Count;
+                        foreach (var folder in listInfo)
                         {
-                            Debug.LogError($"这是一个非法的模块[ {pkgName} ]请使用统一方法创建模块 或者满足指定要求");
-                            continue;
-                        }
+                            index++;
+                            var pkgName = Path.GetFileName(folder);
+                            var upperName = NameUtility.ToFirstUpper(pkgName);
+                            if (upperName != pkgName)
+                            {
+                                Debug.LogError($"这是一个非法的模块[ {pkgName} ]请使用统一方法创建模块 或者满足指定要求");
+                                continue;
+                            }
 
-                        var module = new UIPublishPackageModule(this, resPath, pkgName);
-                        module.PublishCurrent(false); //不要默认重置所有图集设置 有的图集真的会有独立设置
-                        index++;
-                        EditorHelper.DisplayProgressBar("发布", $"正在发布 {pkgName} ...", index, m_AllCount);
+                            var module = new UIPublishPackageModule(this, resPath, pkgName);
+                            module.PublishCurrent(false); //不要默认重置所有图集设置 有的图集真的会有独立设置
+                            EditorHelper.DisplayProgressBar("发布", $"正在发布 {pkgName} ...", index, total);
+                        }
                     }
                 }
-
-                EditorHelper.ClearProgressBar();
-                UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+                catch (Exception e)
+                {
+                    Debug.LogError($"发布全部时发生错误: {e}");
+                }
+                finally
+                {
+                    EditorHelper.ClearProgressBar();
+                    UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+                }
             });
         }
 
@@ -176,12 +187,15 @@ namespace YIUIFramework.Editor
             UnityTipsHelper.CallBack("确定发布全部YIUI图集?", () =>
             {
                 var index = 0;
+                var total = 0;
                 try
                 {
                     foreach ((var resPath, var listInfo) in m_AllInfo)
                     {
+                        total += listInfo.Count;
                         foreach (var folder in listInfo)
                         {
+                            index++;
                             var pkgName = Path.GetFileName(folder);
                             var upperName = NameUtility.ToFirstUpper(pkgName);
                             if (upperName != pkgName)
@@ -192,14 +206,13 @@ namespace YIUIFramework.Editor
 
                             var module = new UIPublishPackageModule(this, resPath, pkgName);
                             module.CreateOrResetAtlas(true);
-                            index++;
-                            EditorHelper.DisplayProgressBar("发布图集", $"正在发布图集 {pkgName} ...", index, m_AllCount);
+                            EditorHelper.DisplayProgressBar("发布图集", $"正在发布图集 {pkgName} ...", index, total);
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"发布全部图集时发生错误: {e}{e.StackTrace}");
+                    Debug.LogError($"发布全部图集时发生错误: {e}");
                 }
                 finally
                 {

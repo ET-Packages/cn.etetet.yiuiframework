@@ -133,7 +133,7 @@ namespace YIUIFramework.Editor
         }
 
         [GUIColor(0.4f, 0.8f, 1)]
-        [Button("全部发布", 50)]
+        [Button("全部发布", 50, Icon = SdfIconType.LayerForward, IconAlignment = IconAlignment.LeftOfText)]
         [PropertyOrder(-99)]
         public void PublishAll()
         {
@@ -163,6 +163,49 @@ namespace YIUIFramework.Editor
 
                 EditorHelper.ClearProgressBar();
                 UnityTipsHelper.CallBackOk("YIUI全部 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+            });
+        }
+
+        [GUIColor(0.9f, 0.5f, 0.3f)]
+        [Button("全部发布图集", 40, Icon = SdfIconType.Images, IconAlignment = IconAlignment.LeftOfText)]
+        [PropertyOrder(-98)]
+        public void PublishAllAtlas()
+        {
+            if (!UIOperationHelper.CheckUIOperation()) return;
+
+            UnityTipsHelper.CallBack("确定发布全部YIUI图集?", () =>
+            {
+                var index = 0;
+                try
+                {
+                    foreach ((var resPath, var listInfo) in m_AllInfo)
+                    {
+                        foreach (var folder in listInfo)
+                        {
+                            var pkgName = Path.GetFileName(folder);
+                            var upperName = NameUtility.ToFirstUpper(pkgName);
+                            if (upperName != pkgName)
+                            {
+                                Debug.LogError($"这是一个非法的模块[ {pkgName} ]请使用统一方法创建模块 或者满足指定要求");
+                                continue;
+                            }
+
+                            var module = new UIPublishPackageModule(this, resPath, pkgName);
+                            module.CreateOrResetAtlas(true);
+                            index++;
+                            EditorHelper.DisplayProgressBar("发布图集", $"正在发布图集 {pkgName} ...", index, m_AllCount);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"发布全部图集时发生错误: {e}{e.StackTrace}");
+                }
+                finally
+                {
+                    EditorHelper.ClearProgressBar();
+                    UnityTipsHelper.CallBackOk("YIUI全部图集 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+                }
             });
         }
 

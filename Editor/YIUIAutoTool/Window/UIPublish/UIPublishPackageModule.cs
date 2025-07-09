@@ -110,7 +110,9 @@ namespace YIUIFramework.Editor
             CreateOrResetAtlas();
 
             if (showTips)
+            {
                 UnityTipsHelper.CallBackOk($"YIUI当前模块 {PkgName} 发布完毕", YIUIAutoTool.CloseWindowRefresh);
+            }
         }
 
         [Button("创建or重置 文件结构", 30)]

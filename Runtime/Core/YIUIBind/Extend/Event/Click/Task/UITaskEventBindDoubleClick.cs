@@ -81,7 +81,7 @@ namespace YIUIFramework
 
         private async ETTask TaskEvent(PointerEventData eventData)
         {
-            var banLayerCode = m_BanLayerOption ? ET.EventSystem.Instance?.YIUIInvokeEntitySync<YIUIInvokeEntity_BanLayerOptionForever, long>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0 : 0;
+            var banLayerCode = m_BanLayerOption ? ET.EventSystem.Instance?.YIUIInvokeEntitySyncSafety<YIUIInvokeEntity_BanLayerOptionForever, long>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0 : 0;
 
             ClickTasking = true;
 
@@ -100,7 +100,7 @@ namespace YIUIFramework
 
                 if (m_BanLayerOption)
                 {
-                    ET.EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_RecoverLayerOptionForever { ForeverCode = banLayerCode });
+                    ET.EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_RecoverLayerOptionForever { ForeverCode = banLayerCode });
                 }
             }
         }

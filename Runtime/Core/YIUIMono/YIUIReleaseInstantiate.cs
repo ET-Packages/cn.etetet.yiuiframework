@@ -18,8 +18,8 @@ namespace YIUIFramework
 
         private void OnDestroy()
         {
-            if (YIUISingletonHelper.IsQuitting || m_EntityRef.Entity == null || m_EntityRef.Entity.IsDisposed) return;
-            EventSystem.Instance?.YIUIInvokeEntitySync(m_EntityRef, new YIUIInvokeEntity_ReleaseInstantiate { obj = gameObject });
+            if (YIUISingletonHelper.IsQuitting) return;
+            EventSystem.Instance?.YIUIInvokeEntitySyncSafety(m_EntityRef, new YIUIInvokeEntity_ReleaseInstantiate { obj = gameObject });
         }
     }
 }

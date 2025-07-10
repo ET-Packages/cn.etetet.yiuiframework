@@ -76,7 +76,7 @@ namespace YIUIFramework
 
         private async ETTask ChangeAudio(string resName)
         {
-            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CoroutineLock { Lock = GetHashCode() });
+            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsyncSafety<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CoroutineLock { Lock = GetHashCode() });
 
             if (m_LastResName == resName)
             {
@@ -92,7 +92,7 @@ namespace YIUIFramework
                 return;
             }
 
-            var loadResult = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_Load, ETTask<UnityObject>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Load
+            var loadResult = await EventSystem.Instance?.YIUIInvokeEntityAsyncSafety<YIUIInvokeEntity_Load, ETTask<UnityObject>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Load
             {
                 LoadType = typeof(VideoClip),
                 ResName  = resName
@@ -109,13 +109,13 @@ namespace YIUIFramework
 
             if (this == null || gameObject == null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = loadResult });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = loadResult });
                 return;
             }
 
             if (m_VideoPlayer == null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = loadResult });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = loadResult });
                 Logger.LogError($"{resName} 加载过程中 对象被摧毁了 m_VideoPlayer == null");
                 return;
             }
@@ -145,7 +145,7 @@ namespace YIUIFramework
         {
             if (this.m_LastVideoClip != null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = this.m_LastVideoClip });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = this.m_LastVideoClip });
                 this.m_LastVideoClip = null;
             }
         }

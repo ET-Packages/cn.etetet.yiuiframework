@@ -132,7 +132,7 @@ namespace YIUIFramework
 
         private async ETTask ChangeSprite(string resName)
         {
-            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CoroutineLock { Lock = this.GetHashCode() });
+            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsyncSafety<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CoroutineLock { Lock = this.GetHashCode() });
 
             if (m_LastSpriteName == resName)
             {
@@ -148,7 +148,7 @@ namespace YIUIFramework
                 return;
             }
 
-            var sprite = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_LoadSprite, ETTask<Sprite>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_LoadSprite { ResName = resName });
+            var sprite = await EventSystem.Instance?.YIUIInvokeEntityAsyncSafety<YIUIInvokeEntity_LoadSprite, ETTask<Sprite>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_LoadSprite { ResName = resName });
 
             if (sprite == null)
             {
@@ -161,13 +161,13 @@ namespace YIUIFramework
 
             if (this == null || gameObject == null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = sprite });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = sprite });
                 return;
             }
 
             if (m_Image == null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = sprite });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = sprite });
                 Logger.LogError($"{resName} 加载过程中 对象被摧毁了 m_Image == null");
                 return;
             }
@@ -200,7 +200,7 @@ namespace YIUIFramework
         {
             if (m_LastSprite != null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = m_LastSprite });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = m_LastSprite });
                 m_LastSprite = null;
             }
         }

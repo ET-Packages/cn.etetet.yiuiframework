@@ -78,7 +78,7 @@ namespace YIUIFramework
                 return;
             }
 
-            ET.EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CountDownAdd { TimerCallback = PressEnd, TotalTime = m_PressTime });
+            ET.EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CountDownAdd { TimerCallback = PressEnd, TotalTime = m_PressTime });
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -90,7 +90,7 @@ namespace YIUIFramework
         {
             if (m_PointerDown)
             {
-                ET.EventSystem.Instance?.YIUIInvokeEntitySync(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CountDownRemove { TimerCallback = PressEnd });
+                ET.EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CountDownRemove { TimerCallback = PressEnd });
             }
 
             m_PointerEventData = null;

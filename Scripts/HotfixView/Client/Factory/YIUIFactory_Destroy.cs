@@ -15,7 +15,7 @@ namespace ET.Client
         {
             if (obj == null) return;
             UnityEngine.Object.Destroy(obj);
-            EventSystem.Instance?.YIUIInvokeEntitySync(scene, new YIUIInvokeEntity_ReleaseInstantiate
+            EventSystem.Instance?.YIUIInvokeEntitySyncSafety(scene, new YIUIInvokeEntity_ReleaseInstantiate
             {
                 obj = obj
             });

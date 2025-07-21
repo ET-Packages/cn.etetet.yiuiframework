@@ -27,7 +27,9 @@ namespace YIUIFramework.Editor
         {
             var window = GetWindow<YIUIAutoTool>("YIUI");
             if (window != null)
+            {
                 window.Show();
+            }
         }
 
         //[MenuItem("ET/关闭 YIUI 自动化工具")]
@@ -42,24 +44,35 @@ namespace YIUIFramework.Editor
         {
             CloseWindow();
             AssetDatabase.SaveAssets();
+
             //AssetDatabase.Refresh();//下面的刷新更NB
             EditorApplication.ExecuteMenuItem("Assets/Refresh");
         }
 
-        private OdinMenuTree           m_OdinMenuTree;
+        private FloatPrefs m_MenuWidthPrefs = new("YIUIAutoTool_MenuWidth", null, 300f);
+
+        private float m_MenuWidth = 300f;
+
+        public override float MenuWidth
+        {
+            get { return m_MenuWidth; }
+            set { m_MenuWidth = value; }
+        }
+
+        private OdinMenuTree m_OdinMenuTree;
         private List<BaseTreeMenuItem> m_AllMenuItem = new List<BaseTreeMenuItem>();
 
         protected override OdinMenuTree BuildMenuTree()
         {
-            m_OdinMenuTree                            =  new OdinMenuTree();
+            m_OdinMenuTree = new OdinMenuTree();
             m_OdinMenuTree.Selection.SelectionChanged += OnSelectionChanged;
 
             m_AllMenuItem.Clear();
 
             m_AllMenuItem.Add(new TreeMenuItem<UIPublishModule>(this, m_OdinMenuTree, UIPublishModule.m_PublishName, EditorIcons.UnityFolderIcon));
 
-            var    assembly = AssemblyHelper.GetAssembly("ET.YIUIFramework.Editor");
-            Type[] types    = assembly.GetTypes();
+            var assembly = AssemblyHelper.GetAssembly("ET.YIUIFramework.Editor");
+            Type[] types = assembly.GetTypes();
 
             var allAutoMenus = new List<YIUIAutoMenuData>();
 
@@ -70,9 +83,9 @@ namespace YIUIFramework.Editor
                     YIUIAutoMenuAttribute attribute = (YIUIAutoMenuAttribute)Attribute.GetCustomAttribute(type, typeof(YIUIAutoMenuAttribute));
                     allAutoMenus.Add(new YIUIAutoMenuData
                     {
-                        Type     = type,
+                        Type = type,
                         MenuName = attribute.MenuName,
-                        Order    = attribute.Order
+                        Order = attribute.Order
                     });
                 }
             }
@@ -112,8 +125,9 @@ namespace YIUIFramework.Editor
             return (BaseTreeMenuItem)treeMenuItem;
         }
 
-        private bool        m_FirstInit           = true;
+        private bool m_FirstInit = true;
         private StringPrefs m_LastSelectMenuPrefs = new StringPrefs("YIUIAutoTool_LastSelectMenu", null, "全局设置");
+        private readonly HashSet<OdinMenuItem> m_FirstSelect = new();
 
         private void OnSelectionChanged(SelectionChangedType obj)
         {
@@ -130,15 +144,33 @@ namespace YIUIFramework.Editor
                 {
                     if (menu.Name != m_LastSelectMenuPrefs.Value) continue;
                     menu.Select();
-                    return;
+                    menu.Toggled = true;
+                    break;
                 }
 
                 return;
             }
 
-            if (m_OdinMenuTree.Selection.SelectedValue is BaseTreeMenuItem menuItem)
+            if (m_OdinMenuTree.Selection.Count > 1)
+            {
+                Debug.LogError($"不可能同时选多个: {m_OdinMenuTree.Selection.Count}");
+                return;
+            }
+
+            var selectedMenuItem = m_OdinMenuTree.Selection[0];
+
+            if (selectedMenuItem.Value is BaseTreeMenuItem menuItem)
             {
                 menuItem.SelectionMenu();
+            }
+
+            if (m_FirstSelect.Add(selectedMenuItem))
+            {
+                selectedMenuItem.Toggled = true;
+            }
+            else
+            {
+                selectedMenuItem.Toggled = !selectedMenuItem.Toggled;
             }
 
             foreach (var menu in m_OdinMenuTree.MenuItems)
@@ -186,12 +218,13 @@ namespace YIUIFramework.Editor
         {
             base.Initialize();
             m_UIBaseModule = new CreateUIBaseModule();
-            AtlasModule    = new();
-            OtherModule    = new();
+            AtlasModule = new();
+            OtherModule = new();
             m_Author = UserNamePrefs.Value;
             m_UIBaseModule?.Initialize();
             AtlasModule?.Initialize();
             OtherModule?.Initialize();
+            m_MenuWidth = MathF.Max(m_MenuWidthPrefs.Value, 200f);
         }
 
         protected override void OnDestroy()
@@ -201,6 +234,7 @@ namespace YIUIFramework.Editor
             m_UIBaseModule?.OnDestroy();
             AtlasModule?.OnDestroy();
             OtherModule?.OnDestroy();
+            m_MenuWidthPrefs.Value = MathF.Min(MathF.Max(m_MenuWidth, 200f), position.width - 100f);
 
             foreach (var menuItem in m_AllMenuItem)
             {

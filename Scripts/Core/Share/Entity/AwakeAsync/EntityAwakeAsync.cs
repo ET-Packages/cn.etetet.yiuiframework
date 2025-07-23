@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !ET10
+using System;
 
 namespace ET
 {
@@ -257,3 +258,4 @@ namespace ET
         }
     }
 }
+#endif

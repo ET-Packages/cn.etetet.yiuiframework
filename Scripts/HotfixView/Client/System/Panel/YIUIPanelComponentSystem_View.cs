@@ -88,6 +88,7 @@ namespace ET.Client
                 return null;
             }
 
+            self = selfRef;
             await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventViewOpenBefore
             {
                 UIPkgName = vo.PkgName,
@@ -130,6 +131,7 @@ namespace ET.Client
             if (data == null) return null;
             var vo = data.Value;
 
+            self = selfRef;
             await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventViewOpenBefore
             {
                 UIPkgName = vo.PkgName,

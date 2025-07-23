@@ -15,7 +15,7 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "cn.etetet.core": "3.0.3",
+    "cn.etetet.core": "4.0.0",
     "cn.etetet.yiuiinvoke": "4.0.0"
   },
   "publishConfig": {

@@ -1,6 +1,4 @@
-﻿using ET.Client;
-
-namespace ET
+﻿namespace ET.Client
 {
     public static class YIUIMgrHelper
     {

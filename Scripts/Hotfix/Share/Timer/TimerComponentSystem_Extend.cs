@@ -1,3 +1,4 @@
+#if !ET10
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,3 +34,4 @@ namespace ET
         }
     }
 }
+#endif

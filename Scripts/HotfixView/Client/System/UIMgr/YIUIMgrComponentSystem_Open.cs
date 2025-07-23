@@ -116,6 +116,7 @@ namespace ET.Client
 
             if (info.UIBase == null)
             {
+                self = selfRef;
                 var uiCom = await YIUIFactory.CreatePanelAsync(self.Scene(), info, parentEntity);
                 if (uiCom == null)
                 {
@@ -201,12 +202,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;
@@ -254,12 +258,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;
@@ -311,12 +318,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;
@@ -364,12 +374,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;
@@ -417,12 +430,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;
@@ -470,12 +486,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;
@@ -523,12 +542,15 @@ namespace ET.Client
                 return null;
             }
 
+            var haveRoot = root != null;
+            EntityRef<Entity> rootRef = haveRoot ? root : default;
+
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
-            info = await self.OpenPanelStartAsync(panelName, root ?? self);
+            info = await self.OpenPanelStartAsync(panelName, haveRoot ? rootRef.Entity : self);
             if (info == null) return default;
 
             var success = false;

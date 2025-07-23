@@ -22,7 +22,6 @@ namespace ET.Client
         private static void Destroy(this YIUIMgrComponent self)
         {
             self.Root()?.RemoveComponent<YIUIRootComponent>();
-            YIUIBindHelper.Reset();
             YIUISingletonHelper.DisposeAll();
             self.ResetRoot();
         }

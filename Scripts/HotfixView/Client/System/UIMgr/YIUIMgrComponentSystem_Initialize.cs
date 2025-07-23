@@ -16,14 +16,16 @@ namespace ET.Client
             var loadResult = await loadComponent.Initialize();
             if (!loadResult) return false;
 
+            //YIUI常量管理
             self = selfRef;
             var constResult = await YIUIConstHelper.LoadAsset(self.Scene());
             if (!constResult) return false;
 
             //初始化UI绑定
-            YIUIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.YIUIBindProvider.Get;
-            var buildResult = YIUIBindHelper.InitAllBind();
-            if (!buildResult) return false;
+            self = selfRef;
+            var bindComponent = self.AddComponent<YIUIBindComponent>();
+            var bindResult = bindComponent.InitAllBind(YIUICodeGenerated.YIUIBindProvider.Get());
+            if (!bindResult) return false;
 
             //初始化其他UI框架中的管理器
             self = selfRef;

@@ -14,7 +14,7 @@ namespace ET.Client
     {
         public static T Instantiate<T>(Scene scene, Entity parentEntity, Transform parent = null) where T : Entity
         {
-            var data = YIUIBindHelper.GetBindVoByType<T>();
+            var data = scene.YIUIBind().GetBindVoByType<T>();
             if (data == null) return null;
             var vo = data.Value;
 
@@ -33,7 +33,7 @@ namespace ET.Client
 
         public static Entity Instantiate(Scene scene, Type uiType, Entity parentEntity, Transform parent = null)
         {
-            var data = YIUIBindHelper.GetBindVoByType(uiType);
+            var data = scene.YIUIBind().GetBindVoByType(uiType);
             if (data == null) return null;
             var vo = data.Value;
 
@@ -52,7 +52,7 @@ namespace ET.Client
 
         public static Entity Instantiate(Scene scene, string pkgName, string resName, Entity parentEntity, Transform parent = null)
         {
-            var data = YIUIBindHelper.GetBindVoByPath(pkgName, resName);
+            var data = scene.YIUIBind().GetBindVoByPath(pkgName, resName);
             if (data == null) return null;
             var vo = data.Value;
 
@@ -61,7 +61,7 @@ namespace ET.Client
 
         public static Entity Instantiate(Scene scene, string resName, Entity parentEntity, Transform parent = null)
         {
-            var data = YIUIBindHelper.GetBindVoByResName(resName);
+            var data = scene.YIUIBind().GetBindVoByResName(resName);
             if (data == null) return null;
             var vo = data.Value;
 

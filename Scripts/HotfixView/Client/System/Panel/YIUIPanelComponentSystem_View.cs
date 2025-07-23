@@ -41,7 +41,7 @@ namespace ET.Client
                     continue;
                 }
 
-                var data = YIUIBindHelper.GetBindVoByResName(viewName);
+                var data = self.YIUIBind().GetBindVoByResName(viewName);
                 if (data == null) return;
                 var vo = data.Value;
                 if (vo.CodeType != EUICodeType.View)
@@ -79,7 +79,8 @@ namespace ET.Client
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, resName.GetHashCode());
 
-            var data = YIUIBindHelper.GetBindVoByResName(resName);
+            self = selfRef;
+            var data = self.YIUIBind().GetBindVoByResName(resName);
             if (data == null) return null;
             var vo = data.Value;
             if (vo.CodeType != EUICodeType.View)
@@ -127,7 +128,9 @@ namespace ET.Client
             EntityRef<YIUIPanelComponent> selfRef = self;
 
             using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, typeof(T).GetHashCode());
-            var data = YIUIBindHelper.GetBindVoByType<T>();
+
+            self = selfRef;
+            var data = self.YIUIBind().GetBindVoByType<T>();
             if (data == null) return null;
             var vo = data.Value;
 
@@ -174,7 +177,7 @@ namespace ET.Client
                 return (false, null);
             }
 
-            var data = YIUIBindHelper.GetBindVoByType<T>();
+            var data = self.YIUIBind().GetBindVoByType<T>();
             if (data == null) return (false, null);
             var vo = data.Value;
             if (vo.CodeType != EUICodeType.View)
@@ -207,7 +210,7 @@ namespace ET.Client
                 return (false, null);
             }
 
-            var data = YIUIBindHelper.GetBindVoByResName(resName);
+            var data = self.YIUIBind().GetBindVoByResName(resName);
             if (data == null) return (false, null);
             var vo = data.Value;
             if (vo.CodeType != EUICodeType.View)

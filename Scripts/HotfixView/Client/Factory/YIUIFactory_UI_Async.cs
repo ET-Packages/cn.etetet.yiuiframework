@@ -14,7 +14,7 @@ namespace ET.Client
     {
         public static async ETTask<T> InstantiateAsync<T>(Scene scene, Entity parentEntity, Transform parent = null) where T : Entity
         {
-            var data = YIUIBindHelper.GetBindVoByType<T>();
+            var data = parentEntity.YIUIBind().GetBindVoByType<T>();
             if (data == null) return null;
             var vo = data.Value;
 
@@ -41,7 +41,7 @@ namespace ET.Client
 
         public static async ETTask<Entity> InstantiateAsync(Scene scene, Type uiType, Entity parentEntity, Transform parent = null)
         {
-            var data = YIUIBindHelper.GetBindVoByType(uiType);
+            var data = parentEntity.YIUIBind().GetBindVoByType(uiType);
             if (data == null) return null;
             var vo = data.Value;
 
@@ -54,7 +54,7 @@ namespace ET.Client
                                                             Entity parentEntity,
                                                             Transform parent = null)
         {
-            var data = YIUIBindHelper.GetBindVoByPath(pkgName, resName);
+            var data = parentEntity.YIUIBind().GetBindVoByPath(pkgName, resName);
             if (data == null) return null;
             var vo = data.Value;
 
@@ -66,7 +66,7 @@ namespace ET.Client
                                                             Entity parentEntity,
                                                             Transform parent = null)
         {
-            var data = YIUIBindHelper.GetBindVoByResName(resName);
+            var data = parentEntity.YIUIBind().GetBindVoByResName(resName);
             if (data == null) return null;
             var vo = data.Value;
 
@@ -75,7 +75,7 @@ namespace ET.Client
 
         public static async ETTask<Entity> CreatePanelAsync(Scene scene, PanelInfo panelInfo, Entity parentEntity)
         {
-            var bingVo = YIUIBindHelper.GetBindVoByPath(panelInfo.PkgName, panelInfo.ResName);
+            var bingVo = parentEntity.YIUIBind().GetBindVoByPath(panelInfo.PkgName, panelInfo.ResName);
             if (bingVo == null) return null;
             var uiCom = await CreateAsync(scene, bingVo.Value, parentEntity);
             return uiCom;

@@ -19,7 +19,7 @@ namespace ET.Client
 
         internal static Entity CreateCommon(string pkgName, string resName, GameObject obj, Entity parentEntity)
         {
-            var bingVo = YIUIBindHelper.GetBindVoByPath(pkgName, resName);
+            var bingVo = parentEntity.YIUIBind().GetBindVoByPath(pkgName, resName);
             if (bingVo == null) return null;
             var vo = bingVo.Value;
             return CreateByObjVo(vo, obj, parentEntity);
@@ -32,7 +32,7 @@ namespace ET.Client
 
         private static T Create<T>(Scene scene, Entity parentEntity) where T : Entity
         {
-            var data = YIUIBindHelper.GetBindVoByType<T>();
+            var data = parentEntity.YIUIBind().GetBindVoByType<T>();
             if (data == null) return null;
             var vo = data.Value;
 
@@ -41,7 +41,7 @@ namespace ET.Client
 
         private static Entity Create(Scene scene, string pkgName, string resName, Entity parentEntity)
         {
-            var bingVo = YIUIBindHelper.GetBindVoByPath(pkgName, resName);
+            var bingVo = parentEntity.YIUIBind().GetBindVoByPath(pkgName, resName);
             return bingVo == null ? null : Create(scene, bingVo.Value, parentEntity);
         }
 
@@ -114,7 +114,7 @@ namespace ET.Client
                     childCde.gameObject.SetActive(true);
                 }
 
-                var data = YIUIBindHelper.GetBindVoByPath(childCde.PkgName, childCde.ResName);
+                var data = parentEntity.YIUIBind().GetBindVoByPath(childCde.PkgName, childCde.ResName);
                 if (data == null) continue;
                 var vo = data.Value;
 

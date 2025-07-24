@@ -1,6 +1,6 @@
 ﻿#if ET10
-using System.Diagnostics;
 using System;
+using System.Diagnostics;
 
 namespace ET
 {

@@ -13,7 +13,7 @@ namespace YIUIFramework
     public static class YIUIConstHelper
     {
         public const string YIUIConstAssetName = "YIUIConstAsset";
-        public const string YIUIConstAssetPath = "Assets/GameRes/YIUI/YIUIConstAsset.txt";
+        public const string YIUIConstAssetPath = "Assets/GameRes/YIUI/YIUISettings/YIUIConstAsset.txt";
 
         private static YIUIConstAsset m_YIUIConstAsset;
 

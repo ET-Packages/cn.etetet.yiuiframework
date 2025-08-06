@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using ET;
 using Sirenix.OdinInspector;
@@ -200,7 +200,7 @@ namespace YIUIFramework
         {
             if (m_LastSprite != null)
             {
-                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_Release { obj = m_LastSprite });
+                EventSystem.Instance?.YIUIInvokeEntitySyncSafety(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_ReleaseSprite { obj = m_LastSprite });
                 m_LastSprite = null;
             }
         }

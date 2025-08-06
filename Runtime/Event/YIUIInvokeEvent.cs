@@ -58,6 +58,12 @@ namespace YIUIFramework
         public string ResName;
     }
 
+    // 回收YIUI 精灵/图片 资源
+    public struct YIUIInvokeEntity_ReleaseSprite
+    {
+        public Sprite obj;
+    }
+
     public struct YIUIInvokeEntity_LoadTexture2D
     {
         public string ResName;

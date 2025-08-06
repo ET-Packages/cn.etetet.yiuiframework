@@ -220,6 +220,7 @@ namespace YIUIFramework
                 if (!result)
                 {
                     Debug.LogError("自动保存失败 注意请手动保存");
+                    return;
                 }
             }
             else
@@ -227,7 +228,9 @@ namespace YIUIFramework
                 Debug.LogError("Save方法不存在 自动保存失败 注意请手动保存");
             }
 
-            var assetObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(stage.assetPath);
+            var assetPath = stage.assetPath;
+            StageUtility.GoToMainStage();
+            var assetObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
             EditorGUIUtility.PingObject(assetObj);
             Selection.activeObject = assetObj;
         }
@@ -354,8 +357,8 @@ namespace YIUIFramework
         private void OnValidate()
         {
             ComponentTable ??= GetComponent<UIBindComponentTable>();
-            DataTable      ??= GetComponent<UIBindDataTable>();
-            EventTable     ??= GetComponent<UIBindEventTable>();
+            DataTable ??= GetComponent<UIBindDataTable>();
+            EventTable ??= GetComponent<UIBindEventTable>();
         }
 
         #region CDE显示
@@ -435,7 +438,7 @@ namespace YIUIFramework
         private void AddComponentTable()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
-            ComponentTable           = gameObject.GetOrAddComponent<UIBindComponentTable>();
+            ComponentTable = gameObject.GetOrAddComponent<UIBindComponentTable>();
             ComponentTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
             OnValueChangedCDEInspector();
         }
@@ -455,7 +458,7 @@ namespace YIUIFramework
         private void AddDataTable()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
-            DataTable           = gameObject.GetOrAddComponent<UIBindDataTable>();
+            DataTable = gameObject.GetOrAddComponent<UIBindDataTable>();
             DataTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
 
             OnValueChangedCDEInspector();
@@ -476,7 +479,7 @@ namespace YIUIFramework
         private void AddEventTable()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
-            EventTable           = gameObject.GetOrAddComponent<UIBindEventTable>();
+            EventTable = gameObject.GetOrAddComponent<UIBindEventTable>();
             EventTable.hideFlags = YIUIConstHelper.Const.DisplayOldCDEInspector ? HideFlags.None : HideFlags.HideInInspector;
 
             OnValueChangedCDEInspector();

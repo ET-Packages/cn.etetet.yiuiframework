@@ -12,6 +12,7 @@ namespace YIUIFramework
         [ButtonGroup("UIEventBind")]
         [Button("跳转到实现", 20)]
         [PropertyOrder(-100)]
+        [ShowIf(nameof(ShowSkip))]
         private void SkipEventSystem()
         {
             if (m_UIEvent == null)
@@ -87,6 +88,16 @@ namespace YIUIFramework
                 Logger.LogError(e);
                 throw;
             }
+        }
+
+        private bool ShowSkip()
+        {
+            if (m_UIEvent == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private bool ShowIfTestClick()

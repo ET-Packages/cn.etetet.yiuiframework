@@ -177,7 +177,30 @@ namespace YIUIFramework.Editor
             });
         }
 
-        [GUIColor(0.9f, 0.5f, 0.3f)]
+        [ButtonGroup("Atlas")]
+        [GUIColor(0f, 1f, 0.8f)]
+        [Button("更新图集数据", 40, Icon = SdfIconType.Images, IconAlignment = IconAlignment.LeftOfText)]
+        [PropertyOrder(-98)]
+        public void RefreshAtlasData()
+        {
+            if (!UIOperationHelper.CheckUIOperation()) return;
+
+            try
+            {
+                YIUIAtlasModule.RefreshAtlasData();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"更新图集数据时发生错误: {e}");
+            }
+            finally
+            {
+                YIUIAutoTool.CloseWindow();
+            }
+        }
+
+        [ButtonGroup("Atlas")]
+        [GUIColor(1f, 1f, 0.5f)]
         [Button("全部发布图集", 40, Icon = SdfIconType.Images, IconAlignment = IconAlignment.LeftOfText)]
         [PropertyOrder(-98)]
         public void PublishAllAtlas()

@@ -77,5 +77,15 @@ namespace ET.Client
                 m_OwnerUIEntity = default;
             }
         }
+
+        //预加载的预制体 如果预加载的是Entity 这里则无
+        private UnityEngine.GameObject m_PreLoadGameObject;
+
+        public UnityEngine.GameObject PreLoadGameObject => m_PreLoadGameObject;
+
+        public void ResetPreLoadGameObject(UnityEngine.GameObject go)
+        {
+            m_PreLoadGameObject = go;
+        }
     }
 }

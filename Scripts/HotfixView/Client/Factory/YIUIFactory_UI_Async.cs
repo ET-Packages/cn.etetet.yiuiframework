@@ -77,8 +77,18 @@ namespace ET.Client
         {
             var bingVo = parentEntity.YIUIBind().GetBindVoByPath(panelInfo.PkgName, panelInfo.ResName);
             if (bingVo == null) return null;
-            var uiCom = await CreateAsync(scene, bingVo.Value, parentEntity);
-            return uiCom;
+            Entity panelEntity = null;
+            if (panelInfo.PreLoadGameObject == null)
+            {
+                panelEntity = await CreateAsync(scene, bingVo.Value, parentEntity);
+            }
+            else
+            {
+                panelEntity = CreateByObjVo(bingVo.Value, panelInfo.PreLoadGameObject, parentEntity);
+                panelInfo.ResetPreLoadGameObject(null);
+            }
+
+            return panelEntity;
         }
 
         public static async ETTask<Entity> CreateAsync(Scene scene, YIUIBindVo vo, Entity parentEntity)
@@ -92,6 +102,25 @@ namespace ET.Client
             }
 
             return CreateByObjVo(vo, obj, parentEntityRef);
+        }
+
+        internal static async ETTask<GameObject> CreatePanelGameObjectAsync(Scene scene, PanelInfo panelInfo)
+        {
+            var bingVo = scene.YIUIBind().GetBindVoByPath(panelInfo.PkgName, panelInfo.ResName);
+            if (bingVo == null) return null;
+            return await CreateGameObjectAsync(scene, bingVo.Value);
+        }
+
+        internal static async ETTask<GameObject> CreateGameObjectAsync(Scene scene, YIUIBindVo vo)
+        {
+            var obj = await scene.YIUILoad()?.LoadAssetAsyncInstantiate(vo.PkgName, vo.ResName);
+            if (obj == null)
+            {
+                Debug.LogError($"没有加载到这个资源 {vo.PkgName}/{vo.ResName}");
+                return null;
+            }
+
+            return obj;
         }
     }
 }

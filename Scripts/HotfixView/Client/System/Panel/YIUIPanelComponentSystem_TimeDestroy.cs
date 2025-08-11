@@ -32,10 +32,20 @@ namespace ET.Client
 
                 var oldCancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
 
+                self = selfRef;
+                Log.Error($"倒计时摧毁 {self.UIBindVo.ComponentType.Name} 界面 {self.CachePanelTime} 秒");
                 await ETTaskSafely.Await(selfRef.Entity?.Root()?.GetComponent<TimerComponent>()?.WaitAsync((long)(selfRef.Entity?.CachePanelTime * 1000 ?? 0)));
+
+                self = selfRef;
+
+                Log.Error($"倒计时摧毁2222 {self.UIBindVo.ComponentType.Name} 界面");
+
+                self = selfRef;
 
                 if (oldCancellationToken != null && oldCancellationToken.IsCancel()) //取消倒计时
                 {
+                    Log.Error($"倒计时摧毁3333 {self.UIBindVo.ComponentType.Name} 界面");
+
                     return;
                 }
             }
@@ -44,6 +54,8 @@ namespace ET.Client
                 Log.Error(e);
                 return;
             }
+
+            Log.Error($"倒计时摧毁444 {self.UIBindVo.ComponentType.Name} 界面");
 
             self.m_Token = null;
             self.RemoveUIReset();

@@ -123,6 +123,11 @@ namespace ET.Client
                 self = selfRef;
                 self.AddPreLoadUI(panelInfo);
 
+                if (panelInfo.UIPanel != null)
+                {
+                    panelInfo.UIPanel.StopCountDownDestroyPanel();
+                }
+
                 #if YIUIMACRO_PANEL_OPENCLOSE
                 preLoadSW.Stop();
                 Debug.Log($"<color=green> 预加载完成: {panelName}, 耗时: {preLoadSW.ElapsedMilliseconds} 毫秒 </color>");

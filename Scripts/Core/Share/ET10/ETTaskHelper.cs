@@ -27,12 +27,12 @@ namespace ET
 
         public static async ETTask<T> GetContextAsync<T>() where T : class
         {
-            return await ETTask<T>.Create(true);
+            return await ETTask.GetContextAsync<T>();
         }
 
         public static async ETTask<object> GetContextAsync()
         {
-            return await ETTask<object>.Create(true);
+            return await ETTask.GetContextAsync();
         }
     }
 }

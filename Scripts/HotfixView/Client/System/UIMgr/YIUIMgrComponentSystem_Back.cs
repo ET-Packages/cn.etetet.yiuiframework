@@ -86,15 +86,7 @@ namespace ET.Client
                 switch (child.UIPanel.StackOption)
                 {
                     case EPanelStackOption.Omit:
-                        if (skipTween)
-                        {
-                            child.UIPanel.Close(true, true, true);
-                        }
-                        else
-                        {
-                            await child.UIPanel.CloseAsync(true, true, true);
-                        }
-
+                        await child.UIPanel.CloseAsync(!skipTween, true, true);
                         break;
                     case EPanelStackOption.None:
                         break;
@@ -104,6 +96,7 @@ namespace ET.Client
                     case EPanelStackOption.VisibleTween:
                         if (!skipTween)
                         {
+                            await child.UIPanel.CloseAllViewTween();
                             await child.UIWindow.InternalOnWindowCloseTween();
                         }
 
@@ -177,10 +170,15 @@ namespace ET.Client
                         child.UIBase.SetActive(true);
                         break;
                     case EPanelStackOption.VisibleTween:
-                        child.UIBase.SetActive(true);
                         if (!skipTween)
                         {
                             await child.UIWindow.InternalOnWindowOpenTween();
+                            await child.UIPanel.OpenAllViewTween();
+                        }
+                        else
+                        {
+                            child.UIBase.SetActive(true);
+                            await child.UIPanel.OpenAllViewTween(false);
                         }
 
                         break;
@@ -277,17 +275,10 @@ namespace ET.Client
                     var uiComponentName = child.Name;
                     var panelLayer = child.PanelLayer;
 
-                    if (skipOtherCloseTween)
+                    var success = await self.ClosePanelAsync(child.Name, !skipOtherCloseTween, true, true);
+                    if (!success)
                     {
-                        self.ClosePanel(child.Name, false, true, true);
-                    }
-                    else
-                    {
-                        var success = await self.ClosePanelAsync(child.Name, tween, true, true);
-                        if (!success)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
 
                     self = selfRef;
@@ -321,10 +312,15 @@ namespace ET.Client
                         child.UIBase.SetActive(true);
                         break;
                     case EPanelStackOption.VisibleTween:
-                        child.UIBase.SetActive(true);
                         if (tween && !skipHomeOpenTween)
                         {
                             await child.UIWindow.InternalOnWindowOpenTween();
+                            await child.UIPanel.OpenAllViewTween();
+                        }
+                        else
+                        {
+                            child.UIBase.SetActive(true);
+                            await child.UIPanel.OpenAllViewTween(false);
                         }
 
                         break;

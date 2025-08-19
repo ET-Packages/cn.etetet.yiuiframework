@@ -11,9 +11,11 @@ namespace ET.Client
     {
         public UIPanelSplitData m_PanelSplitData;
 
-        public Dictionary<string, EntityRef<Entity>> m_ExistView = new();
+        public readonly Dictionary<string, EntityRef<Entity>> m_ExistView = new();
 
-        public Dictionary<string, RectTransform> m_ViewParent = new();
+        public readonly Dictionary<string, RectTransform> m_ViewParent = new();
+
+        public readonly List<EntityRef<YIUIWindowComponent>> m_LastCloseView = new();
 
         /// <summary>
         /// 当前已打开的UI View 不包含弹窗

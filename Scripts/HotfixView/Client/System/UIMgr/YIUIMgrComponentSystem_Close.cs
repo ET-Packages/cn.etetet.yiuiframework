@@ -142,9 +142,9 @@ namespace ET.Client
         /// 关闭一个窗口
         /// 异步等待关闭动画
         /// </summary>
-        public static async ETTask<bool> ClosePanelAsync<T>(this YIUIMgrComponent self, bool tween = true, bool ignoreElse = false) where T : Entity
+        public static async ETTask<bool> ClosePanelAsync<T>(this YIUIMgrComponent self, bool tween = true, bool ignoreElse = false, bool ignoreLock = false) where T : Entity
         {
-            return await self.ClosePanelAsync(self.GetPanelName<T>(), tween, ignoreElse);
+            return await self.ClosePanelAsync(self.GetPanelName<T>(), tween, ignoreElse, ignoreLock);
         }
 
         /// <summary>

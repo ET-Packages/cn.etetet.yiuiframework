@@ -5,7 +5,7 @@
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_ClosePanel args)
         {
-            entity.YIUIMgr()?.ClosePanel(args.PanelName, args.Tween, args.IgnoreElse);
+            entity.YIUIMgr()?.ClosePanel(args.PanelName, args.Tween, args.IgnoreElse, args.IgnoreLock);
         }
     }
 
@@ -16,7 +16,7 @@
         {
             var yiuiMgr = entity.YIUIMgr();
             if (yiuiMgr == null) return false;
-            return await yiuiMgr.ClosePanelAsync(args.PanelName, args.Tween, args.IgnoreElse);
+            return await yiuiMgr.ClosePanelAsync(args.PanelName, args.Tween, args.IgnoreElse, args.IgnoreLock);
         }
     }
 

@@ -58,7 +58,8 @@ namespace ET.Client
                                                                  EPanelLayer layer,
                                                                  EPanelOption ignoreOption = EPanelOption.IgnoreClose,
                                                                  bool tween = true,
-                                                                 bool ignoreElse = false)
+                                                                 bool ignoreElse = false,
+                                                                 bool ignoreLock = false)
         {
             var topPanel = self.GetTopPanel(layer, ignoreOption);
             if (topPanel == null)
@@ -66,7 +67,7 @@ namespace ET.Client
                 return false;
             }
 
-            return await self.ClosePanelAsync(topPanel.Name, tween, ignoreElse);
+            return await self.ClosePanelAsync(topPanel.Name, tween, ignoreElse, ignoreLock);
         }
 
         /// <summary>
@@ -76,9 +77,10 @@ namespace ET.Client
                                               EPanelLayer layer,
                                               EPanelOption ignoreOption = EPanelOption.IgnoreClose,
                                               bool tween = true,
-                                              bool ignoreElse = false)
+                                              bool ignoreElse = false,
+                                              bool ignoreLock = false)
         {
-            self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse).NoContext();
+            self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse, ignoreLock).NoContext();
         }
 
         /// <summary>
@@ -88,9 +90,10 @@ namespace ET.Client
                                                             EPanelLayer layer = EPanelLayer.Panel,
                                                             EPanelOption ignoreOption = EPanelOption.IgnoreClose,
                                                             bool tween = true,
-                                                            bool ignoreElse = false)
+                                                            bool ignoreElse = false,
+                                                            bool ignoreLock = false)
         {
-            return await self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse);
+            return await self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse, ignoreLock);
         }
 
         /// <summary>
@@ -100,7 +103,8 @@ namespace ET.Client
                                             EPanelLayer layer = EPanelLayer.Any,
                                             EPanelOption ignoreOption = EPanelOption.IgnoreClose,
                                             bool tween = false,
-                                            bool ignoreElse = true)
+                                            bool ignoreElse = true,
+                                            bool ignoreLock = false)
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
 
@@ -112,7 +116,7 @@ namespace ET.Client
                     return;
                 }
 
-                if (!await self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse))
+                if (!await self.CloseLayerTopPanelAsync(layer, ignoreOption, tween, ignoreElse, ignoreLock))
                 {
                     break;
                 }

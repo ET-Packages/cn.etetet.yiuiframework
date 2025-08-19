@@ -78,6 +78,11 @@ namespace ET.Client
                     });
                 }
 
+                var uiPkgName = child.PkgName;
+                var uiResName = child.ResName;
+                var uiComponentName = child.Name;
+                var panelLayer = child.PanelLayer;
+
                 switch (child.UIPanel.StackOption)
                 {
                     case EPanelStackOption.Omit:
@@ -114,11 +119,11 @@ namespace ET.Client
 
                 await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelCloseAfter
                 {
-                    UIPkgName = child.PkgName,
-                    UIResName = child.ResName,
-                    UIComponentName = child.Name,
+                    UIPkgName = uiPkgName,
+                    UIResName = uiResName,
+                    UIComponentName = uiComponentName,
                     StackOption = true,
-                    PanelLayer = child.PanelLayer,
+                    PanelLayer = panelLayer,
                 });
             }
         }
@@ -267,6 +272,11 @@ namespace ET.Client
 
                     self = selfRef;
 
+                    var uiPkgName = child.PkgName;
+                    var uiResName = child.ResName;
+                    var uiComponentName = child.Name;
+                    var panelLayer = child.PanelLayer;
+
                     if (skipOtherCloseTween)
                     {
                         self.ClosePanel(child.Name, false, true, true);
@@ -284,11 +294,11 @@ namespace ET.Client
 
                     await EventSystem.Instance?.PublishAsync(self.Root(), new YIUIEventPanelCloseAfter
                     {
-                        UIPkgName = child.PkgName,
-                        UIResName = child.ResName,
-                        UIComponentName = child.Name,
+                        UIPkgName = uiPkgName,
+                        UIResName = uiResName,
+                        UIComponentName = uiComponentName,
                         StackOption = true,
-                        PanelLayer = child.PanelLayer,
+                        PanelLayer = panelLayer,
                     });
 
                     continue;

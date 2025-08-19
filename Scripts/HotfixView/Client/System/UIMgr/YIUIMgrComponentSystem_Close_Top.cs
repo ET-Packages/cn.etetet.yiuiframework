@@ -27,16 +27,17 @@ namespace ET.Client
 
                 var list = self.GetLayerPanelInfoList(currentLayer);
 
-                foreach (var info in list)
+                //倒序遍历 List 排在后面的就是最上面的
+                for (int index = list.Count - 1; index >= 0; index--)
                 {
+                    var info = list[index];
                     if (info.UIPanel == null)
                     {
                         continue;
                     }
 
                     //有忽略操作 且满足条件 则这个界面无法获取到
-                    if (ignoreOption != EPanelOption.None &&
-                        (info.UIPanel.PanelOption & ignoreOption) != 0)
+                    if (ignoreOption != EPanelOption.None && (info.UIPanel.PanelOption & ignoreOption) != 0)
                     {
                         continue;
                     }

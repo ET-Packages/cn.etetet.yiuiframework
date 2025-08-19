@@ -23,7 +23,7 @@
                 }
 
                 self = selfRef;
-                if (self.UIWindow is { WindowCloseTweenBefor: true })
+                if (self.UIWindow is { WindowCloseTweenBefore: true })
                 {
                     await YIUIEventSystem.WindowClose(self.UIWindow, success);
                 }
@@ -44,7 +44,7 @@
 
             self.UIBase.SetActive(false);
 
-            if (self.UIWindow is { WindowCloseTweenBefor: false })
+            if (self.UIWindow is { WindowCloseTweenBefore: false })
             {
                 await YIUIEventSystem.WindowClose(self.UIWindow, true);
             }

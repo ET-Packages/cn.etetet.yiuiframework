@@ -6,15 +6,15 @@ namespace ET.Client
 {
     public partial class YIUIMgrComponent
     {
-        public GameObject    UIRoot       { get; set; }
-        public GameObject    UICanvasRoot { get; set; }
-        public RectTransform UILayerRoot  { get; set; }
-        public Camera        UICamera     { get; set; }
-        public Canvas        UICanvas     { get; set; }
+        public GameObject UIRoot { get; set; }
+        public GameObject UICanvasRoot { get; set; }
+        public RectTransform UILayerRoot { get; set; }
+        public Camera UICamera { get; set; }
+        public Canvas UICanvas { get; set; }
 
         //K1 = 层级枚举 V1 = 层级对应的rect
         //List = 当前层级中的当前所有UI 前面的代表这个UI在前面以此类推
-        public Dictionary<EPanelLayer, Dictionary<RectTransform, List<PanelInfo>>> m_AllPanelLayer = new();
+        public readonly Dictionary<EPanelLayer, Dictionary<RectTransform, List<PanelInfo>>> m_AllPanelLayer = new();
 
         #region 快捷获取层级
 
@@ -33,9 +33,9 @@ namespace ET.Client
                         return null;
                     }
 
-                    foreach (var rect in rectDic.Keys)
+                    foreach (var rect in rectDic)
                     {
-                        m_UICache = rect;
+                        m_UICache = rect.Key;
                         break;
                     }
 
@@ -61,9 +61,9 @@ namespace ET.Client
                         return null;
                     }
 
-                    foreach (var rect in rectDic.Keys)
+                    foreach (var rect in rectDic)
                     {
-                        m_UIPanel = rect;
+                        m_UIPanel = rect.Key;
                         break;
                     }
 

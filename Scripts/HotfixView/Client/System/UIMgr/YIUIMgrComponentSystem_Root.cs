@@ -99,10 +99,8 @@ namespace ET.Client
 
             self.InitAddUIBlock(); //所有层级初始化后添加一个终极屏蔽层 可根据API 定时屏蔽UI操作
 
-            self.UICamera.transform.localPosition =
-
-                    // ReSharper disable once Unity.InefficientPropertyAccess
-                    new Vector3(self.UILayerRoot.localPosition.x, self.UILayerRoot.localPosition.y, -1000);
+            // ReSharper disable once Unity.InefficientPropertyAccess
+            self.UICamera.transform.localPosition = new Vector3(self.UILayerRoot.localPosition.x, self.UILayerRoot.localPosition.y, -1000);
 
             self.UICamera.clearFlags = CameraClearFlags.Depth;
             self.UICamera.orthographic = true;

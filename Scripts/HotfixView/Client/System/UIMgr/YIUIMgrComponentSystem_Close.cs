@@ -5,6 +5,39 @@ namespace ET.Client
 {
     public static partial class YIUIMgrComponentSystem
     {
+        #region 判断Panel是否关闭
+
+        /*
+         * 1. 如果Panel不存在，返回true 表示已关闭
+         * 2. 如果存在,不在最前面 = 已关闭
+         * 3. 如果存在,在最前面 = 未关闭
+         * 因为Panel层同时只会显示一个 所以只要不是在前面就算关闭 哪怕你现在是显示状态
+         */
+        public static bool IsClose(this YIUIMgrComponent self, string panelName)
+        {
+            var info = self.GetPanelInfo(panelName);
+            if (info.UIBase == null) return true;
+            return self.IsClose(info.UIPanel);
+        }
+
+        public static bool IsClose<T>(this YIUIMgrComponent self) where T : Entity
+        {
+            var info = self.GetPanelInfo<T>();
+            if (info.UIBase == null) return true;
+            return self.IsClose(info.UIPanel);
+        }
+
+        public static bool IsClose(this YIUIMgrComponent self, YIUIPanelComponent panel)
+        {
+            var layerList = self.GetLayerPanelInfoList(EPanelLayer.Panel);
+            if (layerList is not { Count: > 0 }) return true;
+            var currentPanel = layerList[^1];
+            if (currentPanel.UIPanel == null) return true;
+            return currentPanel.UIPanel != panel;
+        }
+
+        #endregion
+
         /// <summary>
         /// 关闭一个窗口
         /// </summary>
@@ -63,7 +96,7 @@ namespace ET.Client
                 successPanel = await YIUIEventSystem.Close(info.OwnerUIEntity);
             }
 
-            if (info.UIWindow is { WindowCloseTweenBefor: true })
+            if (info.UIWindow is { WindowCloseTweenBefore: true })
             {
                 await YIUIEventSystem.WindowClose(info.UIWindow, successPanel);
             }
@@ -77,6 +110,11 @@ namespace ET.Client
             if (info.UIWindow is { WindowLastClose: false })
             {
                 await info.UIWindow.InternalOnWindowCloseTween(tween);
+            }
+
+            if (!ignoreElse && info.UIWindow is { WindowCloseTriggerRemoveAdd: false })
+            {
+                ignoreElse = self.IsClose(info.UIPanel);
             }
 
             if (!ignoreElse)
@@ -94,7 +132,7 @@ namespace ET.Client
             //如果你有其他特殊需求 请自行处理
             await info.UIPanel.CloseAllView(false);
 
-            if (info.UIWindow is { WindowCloseTweenBefor: false })
+            if (info.UIWindow is { WindowCloseTweenBefore: false })
             {
                 await YIUIEventSystem.WindowClose(info.UIWindow, true);
             }

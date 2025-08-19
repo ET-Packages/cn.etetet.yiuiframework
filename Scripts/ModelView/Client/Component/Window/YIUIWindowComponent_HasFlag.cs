@@ -34,7 +34,7 @@ namespace ET.Client
 
         //禁止打开动画
         public bool WindowBanOpenTween => WindowOption.HasFlag(EWindowOption.BanOpenTween);
-        
+
         //禁止关闭动画
         public bool WindowBanCloseTween => WindowOption.HasFlag(EWindowOption.BanCloseTween);
 
@@ -66,6 +66,9 @@ namespace ET.Client
         public bool WindowSkipHomeBack => WindowOption.HasFlag(EWindowOption.SkipHomeBack);
 
         //窗口关闭事件动画前触发
-        public bool WindowCloseTweenBefor => WindowOption.HasFlag(EWindowOption.WindowCloseTweenBefor);
+        public bool WindowCloseTweenBefore => WindowOption.HasFlag(EWindowOption.WindowCloseTweenBefore);
+
+        //窗口已关闭也触发移除添加其他事件 99%的情况是不需要的
+        public bool WindowCloseTriggerRemoveAdd => WindowOption.HasFlag(EWindowOption.WindowCloseTriggerRemoveAdd);
     }
 }

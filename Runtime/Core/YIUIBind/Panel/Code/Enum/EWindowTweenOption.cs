@@ -67,8 +67,8 @@ namespace YIUIFramework
         [LabelText("窗口关闭事件动画前触发")]
         WindowCloseTweenBefore = 1 << 20, //反之 默认情况下 等关闭动画播放完毕对象隐藏后触发
 
-        [LabelText("窗口已关闭也触发移除添加其他")]
-        WindowCloseTriggerRemoveAdd = 1 << 21, //99%%的情况都用不上 除非你有特殊需求
+        [LabelText("窗口已关闭也触发动画")]
+        WindowCloseTriggerTween = 1 << 21, //99%%的情况都用不上 除非你有特殊需求
     }
 
     public static class WindowOptionOptionExt

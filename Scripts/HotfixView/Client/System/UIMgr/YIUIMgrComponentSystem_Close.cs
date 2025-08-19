@@ -107,30 +107,32 @@ namespace ET.Client
                 return false;
             }
 
-            if (info.UIWindow is { WindowLastClose: false })
+            var isCloseTriggerTween = info.UIWindow is { WindowCloseTriggerTween: true };
+
+            var ignoreTween = false;
+
+            if (!isCloseTriggerTween)
             {
+                ignoreTween = self.IsClose(info.UIPanel);
+            }
+
+            if (!ignoreTween && info.UIWindow is { WindowLastClose: false })
+            {
+                await info.UIPanel.CloseAllView(tween);
                 await info.UIWindow.InternalOnWindowCloseTween(tween);
             }
 
-            if (!ignoreElse && info.UIWindow is { WindowCloseTriggerRemoveAdd: false })
-            {
-                ignoreElse = self.IsClose(info.UIPanel);
-            }
-
-            if (!ignoreElse)
+            if (!ignoreTween && !ignoreElse)
             {
                 self = selfRef;
                 await self.RemoveUIAddElse(info);
             }
 
-            if (info.UIWindow is { WindowLastClose: true })
+            if (!ignoreTween && info.UIWindow is { WindowLastClose: true })
             {
+                await info.UIPanel.CloseAllView(tween);
                 await info.UIWindow.InternalOnWindowCloseTween(tween);
             }
-
-            //必须后关闭所有view 没有动画 也不管会不会失败
-            //如果你有其他特殊需求 请自行处理
-            await info.UIPanel.CloseAllView(false);
 
             if (info.UIWindow is { WindowCloseTweenBefore: false })
             {

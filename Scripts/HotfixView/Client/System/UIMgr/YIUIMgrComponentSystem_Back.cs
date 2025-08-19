@@ -14,7 +14,7 @@ namespace ET.Client
         /// </summary>
         internal static async ETTask AddUICloseElse(this YIUIMgrComponent self, PanelInfo info)
         {
-            if (!(info.UIPanel is { Layer: EPanelLayer.Panel }))
+            if (info.UIPanel is not { Layer: EPanelLayer.Panel })
             {
                 return;
             }
@@ -130,7 +130,7 @@ namespace ET.Client
 
         internal static async ETTask RemoveUIAddElse(this YIUIMgrComponent self, PanelInfo info)
         {
-            if (!(info.UIPanel is { Layer: EPanelLayer.Panel }))
+            if (info.UIPanel is not { Layer: EPanelLayer.Panel })
             {
                 return;
             }
@@ -219,7 +219,7 @@ namespace ET.Client
 
         internal static async ETTask<bool> RemoveUIToHome(this YIUIMgrComponent self, PanelInfo home, bool tween = true)
         {
-            if (!(home.UIPanel is { Layer: EPanelLayer.Panel }))
+            if (home.UIPanel is not { Layer: EPanelLayer.Panel })
             {
                 return false; //home的UI必须在panel层
             }

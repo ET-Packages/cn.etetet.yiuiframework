@@ -68,7 +68,7 @@ namespace ET.Client
         //窗口关闭事件动画前触发
         public bool WindowCloseTweenBefore => WindowOption.HasFlag(EWindowOption.WindowCloseTweenBefore);
 
-        //窗口已关闭也触发移除添加其他事件 99%的情况是不需要的
-        public bool WindowCloseTriggerRemoveAdd => WindowOption.HasFlag(EWindowOption.WindowCloseTriggerRemoveAdd);
+        //窗口已关闭也触发动画 99%的情况是不需要的
+        public bool WindowCloseTriggerTween => WindowOption.HasFlag(EWindowOption.WindowCloseTriggerTween);
     }
 }

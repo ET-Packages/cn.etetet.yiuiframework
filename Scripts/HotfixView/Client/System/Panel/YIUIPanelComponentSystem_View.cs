@@ -327,9 +327,9 @@ namespace ET.Client
         {
             foreach (Entity view in self.m_ExistView.Values)
             {
-                var uibase = view.GetParent<YIUIChild>();
-                var viewComponent = uibase?.GetComponent<YIUIViewComponent>();
-                if (viewComponent != null && uibase is { ActiveSelf: true })
+                var uiBase = view.GetParent<YIUIChild>();
+                var viewComponent = uiBase?.GetComponent<YIUIViewComponent>();
+                if (viewComponent != null && uiBase is { ActiveSelf: true })
                 {
                     await viewComponent.CloseAsync(tween);
                 }

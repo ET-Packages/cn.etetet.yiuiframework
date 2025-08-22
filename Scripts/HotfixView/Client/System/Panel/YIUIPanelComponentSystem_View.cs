@@ -342,6 +342,7 @@ namespace ET.Client
         /// </summary>
         internal static async ETTask CloseAllViewTween(this YIUIPanelComponent self)
         {
+            EntityRef<YIUIPanelComponent> selfRef = self;
             self.m_LastCloseView.Clear();
             foreach (Entity view in self.m_ExistView.Values)
             {
@@ -351,6 +352,7 @@ namespace ET.Client
                 {
                     var uiWindow = viewComponent.UIWindow;
                     await uiWindow.InternalOnWindowCloseTween();
+                    self = selfRef;
                     self.m_LastCloseView.Add(uiWindow);
                     uiBase.SetActive(false);
                 }

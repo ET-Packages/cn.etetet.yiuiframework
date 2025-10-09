@@ -80,7 +80,7 @@ namespace YIUIFramework
 
         private async ETTask ChangeTexture2D(string resName)
         {
-            using var coroutineLock = await EventSystem.Instance?.YIUIInvokeEntityAsyncSafety<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CoroutineLock { Lock = GetHashCode() });
+            using var _ = await EventSystem.Instance?.YIUIInvokeEntityAsyncSafety<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(YIUISingletonHelper.YIUIMgr, new YIUIInvokeEntity_CoroutineLock { Lock = GetHashCode() });
 
             if (m_LastResName == resName)
             {

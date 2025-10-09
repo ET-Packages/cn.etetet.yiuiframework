@@ -46,7 +46,7 @@ namespace YIUIFramework
 
             if (m_CreateInterval > 0)
             {
-                using var coroutineLock = await EventSystem.Instance.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(Entity, new YIUIInvokeEntity_CoroutineLock { Lock = this.GetHashCode() });
+                using var _ = await EventSystem.Instance.YIUIInvokeEntityAsync<YIUIInvokeEntity_CoroutineLock, ETTask<Entity>>(Entity, new YIUIInvokeEntity_CoroutineLock { Lock = this.GetHashCode() });
 
                 if (m_LastCreateTime > 0)
                 {

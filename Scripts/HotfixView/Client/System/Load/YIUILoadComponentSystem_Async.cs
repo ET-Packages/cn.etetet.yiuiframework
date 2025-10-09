@@ -23,7 +23,7 @@ namespace ET.Client
                 return (T)load.Object;
             }
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoad, load.NameCode);
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoad, load.NameCode);
 
             if (load.Object != null)
             {

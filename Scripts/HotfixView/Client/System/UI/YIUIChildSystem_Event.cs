@@ -35,7 +35,7 @@ namespace ET.Client
         {
             EntityRef<YIUIChild> selfRef = self;
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
 
             bool result = true;
 
@@ -86,7 +86,7 @@ namespace ET.Client
         {
             EntityRef<YIUIChild> selfRef = self;
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
 
             bool result = true;
 

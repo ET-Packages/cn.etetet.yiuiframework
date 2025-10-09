@@ -77,7 +77,7 @@ namespace ET.Client
 
             EntityRef<YIUIPanelComponent> selfRef = self;
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, resName.GetHashCode());
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, resName.GetHashCode());
 
             self = selfRef;
             var data = self.YIUIBind().GetBindVoByResName(resName);
@@ -127,7 +127,7 @@ namespace ET.Client
 
             EntityRef<YIUIPanelComponent> selfRef = self;
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, typeof(T).GetHashCode());
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, typeof(T).GetHashCode());
 
             self = selfRef;
             var data = self.YIUIBind().GetBindVoByType<T>();

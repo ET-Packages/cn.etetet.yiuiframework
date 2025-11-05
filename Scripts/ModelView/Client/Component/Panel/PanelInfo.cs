@@ -13,9 +13,13 @@ namespace ET.Client
 
         public YIUIChild UIBase => m_UIBase;
 
-        public YIUIWindowComponent UIWindow => this.UIBase?.GetComponent<YIUIWindowComponent>();
+        private EntityRef<YIUIWindowComponent> m_UIWindow;
 
-        public YIUIPanelComponent UIPanel => this.UIBase?.GetComponent<YIUIPanelComponent>();
+        public YIUIWindowComponent UIWindow => m_UIWindow;
+
+        private EntityRef<YIUIPanelComponent> m_UIPanel;
+
+        public YIUIPanelComponent UIPanel => m_UIPanel;
 
         //当前UI的 ET组件
         private EntityRef<Entity> m_OwnerUIEntity;
@@ -59,10 +63,16 @@ namespace ET.Client
             if (uiBase is { IsDisposed: false })
             {
                 m_UIBase = uiBase;
+                var window = UIBase.GetComponent<YIUIWindowComponent>();
+                m_UIWindow = window != null ? window : default;
+                var panel = UIBase.GetComponent<YIUIPanelComponent>();
+                m_UIPanel = panel != null ? panel : default;
             }
             else
             {
                 m_UIBase = default;
+                m_UIWindow = default;
+                m_UIPanel = default;
             }
         }
 

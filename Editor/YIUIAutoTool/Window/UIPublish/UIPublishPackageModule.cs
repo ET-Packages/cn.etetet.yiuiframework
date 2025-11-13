@@ -32,16 +32,27 @@ namespace YIUIFramework.Editor
         public string PkgName;
     }
 
-    public class UIPublishPackageModule : BaseYIUIToolModule
+    public partial class UIPublishPackageModule : BaseYIUIToolModule
     {
         private UIPublishModule m_UIPublishModule;
 
         private UIAtlasModule m_UIAtlasModule;
 
+        [OnInspectorGUI]
+        [PropertyOrder(999)]
+        private void BaseSpace1()
+        {
+            GUILayout.Space(20);
+        }
+
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [LabelText("模块名")]
         [ReadOnly]
         public string PkgName;
 
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [FolderPath]
         [LabelText("模块路径")]
         [ReadOnly]
@@ -49,10 +60,14 @@ namespace YIUIFramework.Editor
 
         private UIPublishPackageModuleData Data;
 
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [EnumToggleButtons]
         [HideLabel]
         public EUIPublishPackageData m_UIPublishPackageData = EUIPublishPackageData.CDETable;
 
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [LabelText("当前模块所有组件")]
         [ReadOnly]
         [ShowInInspector]
@@ -60,6 +75,8 @@ namespace YIUIFramework.Editor
         [ShowIf("m_UIPublishPackageData", EUIPublishPackageData.CDETable)]
         private List<UIBindCDETable> m_AllCDETable = new List<UIBindCDETable>();
 
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [LabelText("当前模块所有精灵")]
         [ReadOnly]
         [ShowInInspector]
@@ -69,12 +86,16 @@ namespace YIUIFramework.Editor
 
         //根据精灵文件夹创建对应的图集数量
         [LabelText("所有图集名称")]
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [ReadOnly]
         [HideInInspector]
         [OnStateUpdate("@$property.State.Expanded = true")]
         [ShowIf("m_UIPublishPackageData", EUIPublishPackageData.Atlas)]
         public HashSet<string> m_AtlasName = new HashSet<string>();
 
+        [PropertyOrder(1000)]
+        [BoxGroup("基础信息", centerLabel: true)]
         [LabelText("当前模块所有图集")]
         [ReadOnly]
         [ShowInInspector]
@@ -83,8 +104,8 @@ namespace YIUIFramework.Editor
         private List<SpriteAtlas> m_AllSpriteAtlas = new List<SpriteAtlas>();
 
         [GUIColor(0.4f, 0.8f, 1)]
-        [Button("发布当前模块", 50)]
         [PropertyOrder(-999)]
+        [Button("发布当前模块", 50, Icon = SdfIconType.Upload, IconAlignment = IconAlignment.LeftOfText)]
         private void PublishCurrent()
         {
             PublishCurrent(true);
@@ -159,12 +180,15 @@ namespace YIUIFramework.Editor
                 SetData(data.PublishModule, data.ResPath, data.PkgName);
                 Refresh();
                 AddAllAssetsAtPath();
+                PartialInitialize();
             }
             else
             {
                 Debug.LogError($"数据错误");
             }
         }
+
+        partial void PartialInitialize();
 
         private void AddAllAssetsAtPath()
         {

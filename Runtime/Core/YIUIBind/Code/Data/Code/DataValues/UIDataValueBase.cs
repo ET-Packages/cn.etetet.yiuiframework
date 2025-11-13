@@ -90,9 +90,9 @@ namespace YIUIFramework
 
             var oldValue = m_Value;
             SetValueFrom(value);
-            InvokeValueChangAction();
             if (notify)
             {
+                InvokeValueChangAction();
                 InvokeValueChangAction(value, oldValue);
             }
             return true;

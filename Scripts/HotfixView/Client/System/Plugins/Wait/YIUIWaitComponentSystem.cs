@@ -19,7 +19,7 @@ namespace ET.Client
         [EntitySystem]
         private static void Destroy(this YIUIWaitComponent self)
         {
-            self.Notify(HashWaitError.Destroy);
+            self.Notify(EHashWaitError.Destroy);
         }
 
         [EntitySystem]
@@ -27,13 +27,13 @@ namespace ET.Client
         {
             if (viewCloseResult)
             {
-                self.Notify(HashWaitError.Success);
+                self.Notify(EHashWaitError.Success);
             }
 
             await ETTask.CompletedTask;
         }
 
-        private static void Notify(this YIUIWaitComponent self, HashWaitError error)
+        public static void Notify(this YIUIWaitComponent self, EHashWaitError error)
         {
             if (self.m_IsWaitCompleted) return;
             self.m_IsWaitCompleted = true;
@@ -47,7 +47,7 @@ namespace ET.Client
 
             if (self.m_WaitId != 0)
             {
-                self.Notify(HashWaitError.Reset);
+                self.Notify(EHashWaitError.Reset);
             }
 
             if (waitId == 0)

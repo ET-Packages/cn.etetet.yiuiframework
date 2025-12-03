@@ -18,22 +18,22 @@ namespace ET
         {
             foreach (var hashCode in self.m_HashWaitTasks.Keys.ToArray())
             {
-                self.Notify(hashCode, HashWaitError.Destroy, false);
+                self.Notify(hashCode, EHashWaitError.Destroy, false);
             }
         }
 
-        public static async ETTask<HashWaitError> Wait(this HashWait self, long hashCode)
+        public static async ETTask<EHashWaitError> Wait(this HashWait self, long hashCode)
         {
             if (self.m_HashWaitTasks.ContainsKey(hashCode))
             {
                 Log.Error($"已经有Wait在等待 {hashCode} 的结果 不能重复等待");
-                return HashWaitError.Error;
+                return EHashWaitError.Error;
             }
 
             EntityRef<HashWait> selfRef = self;
             var cancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
             self = selfRef.Entity;
-            var task = ETTask<HashWaitError>.Create(true);
+            var task = ETTask<EHashWaitError>.Create(true);
             self.m_HashWaitTasks.Add(hashCode, task);
 
             try
@@ -48,11 +48,11 @@ namespace ET
 
             void CancelAction()
             {
-                selfRef.Entity?.Notify(hashCode, HashWaitError.Cancel, false);
+                selfRef.Entity?.Notify(hashCode, EHashWaitError.Cancel, false);
             }
         }
 
-        public static void Notify(this HashWait self, long hashCode, HashWaitError error = HashWaitError.Success, bool waitFrame = true)
+        public static void Notify(this HashWait self, long hashCode, EHashWaitError error = EHashWaitError.Success, bool waitFrame = true)
         {
             if (!self.m_HashWaitTasks.Remove(hashCode, out var task))
             {
@@ -69,7 +69,7 @@ namespace ET
             }
         }
 
-        private static async ETTask Notify(Scene scene, ETTask<HashWaitError> task, HashWaitError error)
+        private static async ETTask Notify(Scene scene, ETTask<EHashWaitError> task, EHashWaitError error)
         {
             await scene?.GetComponent<TimerComponent>().WaitFrameAsync();
             task?.SetResult(error);

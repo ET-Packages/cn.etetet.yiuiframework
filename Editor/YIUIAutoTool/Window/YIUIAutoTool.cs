@@ -127,10 +127,17 @@ namespace YIUIFramework.Editor
 
         private bool m_FirstInit = true;
         private StringPrefs m_LastSelectMenuPrefs = new StringPrefs("YIUIAutoTool_LastSelectMenu", null, "全局设置");
+        private StringPrefs m_LastSelectToolModulePathPrefs = new StringPrefs("YIUIAutoTool_LastSelectToolModulePath", null, "");
         private readonly HashSet<OdinMenuItem> m_FirstSelect = new();
+        private bool m_RestoringSelection;
 
         private void OnSelectionChanged(SelectionChangedType obj)
         {
+            if (m_RestoringSelection)
+            {
+                return;
+            }
+
             if (obj != SelectionChangedType.ItemAdded)
             {
                 return;
@@ -139,6 +146,17 @@ namespace YIUIFramework.Editor
             if (m_FirstInit)
             {
                 m_FirstInit = false;
+
+                if (!string.IsNullOrEmpty(m_LastSelectToolModulePathPrefs.Value))
+                {
+                    m_RestoringSelection = true;
+                    var restored = SelectChainByPath(m_LastSelectToolModulePathPrefs.Value);
+                    m_RestoringSelection = false;
+                    if (restored != null)
+                    {
+                        return;
+                    }
+                }
 
                 foreach (var menu in m_OdinMenuTree.MenuItems)
                 {
@@ -162,6 +180,12 @@ namespace YIUIFramework.Editor
             if (selectedMenuItem.Value is BaseTreeMenuItem menuItem)
             {
                 menuItem.SelectionMenu();
+                m_LastSelectToolModulePathPrefs.Value = menuItem.ModuleName;
+            }
+            else if (selectedMenuItem.Value is BaseYIUIToolModule module)
+            {
+                module.SelectionMenu();
+                m_LastSelectToolModulePathPrefs.Value = module.ModuleName;
             }
 
             if (m_FirstSelect.Add(selectedMenuItem))
@@ -178,6 +202,139 @@ namespace YIUIFramework.Editor
                 if (!menu.IsSelected) continue;
                 m_LastSelectMenuPrefs.Value = menu.Name;
                 break;
+            }
+
+            var root = selectedMenuItem;
+            while (root.Parent != null)
+            {
+                root = root.Parent;
+            }
+
+            m_LastSelectMenuPrefs.Value = root.Name;
+        }
+
+        private OdinMenuItem FindMenuItemByModulePath(string modulePath)
+        {
+            foreach (var root in m_OdinMenuTree.MenuItems)
+            {
+                var result = FindRecursive(root, modulePath);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
+
+        private OdinMenuItem FindRecursive(OdinMenuItem item, string modulePath)
+        {
+            if (item.Value is BaseTreeMenuItem bt && bt.ModuleName == modulePath) return item;
+            if (item.Value is BaseYIUIToolModule bm && bm.ModuleName == modulePath) return item;
+            foreach (var child in item.ChildMenuItems)
+            {
+                var res = FindRecursive(child, modulePath);
+                if (res != null) return res;
+            }
+
+            return null;
+        }
+
+        private void ExpandParents(OdinMenuItem item)
+        {
+            var cur = item.Parent;
+            while (cur != null)
+            {
+                cur.Toggled = true;
+                cur = cur.Parent;
+            }
+
+            item.Toggled = true;
+        }
+
+        private OdinMenuItem SelectChainByPath(string modulePath)
+        {
+            if (string.IsNullOrEmpty(modulePath))
+            {
+                return null;
+            }
+
+            var segments = modulePath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (segments.Length == 0)
+            {
+                return null;
+            }
+
+            OdinMenuItem current = null;
+
+            foreach (var root in m_OdinMenuTree.MenuItems)
+            {
+                if (root.Name == segments[0])
+                {
+                    current = root;
+                    break;
+                }
+            }
+
+            if (current == null)
+            {
+                return null;
+            }
+
+            SelectAndInit(current);
+            ExpandParents(current);
+
+            for (int i = 1; i < segments.Length; i++)
+            {
+                var nextName = segments[i];
+                OdinMenuItem next = null;
+                foreach (var child in current.ChildMenuItems)
+                {
+                    if (child.Name == nextName)
+                    {
+                        next = child;
+                        break;
+                    }
+                }
+
+                if (next == null)
+                {
+                    SelectAndInit(current);
+                    foreach (var child in current.ChildMenuItems)
+                    {
+                        if (child.Name == nextName)
+                        {
+                            next = child;
+                            break;
+                        }
+                    }
+                }
+
+                if (next == null)
+                {
+                    return null;
+                }
+
+                current = next;
+                SelectAndInit(current);
+                ExpandParents(current);
+            }
+
+            return current;
+        }
+
+        private void SelectAndInit(OdinMenuItem item)
+        {
+            item.Select();
+            item.Toggled = true;
+            if (item.Value is BaseTreeMenuItem bt)
+            {
+                bt.SelectionMenu();
+            }
+            else if (item.Value is BaseYIUIToolModule bm)
+            {
+                bm.SelectionMenu();
             }
         }
 

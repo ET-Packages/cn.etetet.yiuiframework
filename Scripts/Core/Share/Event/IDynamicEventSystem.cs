@@ -34,7 +34,7 @@ namespace ET
         }
 
         #if ET10
-        public async ETTask Run(Entity o, A message)
+        public new async ETTask Run(Entity o, A message)
         {
             await DynamicEvent((T)o, message);
         }

@@ -11,6 +11,7 @@ namespace ET.Client
 {
     public static partial class YIUIFactory
     {
+        #if !YIUIMACRO_SYNCLOAD_CLOSE
         //普通的UI预制体 创建与摧毁 一定要成对
         //为了防止忘记 所以默认自动回收
         public static GameObject InstantiateGameObject(Scene scene, string pkgName, string resName)
@@ -28,6 +29,7 @@ namespace ET.Client
 
             return obj;
         }
+        #endif
 
         public static async ETTask<GameObject> InstantiateGameObjectAsync(Scene scene, string pkgName, string resName)
         {

@@ -9,6 +9,7 @@ namespace ET.Client
     [FriendOf(typeof(YIUILoadComponent))]
     public static partial class YIUILoadComponentSystem
     {
+        #if !YIUIMACRO_SYNCLOAD_CLOSE
         public static UnityObject LoadAsset(this YIUILoadComponent self, string pkgName, string resName, Type assetType)
         {
             var load = LoadHelper.GetLoad(pkgName, resName);
@@ -35,6 +36,7 @@ namespace ET.Client
             load.ResetHandle(obj, hashCode);
             return obj;
         }
+        #endif
 
         public static async ETTask<UnityObject> LoadAssetAsync(this YIUILoadComponent self, string pkgName, string resName, Type assetType)
         {

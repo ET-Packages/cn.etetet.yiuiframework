@@ -17,46 +17,6 @@ namespace ET.Client
             self.AutoReset();
         }
 
-        internal static Entity CreateCommon(string pkgName, string resName, GameObject obj, Entity parentEntity)
-        {
-            var bingVo = parentEntity.YIUIBind().GetBindVoByPath(pkgName, resName);
-            if (bingVo == null) return null;
-            var vo = bingVo.Value;
-            return CreateByObjVo(vo, obj, parentEntity);
-        }
-
-        internal static Entity CreatePanel(Scene scene, PanelInfo panelInfo, Entity parentEntity)
-        {
-            return Create(scene, panelInfo.PkgName, panelInfo.ResName, parentEntity);
-        }
-
-        private static T Create<T>(Scene scene, Entity parentEntity) where T : Entity
-        {
-            var data = parentEntity.YIUIBind().GetBindVoByType<T>();
-            if (data == null) return null;
-            var vo = data.Value;
-
-            return (T)Create(scene, vo, parentEntity);
-        }
-
-        private static Entity Create(Scene scene, string pkgName, string resName, Entity parentEntity)
-        {
-            var bingVo = parentEntity.YIUIBind().GetBindVoByPath(pkgName, resName);
-            return bingVo == null ? null : Create(scene, bingVo.Value, parentEntity);
-        }
-
-        private static Entity Create(Scene scene, YIUIBindVo vo, Entity parentEntity)
-        {
-            var obj = scene.YIUILoad()?.LoadAssetInstantiate(vo.PkgName, vo.ResName);
-            if (obj == null)
-            {
-                Debug.LogError($"没有加载到这个资源 {vo.PkgName}/{vo.ResName}");
-                return null;
-            }
-
-            return CreateByObjVo(vo, obj, parentEntity);
-        }
-
         [EnableAccessEntiyChild]
         internal static Entity CreateByObjVo(YIUIBindVo vo, GameObject obj, Entity parentEntity)
         {

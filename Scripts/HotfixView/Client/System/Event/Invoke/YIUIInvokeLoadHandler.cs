@@ -4,6 +4,7 @@ using UnityObject = UnityEngine.Object;
 
 namespace ET.Client
 {
+    #if !YIUIMACRO_SYNCLOAD_CLOSE
     [Invoke(EYIUIInvokeType.Sync)]
     public class YIUIInvokeLoadSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_Load, UnityObject>
     {
@@ -26,6 +27,7 @@ namespace ET.Client
             return obj;
         }
     }
+    #endif
 
     [Invoke(EYIUIInvokeType.Async)]
     public class YIUIInvokeLoadAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_Load, ETTask<UnityObject>>
@@ -50,6 +52,7 @@ namespace ET.Client
         }
     }
 
+    #if !YIUIMACRO_SYNCLOAD_CLOSE
     [Invoke(EYIUIInvokeType.Sync)]
     public class YIUIInvokeLoadTexture2DSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadTexture2D, Texture2D>
     {
@@ -80,6 +83,7 @@ namespace ET.Client
             return texture2D;
         }
     }
+    #endif
 
     [Invoke(EYIUIInvokeType.Async)]
     public class YIUIInvokeLoadTexture2DAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadTexture2D, ETTask<Texture2D>>

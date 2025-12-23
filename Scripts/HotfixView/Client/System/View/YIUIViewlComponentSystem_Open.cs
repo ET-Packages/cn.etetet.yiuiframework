@@ -65,6 +65,7 @@ namespace ET.Client
             }
             catch (Exception e)
             {
+                self = selfRef;
                 Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
             }
 
@@ -98,6 +99,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -130,6 +132,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -162,6 +165,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -194,6 +198,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -226,6 +231,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -263,6 +269,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }

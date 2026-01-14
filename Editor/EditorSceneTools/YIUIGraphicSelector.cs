@@ -100,12 +100,23 @@ namespace YIUIFramework.Editor
             }
 
             var screenPos = HandleUtility.GUIPointToScreenPixelCoordinate(mousePosition);
-            if (!cam.pixelRect.Contains(new Vector2(screenPos.x, screenPos.y)))
+            
+            // 检查屏幕坐标是否在相机视口范围内
+            var pixelRect = cam.pixelRect;
+            if (screenPos.x < pixelRect.xMin || screenPos.x > pixelRect.xMax ||
+                screenPos.y < pixelRect.yMin || screenPos.y > pixelRect.yMax)
             {
                 return;
             }
 
-            var ray = cam.ScreenPointToRay(screenPos);
+            // 使用ViewportPointToRay避免屏幕坐标超出视锥体的问题
+            var viewportPoint = cam.ScreenToViewportPoint(screenPos);
+            if (viewportPoint.x < 0 || viewportPoint.x > 1 || viewportPoint.y < 0 || viewportPoint.y > 1)
+            {
+                return;
+            }
+            
+            var ray = cam.ViewportPointToRay(viewportPoint);
 
             var currentPrefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var allGraphics = currentPrefabStage != null ? currentPrefabStage.prefabContentsRoot.GetComponentsInChildren<Graphic>() : FindObjectsByType<Graphic>(FindObjectsSortMode.None);

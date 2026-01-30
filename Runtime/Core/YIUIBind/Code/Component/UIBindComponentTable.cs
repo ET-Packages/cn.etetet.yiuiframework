@@ -31,6 +31,21 @@ namespace YIUIFramework
 
         public IReadOnlyDictionary<string, Component> AllBindDic => m_AllBindDic;
 
+        private bool m_Initialized;
+
+        private void Awake()
+        {
+            InitComponentTable();
+        }
+
+        public void InitComponentTable()
+        {
+            if (m_Initialized) return;
+            m_Initialized = true;
+
+            //可能的扩展初始化内容
+        }
+
         private Component FindComponent(string comName)
         {
             m_AllBindDic.TryGetValue(comName, out var value);

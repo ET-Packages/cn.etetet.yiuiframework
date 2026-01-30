@@ -34,9 +34,22 @@ namespace YIUIFramework
 
         public IReadOnlyDictionary<string, UIEventBase> EventDic => m_EventDic;
 
+        private bool m_Initialized;
+
         private void Awake()
         {
             InitEventTable();
+        }
+
+        /// <summary>
+        /// 显式初始化事件表
+        /// 解决同一帧内激活-关闭导致 Awake 不触发的问题
+        /// </summary>
+        public void InitEventTable()
+        {
+            if (m_Initialized) return;
+            m_Initialized = true;
+            InitializeBinds(transform);
         }
 
         public UIEventBase FindEvent(string eventName)
@@ -89,11 +102,6 @@ namespace YIUIFramework
         }
 
         #region 递归初始化所有绑定数据
-
-        private void InitEventTable()
-        {
-            InitializeBinds(transform);
-        }
 
         private void InitializeBinds(Transform transform)
         {

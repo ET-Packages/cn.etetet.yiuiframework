@@ -6,7 +6,6 @@ using Sirenix.Serialization;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using YIUIFramework.Editor;
 
 namespace YIUIFramework
 {
@@ -43,7 +42,7 @@ namespace YIUIFramework
         [Button("查看Component代码", 20)]
         private void OpenComponentScript()
         {
-            YIUIScriptHelper.OpenScript($"{this.ResName}Component");
+            OpenScriptByReflection($"{this.ResName}Component");
         }
 
         [PropertyOrder(-1000)]
@@ -52,7 +51,39 @@ namespace YIUIFramework
         [Button("查看System代码", 20)]
         private void OpenSystemScript()
         {
-            YIUIScriptHelper.OpenScript($"{this.ResName}ComponentSystem");
+            OpenScriptByReflection($"{this.ResName}ComponentSystem");
+        }
+
+        /// <summary>
+        /// 通过反射调用 YIUIScriptHelper.OpenScript
+        /// 解决 Runtime 程序集不能引用 Editor 程序集的问题
+        /// </summary>
+        private static MethodInfo s_OpenScriptMethod;
+
+        private static void OpenScriptByReflection(string scriptName, string searchKey = "")
+        {
+            // 缓存类型和方法，避免每次都遍历程序集
+            if (s_OpenScriptMethod == null)
+            {
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    var s_YIUIScriptHelperType = assembly.GetType("YIUIFramework.Editor.YIUIScriptHelper");
+                    if (s_YIUIScriptHelperType != null)
+                    {
+                        s_OpenScriptMethod = s_YIUIScriptHelperType.GetMethod("OpenScript", new[] { typeof(string), typeof(string) });
+                        break;
+                    }
+                }
+            }
+
+            if (s_OpenScriptMethod != null)
+            {
+                s_OpenScriptMethod.Invoke(null, new object[] { scriptName, searchKey ?? "" });
+            }
+            else
+            {
+                Debug.LogError("无法找到 YIUIScriptHelper.OpenScript 方法");
+            }
         }
 
         #region 界面参数
@@ -310,11 +341,21 @@ namespace YIUIFramework
 
         [LabelText("指定生成包名")]
         [ShowIf("ShowPackagesCreateBtn")]
+        [HorizontalGroup("生成包")]
         [ShowInInspector]
         [OdinSerialize]
         private string m_PackagesName;
 
         public string PackagesName => m_PackagesName;
+
+        [ShowIf("ShowPackagesCreateBtn")]
+        [HorizontalGroup("生成包", Width = 80)]
+        [Button("重置", 25)]
+        [GUIColor(1f, 1, 0f)]
+        private void ResetPackagesName()
+        {
+            m_PackagesName = UIOperationHelper.GetETPackagesName(this, false);
+        }
 
         [GUIColor(0.7f, 0.4f, 0.8f)]
         [Button("Packages生成", 50)]
@@ -435,7 +476,7 @@ namespace YIUIFramework
         [ShowIf(nameof(ShowAddComponentTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
-        private void AddComponentTable()
+        public void AddComponentTable()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             ComponentTable = gameObject.GetOrAddComponent<UIBindComponentTable>();
@@ -455,7 +496,7 @@ namespace YIUIFramework
         [ShowIf(nameof(ShowAddDataTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
-        private void AddDataTable()
+        public void AddDataTable()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             DataTable = gameObject.GetOrAddComponent<UIBindDataTable>();
@@ -476,7 +517,7 @@ namespace YIUIFramework
         [ShowIf(nameof(ShowAddEventTable))]
         [TitleGroup("YIUI CDE", "", alignment: TitleAlignments.Centered, horizontalLine: true, boldTitle: true, indent: false)]
         [PropertyOrder(int.MaxValue)]
-        private void AddEventTable()
+        public void AddEventTable()
         {
             if (!UIOperationHelper.CheckUIOperation()) return;
             EventTable = gameObject.GetOrAddComponent<UIBindEventTable>();

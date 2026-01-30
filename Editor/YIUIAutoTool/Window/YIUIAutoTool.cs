@@ -32,6 +32,24 @@ namespace YIUIFramework.Editor
             }
         }
 
+        /// <summary>
+        /// 选中指定模块页签
+        /// </summary>
+        public void SelectModule(string moduleName)
+        {
+            if (m_OdinMenuTree == null) return;
+
+            m_RestoringSelection = true;
+            var result = SelectChainByPath(moduleName);
+            m_RestoringSelection = false;
+
+            if (result != null)
+            {
+                m_LastSelectMenuPrefs.Value = moduleName;
+                m_LastSelectToolModulePathPrefs.Value = moduleName;
+            }
+        }
+
         //[MenuItem("ET/关闭 YIUI 自动化工具")]
         //错误时使用的 面板出现了错误 会导致如何都打不开 就需要先关闭
         public static void CloseWindow()
@@ -71,22 +89,25 @@ namespace YIUIFramework.Editor
 
             m_AllMenuItem.Add(new TreeMenuItem<UIPublishModule>(this, m_OdinMenuTree, UIPublishModule.m_PublishName, EditorIcons.UnityFolderIcon));
 
-            var assembly = AssemblyHelper.GetAssembly("ET.YIUIFramework.Editor");
-            Type[] types = assembly.GetTypes();
-
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var allAutoMenus = new List<YIUIAutoMenuData>();
 
-            foreach (Type type in types)
+            foreach (var assembly in assemblies)
             {
-                if (type.IsDefined(typeof(YIUIAutoMenuAttribute), false))
+                var types = assembly.GetTypes();
+
+                foreach (Type type in types)
                 {
-                    YIUIAutoMenuAttribute attribute = (YIUIAutoMenuAttribute)Attribute.GetCustomAttribute(type, typeof(YIUIAutoMenuAttribute));
-                    allAutoMenus.Add(new YIUIAutoMenuData
+                    if (type.IsDefined(typeof(YIUIAutoMenuAttribute), false))
                     {
-                        Type = type,
-                        MenuName = attribute.MenuName,
-                        Order = attribute.Order
-                    });
+                        YIUIAutoMenuAttribute attribute = (YIUIAutoMenuAttribute)Attribute.GetCustomAttribute(type, typeof(YIUIAutoMenuAttribute));
+                        allAutoMenus.Add(new YIUIAutoMenuData
+                        {
+                            Type = type,
+                            MenuName = attribute.MenuName,
+                            Order = attribute.Order
+                        });
+                    }
                 }
             }
 

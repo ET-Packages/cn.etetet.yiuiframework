@@ -58,8 +58,17 @@ namespace YIUIFramework.Editor
 
         private static void AlignToUICamera()
         {
-            if (TryAlignToGameObject("YIUICamera", 10f, true) || TryAlignToFirstCanvas(10f) || TryAlignToPrefabStage())
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (prefabStage != null)
             {
+                Selection.activeGameObject = prefabStage.prefabContentsRoot;
+                SceneView.lastActiveSceneView?.FrameSelected(); // 聚焦到选中的对象
+            }
+            else
+            {
+                if (TryAlignToGameObject("YIUICamera", 10f, true) || TryAlignToFirstCanvas(10f) || TryAlignToPrefabStage())
+                {
+                }
             }
         }
 

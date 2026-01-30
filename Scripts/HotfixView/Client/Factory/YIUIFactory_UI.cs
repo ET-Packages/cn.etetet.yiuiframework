@@ -27,12 +27,8 @@ namespace ET.Client
                 return null;
             }
 
-            var lastActive = obj.activeSelf;
-            if (!lastActive)
-            {
-                //加载时必须保证处于激活状态 否则一些Mono相关未初始化导致不可预知的错误
-                obj.SetActive(true);
-            }
+            // 显式初始化 CDE 表，解决同一帧内激活-关闭导致 Awake 不触发的问题
+            cdeTable.InitializeCDE();
 
             if (parentEntity is { IScene: null })
             {
@@ -44,13 +40,6 @@ namespace ET.Client
             var component = uiBase.AddComponent(vo.ComponentType);
             cdeTable.CreateComponent(component);
             uiBase.InitOwnerUIEntity(component); //这里就是要晚于其他内部组件这样才能访问时别人已经初始化好了
-
-            if (!lastActive)
-            {
-                //如果之前是隐藏的状态 则还原
-                //此时已经初始化完毕 所以可能会收到被隐藏的消息 请自行酌情处理
-                obj.SetActive(false);
-            }
 
             return component;
         }
@@ -66,14 +55,10 @@ namespace ET.Client
                     continue;
                 }
 
-                var childGameObject = childCde.gameObject;
-                var lastActive = childGameObject.activeSelf;
-                if (!lastActive)
-                {
-                    //加载时必须保证处于激活状态 否则一些Mono相关未初始化导致不可预知的错误
-                    childCde.gameObject.SetActive(true);
-                }
+                // 显式初始化子组件的 CDE 表
+                childCde.InitializeCDE();
 
+                var childGameObject = childCde.gameObject;
                 var data = parentEntity.YIUIBind().GetBindVoByPath(childCde.PkgName, childCde.ResName);
                 if (data == null) continue;
                 var vo = data.Value;
@@ -83,13 +68,6 @@ namespace ET.Client
                 cdeTable.AddUIOwner(childGameObject.name, component);
                 childCde.CreateComponent(component);
                 uiBase.InitOwnerUIEntity(component); //这里就是要晚于其他内部组件这样才能访问时别人已经初始化好了
-
-                if (!lastActive)
-                {
-                    //如果之前是隐藏的状态 则还原
-                    //此时已经初始化完毕 所以可能会收到被隐藏的消息 请自行酌情处理
-                    childGameObject.SetActive(false);
-                }
             }
         }
     }

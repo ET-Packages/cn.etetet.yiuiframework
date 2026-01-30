@@ -19,18 +19,18 @@ namespace YIUIFramework.Editor
         /// 添加左侧工具栏GUI
         /// </summary>
         /// <param name="action">GUI回调</param>
-        /// <param name="order">排序优先级，数值越小越靠前</param>
+        /// <param name="order">排序优先级，数值越小越靠前 从右往左</param>
         public static void AddLeftToolbarGUI(Action action, int order = 0)
         {
             m_LeftToolbarGUI.Add((order, action));
-            m_LeftToolbarGUI.Sort((a, b) => a.order.CompareTo(b.order));
+            m_LeftToolbarGUI.Sort((a, b) => b.order.CompareTo(a.order));
         }
 
         /// <summary>
         /// 添加右侧工具栏GUI
         /// </summary>
         /// <param name="action">GUI回调</param>
-        /// <param name="order">排序优先级，数值越小越靠前</param>
+        /// <param name="order">排序优先级，数值越小越靠前 从左往右</param>
         public static void AddRightToolbarGUI(Action action, int order = 0)
         {
             m_RightToolbarGUI.Add((order, action));

@@ -38,7 +38,7 @@ namespace ET.Client
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
             var code = self.BanLayerOptionForever();
-            await self.Root().GetComponent<TimerComponent>().WaitAsync(time);
+            await self.Root().TimerComponent.WaitAsync(time);
             self = selfRef;
             self.RecoverLayerOptionForever(code);
         }

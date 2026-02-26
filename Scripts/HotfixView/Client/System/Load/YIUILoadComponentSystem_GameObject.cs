@@ -11,6 +11,7 @@ namespace ET.Client
     [FriendOf(typeof(YIUILoadComponent))]
     public static partial class YIUILoadComponentSystem
     {
+        #if !YIUIMACRO_SYNCLOAD_CLOSE
         /// <summary>
         /// 同步加载 并实例化
         /// </summary>
@@ -22,6 +23,7 @@ namespace ET.Client
             YIUILoadHelperStatic.g_ObjectMap.Add(obj, asset);
             return obj;
         }
+        #endif
 
         /// <summary>
         /// 异步加载 并实例化

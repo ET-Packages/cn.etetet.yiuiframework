@@ -77,11 +77,21 @@ namespace YIUIFramework.Editor
             }
 
             relativePath = relativePath.Trim();
+
+            string projFolder = Application.dataPath;
+            string projRoot = projFolder.Substring(0, projFolder.Length - 6); // 去掉 "Assets"
+
             if (!string.IsNullOrEmpty(relativePath))
             {
                 if (relativePath.Contains("\\"))
                 {
                     relativePath = relativePath.Replace("\\", "/");
+                }
+
+                // 如果已经是绝对路径，直接返回
+                if (relativePath.StartsWith(projRoot))
+                {
+                    return relativePath;
                 }
 
                 if (!relativePath.StartsWith("/"))
@@ -90,8 +100,7 @@ namespace YIUIFramework.Editor
                 }
             }
 
-            string projFolder = Application.dataPath;
-            return projFolder.Substring(0, projFolder.Length - 7) + relativePath;
+            return projRoot + relativePath;
         }
 
         public static Type[] GetTypesByInterface(string fullName)
@@ -284,7 +293,7 @@ namespace YIUIFramework.Editor
             if (total != 0)
             {
                 progress = Mathf.InverseLerp(0, total, current);
-                message  = $"{message} {current + 1}/{total}";
+                message = $"{message} {current + 1}/{total}";
             }
 
             EditorUtility.DisplayProgressBar(title, message, progress);
@@ -296,6 +305,52 @@ namespace YIUIFramework.Editor
         public static void ClearProgressBar()
         {
             EditorUtility.ClearProgressBar();
+        }
+
+        /// <summary>
+        /// 将绝对路径或带../的相对路径转换为Unity Asset路径（以Assets/或Packages/开头）
+        /// </summary>
+        public static string ToAssetPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+
+            // 统一使用正斜杠
+            path = path.Replace("\\", "/");
+
+            // 获取项目根目录（不含Assets）
+            var projRoot = Application.dataPath;
+            projRoot = projRoot.Substring(0, projRoot.Length - 6); // 去掉 "Assets"
+
+            // 如果是绝对路径，先转换为相对路径
+            if (path.StartsWith(projRoot))
+            {
+                path = path.Substring(projRoot.Length);
+                if (path.StartsWith("/"))
+                {
+                    path = path.Substring(1);
+                }
+            }
+
+            // 处理 ../ 路径，规范化路径
+            if (path.Contains("../"))
+            {
+                var fullPath = Path.GetFullPath(Path.Combine(projRoot, path));
+                fullPath = fullPath.Replace("\\", "/");
+
+                if (fullPath.StartsWith(projRoot))
+                {
+                    path = fullPath.Substring(projRoot.Length);
+                    if (path.StartsWith("/"))
+                    {
+                        path = path.Substring(1);
+                    }
+                }
+            }
+
+            return path;
         }
 
         //检查目标路径文件夹是否存在

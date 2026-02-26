@@ -39,9 +39,23 @@ namespace YIUIFramework
                 {
                     var uiData = m_EventDic[oldName];
                     m_EventDic.Remove(oldName);
+
+                    // 规范化后命中同名事件时，优先保留绑定更多的一份，避免 Dictionary.Add 重复键异常
+                    if (m_EventDic.TryGetValue(newName, out var existsEvent))
+                    {
+                        if (existsEvent.GetBindCount() < uiData.GetBindCount())
+                        {
+                            m_EventDic[newName] = uiData;
+                        }
+
+                        continue;
+                    }
+
                     m_EventDic.Add(newName, uiData);
                 }
             }
+
+            m_Initialized = false;
 
             OnValidate();
         }
@@ -75,7 +89,7 @@ namespace YIUIFramework
                 if (!m_FirstGetEventType)
                 {
                     m_UITaskEventTypeTemp = new EnumPrefs<EUITaskEventType>("YIUIAutoTool_OtherModule_TaskEventType", null, EUITaskEventType.Async)
-                           .Value;
+                            .Value;
                     m_FirstGetEventType = true;
                 }
 
@@ -111,45 +125,110 @@ namespace YIUIFramework
         [ShowIf("@UIOperationHelper.CommonShowIf()")]
         private void AddNewUIEvent()
         {
-            if (string.IsNullOrEmpty(m_AddUIEventName))
+            var uiEventBase = EditorAddEvent(m_UITaskEventType, m_AddUIEventName, AllEventParamType);
+            if (uiEventBase == null)
             {
-                UnityTipsHelper.ShowError($"必须填写名称才可以添加");
                 return;
             }
 
-            if (m_EventDic.ContainsKey(m_AddUIEventName))
+            m_AddUIEventName = "";
+            AllEventParamType = new List<EUIEventParamType>();
+        }
+
+        private static string NormalizeEditorEventName(string eventName)
+        {
+            if (string.IsNullOrEmpty(eventName))
             {
-                UnityTipsHelper.ShowError($"已存在同名数据  请修改 {m_AddUIEventName}");
-                return;
+                return eventName;
+            }
+
+            var normalizedName = eventName;
+            if (!normalizedName.CheckFirstName(NameUtility.EventName))
+            {
+                normalizedName = $"{NameUtility.FirstName}{NameUtility.EventName}{normalizedName}";
+            }
+
+            return normalizedName.ChangeToBigName(NameUtility.EventName);
+        }
+
+        /// <summary>
+        /// 获取或创建事件（按规范化后的事件名去重）
+        /// </summary>
+        public UIEventBase EditorGetOrAddEvent(EUITaskEventType eventType, string eventMame, List<EUIEventParamType> eventParamType = null)
+        {
+            if (string.IsNullOrEmpty(eventMame))
+            {
+                UnityTipsHelper.ShowError($"必须填写名称才可以添加");
+                return null;
+            }
+
+            if (eventParamType == null)
+            {
+                eventParamType = new();
+            }
+
+            var normalizedEventName = NormalizeEditorEventName(eventMame);
+
+            if (!m_EventDic.TryGetValue(normalizedEventName, out var existedEvent))
+            {
+                m_EventDic.TryGetValue(eventMame, out existedEvent);
+            }
+
+            if (existedEvent != null)
+            {
+                var expectedTaskEvent = eventType == EUITaskEventType.Async;
+                if (existedEvent.IsTaskEvent != expectedTaskEvent)
+                {
+                    UnityTipsHelper.ShowError($"事件已存在但类型不一致: {normalizedEventName}");
+                    return null;
+                }
+
+                if (!existedEvent.AllEventParamType.ParamEquals(eventParamType))
+                {
+                    UnityTipsHelper.ShowError($"事件已存在但参数不一致: {normalizedEventName}，已存在参数:{existedEvent.AllEventParamType.GetAllParamTypeTips()}");
+                    return null;
+                }
+
+                return existedEvent;
             }
 
             UIEventBase uiEventBase;
 
-            switch (m_UITaskEventType)
+            switch (eventType)
             {
                 case EUITaskEventType.Sync:
-                    uiEventBase = UIEventBaseHelper.CreatorUIEventBase(m_AddUIEventName, AllEventParamType);
+                    uiEventBase = UIEventBaseHelper.CreatorUIEventBase(normalizedEventName, eventParamType);
                     break;
                 case EUITaskEventType.Async:
-                    uiEventBase = UITaskEventBaseHelper.CreatorUITaskEventBase(m_AddUIEventName, AllEventParamType);
+                    uiEventBase = UITaskEventBaseHelper.CreatorUITaskEventBase(normalizedEventName, eventParamType);
                     break;
                 default:
-                    uiEventBase = UIEventBaseHelper.CreatorUIEventBase(m_AddUIEventName, AllEventParamType);
-                    Logger.LogError($"是否实现了一个新的事件类型 未实现请检查 {m_UITaskEventType}");
+                    uiEventBase = UIEventBaseHelper.CreatorUIEventBase(normalizedEventName, eventParamType);
+                    Logger.LogError($"是否实现了一个新的事件类型 未实现请检查 {eventType}");
                     break;
             }
 
             if (uiEventBase == null)
             {
-                UnityTipsHelper.ShowError($"创建失败 {m_AddUIEventName}");
-                return;
+                UnityTipsHelper.ShowError($"创建失败 {normalizedEventName}");
+                return null;
             }
 
-            m_EventDic.Add(m_AddUIEventName, uiEventBase);
+            m_EventDic.Add(normalizedEventName, uiEventBase);
 
-            AllEventParamType = new List<EUIEventParamType>();
-            m_AddUIEventName  = "";
-            AutoCheck();
+            m_Initialized = false;
+
+            OnValidate();
+
+            return uiEventBase;
+        }
+
+        /// <summary>
+        /// 兼容旧调用（语义同 GetOrAdd）
+        /// </summary>
+        public UIEventBase EditorAddEvent(EUITaskEventType eventType, string eventMame, List<EUIEventParamType> eventParamType = null)
+        {
+            return EditorGetOrAddEvent(eventType, eventMame, eventParamType);
         }
 
         private void RemoveCallBack(UIEventBase uiEvent)
@@ -217,7 +296,7 @@ namespace YIUIFramework
             foreach (var data in m_EventDic)
             {
                 var uiEventName = data.Key;
-                var uiEvent     = data.Value;
+                var uiEvent = data.Value;
                 uiEvent.ClearBinds();
                 uiEvent.ChangeName(uiEventName);
                 uiEvent.OnRemoveAction = OnRemoveUIEvent;

@@ -13,6 +13,7 @@ namespace ET.Client
         }
     }
 
+    #if !YIUIMACRO_SYNCLOAD_CLOSE
     [Invoke(EYIUIInvokeType.Sync)]
     public class YIUIInvokeLoadInstantiateSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiate, Entity>
     {
@@ -21,6 +22,7 @@ namespace ET.Client
             return YIUIFactory.Instantiate(entity.Scene(), args.LoadType, args.ParentEntity, args.ParentTransform);
         }
     }
+    #endif
 
     [Invoke(EYIUIInvokeType.Async)]
     public class YIUIInvokeLoadInstantiateByVoAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiateByVo, ETTask<Entity>>
@@ -31,6 +33,7 @@ namespace ET.Client
         }
     }
 
+    #if !YIUIMACRO_SYNCLOAD_CLOSE
     [Invoke(EYIUIInvokeType.Sync)]
     public class YIUIInvokeLoadInstantiateByVoSyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_LoadInstantiateByVo, Entity>
     {
@@ -48,6 +51,7 @@ namespace ET.Client
             return YIUIFactory.InstantiateGameObject(entity.Scene(), args.PkgName, args.ResName);
         }
     }
+    #endif
 
     [Invoke(EYIUIInvokeType.Async)]
     public class YIUIInvokeInstantiateGameObjectAsyncHandler : AInvokeEntityHandler<YIUIInvokeEntity_InstantiateGameObject, ETTask<UnityGameObject>>

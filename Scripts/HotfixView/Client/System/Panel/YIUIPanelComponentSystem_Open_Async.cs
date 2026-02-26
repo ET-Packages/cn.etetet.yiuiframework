@@ -51,6 +51,8 @@ namespace ET.Client
                 return false;
             }
 
+            EntityRef<YIUIPanelComponent> selfRef = self;
+
             try
             {
                 if (self.OwnerUIEntity is IYIUIOpen _)
@@ -64,11 +66,13 @@ namespace ET.Client
             }
             catch (Exception e)
             {
+                self = selfRef;
                 Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
             }
 
             if (success)
             {
+                self = selfRef;
                 await self.UIWindow.InternalOnWindowOpenTween();
             }
 
@@ -97,6 +101,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -130,6 +135,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -163,6 +169,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -196,6 +203,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -229,6 +237,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }
@@ -267,6 +276,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
+                    self = selfRef;
                     Debug.LogError($"ResName{self.UIBase.UIResName}, err={e.Message}{e.StackTrace}");
                 }
             }

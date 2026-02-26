@@ -64,5 +64,20 @@ namespace YIUIFramework.Editor
         [LabelText("绑定使用反射 运行时使用AppDomain程序集 全部")]
         YIUIMACRO_BIND_BYUNITYDLL_ALL = 1 << 8, //默认只找ET.ModelView 开了这个会找全部的程序集
     }
+
+    [Flags]
+    [LabelText("资源加载")]
+    [YIUIEnumUnityMacro]
+    public enum EYIUIAssetsMacroType : long
+    {
+        [LabelText("所有")]
+        ALL = -1,
+
+        [LabelText("无")]
+        NONE = 0,
+
+        [LabelText("关闭同步加载")]
+        YIUIMACRO_SYNCLOAD_CLOSE = 1,
+    }
 }
 #endif

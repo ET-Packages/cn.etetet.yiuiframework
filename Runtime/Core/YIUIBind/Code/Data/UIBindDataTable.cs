@@ -32,9 +32,22 @@ namespace YIUIFramework
 
         public IReadOnlyDictionary<string, UIData> DataDic => m_DataDic;
 
+        private bool m_Initialized;
+
         private void Awake()
         {
             InitDataTable();
+        }
+
+        /// <summary>
+        /// 显式初始化数据表
+        /// 解决同一帧内激活-关闭导致 Awake 不触发的问题
+        /// </summary>
+        public void InitDataTable()
+        {
+            if (m_Initialized) return;
+            m_Initialized = true;
+            InitializeBinds(transform);
         }
 
         public UIData FindData(string dataName)
@@ -63,11 +76,6 @@ namespace YIUIFramework
         }
 
         #region 递归初始化所有绑定数据
-
-        private void InitDataTable()
-        {
-            InitializeBinds(transform);
-        }
 
         private void InitializeBinds(Transform transform)
         {

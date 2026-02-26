@@ -100,17 +100,19 @@ namespace ET.Client
             }
 
             var foreverCode = self.WindowAllowOptionByTween ? 0 : EventSystem.Instance?.YIUIInvokeEntitySync<YIUIInvokeEntity_BanLayerOptionForever, long>(self, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0;
-
+            EntityRef<YIUIWindowComponent> selfRef = self;
             try
             {
                 await self.OnOpenTween();
             }
             catch (Exception e)
             {
+                self = selfRef;
                 Debug.LogError($"{self.UIBase.UIResName} 打开动画执行报错 {e}");
             }
             finally
             {
+                self = selfRef;
                 if (!self.WindowAllowOptionByTween)
                 {
                     EventSystem.Instance?.YIUIInvokeEntitySync(self, new YIUIInvokeEntity_RecoverLayerOptionForever
@@ -133,12 +135,14 @@ namespace ET.Client
 
             var foreverCode = self.WindowAllowOptionByTween ? 0 : EventSystem.Instance?.YIUIInvokeEntitySync<YIUIInvokeEntity_BanLayerOptionForever, long>(self, new YIUIInvokeEntity_BanLayerOptionForever()) ?? 0;
 
+            EntityRef<YIUIWindowComponent> selfRef = self;
             try
             {
                 await self.OnCloseTween();
             }
             catch (Exception e)
             {
+                self = selfRef;
                 Debug.LogError($"{self.UIBase.UIResName} 关闭动画执行报错 {e}");
             }
             finally

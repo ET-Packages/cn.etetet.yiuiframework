@@ -9,7 +9,7 @@ namespace ET
     {
         public static async ETTask WaitUntil(this Entity self, Func<bool> func)
         {
-            var timer = self?.Root()?.GetComponent<TimerComponent>();
+            var timer = self?.Root()?.TimerComponent;
             if (timer == null)
             {
                 return;

@@ -402,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.data[0]
+      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
       value: '"path":"m_EventTable","value":$eref:0'
       objectReference: {fileID: 0}
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
@@ -412,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
+      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 6359887923374784699}
     - target: {fileID: 1993311397720142168, guid: d674ee91b1b97f24ebd3b751386eb2a2,
@@ -434,7 +434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.data[0]
+      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
       value: '"path":"m_EventDic.{\"u_EventClose\"}.m_Binds.[0]","value":$eref:0'
       objectReference: {fileID: 0}
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
@@ -444,7 +444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
+      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 7861693894884182204}
     - target: {fileID: 7046806567878809892, guid: d674ee91b1b97f24ebd3b751386eb2a2,

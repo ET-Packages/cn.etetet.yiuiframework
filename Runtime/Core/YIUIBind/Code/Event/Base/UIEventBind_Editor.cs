@@ -1,5 +1,5 @@
 ﻿#if UNITY_EDITOR
-
+using ET;
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -8,6 +8,20 @@ namespace YIUIFramework
 {
     public abstract partial class UIEventBind
     {
+        public bool EditorAddBind(UIBindEventTable eventTable, UIEventBase uiEvent)
+        {
+            if (m_EventTable != null && m_EventTable != eventTable)
+            {
+                Logger.LogError(this, $"{gameObject.name} 事件表已绑定{m_EventTable.gameObject.name} 请检查 不允许换绑定 {eventTable.gameObject.name} ");
+                return false;
+            }
+
+            m_EventTable = eventTable;
+            m_UIEvent = uiEvent;
+            m_EventName = uiEvent.EventName;
+            return true;
+        }
+
         [GUIColor(0, 1, 0)]
         [ButtonGroup("UIEventBind")]
         [Button("跳转到实现", 20)]

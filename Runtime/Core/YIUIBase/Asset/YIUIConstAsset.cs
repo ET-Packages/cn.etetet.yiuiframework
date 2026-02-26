@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -262,15 +263,71 @@ namespace YIUIFramework
 
         #endregion
 
-        #region GM
+        #region 编辑器工具
 
-        [BoxGroup("GM", CenterLabel = true)]
-        [LabelText("GM打开快捷键")]
-        public KeyCode OpenGMViewKey = KeyCode.Escape;
+        #if UNITY_EDITOR
+        public const string YIUIGraphicSelectorEnableKey = "YIUIGraphicSelector_Enable";
 
-        [BoxGroup("GM", CenterLabel = true)]
-        [LabelText("默认打开第一个页签")]
-        public bool OpenGMViewFirstType = false;
+        [BoxGroup("编辑器工具", CenterLabel = true)]
+        [LabelText("图层快选工具")]
+        [OnValueChanged("YIUIGraphicSelectorEnableChanged")]
+        [OnInspectorInit("YIUIGraphicSelectorEnableInit")]
+        [ShowInInspector]
+        private bool m_YIUIGraphicSelectorEnable;
+
+        public bool YIUIGraphicSelectorEnable => UnityEditor.EditorPrefs.GetBool(YIUIGraphicSelectorEnableKey, true);
+
+        private void YIUIGraphicSelectorEnableInit()
+        {
+            m_YIUIGraphicSelectorEnable = UnityEditor.EditorPrefs.GetBool(YIUIGraphicSelectorEnableKey, true);
+        }
+
+        private void YIUIGraphicSelectorEnableChanged()
+        {
+            try
+            {
+                var editorAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == "ET.YIUIFramework.Editor");
+
+                if (editorAssembly != null)
+                {
+                    var graphicSelectorType = editorAssembly.GetType("YIUIFramework.Editor.YIUIGraphicSelector");
+                    if (graphicSelectorType != null)
+                    {
+                        var enableProperty = graphicSelectorType.GetProperty("Enable", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+
+                        if (enableProperty != null && enableProperty.CanWrite)
+                        {
+                            enableProperty.SetValue(null, m_YIUIGraphicSelectorEnable);
+                        }
+                        else
+                        {
+                            Debug.LogError($"没有找到 YIUIFramework.Editor.YIUIGraphicSelector  Enable 属性");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"没有找到 YIUIFramework.Editor.YIUIGraphicSelector");
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"没有找到程序集 ET.YIUIFramework.Editor");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"无法通过反射更新 YIUIGraphicSelector.Enable： {ex}");
+            }
+        }
+        #endif
+
+        #endregion
+
+        #region AI
+
+        [BoxGroup("AI", CenterLabel = true)]
+        [LabelText("AI客户端名称")]
+        public string YIUIDefaultOpenAIName = "droid";
 
         #endregion
     }

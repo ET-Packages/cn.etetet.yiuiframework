@@ -7,7 +7,7 @@ namespace ET.Client
     {
         public override async ETTask Handle(Entity entity, YIUIInvokeEntity_WaitFrameAsync args)
         {
-            await entity.Root().GetComponent<TimerComponent>().WaitFrameAsync();
+            await entity.Root().TimerComponent.WaitFrameAsync();
         }
     }
 
@@ -18,11 +18,11 @@ namespace ET.Client
         {
             if (args.CancellationToken == null)
             {
-                await entity.Root().GetComponent<TimerComponent>().WaitAsync(args.Time);
+                await entity.Root().TimerComponent.WaitAsync(args.Time);
             }
             else
             {
-                await entity.Root().GetComponent<TimerComponent>().WaitAsync(args.Time).NewContext(args.CancellationToken);
+                await entity.Root().TimerComponent.WaitAsync(args.Time).NewContext(args.CancellationToken);
             }
         }
     }
@@ -34,11 +34,11 @@ namespace ET.Client
         {
             if (args.CancellationToken == null)
             {
-                await entity.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000));
+                await entity.Root().TimerComponent.WaitAsync((long)(args.Time * 1000));
             }
             else
             {
-                await entity.Root().GetComponent<TimerComponent>().WaitAsync((long)(args.Time * 1000)).NewContext(args.CancellationToken);
+                await entity.Root().TimerComponent.WaitAsync((long)(args.Time * 1000)).NewContext(args.CancellationToken);
             }
         }
     }

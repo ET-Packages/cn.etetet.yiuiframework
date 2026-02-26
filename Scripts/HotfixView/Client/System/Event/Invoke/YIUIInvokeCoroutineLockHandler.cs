@@ -21,7 +21,7 @@ namespace ET.Client
                 lockType = CoroutineLockType.YIUIInvokeCoroutineLock;
             }
 
-            return await root.GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
+            return await root.CoroutineLockComponent.Wait(lockType, args.Lock);
         }
     }
 }

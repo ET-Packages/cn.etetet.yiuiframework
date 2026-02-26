@@ -47,6 +47,8 @@ namespace YIUIFramework
         {
             if (!UIOperationHelper.CheckUIOperation(this)) return;
 
+            m_Initialized = false;
+
             CheckAllBindName();
         }
 
@@ -77,7 +79,7 @@ namespace YIUIFramework
             m_AllBindPair.Add(
                 new UIBindPairData
                 {
-                    Name      = setName,
+                    Name = setName,
                     Component = component
                 });
 
@@ -135,8 +137,8 @@ namespace YIUIFramework
 
             for (var i = 0; i < m_AllBindPair.Count; i++)
             {
-                var bindPair  = m_AllBindPair[i];
-                var oldName   = bindPair.Name;
+                var bindPair = m_AllBindPair[i];
+                var oldName = bindPair.Name;
                 var component = bindPair.Component;
                 if (component == null)
                 {

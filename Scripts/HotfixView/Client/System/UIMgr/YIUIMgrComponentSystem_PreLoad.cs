@@ -73,7 +73,7 @@ namespace ET.Client
 
             var coroutineLockCode = panelInfo.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            using var coroutineLock = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             self = selfRef;
             panelInfo = self.GetPanelInfo(panelName);

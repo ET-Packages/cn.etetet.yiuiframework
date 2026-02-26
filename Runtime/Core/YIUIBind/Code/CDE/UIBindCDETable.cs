@@ -45,6 +45,17 @@ namespace YIUIFramework
         [HideInInspector]
         public UIBindEventTable EventTable;
 
+        /// <summary>
+        /// 显式初始化 CDE 三个表
+        /// 解决同一帧内激活-关闭导致 Awake 不触发的问题
+        /// </summary>
+        public void InitializeCDE()
+        {
+            ComponentTable?.InitComponentTable();
+            DataTable?.InitDataTable();
+            EventTable?.InitEventTable();
+        }
+
         [LabelText("UI包名")]
         [ReadOnly]
         public string PkgName;

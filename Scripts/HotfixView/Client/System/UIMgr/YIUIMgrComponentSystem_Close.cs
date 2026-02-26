@@ -59,7 +59,7 @@ namespace ET.Client
             EntityRef<YIUIMgrComponent> selfRef = self;
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var coroutineLock = ignoreLock ? null : await self.Root().GetComponent<CoroutineLockComponent>()?.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            using var _ = ignoreLock ? null : await self.Root().CoroutineLockComponent?.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
 
             if (info.UIPanel == null) return true;
 

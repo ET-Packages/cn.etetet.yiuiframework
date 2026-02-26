@@ -3,8 +3,7 @@
     "rootNamespace": "ET",
     "references": [
         "ET.Core",
-        "Unity.TextMeshPro",
-        "ET.SourceGeneratorAttribute"
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

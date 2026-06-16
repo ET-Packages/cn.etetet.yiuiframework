@@ -15,7 +15,7 @@ namespace YIUIFramework
     [InfoBox("提示: 可用事件参数 1个 , Object(PointerEventData)")]
     [LabelText("点击<PointerEventData>")]
     [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click PointerEventData】 UITaskEventBindClickPointerEventData")]
-    public class UITaskEventBindClickPointerEventData : UITaskEventBindClick
+    public partial class UITaskEventBindClickPointerEventData : UITaskEventBindClick
     {
         [NonSerialized]
         private readonly List<EUIEventParamType> m_FilterParamType = new() { EUIEventParamType.Object };

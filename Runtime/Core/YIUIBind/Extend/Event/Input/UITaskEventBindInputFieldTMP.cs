@@ -1,0 +1,69 @@
+﻿#if TextMeshPro
+using System;
+using System.Collections.Generic;
+using ET;
+using Sirenix.OdinInspector;
+using TMPro;
+using UnityEngine;
+
+namespace YIUIFramework
+{
+    [InfoBox("提示: 可用事件参数 <参数1:string(输入的值)>")]
+    [LabelText("输入栏<string> 变化时 异步")]
+    [RequireComponent(typeof(TMP_InputField))]
+    [AddComponentMenu("YIUIBind/TaskEvent/输入栏 【InputField TMP】 UITaskEventBindInputFieldTMP")]
+    public partial class UITaskEventBindInputFieldTMP : UIEventBind
+    {
+        [SerializeField]
+        [ReadOnly]
+        [Required("必须有此组件")]
+        [LabelText("输入栏")]
+        private TMP_InputField m_InputField;
+
+        protected override bool IsTaskEvent => true;
+
+        [NonSerialized]
+        private readonly List<EUIEventParamType> m_FilterParamType = new()
+        {
+            EUIEventParamType.String
+        };
+
+        protected override List<EUIEventParamType> GetFilterParamType => m_FilterParamType;
+
+        private void Awake()
+        {
+            m_InputField ??= GetComponent<TMP_InputField>();
+        }
+
+        private void OnEnable()
+        {
+            if (m_InputField == null) return;
+            m_InputField.onValueChanged.AddListener(OnValueChanged);
+        }
+
+        private void OnDisable()
+        {
+            if (m_InputField == null) return;
+            m_InputField.onValueChanged.RemoveListener(OnValueChanged);
+        }
+
+        private void OnValueChanged(string value)
+        {
+            try
+            {
+                OnTaskEvent(value).NoContext();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+                throw;
+            }
+        }
+
+        private async ETTask OnTaskEvent(string value)
+        {
+            await m_UIEvent?.InvokeAsync(value);
+        }
+    }
+}
+#endif

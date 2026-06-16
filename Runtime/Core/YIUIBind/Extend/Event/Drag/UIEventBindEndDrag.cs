@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("拖拽结束<obj>")]
     [AddComponentMenu("YIUIBind/Event/拖拽结束 【EndDrag PointerEventData】 UIEventBindEndDrag")]
-    public class UIEventBindEndDrag : UIEventBind, IEndDragHandler
+    public partial class UIEventBindEndDrag : UIEventBind, IEndDragHandler
     {
         [SerializeField]
         [LabelText("可选组件")]

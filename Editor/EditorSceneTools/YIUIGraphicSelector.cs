@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ET;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -122,7 +121,7 @@ namespace YIUIFramework.Editor
             {
                 return cam.ViewportPointToRay(viewportPoint);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

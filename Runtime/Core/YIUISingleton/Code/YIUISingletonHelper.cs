@@ -35,6 +35,8 @@ namespace YIUIFramework
         {
             //Debug.LogError("OnQuitting");
             IsQuitting = true;
+            Disposing = true;
+            m_YIUIMgrRef = default;
         }
 
         //只能由一个地方 真的需要彻底清除时调用

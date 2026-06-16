@@ -15,7 +15,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("点击<null>")]
     [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click】 UITaskEventBindClick")]
-    public class UITaskEventBindClick : UIEventBind, IPointerClickHandler
+    public partial class UITaskEventBindClick : UIEventBind, IPointerClickHandler
     {
         [SerializeField]
         [LabelText("拖拽时不响应点击")]

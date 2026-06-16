@@ -7,7 +7,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(Image))]
     [LabelText("ImageFill 图片Fill")]
     [AddComponentMenu("YIUIBind/Data/图片Fill 【ImageFill】 UIDataBindImageFill")]
-    public sealed class UIDataBindImageFill : UIDataBindSelectBase
+    public sealed partial class UIDataBindImageFill : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]

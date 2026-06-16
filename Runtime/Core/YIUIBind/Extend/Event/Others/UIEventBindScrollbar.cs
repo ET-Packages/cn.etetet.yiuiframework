@@ -10,7 +10,7 @@ namespace YIUIFramework
     [LabelText("滚动条<Float>")]
     [RequireComponent(typeof(Scrollbar))]
     [AddComponentMenu("YIUIBind/Event/滚动条 【Scrollbar】 UIEventBindScrollbar")]
-    public class UIEventBindScrollbar : UIEventBind
+    public partial class UIEventBindScrollbar : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

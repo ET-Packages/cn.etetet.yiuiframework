@@ -11,6 +11,7 @@ namespace ET.Client
         public RectTransform UILayerRoot { get; set; }
         public Camera UICamera { get; set; }
         public Canvas UICanvas { get; set; }
+        public RectTransform UIInitRoot { get; set; }
 
         //K1 = 层级枚举 V1 = 层级对应的rect
         //List = 当前层级中的当前所有UI 前面的代表这个UI在前面以此类推

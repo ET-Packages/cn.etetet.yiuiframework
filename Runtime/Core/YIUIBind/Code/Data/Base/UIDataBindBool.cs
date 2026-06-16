@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// <summary>
     /// bool类型基类
     /// </summary>
-    public abstract class UIDataBindBool : UIDataBindSelectBase
+    public abstract partial class UIDataBindBool : UIDataBindSelectBase
     {
         [SerializeField]
         [LabelText("所有结果逻辑")]

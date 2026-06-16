@@ -8,7 +8,7 @@ namespace YIUIFramework
     [LabelText("UI缩放")]
     [RequireComponent(typeof(RectTransform))]
     [AddComponentMenu("YIUIBind/Data/UI缩放 【RectScale3】 UIDataBindRectScale3")]
-    public class UIDataBindRectScale3 : UIDataBindSelectBase
+    public partial class UIDataBindRectScale3 : UIDataBindSelectBase
     {
         protected override int Mask()
         {

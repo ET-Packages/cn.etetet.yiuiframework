@@ -77,7 +77,11 @@ namespace ET.Client
 
             EntityRef<YIUIPanelComponent> selfRef = self;
 
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, resName.GetHashCode());
+            #else
             using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, resName.GetHashCode());
+            #endif
 
             self = selfRef;
             var data = self.YIUIBind().GetBindVoByResName(resName);
@@ -127,7 +131,11 @@ namespace ET.Client
 
             EntityRef<YIUIPanelComponent> selfRef = self;
 
+            #if ET9
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, typeof(T).GetHashCode());
+            #else
             using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, typeof(T).GetHashCode());
+            #endif
 
             self = selfRef;
             var data = self.YIUIBind().GetBindVoByType<T>();
@@ -346,14 +354,18 @@ namespace ET.Client
             self.m_LastCloseView.Clear();
             foreach (Entity view in self.m_ExistView.Values)
             {
-                var uiBase = view.GetParent<YIUIChild>();
-                var viewComponent = uiBase?.GetComponent<YIUIViewComponent>();
+                EntityRef<YIUIChild> uiBaseRef = view.GetParent<YIUIChild>();
+                var uiBase = uiBaseRef.Entity;
+                var viewComponent = uiBase.GetComponent<YIUIViewComponent>();
                 if (viewComponent != null && uiBase is { ActiveSelf: true })
                 {
-                    var uiWindow = viewComponent.UIWindow;
+                    EntityRef<YIUIWindowComponent> uiWindowRef = viewComponent.UIWindow;
+                    YIUIWindowComponent uiWindow = uiWindowRef;
                     await uiWindow.InternalOnWindowCloseTween();
                     self = selfRef;
+                    uiWindow = uiWindowRef;
                     self.m_LastCloseView.Add(uiWindow);
+                    uiBase = uiBaseRef;
                     uiBase.SetActive(false);
                 }
             }
@@ -366,6 +378,8 @@ namespace ET.Client
         /// </summary>
         internal static async ETTask OpenAllViewTween(this YIUIPanelComponent self, bool tween = true)
         {
+            EntityRef<YIUIPanelComponent> selfRef = self;
+
             foreach (YIUIWindowComponent uiWindow in self.m_LastCloseView)
             {
                 if (tween)
@@ -378,6 +392,7 @@ namespace ET.Client
                 }
             }
 
+            self = selfRef;
             self.m_LastCloseView.Clear();
         }
     }

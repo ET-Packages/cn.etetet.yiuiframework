@@ -7,7 +7,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(Text))]
     [LabelText("Text 文本")]
     [AddComponentMenu("YIUIBind/Data/文本 【Text】 UIDataBindText")]
-    public sealed class UIDataBindText : UIDataBindTextBase
+    public sealed partial class UIDataBindText : UIDataBindTextBase
     {
         [SerializeField]
         [ReadOnly]

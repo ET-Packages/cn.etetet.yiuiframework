@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("拖拽中<obj>")]
     [AddComponentMenu("YIUIBind/Event/拖拽中 【Drag PointerEventData】 UIEventBindDrag")]
-    public class UIEventBindDrag : UIEventBind, IDragHandler
+    public partial class UIEventBindDrag : UIEventBind, IDragHandler
     {
         [SerializeField]
         [LabelText("可选组件")]

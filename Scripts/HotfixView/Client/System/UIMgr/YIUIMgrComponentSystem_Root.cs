@@ -38,6 +38,13 @@ namespace ET.Client
                 return false;
             }
 
+            self.UIInitRoot = self.UIRoot.transform.FindChildByName(YIUIConstHelper.Const.UIInitRootName)?.GetComponent<RectTransform>();
+            if (self.UIInitRoot == null)
+            {
+                Debug.LogError($"初始化错误 没有找到UIInitRoot");
+                return false;
+            }
+
             self.UICanvasRoot = self.UICanvas.gameObject;
 
             self.UILayerRoot = self.UICanvasRoot.transform.FindChildByName(YIUIConstHelper.Const.UILayerRootName)?.GetComponent<RectTransform>();
@@ -73,6 +80,7 @@ namespace ET.Client
 
             canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             canvasScaler.referenceResolution = new Vector2(YIUIConstHelper.Const.DesignScreenWidth, YIUIConstHelper.Const.DesignScreenHeight);
+            canvasScaler.matchWidthOrHeight = YIUIConstHelper.Const.MatchWidthOrHeight;
 
             #endregion
 
@@ -172,6 +180,22 @@ namespace ET.Client
             }
 
             return null;
+        }
+
+        //第一个初始化界面，防止看穿看透用的一般是防沉迷界面
+        //登录成功后，第一个UI出来时调用 X秒后隐藏
+        //全局一般就一个地方调用一次
+        public static async ETTask CloseInitRootTips(this YIUIMgrComponent self, long time = 1000)
+        {
+            self.UIInitRoot.gameObject.SetActive(true);
+            EntityRef<YIUIMgrComponent> selfRef = self;
+            #if ET9
+            await self.Root().GetComponent<TimerComponent>().WaitAsync(time);
+            #else
+            await self.Root().TimerComponent.WaitAsync(time);
+            #endif
+            self = selfRef;
+            self.UIInitRoot.gameObject.SetActive(false);
         }
     }
 }

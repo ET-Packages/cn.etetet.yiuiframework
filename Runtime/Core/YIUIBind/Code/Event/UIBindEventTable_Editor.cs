@@ -135,7 +135,7 @@ namespace YIUIFramework
             AllEventParamType = new List<EUIEventParamType>();
         }
 
-        private static string NormalizeEditorEventName(string eventName)
+        public static string EditorNormalizeEventName(string eventName)
         {
             if (string.IsNullOrEmpty(eventName))
             {
@@ -156,10 +156,27 @@ namespace YIUIFramework
         /// </summary>
         public UIEventBase EditorGetOrAddEvent(EUITaskEventType eventType, string eventMame, List<EUIEventParamType> eventParamType = null)
         {
+            if (EditorTryGetOrAddEvent(eventType, eventMame, eventParamType, out var uiEventBase, out var error))
+            {
+                return uiEventBase;
+            }
+
+            UnityTipsHelper.ShowError(error);
+            return null;
+        }
+
+        /// <summary>
+        /// 获取或创建事件（无弹窗版本，供自动化工具调用）
+        /// </summary>
+        public bool EditorTryGetOrAddEvent(EUITaskEventType eventType, string eventMame, List<EUIEventParamType> eventParamType, out UIEventBase uiEventBase, out string error)
+        {
+            uiEventBase = null;
+            error = string.Empty;
+
             if (string.IsNullOrEmpty(eventMame))
             {
-                UnityTipsHelper.ShowError($"必须填写名称才可以添加");
-                return null;
+                error = "必须填写名称才可以添加";
+                return false;
             }
 
             if (eventParamType == null)
@@ -167,7 +184,7 @@ namespace YIUIFramework
                 eventParamType = new();
             }
 
-            var normalizedEventName = NormalizeEditorEventName(eventMame);
+            var normalizedEventName = EditorNormalizeEventName(eventMame);
 
             if (!m_EventDic.TryGetValue(normalizedEventName, out var existedEvent))
             {
@@ -179,20 +196,19 @@ namespace YIUIFramework
                 var expectedTaskEvent = eventType == EUITaskEventType.Async;
                 if (existedEvent.IsTaskEvent != expectedTaskEvent)
                 {
-                    UnityTipsHelper.ShowError($"事件已存在但类型不一致: {normalizedEventName}");
-                    return null;
+                    error = $"事件已存在但类型不一致: {normalizedEventName}";
+                    return false;
                 }
 
                 if (!existedEvent.AllEventParamType.ParamEquals(eventParamType))
                 {
-                    UnityTipsHelper.ShowError($"事件已存在但参数不一致: {normalizedEventName}，已存在参数:{existedEvent.AllEventParamType.GetAllParamTypeTips()}");
-                    return null;
+                    error = $"事件已存在但参数不一致: {normalizedEventName}，已存在参数:{existedEvent.AllEventParamType.GetAllParamTypeTips()}，请求参数:{eventParamType.GetAllParamTypeTips()}";
+                    return false;
                 }
 
-                return existedEvent;
+                uiEventBase = existedEvent;
+                return true;
             }
-
-            UIEventBase uiEventBase;
 
             switch (eventType)
             {
@@ -210,8 +226,8 @@ namespace YIUIFramework
 
             if (uiEventBase == null)
             {
-                UnityTipsHelper.ShowError($"创建失败 {normalizedEventName}");
-                return null;
+                error = $"创建失败 {normalizedEventName}";
+                return false;
             }
 
             m_EventDic.Add(normalizedEventName, uiEventBase);
@@ -220,7 +236,7 @@ namespace YIUIFramework
 
             OnValidate();
 
-            return uiEventBase;
+            return true;
         }
 
         /// <summary>

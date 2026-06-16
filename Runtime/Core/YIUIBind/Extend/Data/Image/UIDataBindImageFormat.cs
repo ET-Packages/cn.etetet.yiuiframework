@@ -10,7 +10,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(Image))]
     [LabelText("Image 图片Format")]
     [AddComponentMenu("YIUIBind/Data/图片Format 【ImageFormat】 UIDataBindImageFormat")]
-    public sealed class UIDataBindImageFormat : UIDataBindSelectBase
+    public sealed partial class UIDataBindImageFormat : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]

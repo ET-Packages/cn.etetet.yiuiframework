@@ -21,7 +21,11 @@ namespace ET.Client
                 lockType = CoroutineLockType.YIUIInvokeCoroutineLock;
             }
 
+            #if ET9
+            return await root.GetComponent<CoroutineLockComponent>().Wait(lockType, args.Lock);
+            #else
             return await root.CoroutineLockComponent.Wait(lockType, args.Lock);
+            #endif
         }
     }
 }

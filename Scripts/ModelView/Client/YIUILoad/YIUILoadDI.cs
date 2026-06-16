@@ -14,16 +14,6 @@ namespace ET.Client
     /// </summary>
     public static partial class YIUILoadDI
     {
-        #if !YIUIMACRO_SYNCLOAD_CLOSE
-        //同步加载方法
-        //参数1: pkgName 包名
-        //参数2: resName 资源名
-        //参数3: Type 需要加载的资源类型
-        //返回值: obj对象
-        [StaticField]
-        public static Func<string, string, Type, (UnityObject, int)> LoadAssetFunc { get; set; }
-        #endif
-
         //异步加载方法
         [StaticField]
         public static Func<string, string, Type, ETTask<(UnityObject, int)>> LoadAssetAsyncFunc { get; set; }

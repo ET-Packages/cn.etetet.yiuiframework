@@ -49,20 +49,24 @@ namespace YIUIFramework
         [LabelText("YIUI项目生成默认包")]
         public string UIETCreatePackagePath = "Assets/../Packages/cn.etetet.yiui";
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目脚本")]
         public string UIETComponentGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/Client/YIUIGen"; //自动生成的代码会覆盖不可修改
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目ET组件")]
         public string UIETComponentPath = "Assets/../Packages/cn.etetet.{0}/Scripts/ModelView/Client/YIUIComponent"; //玩家可编写的核心代码部分 ET系统
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         [LabelText("YIUI项目自定义脚本")]
         public string UIETSystemGenPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUIGen"; //自动生成的代码会覆盖不可修改
 
+        [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
-        [LabelText("YIUI项目ET系统")]
+        [LabelText("YIUI项目ET系统")] //相对路径 不允许自定义 会涉及到修改通用包代码路径变化造成的错误问题
         public string UIETSystemPath = "Assets/../Packages/cn.etetet.{0}/Scripts/HotfixView/Client/YIUISystem"; //玩家可编写的核心代码部分 ET系统
 
         [ReadOnly]
@@ -91,6 +95,10 @@ namespace YIUIFramework
         [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
         public string UIRootName = "YIUIRoot";
+
+        [ReadOnly]
+        [BoxGroup("项目配置", CenterLabel = true)]
+        public string UIInitRootName = "YIUIInitRoot";
 
         [ReadOnly]
         [BoxGroup("项目配置", CenterLabel = true)]
@@ -206,19 +214,21 @@ namespace YIUIFramework
 
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI宽度")]
-        public int DesignScreenWidth = 1920;
+        public int DesignScreenWidth = 1080;
 
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI高度")]
-        public int DesignScreenHeight = 1080;
+        public int DesignScreenHeight = 1920;
 
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI宽度(float)")]
-        public float DesignScreenWidth_F = 1920f;
+        [ReadOnly]
+        public float DesignScreenWidth_F => DesignScreenWidth;
 
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("UI高度(float)")]
-        public float DesignScreenHeight_F = 1080f;
+        [ReadOnly]
+        public float DesignScreenHeight_F => DesignScreenHeight;
 
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("根节点偏移")]
@@ -227,6 +237,11 @@ namespace YIUIFramework
         [BoxGroup("Root", CenterLabel = true)]
         [LabelText("每个层级的距离")]
         public int LayerDistance = 0;
+
+        [BoxGroup("Root", CenterLabel = true)]
+        [LabelText("匹配宽度或高度")]
+        [Range(0f, 1f)]
+        public float MatchWidthOrHeight = 0f;
 
         #endregion
 

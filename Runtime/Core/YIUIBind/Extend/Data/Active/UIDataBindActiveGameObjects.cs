@@ -6,7 +6,7 @@ namespace YIUIFramework
 {
     [LabelText("任意集合的GameObject的显隐")]
     [AddComponentMenu("YIUIBind/Data/显隐 【ActiveGameObjects】 UIDataBindActiveGameObjects y")]
-    public sealed class UIDataBindActiveGameObjects : UIDataBindBool
+    public sealed partial class UIDataBindActiveGameObjects : UIDataBindBool
     {
         [SerializeField]
         [LabelText("控制的目标")]

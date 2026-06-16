@@ -11,20 +11,6 @@ namespace ET.Client
     [FriendOf(typeof(YIUILoadComponent))]
     public static partial class YIUILoadComponentSystem
     {
-        #if !YIUIMACRO_SYNCLOAD_CLOSE
-        /// <summary>
-        /// 同步加载 并实例化
-        /// </summary>
-        public static GameObject LoadAssetInstantiate(this YIUILoadComponent self, string pkgName, string resName)
-        {
-            var asset = self.LoadAsset<GameObject>(pkgName, resName);
-            if (asset == null) return null;
-            var obj = UnityObject.Instantiate(asset);
-            YIUILoadHelperStatic.g_ObjectMap.Add(obj, asset);
-            return obj;
-        }
-        #endif
-
         /// <summary>
         /// 异步加载 并实例化
         /// </summary>
@@ -35,22 +21,6 @@ namespace ET.Client
             var obj = UnityObject.Instantiate(asset);
             YIUILoadHelperStatic.g_ObjectMap.Add(obj, asset);
             return obj;
-        }
-
-        /// <summary>
-        /// 异步加载资源对象
-        /// 回调类型
-        /// </summary>
-        public static async ETTask LoadAssetAsyncInstantiate(this YIUILoadComponent self, string pkgName, string resName, Action<UnityObject> action)
-        {
-            var obj = await self.LoadAssetAsyncInstantiate(pkgName, resName);
-            if (obj == null)
-            {
-                Debug.LogError($"异步加载对象失败 {pkgName} {resName}");
-                return;
-            }
-
-            action?.Invoke(obj);
         }
 
         /// <summary>

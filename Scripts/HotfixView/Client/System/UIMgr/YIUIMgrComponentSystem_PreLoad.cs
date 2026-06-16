@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using YIUIFramework;
 
@@ -73,7 +73,11 @@ namespace ET.Client
 
             var coroutineLockCode = panelInfo.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var coroutineLock = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             panelInfo = self.GetPanelInfo(panelName);
@@ -171,3 +175,4 @@ namespace ET.Client
         }
     }
 }
+

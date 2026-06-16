@@ -8,7 +8,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(TextMeshProUGUI))]
     [LabelText("Text 文本TMP")]
     [AddComponentMenu("YIUIBind/Data/文本TMP 【TextTMP】 UIDataBindTextTMP")]
-    public sealed class UIDataBindTextTMP : UIDataBindTextBase
+    public sealed partial class UIDataBindTextTMP : UIDataBindTextBase
     {
         [SerializeField]
         [ReadOnly]

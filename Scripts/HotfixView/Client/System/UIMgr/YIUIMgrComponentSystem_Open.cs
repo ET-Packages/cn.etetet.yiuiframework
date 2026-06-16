@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using YIUIFramework;
 
@@ -206,7 +206,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);
@@ -261,7 +265,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);
@@ -320,7 +328,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);
@@ -375,7 +387,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);
@@ -430,7 +446,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);
@@ -485,7 +505,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);
@@ -540,7 +564,11 @@ namespace ET.Client
 
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
-            using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #if ET9
+ using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
+ using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             self = selfRef;
             info = await self.OpenPanelStartAsync(panelName, rootRef.Entity ?? self);

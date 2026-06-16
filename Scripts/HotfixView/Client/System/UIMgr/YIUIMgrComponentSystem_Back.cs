@@ -40,7 +40,7 @@ namespace ET.Client
                 var childPanel = child.UIPanel;
                 if (childPanel == null)
                 {
-                    Log.Error($"错误,是否在异步过程中删除了对象");
+                    Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                     continue;
                 }
 
@@ -93,7 +93,7 @@ namespace ET.Client
                 childPanel = child.UIPanel;
                 if (childPanel == null)
                 {
-                    Log.Error($"错误,是否在异步过程中删除了对象");
+                    Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                     continue;
                 }
 
@@ -114,7 +114,7 @@ namespace ET.Client
                             var childWindow = child.UIWindow;
                             if (childWindow == null)
                             {
-                                Log.Error($"错误,是否在异步过程中删除了对象");
+                                Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                             }
                             else
                             {
@@ -184,7 +184,7 @@ namespace ET.Client
                 var childPanel = child.UIPanel;
                 if (childPanel == null)
                 {
-                    Log.Error($"错误,是否在异步过程中删除了对象");
+                    Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                     continue;
                 }
 
@@ -204,7 +204,7 @@ namespace ET.Client
                             var childWindow = child.UIWindow;
                             if (childWindow == null)
                             {
-                                Log.Error($"错误,是否在异步过程中删除了对象");
+                                Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                             }
                             else
                             {
@@ -214,7 +214,7 @@ namespace ET.Client
                             childPanel = child.UIPanel;
                             if (childPanel == null)
                             {
-                                Log.Error($"错误,是否在异步过程中删除了对象");
+                                Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                             }
                             else
                             {
@@ -359,7 +359,7 @@ namespace ET.Client
                 var childPanel = child.UIPanel;
                 if (childPanel == null)
                 {
-                    Log.Error($"错误,是否在异步过程中删除了对象");
+                    Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                     continue;
                 }
 
@@ -376,7 +376,7 @@ namespace ET.Client
                             var childWindow = child.UIWindow;
                             if (childWindow == null)
                             {
-                                Log.Error($"错误,是否在异步过程中删除了对象");
+                                Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                             }
                             else
                             {
@@ -386,7 +386,7 @@ namespace ET.Client
                             childPanel = child.UIPanel;
                             if (childPanel == null)
                             {
-                                Log.Error($"错误,是否在异步过程中删除了对象");
+                                Log.Error($"错误,是否在异步过程中删除了对象 {child.ResName}");
                             }
                             else
                             {

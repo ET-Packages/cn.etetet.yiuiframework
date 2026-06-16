@@ -10,7 +10,7 @@ namespace YIUIFramework
     [LabelText("输入栏<string> 结束时")]
     [RequireComponent(typeof(InputField))]
     [AddComponentMenu("YIUIBind/Event/输入栏 【InputFieldEnd】 UIEventBindInputFieldEnd")]
-    public class UIEventBindInputFieldEnd : UIEventBind
+    public partial class UIEventBindInputFieldEnd : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

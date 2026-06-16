@@ -8,7 +8,7 @@ namespace YIUIFramework
     [LabelText("UI位置")]
     [RequireComponent(typeof(RectTransform))]
     [AddComponentMenu("YIUIBind/Data/UI位置 【RectPos3】 UIDataBindRectPos3 y")]
-    public class UIDataBindRectPos3 : UIDataBindSelectBase
+    public partial class UIDataBindRectPos3 : UIDataBindSelectBase
     {
         protected override int Mask()
         {

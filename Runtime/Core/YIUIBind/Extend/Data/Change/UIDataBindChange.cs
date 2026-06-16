@@ -21,7 +21,7 @@ Event 那边已经做好一个自动关联 可以直接关联到事件回调
 不一定需要Selectable组件 他不是必须的")]
     [LabelText("改变数据")]
     [AddComponentMenu("YIUIBind/Data/★改变数据 【Change】 UIDataBindSelectBase")]
-    public class UIDataBindChange : UIDataBindSelectBase, IPointerClickHandler
+    public partial class UIDataBindChange : UIDataBindSelectBase, IPointerClickHandler
     {
         [OdinSerialize]
         [ShowInInspector]

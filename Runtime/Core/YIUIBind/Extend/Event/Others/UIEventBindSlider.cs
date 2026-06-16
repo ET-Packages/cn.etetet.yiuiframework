@@ -10,7 +10,7 @@ namespace YIUIFramework
     [LabelText("滑动条<Float>")]
     [RequireComponent(typeof(Slider))]
     [AddComponentMenu("YIUIBind/Event/滑动条 【Slider】 UIEventBindSlider")]
-    public class UIEventBindSlider : UIEventBind
+    public partial class UIEventBindSlider : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

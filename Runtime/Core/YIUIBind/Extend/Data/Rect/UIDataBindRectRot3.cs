@@ -8,7 +8,7 @@ namespace YIUIFramework
     [LabelText("UI旋转")]
     [RequireComponent(typeof(RectTransform))]
     [AddComponentMenu("YIUIBind/Data/UI旋转 【RectRot3】 UIDataBindRectRot3")]
-    public class UIDataBindRectRot3 : UIDataBindSelectBase
+    public partial class UIDataBindRectRot3 : UIDataBindSelectBase
     {
         protected override int Mask()
         {

@@ -23,19 +23,7 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            var saveName = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UICommonName}";
-            var savePath = $"{path}/{saveName}.prefab";
-
-            if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
-            {
-                UnityTipsHelper.ShowError($"已存在 请先重命名 {saveName}");
-                return;
-            }
-
-            var createCommon = CreateYIUICommon();
-            PrefabUtility.SaveAsPrefabAsset(createCommon, savePath);
-            Object.DestroyImmediate(createCommon);
-            UIMenuItemHelper.SelectAssetAtPath(savePath);
+            CreateYIUICommonByPath(path);
         }
 
         [MenuItem("GameObject/YIUI/Create UICommon", false, 3)]
@@ -51,10 +39,38 @@ namespace YIUIFramework.Editor
             Selection.activeObject = CreateYIUICommon(activeObject);
         }
 
-        public static GameObject CreateYIUICommon(GameObject activeObject = null)
+        public static bool CreateYIUICommonByPath(string path, string uiName = null)
+        {
+            if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
+            {
+                UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
+                return false;
+            }
+
+            var saveName = string.IsNullOrEmpty(uiName)
+                ? $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UICommonName}"
+                : uiName;
+            var savePath = $"{path}/{saveName}.prefab";
+
+            if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
+            {
+                UnityTipsHelper.ShowError($"已存在 请先重命名 {saveName}");
+                return false;
+            }
+
+            var createCommon = CreateYIUICommon(null, saveName);
+            PrefabUtility.SaveAsPrefabAsset(createCommon, savePath);
+            Object.DestroyImmediate(createCommon);
+            UIMenuItemHelper.SelectAssetAtPath(savePath);
+            return true;
+        }
+
+        public static GameObject CreateYIUICommon(GameObject activeObject = null, string uiName = null)
         {
             var commonObject = new GameObject();
-            commonObject.name = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UICommonName}";
+            commonObject.name = string.IsNullOrEmpty(uiName)
+                ? $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UICommonName}"
+                : uiName;
             var viewRect = commonObject.GetOrAddComponent<RectTransform>();
             commonObject.GetOrAddComponent<CanvasRenderer>();
             var cdeTable = commonObject.GetOrAddComponent<UIBindCDETable>();

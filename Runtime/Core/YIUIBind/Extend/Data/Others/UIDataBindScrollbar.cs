@@ -9,7 +9,7 @@ namespace YIUIFramework
     [LabelText("滚动条")]
     [RequireComponent(typeof(Scrollbar))]
     [AddComponentMenu("YIUIBind/Data/滚动条 【Scrollbar】 UIDataBindScrollbar")]
-    public class UIDataBindScrollbar : UIDataBindSelectBase
+    public partial class UIDataBindScrollbar : UIDataBindSelectBase
     {
         [ReadOnly]
         [Required("必须有此组件")]

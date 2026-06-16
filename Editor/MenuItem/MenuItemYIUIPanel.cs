@@ -26,30 +26,33 @@ namespace YIUIFramework.Editor
             CreateYIUIPanelByPath(path);
         }
 
-        internal static void CreateYIUIPanelByPath(string path)
+        public static bool CreateYIUIPanelByPath(string path, string uiName = null)
         {
             if (!path.Contains(YIUIConstHelper.Const.UIProjectResPath))
             {
                 UnityTipsHelper.ShowError($"请在路径 {YIUIConstHelper.Const.UIProjectResPath}/xxx/{YIUIConstHelper.Const.UIPrefabs} 下右键创建");
-                return;
+                return false;
             }
 
-            var saveName = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIPanelName}";
+            var saveName = string.IsNullOrEmpty(uiName)
+                ? $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIPanelName}"
+                : uiName;
             var savePath = $"{path}/{saveName}.prefab";
 
             if (AssetDatabase.LoadAssetAtPath(savePath, typeof(Object)) != null)
             {
                 UnityTipsHelper.ShowError($"已存在 请先重命名 {saveName}");
-                return;
+                return false;
             }
 
-            var createPanel = CreateYIUIPanel();
+            var createPanel = CreateYIUIPanel(null, saveName);
             PrefabUtility.SaveAsPrefabAsset(createPanel, savePath);
             Object.DestroyImmediate(createPanel);
             UIMenuItemHelper.SelectAssetAtPath(savePath);
+            return true;
         }
 
-        private static GameObject CreateYIUIPanel(GameObject activeObject = null)
+        private static GameObject CreateYIUIPanel(GameObject activeObject = null, string uiName = null)
         {
             //panel
             var panelObject = new GameObject();
@@ -62,7 +65,9 @@ namespace YIUIFramework.Editor
 
             var panelEditorData = cdeTable.PanelSplitData;
             panelEditorData.Panel = panelObject;
-            panelObject.name      = $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIPanelName}";
+            panelObject.name      = string.IsNullOrEmpty(uiName)
+                ? $"{YIUIConstHelper.Const.UIProjectName}{YIUIConstHelper.Const.UIPanelName}"
+                : uiName;
             if (activeObject != null)
             {
                 panelRect.SetParent(activeObject.transform, false);

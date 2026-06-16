@@ -15,7 +15,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("双击<null>")]
     [AddComponentMenu("YIUIBind/TaskEvent/双击 【DoubleClick】 UITaskEventBindDoubleClick")]
-    public class UITaskEventBindDoubleClick : UIEventBind, IPointerClickHandler
+    public partial class UITaskEventBindDoubleClick : UIEventBind, IPointerClickHandler
     {
         [SerializeField]
         [LabelText("双击间隔时间")]

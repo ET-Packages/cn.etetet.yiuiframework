@@ -36,6 +36,46 @@ namespace YIUIFramework
 
         #endif
 
+        [PropertyOrder(int.MinValue)]
+        [GUIColor(0, 0.5f, 0.9f)]
+        [ShowIf(nameof(ShowSelectPrefab))]
+        [Button("跳转选择到预制体", 20)]
+        private void SelectPrefab()
+        {
+            var cloneName = gameObject.name;
+            const string cloneSuffix = "(Clone)";
+            var prefabName = cloneName.Substring(0, cloneName.Length - cloneSuffix.Length).TrimEnd();
+            var guids = AssetDatabase.FindAssets($"{prefabName} t:Prefab");
+
+            UnityEngine.Object targetPrefab = null;
+            foreach (var guid in guids)
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+                if (prefab == null || !string.Equals(prefab.name, prefabName, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                targetPrefab = prefab;
+                break;
+            }
+
+            if (targetPrefab == null)
+            {
+                Debug.LogError($"未找到名为 {prefabName} 的预制体资源", gameObject);
+                return;
+            }
+
+            Selection.activeObject = targetPrefab;
+            EditorGUIUtility.PingObject(targetPrefab);
+        }
+
+        private bool ShowSelectPrefab()
+        {
+            return gameObject != null && gameObject.name.EndsWith("(Clone)", StringComparison.Ordinal);
+        }
+
         [PropertyOrder(-1000)]
         [GUIColor(0, 1, 0)]
         [ButtonGroup]

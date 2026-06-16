@@ -14,7 +14,7 @@ namespace YIUIFramework
     [LabelText("数据改变<null>")]
     [AddComponentMenu("YIUIBind/Event/数据改变 【ChangeDataValue】 UIEventBindChangeDataValue")]
     [RequireComponent(typeof(UIDataBindChange))]
-    public class UIEventBindChangeDataValue : UIEventBind
+    public partial class UIEventBindChangeDataValue : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

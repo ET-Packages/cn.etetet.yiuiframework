@@ -71,7 +71,17 @@ namespace ET
 
         private static async ETTask Notify(Scene scene, ETTask<EHashWaitError> task, EHashWaitError error)
         {
-            await scene?.TimerComponent.WaitFrameAsync();
+            if (scene == null || scene.IsDisposed)
+            {
+                Log.Error($"EHashWaitError 遇到一个未知的错误, {error}");
+                task?.SetResult(error);
+                return;
+            }
+            #if ET9
+            await scene.GetComponent<TimerComponent>().WaitFrameAsync();
+            #else
+            await scene.TimerComponent.WaitFrameAsync();
+            #endif
             task?.SetResult(error);
         }
     }

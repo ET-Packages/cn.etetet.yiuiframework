@@ -6,7 +6,7 @@ namespace YIUIFramework
 {
     [LabelText("GameObject的显隐")]
     [AddComponentMenu("YIUIBind/Data/显隐 【Active】 UIDataBindActive")]
-    public sealed class UIDataBindActive : UIDataBindBool
+    public sealed partial class UIDataBindActive : UIDataBindBool
     {
         [SerializeField]
         [LabelText("过度类型")]

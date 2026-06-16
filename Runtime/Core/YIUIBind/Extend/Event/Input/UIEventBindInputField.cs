@@ -10,7 +10,7 @@ namespace YIUIFramework
     [LabelText("输入栏<string> 变化时")]
     [RequireComponent(typeof(InputField))]
     [AddComponentMenu("YIUIBind/Event/输入栏 【InputField】 UIEventBindInputField")]
-    public class UIEventBindInputField : UIEventBind
+    public partial class UIEventBindInputField : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

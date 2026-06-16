@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Author: 亦亦
 // Mail: 379338943@qq.com
 // Data: 2023年2月12日
@@ -35,7 +35,11 @@ namespace ET.Client
         {
             EntityRef<YIUIChild> selfRef = self;
 
+            #if ET9
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
+            #else
             using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
+            #endif
 
             bool result = true;
 
@@ -86,7 +90,11 @@ namespace ET.Client
         {
             EntityRef<YIUIChild> selfRef = self;
 
+            #if ET9
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
+            #else
             using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUIPanel, self.GetHashCode());
+            #endif
 
             bool result = true;
 

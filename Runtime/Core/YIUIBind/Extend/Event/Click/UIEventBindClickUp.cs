@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("点击 抬起<null>")]
     [AddComponentMenu("YIUIBind/Event/点击抬起 【ClickUp】 UIEventBindClickUp")]
-    public class UIEventBindClickUp : UIEventBind, IPointerUpHandler
+    public partial class UIEventBindClickUp : UIEventBind, IPointerUpHandler
     {
         [SerializeField]
         [LabelText("可选组件")]

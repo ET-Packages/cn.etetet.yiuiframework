@@ -3,7 +3,11 @@
     "rootNamespace": "ET",
     "references": [
         "ET.Core",
-        "Unity.TextMeshPro"
+        "Coffee.UIEffect",
+        "spine-csharp",
+        "spine-unity",
+        "Unity.TextMeshPro",
+        "ET.SourceGeneratorAttribute"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

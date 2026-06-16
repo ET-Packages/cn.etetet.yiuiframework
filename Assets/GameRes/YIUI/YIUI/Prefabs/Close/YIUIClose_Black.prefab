@@ -6,11 +6,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
+  serializedVersion: 7
   m_Component:
   - component: {fileID: 2690883929456458717}
   - component: {fileID: 1824179232348092840}
   m_Layer: 5
+  m_HasEditorInfo: 1
   m_Name: YIUIClose_Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,12 +54,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
+  serializedVersion: 7
   m_Component:
   - component: {fileID: 2782750137560494457}
   - component: {fileID: 2541015840992829733}
   - component: {fileID: 2254890113708535221}
   m_Layer: 5
+  m_HasEditorInfo: 1
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,13 +130,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
+  serializedVersion: 7
   m_Component:
   - component: {fileID: 3995928544127267923}
   - component: {fileID: 6129367779274889101}
   - component: {fileID: 402219322220802385}
   - component: {fileID: 2950119113476654867}
   m_Layer: 5
+  m_HasEditorInfo: 1
   m_Name: Click
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,12 +211,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
+  serializedVersion: 7
   m_Component:
   - component: {fileID: 5703974548660080601}
   - component: {fileID: 3771318884893341734}
   - component: {fileID: 4850912206810926220}
   m_Layer: 5
+  m_HasEditorInfo: 1
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,21 +402,21 @@ PrefabInstance:
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
+      propertyPath: serializationData.PrefabModifications.Array.data[0]
       value: '"path":"m_EventTable","value":$eref:0'
       objectReference: {fileID: 0}
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1566668432119703167, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
       value: 
       objectReference: {fileID: 6359887923374784699}
     - target: {fileID: 1993311397720142168, guid: d674ee91b1b97f24ebd3b751386eb2a2,
@@ -430,21 +434,21 @@ PrefabInstance:
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
+      propertyPath: serializationData.PrefabModifications.Array.data[0]
       value: '"path":"m_EventDic.{\"u_EventClose\"}.m_Binds.[0]","value":$eref:0'
       objectReference: {fileID: 0}
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2370415181578694264, guid: d674ee91b1b97f24ebd3b751386eb2a2,
         type: 3}
-      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
       value: 
       objectReference: {fileID: 7861693894884182204}
     - target: {fileID: 7046806567878809892, guid: d674ee91b1b97f24ebd3b751386eb2a2,

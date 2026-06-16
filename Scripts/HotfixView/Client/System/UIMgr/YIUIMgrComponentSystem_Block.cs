@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using YIUIFramework;
 
 namespace ET.Client
@@ -38,7 +38,11 @@ namespace ET.Client
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
             var code = self.BanLayerOptionForever();
-            await self.Root().TimerComponent.WaitAsync(time);
+            #if ET9
+ await self.Root().GetComponent<TimerComponent>().WaitAsync(time);
+            #else
+ await self.Root().TimerComponent.WaitAsync(time);
+            #endif
             self = selfRef;
             self.RecoverLayerOptionForever(code);
         }

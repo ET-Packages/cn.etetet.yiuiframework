@@ -11,7 +11,7 @@ namespace YIUIFramework
     [LabelText("下拉菜单<int>")]
     [RequireComponent(typeof(TMP_Dropdown))]
     [AddComponentMenu("YIUIBind/Event/下拉菜单 【Dropdown TMP】 UIEventBindDropdownTMP")]
-    public class UIEventBindDropdownTMP : UIEventBind
+    public partial class UIEventBindDropdownTMP : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

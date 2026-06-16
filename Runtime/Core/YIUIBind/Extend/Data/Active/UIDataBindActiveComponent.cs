@@ -6,7 +6,7 @@ namespace YIUIFramework
 {
     [LabelText("任意Component的显隐")]
     [AddComponentMenu("YIUIBind/Data/显隐 【ActiveComponent】 UIDataBindActiveComponent l")]
-    public sealed class UIDataBindActiveComponent : UIDataBindBool
+    public sealed partial class UIDataBindActiveComponent : UIDataBindBool
     {
         [SerializeField]
         [LabelText("控制的目标")]

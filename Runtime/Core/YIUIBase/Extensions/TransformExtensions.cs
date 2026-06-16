@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ET;
+using UnityEngine;
 
 namespace YIUIFramework
 {
@@ -37,7 +38,7 @@ namespace YIUIFramework
                     if (child.name == name)
                     {
                         target = child;
-                        find   = true;
+                        find = true;
                         break;
                     }
                 }
@@ -61,7 +62,7 @@ namespace YIUIFramework
 
             for (int i = 0; i < trans.childCount; ++i)
             {
-                var child  = trans.GetChild(i);
+                var child = trans.GetChild(i);
                 var result = FindByName(child, name1, name2);
                 if (result != null)
                 {
@@ -73,9 +74,9 @@ namespace YIUIFramework
         }
 
         public static Transform FindByName(this Transform trans,
-                                           string         name1,
-                                           string         name2,
-                                           string         name3)
+                                           string name1,
+                                           string name2,
+                                           string name3)
         {
             if (trans.name.Equals(name1) ||
                 trans.name.Equals(name2) ||
@@ -86,7 +87,7 @@ namespace YIUIFramework
 
             for (int i = 0; i < trans.childCount; ++i)
             {
-                var child  = trans.GetChild(i);
+                var child = trans.GetChild(i);
                 var result = FindByName(child, name1, name2, name3);
                 if (result != null)
                 {
@@ -106,7 +107,7 @@ namespace YIUIFramework
 
             for (int i = 0; i < trans.childCount; ++i)
             {
-                var child  = trans.GetChild(i);
+                var child = trans.GetChild(i);
                 var result = FindByName(child, name);
                 if (result != null)
                 {
@@ -119,6 +120,18 @@ namespace YIUIFramework
 
         public static Transform FindChildByName(this Transform trans, string childName)
         {
+            if (trans == null)
+            {
+                Debug.LogError($"查询的Transform 不能为null");
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(childName))
+            {
+                Debug.LogError($"查询的childName 不能为null");
+                return null;
+            }
+
             var childT = trans.Find(childName);
             if (childT != null) return childT;
 

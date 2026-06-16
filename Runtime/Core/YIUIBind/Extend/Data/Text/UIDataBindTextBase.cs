@@ -8,7 +8,7 @@ namespace YIUIFramework
     /// <summary>
     /// 文本数据修改 基类
     /// </summary>
-    public abstract class UIDataBindTextBase : UIDataBindSelectBase
+    public abstract partial class UIDataBindTextBase : UIDataBindSelectBase
     {
         [SerializeField]
         [Delayed] //延迟序列化

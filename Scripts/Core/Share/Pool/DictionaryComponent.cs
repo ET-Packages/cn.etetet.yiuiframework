@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class DictionaryComponent<T, V> : Dictionary<T, V>, IPool
+    public partial class DictionaryComponent<T, V> : Dictionary<T, V>, IPool
     {
         public DictionaryComponent()
         {
@@ -16,7 +16,6 @@ namespace ET
 
         public void Dispose()
         {
-            this.Clear();
             ObjectPool.Recycle(this);
         }
 

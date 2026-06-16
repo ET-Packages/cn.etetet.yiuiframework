@@ -25,7 +25,11 @@ namespace ET.Client
                 args.Interval = args.TotalTime;
             }
 
-            entity?.YIUICountDown()?.Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback);
+            CountDownMgr countDownMgr = entity?.YIUICountDown();
+            if (countDownMgr != null)
+            {
+                countDownMgr.Add(args);
+            }
         }
     }
 
@@ -52,7 +56,7 @@ namespace ET.Client
                 args.Interval = args.TotalTime;
             }
 
-            return entity.YIUICountDown().Add(args.TimerCallback, args.TotalTime, args.Interval, args.Forever, args.StartCallback);
+            return entity.YIUICountDown().Add(args);
         }
     }
 
@@ -61,7 +65,11 @@ namespace ET.Client
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_CountDownRemove args)
         {
-            entity?.YIUICountDown()?.Remove(args.TimerCallback);
+            CountDownMgr countDownMgr = entity?.YIUICountDown();
+            if (countDownMgr != null)
+            {
+                countDownMgr.Remove(args);
+            }
         }
     }
 
@@ -70,7 +78,8 @@ namespace ET.Client
     {
         public override bool Handle(Entity entity, YIUIInvokeEntity_CountDownRemove args)
         {
-            return entity?.YIUICountDown()?.Remove(args.TimerCallback) ?? false;
+            CountDownMgr countDownMgr = entity?.YIUICountDown();
+            return countDownMgr != null && countDownMgr.Remove(args);
         }
     }
 }

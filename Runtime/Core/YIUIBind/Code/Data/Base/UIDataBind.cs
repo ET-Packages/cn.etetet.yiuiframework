@@ -15,7 +15,7 @@ namespace YIUIFramework
     [ExecuteInEditMode]
     [HideLabel]
     [HideReferenceObjectPicker]
-    public abstract class UIDataBind : SerializedMonoBehaviour
+    public abstract partial class UIDataBind : SerializedMonoBehaviour
     {
         [Required("必须选择")]
         [SerializeField]

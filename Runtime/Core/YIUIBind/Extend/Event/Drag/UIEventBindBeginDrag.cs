@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("拖拽开始<obj>")]
     [AddComponentMenu("YIUIBind/Event/拖拽开始 【BeginDrag PointerEventData】 UIEventBindBeginDrag")]
-    public class UIEventBindBeginDrag : UIEventBind, IBeginDragHandler
+    public partial class UIEventBindBeginDrag : UIEventBind, IBeginDragHandler
     {
         [SerializeField]
         [LabelText("可选组件")]

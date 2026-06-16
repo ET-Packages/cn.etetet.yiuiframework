@@ -10,7 +10,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(Selectable))]
     [LabelText("是否可选择")]
     [AddComponentMenu("YIUIBind/Data/交互 【Selectable】 UIDataBindSelectable")]
-    public sealed class UIDataBindSelectable : UIDataBindBool
+    public sealed partial class UIDataBindSelectable : UIDataBindBool
     {
         [SerializeField]
         [ReadOnly]

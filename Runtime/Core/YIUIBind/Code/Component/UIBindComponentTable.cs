@@ -14,12 +14,11 @@ using UnityEngine;
 namespace YIUIFramework
 {
     //[DetailedInfoBox("UI 组件表 点击展开详细介绍", @"李胜扬")]
-    //[AddComponentMenu("YIUIBind/★★★YIUI Component Table 组件表★★★")]
     [HideLabel]
     [Serializable]
     [HideMonoScript]
     [DisallowMultipleComponent]
-    [AddComponentMenu("")]
+    [AddComponentMenu("YIUIBind/★★★YIUI Component Table 组件表★★★")]
     public sealed partial class UIBindComponentTable : SerializedMonoBehaviour
     {
         [OdinSerialize]

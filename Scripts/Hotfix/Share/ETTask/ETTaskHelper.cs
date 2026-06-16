@@ -7,9 +7,13 @@ namespace ET
     /// </summary>
     public static class ETTaskHelperExtend
     {
-        public static async ETTask WaitUntil(this Entity self, Func<bool> func)
+        /*public static async ETTask WaitUntil(this Entity self, Func<bool> func)
         {
+            #if ET9
+            var timer = self?.Root()?.GetComponent<TimerComponent>();
+            #else
             var timer = self?.Root()?.TimerComponent;
+            #endif
             if (timer == null)
             {
                 return;
@@ -49,6 +53,6 @@ namespace ET
                     return;
                 }
             }
-        }
+        }*/
     }
 }

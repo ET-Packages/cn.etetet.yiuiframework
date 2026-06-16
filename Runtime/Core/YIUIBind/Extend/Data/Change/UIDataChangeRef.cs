@@ -7,7 +7,7 @@ namespace YIUIFramework
 {
     [Serializable]
     [HideReferenceObjectPicker]
-    internal class UIDataChangeRef
+    internal partial class UIDataChangeRef
     {
         //当前的变量
         [SerializeField]

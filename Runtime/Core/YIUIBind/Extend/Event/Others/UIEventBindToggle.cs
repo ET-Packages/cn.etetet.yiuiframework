@@ -10,7 +10,7 @@ namespace YIUIFramework
     [LabelText("开关<bool>")]
     [RequireComponent(typeof(Toggle))]
     [AddComponentMenu("YIUIBind/Event/开关 【Toggle】 UIEventBindToggle")]
-    public class UIEventBindToggle : UIEventBind
+    public partial class UIEventBindToggle : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

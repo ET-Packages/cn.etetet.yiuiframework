@@ -10,7 +10,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(Toggle))]
     [LabelText("是否可选择")]
     [AddComponentMenu("YIUIBind/Data/开关 【Toggle】 UIDataBindSelectable")]
-    public sealed class UIDataBindToggle : UIDataBindBool
+    public sealed partial class UIDataBindToggle : UIDataBindBool
     {
         [SerializeField]
         [ReadOnly]

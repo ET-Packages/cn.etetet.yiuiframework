@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
@@ -23,7 +23,11 @@ namespace ET.Client
                 return (T)load.Object;
             }
 
+            #if ET9
+            using var _ = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.YIUILoad, load.NameCode);
+            #else
             using var _ = await self.Root().CoroutineLockComponent.Wait(CoroutineLockType.YIUILoad, load.NameCode);
+            #endif
 
             if (load.Object != null)
             {
@@ -46,28 +50,6 @@ namespace ET.Client
 
             load.ResetHandle(obj, hashCode);
             return (T)obj;
-        }
-
-        /// <summary>
-        /// 异步加载资源对象
-        /// 回调类型
-        /// </summary>
-        internal static void LoadAssetAsync<T>(this YIUILoadComponent self, string pkgName, string resName, Action<T> action) where T : UnityObject
-        {
-            self.LoadAssetAsyncAction(pkgName, resName, action).NoContext();
-        }
-
-        private static async ETTask LoadAssetAsyncAction<T>(this YIUILoadComponent self, string pkgName, string resName, Action<T> action)
-                where T : UnityObject
-        {
-            var asset = await self.LoadAssetAsync<T>(pkgName, resName);
-            if (asset == null)
-            {
-                Debug.LogError($"异步加载对象失败 {pkgName} {resName}");
-                return;
-            }
-
-            action?.Invoke(asset);
         }
     }
 }

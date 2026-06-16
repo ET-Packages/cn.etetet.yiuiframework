@@ -16,7 +16,7 @@ namespace YIUIFramework
     [InfoBox("提示: 可用事件参数 1个")]
     [LabelText("点击<String>")]
     [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click String】 UITaskEventBindClickString")]
-    public class UITaskEventBindClickString : UITaskEventBindClick
+    public partial class UITaskEventBindClickString : UITaskEventBindClick
     {
         [SerializeField]
         [LabelText("额外string参数值")]

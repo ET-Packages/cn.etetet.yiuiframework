@@ -14,6 +14,9 @@ namespace ET.Client
     /// UI事件分发
     /// </summary>
     [CodeProcess]
+    #if !YIUIMACRO_ALLOWINSTANCE_CLOSE
+    [AllowInstance]
+    #endif
     public partial class YIUIEventComponent : Singleton<YIUIEventComponent>, ISingletonAwake
     {
         private readonly Dictionary<Type, Dictionary<string, List<YIUIEventInfo>>> _AllEventInfo = new();

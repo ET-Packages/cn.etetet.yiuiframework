@@ -9,7 +9,7 @@ namespace YIUIFramework
     [LabelText("下拉菜单")]
     [RequireComponent(typeof(Dropdown))]
     [AddComponentMenu("YIUIBind/Data/下拉菜单 【Dropdown】 UIDataBindDropdown")]
-    public class UIDataBindDropdown : UIDataBindSelectBase
+    public partial class UIDataBindDropdown : UIDataBindSelectBase
     {
         protected override int Mask()
         {

@@ -16,7 +16,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("长按<obj>")]
     [AddComponentMenu("YIUIBind/Event/长按 【Press】 UIEventBindPress")]
-    public class UIEventBindPress : UIEventBind, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+    public partial class UIEventBindPress : UIEventBind, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
         [SerializeField]
         [LabelText("长按时间")]

@@ -10,7 +10,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(VideoPlayer))]
     [LabelText("VideoPlayer 视频播放器")]
     [AddComponentMenu("YIUIBind/Data/视频播放器 【VideoPlayer】 UIDataBindVideoPlayer")]
-    public sealed class UIDataBindVideoPlayer : UIDataBindSelectBase
+    public sealed partial class UIDataBindVideoPlayer : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]

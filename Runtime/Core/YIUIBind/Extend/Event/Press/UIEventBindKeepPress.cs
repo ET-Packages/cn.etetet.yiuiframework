@@ -13,7 +13,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("长按<obj>")]
     [AddComponentMenu("YIUIBind/Event/持续长按 【Press】 UIEventBindKeepPress")]
-    public class UIEventBindKeepPress : UIEventBind, IPointerDownHandler, IPointerMoveHandler, IPointerUpHandler, IPointerExitHandler
+    public partial class UIEventBindKeepPress : UIEventBind, IPointerDownHandler, IPointerMoveHandler, IPointerUpHandler, IPointerExitHandler
     {
         [SerializeField]
         [LabelText("长按回调间隔时间")]

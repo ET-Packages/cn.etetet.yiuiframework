@@ -62,15 +62,7 @@ namespace ET.Client
         /// </summary>
         public long m_AtCount = 0;
 
-        //统一所有取时间都用这个 且方便修改
-        [StaticField]
-        public static float GetTime
-        {
-            get
-            {
-                //这是一个倒计时时间不受暂停影响的
-                return Time.realtimeSinceStartup;
-            }
-        }
+        //统一所有取时间都用这个 且方便修改（倒计时时间不受暂停影响）
+        public float GetTime => Time.realtimeSinceStartup;
     }
 }

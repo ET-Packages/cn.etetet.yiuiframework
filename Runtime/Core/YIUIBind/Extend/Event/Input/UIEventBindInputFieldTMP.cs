@@ -11,7 +11,7 @@ namespace YIUIFramework
     [LabelText("输入栏<string> 变化时")]
     [RequireComponent(typeof(TMP_InputField))]
     [AddComponentMenu("YIUIBind/Event/输入栏 【InputField TMP】 UIEventBindInputFieldTMP")]
-    public class UIEventBindInputFieldTMP : UIEventBind
+    public partial class UIEventBindInputFieldTMP : UIEventBind
     {
         [SerializeField]
         [ReadOnly]

@@ -49,6 +49,8 @@ namespace YIUIFramework
         //确定移除
         public void OnDataRemoveCallBack()
         {
+            EditorRemoveDestroyedBinds();
+
             if (m_Binds == null || m_Binds.Count <= 0)
             {
                 return;
@@ -56,7 +58,14 @@ namespace YIUIFramework
 
             for (var i = m_Binds.Count - 1; i >= 0; i--)
             {
-                m_Binds[i].RemoveBindData(this);
+                var bind = m_Binds[i];
+                if (bind == null)
+                {
+                    m_Binds.RemoveAt(i);
+                    continue;
+                }
+
+                bind.RemoveBindData(this);
             }
         }
 
@@ -73,11 +82,18 @@ namespace YIUIFramework
 
         public int GetBindCount()
         {
+            EditorRemoveDestroyedBinds();
             return m_Binds?.Count ?? 0;
         }
 
         internal void AddBind(UIDataBind bind)
         {
+            if (bind == null)
+            {
+                return;
+            }
+
+            EditorRemoveDestroyedBinds();
             if (m_Binds?.IndexOf(bind) == -1)
             {
                 m_Binds?.Add(bind);
@@ -86,12 +102,40 @@ namespace YIUIFramework
 
         internal void RemoveBind(UIDataBind bind)
         {
-            m_Binds?.Remove(bind);
+            if (m_Binds == null)
+            {
+                return;
+            }
+
+            for (var i = m_Binds.Count - 1; i >= 0; i--)
+            {
+                var current = m_Binds[i];
+                if (current == null || current == bind)
+                {
+                    m_Binds.RemoveAt(i);
+                }
+            }
         }
 
         internal void ClearBinds()
         {
             m_Binds?.Clear();
+        }
+
+        private void EditorRemoveDestroyedBinds()
+        {
+            if (m_Binds == null)
+            {
+                return;
+            }
+
+            for (var i = m_Binds.Count - 1; i >= 0; i--)
+            {
+                if (m_Binds[i] == null)
+                {
+                    m_Binds.RemoveAt(i);
+                }
+            }
         }
     }
 }

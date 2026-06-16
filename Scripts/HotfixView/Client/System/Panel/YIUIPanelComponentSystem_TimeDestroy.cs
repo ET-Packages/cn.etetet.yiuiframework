@@ -33,7 +33,11 @@ namespace ET.Client
                 var oldCancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
 
                 self = selfRef;
+                #if ET9
+                await ETTaskSafely.Await(selfRef.Entity?.Root()?.GetComponent<TimerComponent>()?.WaitAsync((long)(selfRef.Entity?.CachePanelTime * 1000 ?? 0)));
+                #else
                 await ETTaskSafely.Await(selfRef.Entity?.Root()?.TimerComponent?.WaitAsync((long)(selfRef.Entity?.CachePanelTime * 1000 ?? 0)));
+                #endif
 
                 if (oldCancellationToken != null && oldCancellationToken.IsCancel()) //取消倒计时
                 {

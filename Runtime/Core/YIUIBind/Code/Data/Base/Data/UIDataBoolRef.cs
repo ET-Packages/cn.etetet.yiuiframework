@@ -7,7 +7,7 @@ namespace YIUIFramework
 {
     [Serializable]
     [HideReferenceObjectPicker]
-    internal class UIDataBoolRef
+    internal partial class UIDataBoolRef
     {
         //当前的变量
         [OdinSerialize]

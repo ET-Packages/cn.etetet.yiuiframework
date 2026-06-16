@@ -9,7 +9,7 @@ namespace YIUIFramework
     [LabelText("改变颜色")]
     [RequireComponent(typeof(Graphic))]
     [AddComponentMenu("YIUIBind/Data/颜色 【Color】 UIDataBindColor")]
-    public class UIDataBindColor : UIDataBindSelectBase
+    public partial class UIDataBindColor : UIDataBindSelectBase
     {
         protected override int Mask()
         {

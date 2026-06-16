@@ -59,7 +59,11 @@ namespace ET.Client
             EntityRef<YIUIMgrComponent> selfRef = self;
             var coroutineLockCode = info.PanelLayer == EPanelLayer.Panel ? YIUIConstHelper.Const.UIProjectName.GetHashCode() : panelName.GetHashCode();
 
+            #if ET9
+            using var _ = ignoreLock ? null : await self.Root().GetComponent<CoroutineLockComponent>()?.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #else
             using var _ = ignoreLock ? null : await self.Root().CoroutineLockComponent?.Wait(CoroutineLockType.YIUIPanel, coroutineLockCode);
+            #endif
 
             if (info.UIPanel == null) return true;
 
@@ -202,6 +206,61 @@ namespace ET.Client
         /// <param name="homeName">需要被打开的界面 且这个UI是存在的 否则无法打开</param>
         /// <param name="tween">动画</param>
         /// <param name="forceHome">如果不存在则 强制打开 被强制打开的无法触发Back Home消息 只会触发常规的open close</param>
+        internal static async ETTask<bool> CloseOtherPanelsForHome(this YIUIMgrComponent self, string homeName, bool tween = true)
+        {
+            EntityRef<YIUIMgrComponent> selfRef = self;
+
+            while (true)
+            {
+                self = selfRef;
+                if (self == null)
+                {
+                    return false;
+                }
+
+                PanelInfo closeTarget = null;
+
+                for (var layerIndex = 0; layerIndex < (int)EPanelLayer.Count; layerIndex++)
+                {
+                    var currentLayer = (EPanelLayer)layerIndex;
+                    var layerList = self.GetLayerPanelInfoList(currentLayer);
+
+                    for (var i = layerList.Count - 1; i >= 0; i--)
+                    {
+                        var child = layerList[i];
+                        if (child?.UIPanel == null || child.Name == homeName)
+                        {
+                            continue;
+                        }
+
+                        if ((child.UIPanel.PanelOption & EPanelOption.IgnoreClose) != 0)
+                        {
+                            continue;
+                        }
+
+                        closeTarget = child;
+                        break;
+                    }
+
+                    if (closeTarget != null)
+                    {
+                        break;
+                    }
+                }
+
+                if (closeTarget == null)
+                {
+                    return true;
+                }
+
+                var success = await self.ClosePanelAsync(closeTarget.Name, tween, true, true);
+                if (!success)
+                {
+                    return false;
+                }
+            }
+        }
+
         public static async ETTask<bool> HomePanel(this YIUIMgrComponent self, string homeName, bool tween = true, Scene forceHome = null)
         {
             #if YIUIMACRO_PANEL_OPENCLOSE
@@ -217,12 +276,18 @@ namespace ET.Client
             {
                 if (forceHome != null)
                 {
-                    EntityRef<Scene> rootRef = forceHome;
-                    await self.CloseAll(EPanelLayer.Panel, EPanelOption.IgnoreClose, tween);
-                    return await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_SceneOpenPanel, ETTask<bool>>(rootRef, new YIUIInvokeEntity_SceneOpenPanel
+                    EntityRef<YIUIMgrComponent> selfRef = self;
+                    var result = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_SceneOpenPanel, ETTask<bool>>(forceHome, new YIUIInvokeEntity_SceneOpenPanel
                     {
                         PanelName = homeName
                     });
+                    if (!result)
+                    {
+                        return false;
+                    }
+
+                    self = selfRef;
+                    return await self.CloseOtherPanelsForHome(homeName, tween);
                 }
             }
 

@@ -22,7 +22,7 @@ namespace YIUIFramework
     [LabelText("滑块")]
     [RequireComponent(typeof(Slider))]
     [AddComponentMenu("YIUIBind/Data/滑块 【Slider】 UIDataBindSlider")]
-    public class UIDataBindSlider : UIDataBindSelectBase
+    public partial class UIDataBindSlider : UIDataBindSelectBase
     {
         [ReadOnly]
         [Required("必须有此组件")]

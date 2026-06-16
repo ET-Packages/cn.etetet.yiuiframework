@@ -8,7 +8,7 @@ namespace YIUIFramework
     [LabelText("UI大小-高")]
     [RequireComponent(typeof(RectTransform))]
     [AddComponentMenu("YIUIBind/Data/UI大小-高 【RectSizeHeight】 UIDataBindRectSizeHeight")]
-    public class UIDataBindRectSizeHeight : UIDataBindSelectBase
+    public partial class UIDataBindRectSizeHeight : UIDataBindSelectBase
     {
         protected override int Mask()
         {

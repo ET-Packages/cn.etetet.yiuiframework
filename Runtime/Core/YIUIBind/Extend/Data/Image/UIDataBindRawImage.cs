@@ -10,7 +10,7 @@ namespace YIUIFramework
     [RequireComponent(typeof(RawImage))]
     [LabelText("RawImage 图片Raw")]
     [AddComponentMenu("YIUIBind/Data/图片Raw 【RawImage】 UIDataBindRawImage")]
-    public sealed class UIDataBindRawImage : UIDataBindSelectBase
+    public sealed partial class UIDataBindRawImage : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]

@@ -16,7 +16,7 @@ namespace YIUIFramework
     [LabelText("改变数据条件")]
     [RequireComponent(typeof(UIDataBindChange))]
     [AddComponentMenu("YIUIBind/Data/★改变数据条件 【Change Condition】 UIDataBindChangeCondition")]
-    public class UIDataBindChangeCondition : UIDataBindBool
+    public partial class UIDataBindChangeCondition : UIDataBindBool
     {
         [SerializeField]
         [ReadOnly]

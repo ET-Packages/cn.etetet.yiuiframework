@@ -15,7 +15,7 @@ namespace YIUIFramework
     [InfoBox("提示: 可用事件参数 1个 , Object(PointerEventData)")]
     [LabelText("双击<PointerEventData>")]
     [AddComponentMenu("YIUIBind/TaskEvent/双击 【DoubleClick PointerEventData】 UITaskEventBindDoubleClickPointerEventData")]
-    public class UITaskEventBindDoubleClickPointerEventData : UITaskEventBindDoubleClick
+    public partial class UITaskEventBindDoubleClickPointerEventData : UITaskEventBindDoubleClick
     {
         [NonSerialized]
         private readonly List<EUIEventParamType> m_FilterParamType = new() { EUIEventParamType.Object };

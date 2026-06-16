@@ -14,7 +14,7 @@ namespace YIUIFramework
     /// </summary>
     [LabelText("点击 按下<null>")]
     [AddComponentMenu("YIUIBind/Event/点击按下 【ClickDown】 UIEventBindClickDown")]
-    public class UIEventBindClickDown : UIEventBind, IPointerDownHandler
+    public partial class UIEventBindClickDown : UIEventBind, IPointerDownHandler
     {
         [SerializeField]
         [LabelText("可选组件")]

@@ -16,7 +16,7 @@ namespace YIUIFramework
     [InfoBox("提示: 可用事件参数 1个")]
     [LabelText("点击<int>")]
     [AddComponentMenu("YIUIBind/TaskEvent/点击 【Click Int】 UITaskEventBindClickInt")]
-    public class UITaskEventBindClickInt : UITaskEventBindClick
+    public partial class UITaskEventBindClickInt : UITaskEventBindClick
     {
         [SerializeField]
         [LabelText("额外int参数值")]

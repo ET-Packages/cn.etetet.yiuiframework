@@ -18,7 +18,7 @@ namespace YIUIFramework
 4 修改了组件后记得保存 触发一次刷新")]
     [LabelText("动画")]
     [AddComponentMenu("YIUIBind/Data/动画 【AnimationByName】 UIDataBindAnimationByName")]
-    public sealed class UIDataBindAnimationByName : UIDataBindSelectBase
+    public sealed partial class UIDataBindAnimationByName : UIDataBindSelectBase
     {
         [SerializeField]
         [ReadOnly]

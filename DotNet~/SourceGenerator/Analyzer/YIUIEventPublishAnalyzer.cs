@@ -430,21 +430,14 @@ namespace ET
         private static string GetNamespaceName(SyntaxNode root)
         {
             var namespaceNode = root.DescendantNodes()
-                .FirstOrDefault(static node => node.IsKind(SyntaxKind.NamespaceDeclaration) || node.IsKind(SyntaxKind.FileScopedNamespaceDeclaration));
+                .OfType<NamespaceDeclarationSyntax>()
+                .FirstOrDefault();
             if (namespaceNode == null)
             {
                 return string.Empty;
             }
 
-            switch (namespaceNode)
-            {
-                case NamespaceDeclarationSyntax namespaceDeclarationSyntax:
-                    return namespaceDeclarationSyntax.Name.ToString();
-                case FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclarationSyntax:
-                    return fileScopedNamespaceDeclarationSyntax.Name.ToString();
-                default:
-                    return string.Empty;
-            }
+            return namespaceNode.Name.ToString();
         }
 
         private static void AddMethodReturnType(Dictionary<string, string> result, string key, string returnType)

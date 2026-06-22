@@ -337,13 +337,5 @@ namespace YIUIFramework
         #endif
 
         #endregion
-
-        #region AI
-
-        [BoxGroup("AI", CenterLabel = true)]
-        [LabelText("AI客户端名称")]
-        public string YIUIDefaultOpenAIName = "droid";
-
-        #endregion
     }
 }

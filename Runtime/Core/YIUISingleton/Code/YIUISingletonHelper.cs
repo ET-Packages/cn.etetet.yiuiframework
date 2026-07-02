@@ -27,8 +27,19 @@ namespace YIUIFramework
 
         static YIUISingletonHelper()
         {
+            Application.wantsToQuit -= OnWantsToQuit;
+            Application.wantsToQuit += OnWantsToQuit;
             Application.quitting -= OnQuitting;
             Application.quitting += OnQuitting;
+        }
+
+        private static bool OnWantsToQuit()
+        {
+            //Debug.LogError("OnWantsToQuit");
+            IsQuitting = true;
+            Disposing = true;
+            m_YIUIMgrRef = default;
+            return true;
         }
 
         private static void OnQuitting()

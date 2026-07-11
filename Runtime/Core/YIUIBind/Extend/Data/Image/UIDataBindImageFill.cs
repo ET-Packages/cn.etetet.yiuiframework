@@ -91,6 +91,13 @@ namespace YIUIFramework
                 m_TweenSpeed > 0.0f &&
                 !Mathf.Approximately(m_Image.fillAmount, m_TargetValue))
             {
+                if (Mathf.Abs(m_Image.fillAmount - m_TargetValue) < 0.01f)
+                {
+                    m_Image.fillAmount = m_TargetValue;
+                    m_PlayingTween     = false;
+                    return;
+                }
+
                 switch (m_TweenType)
                 {
                     case ETweenType.IncreaseOnly:
@@ -150,7 +157,7 @@ namespace YIUIFramework
         {
             var offset   = m_TargetValue - m_Image.fillAmount;
             var movement = m_TweenSpeed * Time.deltaTime;
-            if (movement > Mathf.Abs(offset))
+            if (movement >= Mathf.Abs(offset))
             {
                 m_Image.fillAmount = m_TargetValue;
                 m_PlayingTween     = false;

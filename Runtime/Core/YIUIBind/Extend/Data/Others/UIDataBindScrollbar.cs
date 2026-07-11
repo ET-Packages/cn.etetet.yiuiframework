@@ -93,6 +93,13 @@ namespace YIUIFramework
                 m_TweenSpeed > 0.0f &&
                 !Mathf.Approximately(m_Scrollbar.value, m_TargetValue))
             {
+                if (Mathf.Abs(m_Scrollbar.value - m_TargetValue) < 0.01f)
+                {
+                    m_Scrollbar.value = m_TargetValue;
+                    m_PlayingTween    = false;
+                    return;
+                }
+
                 switch (m_TweenType)
                 {
                     case ETweenType.IncreaseOnly:
@@ -152,7 +159,7 @@ namespace YIUIFramework
         {
             var offset   = m_TargetValue - m_Scrollbar.value;
             var movement = m_TweenSpeed * Time.deltaTime;
-            if (movement > Mathf.Abs(offset))
+            if (movement >= Mathf.Abs(offset))
             {
                 m_Scrollbar.value = m_TargetValue;
                 m_PlayingTween    = false;

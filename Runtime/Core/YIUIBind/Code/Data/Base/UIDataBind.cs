@@ -108,7 +108,7 @@ namespace YIUIFramework
 
         protected void OnValidate()
         {
-            if (UIOperationHelper.IsPlaying() || m_Binded)
+            if (UIOperationHelper.IsPlaying())
             {
                 return;
             }

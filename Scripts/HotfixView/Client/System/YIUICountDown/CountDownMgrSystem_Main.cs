@@ -113,12 +113,18 @@ namespace ET.Client
                 return true;
             }
 
-            if (!self.m_AllCountDown.ContainsKey(guid))
+            if (!self.m_AllCountDown.TryGetValue(guid, out CountDownMgr.CountDownData data))
             {
                 return false;
             }
 
-            var data = self.m_AllCountDown[guid];
+            if (data.TimerCallback != null &&
+                self.m_CallbackGuidDic.TryGetValue(data.TimerCallback, out var callbackGuid) &&
+                callbackGuid == guid)
+            {
+                self.m_CallbackGuidDic.Remove(data.TimerCallback);
+            }
+
             self.m_AllCountDown.Remove(guid);
             RefPool.Put(data);
             self.m_AtCount--;

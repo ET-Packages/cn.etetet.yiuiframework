@@ -68,7 +68,7 @@ namespace YIUIFramework
         public void OnPointerDown(PointerEventData eventData)
         {
             m_PointerDown = true;
-            m_LastPos = Input.mousePosition;
+            m_LastPos = eventData.position;
             m_PointerEventData = eventData;
 
             if (m_PressTime <= 0)
@@ -101,9 +101,13 @@ namespace YIUIFramework
         {
             if (m_Selectable != null && !m_Selectable.interactable) return;
 
-            var inputX = Input.mousePosition.x;
-            var inputY = Input.mousePosition.y;
-            if (Mathf.Abs(m_LastPos.x - inputX) > m_EffectiveRange.x || Mathf.Abs(m_LastPos.y - inputY) > m_EffectiveRange.y)
+            if (m_PointerEventData == null)
+            {
+                return;
+            }
+
+            var currentPosition = m_PointerEventData.position;
+            if (Mathf.Abs(m_LastPos.x - currentPosition.x) > m_EffectiveRange.x || Mathf.Abs(m_LastPos.y - currentPosition.y) > m_EffectiveRange.y)
             {
                 return;
             }

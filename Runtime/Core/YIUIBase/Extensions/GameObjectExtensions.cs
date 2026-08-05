@@ -55,9 +55,11 @@ namespace YIUIFramework
         public static void SetLayerRecursively(this GameObject obj, int layer)
         {
             obj.layer = layer;
-            foreach (Transform t in obj.transform)
+            var tsf = obj.transform;
+            var childCount = tsf.childCount;
+            for (int i = 0; i < childCount; i++)
             {
-                t.gameObject.SetLayerRecursively(layer);
+                tsf.GetChild(i).gameObject.SetLayerRecursively(layer);
             }
         }
 

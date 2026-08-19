@@ -404,6 +404,12 @@ namespace YIUIFramework
         {
             if (!UIOperationHelper.CheckUIIsPackages(this)) return;
 
+            var packagesName = UIOperationHelper.GetETPackagesName(this);
+            if (string.IsNullOrEmpty(packagesName)) return;
+            m_PackagesName = packagesName;
+            EditorUtility.SetDirty(this);
+            PrefabUtility.SavePrefabAsset(gameObject);
+
             if (!InvokeTargetMethod(CreateModuleType, "CreatePackages", this, false, false, m_PackagesName)) return;
 
             AssetDatabase.Refresh();

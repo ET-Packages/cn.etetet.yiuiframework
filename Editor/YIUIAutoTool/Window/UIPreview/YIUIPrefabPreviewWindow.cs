@@ -17,24 +17,52 @@ namespace YIUIFramework.Editor
 
         public string OutputPath { get; set; }
 
+        public int DesignWidth { get; set; }
+
+        public int DesignHeight { get; set; }
+
         public int Width { get; set; }
 
         public int Height { get; set; }
+
+        public float Scale { get; set; }
+
+        public bool IsScaled { get; set; }
+
+        public float MatchWidthOrHeight { get; set; }
+
+        public string ResolutionSource { get; set; }
 
         public bool Exists { get; set; }
     }
 
     /// <summary>
-    /// 在不进入 PlayMode 的情况下，将选中的 UGUI Prefab 放进固定 1920x1080 画布并渲染预览。
+    /// 在不进入 PlayMode 的情况下，按 YIUI 配置的设计分辨率渲染选中的 UGUI Prefab。
     /// </summary>
     public sealed class YIUIPrefabPreviewWindow : EditorWindow
     {
-        private const int DesignWidth = 1920; // UI 设计分辨率宽度，单位为像素。
-        private const int DesignHeight = 1080; // UI 设计分辨率高度，单位为像素。
         private const float CameraDistance = 100f; // 预览相机与 ScreenSpaceCamera Canvas 的距离。
-        private const float CameraOrthographicSize = 540f; // 1920x1080 画布对应的正交相机半高。
+        private const float OrthographicHalfHeightScale = 0.5f; // 将设计高度换算为正交相机半高。
+        private const float MinOutputScale = 0.01f; // 输出缩放比例下限，避免生成零像素图片。
+        private const float MaxOutputScale = 1f; // 输出缩放比例上限，1表示保留设计分辨率。
 
         private static readonly Color PreviewBackground = new(0.075f, 0.085f, 0.1f, 1f);
+
+        private readonly struct PreviewDesignSettings
+        {
+            public PreviewDesignSettings(int width, int height, float matchWidthOrHeight)
+            {
+                Width = width;
+                Height = height;
+                MatchWidthOrHeight = matchWidthOrHeight;
+            }
+
+            public int Width { get; }
+
+            public int Height { get; }
+
+            public float MatchWidthOrHeight { get; }
+        }
 
         private PreviewRenderUtility previewUtility;
         private GameObject previewRoot;
@@ -43,6 +71,8 @@ namespace YIUIFramework.Editor
         private GameObject previewEventSystem;
         private GameObject selectedPrefab;
         private string selectedPrefabPath;
+        private PreviewDesignSettings designSettings;
+        private string designSettingsError;
         private bool autoFollowSelection = true;
         private bool showGuides = true;
 
@@ -96,7 +126,9 @@ namespace YIUIFramework.Editor
             }
         }
 
-        public static YIUIPrefabPreviewCaptureResult CapturePrefabToPng(string prefabPath, string outputDirectory = null)
+        public static YIUIPrefabPreviewCaptureResult CapturePrefabToPng(
+            string prefabPath, string outputDirectory = null,
+            float scale = MaxOutputScale)
         {
             if (string.IsNullOrWhiteSpace(prefabPath))
             {
@@ -109,30 +141,56 @@ namespace YIUIFramework.Editor
                 throw new ArgumentException("YIUI预览失败：目标路径不是.prefab，PrefabPath=" + normalizedPrefabPath, nameof(prefabPath));
             }
 
+            if (scale < MinOutputScale || scale > MaxOutputScale)
+            {
+                throw new ArgumentOutOfRangeException(nameof(scale),
+                    "YIUI预览失败：Scale必须在" + MinOutputScale + "到" + MaxOutputScale +
+                    "之间，实际Scale=" + scale);
+            }
+
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(normalizedPrefabPath);
             if (prefab == null)
             {
                 throw new FileNotFoundException("YIUI预览失败：找不到Prefab资源，PrefabPath=" + normalizedPrefabPath, normalizedPrefabPath);
             }
 
+            var settings = ResolveDesignSettings();
+            var outputWidth = Mathf.Max(1,
+                Mathf.RoundToInt(settings.Width * scale));
+            var outputHeight = Mathf.Max(1,
+                Mathf.RoundToInt(settings.Height * scale));
+            var isScaled = outputWidth != settings.Width ||
+                outputHeight != settings.Height;
+
             var resolvedOutputDirectory = string.IsNullOrWhiteSpace(outputDirectory)
                 ? Path.Combine("Library", "YIUI", "PrefabPreviews")
                 : outputDirectory.Trim();
             var absoluteOutputDirectory = Path.GetFullPath(resolvedOutputDirectory);
             Directory.CreateDirectory(absoluteOutputDirectory);
-            var absoluteOutputPath = Path.Combine(absoluteOutputDirectory, prefab.name + "_1920x1080.png");
+            var absoluteOutputPath = Path.Combine(absoluteOutputDirectory,
+                prefab.name + "_" + outputWidth + "x" + outputHeight + ".png");
 
-            Texture2D previewTexture = null;
+            Texture2D designTexture = null;
+            Texture2D outputTexture = null;
             try
             {
-                previewTexture = RenderPrefabToTexture(prefab);
-                File.WriteAllBytes(absoluteOutputPath, previewTexture.EncodeToPNG());
+                designTexture = RenderPrefabToTexture(prefab, settings);
+                outputTexture = isScaled
+                    ? ResizeTexture(designTexture, outputWidth, outputHeight)
+                    : designTexture;
+                File.WriteAllBytes(absoluteOutputPath,
+                    outputTexture.EncodeToPNG());
             }
             finally
             {
-                if (previewTexture != null)
+                if (outputTexture != null && outputTexture != designTexture)
                 {
-                    DestroyImmediate(previewTexture);
+                    DestroyImmediate(outputTexture);
+                }
+
+                if (designTexture != null)
+                {
+                    DestroyImmediate(designTexture);
                 }
             }
 
@@ -140,8 +198,14 @@ namespace YIUIFramework.Editor
             {
                 PrefabPath = normalizedPrefabPath,
                 OutputPath = absoluteOutputPath,
-                Width = DesignWidth,
-                Height = DesignHeight,
+                DesignWidth = settings.Width,
+                DesignHeight = settings.Height,
+                Width = outputWidth,
+                Height = outputHeight,
+                Scale = scale,
+                IsScaled = isScaled,
+                MatchWidthOrHeight = settings.MatchWidthOrHeight,
+                ResolutionSource = YIUIConstHelper.YIUIConstAssetPath,
                 Exists = File.Exists(absoluteOutputPath),
             };
         }
@@ -150,6 +214,7 @@ namespace YIUIFramework.Editor
         {
             Selection.selectionChanged += OnSelectionChanged;
             EditorApplication.projectChanged += OnProjectChanged;
+            RefreshDesignSettings();
             RefreshFromSelection();
         }
 
@@ -170,6 +235,7 @@ namespace YIUIFramework.Editor
 
         private void OnProjectChanged()
         {
+            RefreshDesignSettings();
             if (selectedPrefab != null)
             {
                 RebuildPreview();
@@ -179,6 +245,12 @@ namespace YIUIFramework.Editor
         private void OnGUI()
         {
             DrawToolbar();
+
+            if (!string.IsNullOrEmpty(designSettingsError))
+            {
+                EditorGUILayout.HelpBox(designSettingsError, MessageType.Error);
+                return;
+            }
 
             if (selectedPrefab == null)
             {
@@ -206,7 +278,7 @@ namespace YIUIFramework.Editor
                 }
 
                 autoFollowSelection = GUILayout.Toggle(autoFollowSelection, "跟随选择", EditorStyles.toolbarButton, GUILayout.Width(70f));
-                showGuides = GUILayout.Toggle(showGuides, "1920x1080参考线", EditorStyles.toolbarButton, GUILayout.Width(112f));
+                showGuides = GUILayout.Toggle(showGuides, "设计分辨率参考线", EditorStyles.toolbarButton, GUILayout.Width(112f));
 
                 if (GUILayout.Button("刷新", EditorStyles.toolbarButton, GUILayout.Width(48f)))
                 {
@@ -223,7 +295,10 @@ namespace YIUIFramework.Editor
             {
                 EditorGUILayout.LabelField(string.IsNullOrEmpty(selectedPrefabPath) ? "未选择 Prefab" : selectedPrefabPath, EditorStyles.miniLabel);
                 GUILayout.FlexibleSpace();
-                EditorGUILayout.LabelField("设计分辨率 1920 x 1080", EditorStyles.miniLabel, GUILayout.Width(150f));
+                var resolutionText = string.IsNullOrEmpty(designSettingsError)
+                    ? "设计分辨率 " + designSettings.Width + " x " + designSettings.Height
+                    : "设计分辨率配置无效";
+                EditorGUILayout.LabelField(resolutionText, EditorStyles.miniLabel, GUILayout.Width(150f));
             }
         }
 
@@ -234,7 +309,7 @@ namespace YIUIFramework.Editor
                 return;
             }
 
-            var aspect = DesignWidth / (float)DesignHeight;
+            var aspect = designSettings.Width / (float)designSettings.Height;
             var drawRect = area;
             if (drawRect.width / drawRect.height > aspect)
             {
@@ -316,6 +391,12 @@ namespace YIUIFramework.Editor
         private void RebuildPreview()
         {
             CleanupPreview();
+            if (!RefreshDesignSettings())
+            {
+                Repaint();
+                return;
+            }
+
             if (selectedPrefab == null)
             {
                 Repaint();
@@ -324,7 +405,7 @@ namespace YIUIFramework.Editor
 
             previewUtility = new PreviewRenderUtility();
             previewUtility.camera.orthographic = true;
-            previewUtility.camera.orthographicSize = CameraOrthographicSize;
+            previewUtility.camera.orthographicSize = designSettings.Height * OrthographicHalfHeightScale;
             previewUtility.camera.nearClipPlane = 0.01f;
             previewUtility.camera.farClipPlane = CameraDistance + 10f;
             previewUtility.camera.clearFlags = CameraClearFlags.SolidColor;
@@ -345,9 +426,9 @@ namespace YIUIFramework.Editor
 
             var scaler = previewRoot.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(DesignWidth, DesignHeight);
+            scaler.referenceResolution = new Vector2(designSettings.Width, designSettings.Height);
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.5f;
+            scaler.matchWidthOrHeight = designSettings.MatchWidthOrHeight;
 
             previewEventSystem = new GameObject("YIUI_PrefabPreviewEventSystem", typeof(EventSystem));
             previewEventSystem.hideFlags = HideFlags.HideAndDontSave;
@@ -377,7 +458,7 @@ namespace YIUIFramework.Editor
             return instance;
         }
 
-        private static Texture2D RenderPrefabToTexture(GameObject prefab)
+        private static Texture2D RenderPrefabToTexture(GameObject prefab, PreviewDesignSettings settings)
         {
             var previewScene = EditorSceneManager.NewPreviewScene();
             var previousRenderTexture = RenderTexture.active;
@@ -392,23 +473,23 @@ namespace YIUIFramework.Editor
                 camera.transform.position = new Vector3(0f, 0f, -CameraDistance);
                 camera.transform.rotation = Quaternion.identity;
                 camera.orthographic = true;
-                camera.orthographicSize = CameraOrthographicSize;
+                camera.orthographicSize = settings.Height * OrthographicHalfHeightScale;
                 camera.nearClipPlane = 0.01f;
                 camera.farClipPlane = CameraDistance + 10f;
-                camera.aspect = DesignWidth / (float)DesignHeight;
+                camera.aspect = settings.Width / (float)settings.Height;
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = PreviewBackground;
                 camera.allowHDR = false;
                 camera.allowMSAA = false;
 
-                renderTexture = new RenderTexture(DesignWidth, DesignHeight, 24, RenderTextureFormat.ARGB32)
+                renderTexture = new RenderTexture(settings.Width, settings.Height, 24, RenderTextureFormat.ARGB32)
                 {
                     hideFlags = HideFlags.HideAndDontSave,
                     name = "YIUI_OfflinePreviewRenderTexture"
                 };
                 renderTexture.Create();
                 camera.targetTexture = renderTexture;
-                camera.pixelRect = new Rect(0f, 0f, DesignWidth, DesignHeight);
+                camera.pixelRect = new Rect(0f, 0f, settings.Width, settings.Height);
 
                 var canvasObject = new GameObject("YIUI_OfflinePreviewCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
                 canvasObject.hideFlags = HideFlags.HideAndDontSave;
@@ -421,9 +502,9 @@ namespace YIUIFramework.Editor
 
                 var scaler = canvasObject.GetComponent<CanvasScaler>();
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-                scaler.referenceResolution = new Vector2(DesignWidth, DesignHeight);
+                scaler.referenceResolution = new Vector2(settings.Width, settings.Height);
                 scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-                scaler.matchWidthOrHeight = 0.5f;
+                scaler.matchWidthOrHeight = settings.MatchWidthOrHeight;
 
                 var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, previewScene);
                 instance.hideFlags = HideFlags.HideAndDontSave;
@@ -437,8 +518,8 @@ namespace YIUIFramework.Editor
                 camera.Render();
 
                 RenderTexture.active = renderTexture;
-                var texture = new Texture2D(DesignWidth, DesignHeight, TextureFormat.RGBA32, false, false);
-                texture.ReadPixels(new Rect(0f, 0f, DesignWidth, DesignHeight), 0, 0);
+                var texture = new Texture2D(settings.Width, settings.Height, TextureFormat.RGBA32, false, false);
+                texture.ReadPixels(new Rect(0f, 0f, settings.Width, settings.Height), 0, 0);
                 texture.Apply(false, false);
                 return texture;
             }
@@ -491,8 +572,105 @@ namespace YIUIFramework.Editor
             camera.transform.position = new Vector3(0f, 0f, -CameraDistance);
             camera.transform.rotation = Quaternion.identity;
             camera.orthographic = true;
-            camera.orthographicSize = CameraOrthographicSize;
-            camera.aspect = DesignWidth / (float)DesignHeight;
+            camera.orthographicSize = designSettings.Height * OrthographicHalfHeightScale;
+            camera.aspect = designSettings.Width / (float)designSettings.Height;
+        }
+
+        private bool RefreshDesignSettings()
+        {
+            try
+            {
+                designSettings = ResolveDesignSettings();
+                designSettingsError = string.Empty;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                designSettingsError = exception.Message;
+                return false;
+            }
+        }
+
+        private static PreviewDesignSettings ResolveDesignSettings()
+        {
+            var settings = YIUIConstHelper.Const;
+            if (settings == null)
+            {
+                throw new InvalidOperationException("YIUI预览失败：无法加载YIUI配置，配置路径=" + YIUIConstHelper.YIUIConstAssetPath);
+            }
+
+            var width = settings.DesignScreenWidth;
+            var height = settings.DesignScreenHeight;
+            var matchWidthOrHeight = settings.MatchWidthOrHeight;
+            if (width <= 0 || height <= 0)
+            {
+                throw new InvalidOperationException(
+                    "YIUI预览失败：设计分辨率必须大于0，配置路径=" + YIUIConstHelper.YIUIConstAssetPath +
+                    "，DesignScreenWidth=" + width + "，DesignScreenHeight=" + height);
+            }
+
+            var maxTextureSize = SystemInfo.maxTextureSize;
+            if (width > maxTextureSize || height > maxTextureSize)
+            {
+                throw new InvalidOperationException(
+                    "YIUI预览失败：设计分辨率超过当前设备纹理上限，配置路径=" + YIUIConstHelper.YIUIConstAssetPath +
+                    "，DesignScreenWidth=" + width + "，DesignScreenHeight=" + height + "，MaxTextureSize=" + maxTextureSize);
+            }
+
+            if (matchWidthOrHeight is < 0f or > 1f)
+            {
+                throw new InvalidOperationException(
+                    "YIUI预览失败：MatchWidthOrHeight必须在0到1之间，配置路径=" + YIUIConstHelper.YIUIConstAssetPath +
+                    "，MatchWidthOrHeight=" + matchWidthOrHeight);
+            }
+
+            return new PreviewDesignSettings(width, height, matchWidthOrHeight);
+        }
+
+        private static Texture2D ResizeTexture(Texture2D source,
+            int outputWidth, int outputHeight)
+        {
+            var previousActive = RenderTexture.active;
+            RenderTexture outputRenderTexture = null;
+            Texture2D outputTexture = null;
+            try
+            {
+                outputRenderTexture = new RenderTexture(outputWidth,
+                    outputHeight, 0, RenderTextureFormat.ARGB32,
+                    RenderTextureReadWrite.sRGB)
+                {
+                    hideFlags = HideFlags.HideAndDontSave,
+                    name = "YIUI_PrefabPreviewScaledRenderTexture"
+                };
+                outputRenderTexture.Create();
+                Graphics.Blit(source, outputRenderTexture);
+
+                RenderTexture.active = outputRenderTexture;
+                outputTexture = new Texture2D(outputWidth, outputHeight,
+                    TextureFormat.RGBA32, false, false);
+                outputTexture.ReadPixels(new Rect(0f, 0f, outputWidth,
+                    outputHeight), 0, 0, false);
+                outputTexture.Apply(false, false);
+                return outputTexture;
+            }
+            catch
+            {
+                if (outputTexture != null)
+                {
+                    DestroyImmediate(outputTexture);
+                }
+
+                throw;
+            }
+            finally
+            {
+                RenderTexture.active = previousActive;
+                if (outputRenderTexture != null)
+                {
+                    outputRenderTexture.Release();
+                    DestroyImmediate(outputRenderTexture);
+                }
+            }
         }
 
         private void CleanupPreview()

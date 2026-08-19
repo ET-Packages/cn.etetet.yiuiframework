@@ -29,8 +29,24 @@ namespace ET.Client
 
         public static bool IsClose(this YIUIMgrComponent self, YIUIPanelComponent panel)
         {
-            var layerList = self.GetLayerPanelInfoList(EPanelLayer.Panel);
+            if (panel == null) return true;
+
+            var layerList = self.GetLayerPanelInfoList(panel.Layer);
             if (layerList is not { Count: > 0 }) return true;
+
+            if (panel.Layer != EPanelLayer.Panel)
+            {
+                for (var index = 0; index < layerList.Count; index++)
+                {
+                    if (layerList[index]?.UIPanel == panel)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             var currentPanel = layerList[^1];
             if (currentPanel.UIPanel == null) return true;
             return currentPanel.UIPanel != panel;

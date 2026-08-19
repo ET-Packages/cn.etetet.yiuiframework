@@ -89,26 +89,22 @@ namespace YIUIFramework.Editor
 
             m_AllMenuItem.Add(new TreeMenuItem<UIPublishModule>(this, m_OdinMenuTree, UIPublishModule.m_PublishName, EditorIcons.UnityFolderIcon));
 
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var allAutoMenus = new List<YIUIAutoMenuData>();
 
-            foreach (var assembly in assemblies)
+            foreach (var type in TypeCache.GetTypesWithAttribute<YIUIAutoMenuAttribute>())
             {
-                var types = assembly.GetTypes();
-
-                foreach (Type type in types)
+                if (Attribute.GetCustomAttribute(type, typeof(YIUIAutoMenuAttribute), false)
+                    is not YIUIAutoMenuAttribute attribute)
                 {
-                    if (type.IsDefined(typeof(YIUIAutoMenuAttribute), false))
-                    {
-                        YIUIAutoMenuAttribute attribute = (YIUIAutoMenuAttribute)Attribute.GetCustomAttribute(type, typeof(YIUIAutoMenuAttribute));
-                        allAutoMenus.Add(new YIUIAutoMenuData
-                        {
-                            Type = type,
-                            MenuName = attribute.MenuName,
-                            Order = attribute.Order
-                        });
-                    }
+                    continue;
                 }
+
+                allAutoMenus.Add(new YIUIAutoMenuData
+                {
+                    Type = type,
+                    MenuName = attribute.MenuName,
+                    Order = attribute.Order
+                });
             }
 
             allAutoMenus.Sort((a, b) => a.Order.CompareTo(b.Order));

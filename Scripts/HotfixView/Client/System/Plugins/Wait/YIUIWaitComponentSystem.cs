@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using YIUIFramework;
 
 namespace ET.Client
 {
@@ -19,6 +20,11 @@ namespace ET.Client
         [EntitySystem]
         private static void Destroy(this YIUIWaitComponent self)
         {
+            if (!UIOperationHelper.IsPlaying())
+            {
+                return;
+            }
+
             self.Notify(EHashWaitError.Destroy);
         }
 
@@ -57,7 +63,7 @@ namespace ET.Client
                 return;
             }
 
-            self.m_WaitId          = waitId;
+            self.m_WaitId = waitId;
             self.m_IsWaitCompleted = false;
         }
     }

@@ -20,6 +20,8 @@ namespace YIUIFramework
         [LabelText("可选组件")]
         private Selectable m_Selectable;
 
+        public PointerEventData LastPointerEventData { get; private set; } // 最近一次抬起事件的指针数据。
+
         public void OnPointerUp(PointerEventData eventData)
         {
             if (m_Selectable != null && !m_Selectable.interactable)
@@ -27,6 +29,7 @@ namespace YIUIFramework
                 return;
             }
 
+            LastPointerEventData = eventData;
             try
             {
                 OnUIEvent(eventData);
@@ -35,6 +38,10 @@ namespace YIUIFramework
             {
                 Logger.LogError(e);
                 throw;
+            }
+            finally
+            {
+                LastPointerEventData = null;
             }
         }
 

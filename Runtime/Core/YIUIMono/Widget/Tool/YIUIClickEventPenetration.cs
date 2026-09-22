@@ -12,7 +12,7 @@ namespace YIUIFramework
     /// 可嵌套使用 达到无限穿透效果
     /// </summary>
     [AddComponentMenu("YIUIFramework/Widget/点击穿透 【YIUIClickEventPenetration】")]
-    public class YIUIClickEventPenetration: MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
+    public class YIUIClickEventPenetration : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
     {
         [LabelText("穿透 按下")]
         public bool Down = true;

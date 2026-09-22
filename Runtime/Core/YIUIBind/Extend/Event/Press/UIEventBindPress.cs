@@ -22,6 +22,8 @@ namespace YIUIFramework
         [LabelText("长按时间")]
         private float m_PressTime = 0.5f; //按下后大于这个时间就会触发长按回调
 
+        public float PressTime => m_PressTime; // 当前长按触发延迟，单位为秒。
+
         [SerializeField]
         [LabelText("按钮范围内长按才有效")]
         private bool m_SkipExit = true; //默认超过按钮范围后无效 与下面的有效范围不一样

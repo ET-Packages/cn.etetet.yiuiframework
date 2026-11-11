@@ -6,7 +6,7 @@ namespace YIUIFramework
 {
     public partial class UIDataBindSlider
     {
-        public bool EditorConfigureSlider(float tweenSpeed, string tweenType, out string error)
+        public bool EditorConfigureSlider(float tweenSpeed, string tweenType, bool? oneWayTween, out string error)
         {
             error = string.Empty;
             m_TweenSpeed = tweenSpeed;
@@ -20,6 +20,11 @@ namespace YIUIFramework
                 }
 
                 m_TweenType = parsedTweenType;
+            }
+
+            if (oneWayTween.HasValue)
+            {
+                m_OneWayTween = oneWayTween.Value;
             }
 
             if (m_Slider == null)

@@ -26,8 +26,22 @@ namespace YIUIFramework
         [SerializeField]
         private ETweenType m_TweenType = ETweenType.DoubleWay;
 
+        [SerializeField]
+        [ShowIf("ShowIfOneWayTween")]
+        [LabelText("仅所选方向播放动画")]
+        [Tooltip("勾选：只有所选方向（只增加=变大，只减少=变小）播放动画，反方向直接赋值；取消勾选：恢复原有的回绕动画")]
+        private bool m_OneWayTween = true;
+
+        private bool ShowIfOneWayTween()
+        {
+            return m_TweenType != ETweenType.DoubleWay;
+        }
+
         private float m_TargetValue;
         private bool  m_PlayingTween = false;
+
+        //启用后还没发生过真实数值变化 期间的赋值视为重新绑定 直接到位不播补间
+        private bool m_SnapOnFirstUpdate = false;
 
         protected override int Mask()
         {
@@ -39,9 +53,23 @@ namespace YIUIFramework
             return 1;
         }
 
+        //重新显示时先对齐当前数据：隐藏期间的残留显示值、对象池复用带过来的旧数值都不该参与补间
+        private void OnEnable()
+        {
+            if (!Application.isPlaying) return;
+
+            SnapToDataValue();
+            m_SnapOnFirstUpdate = true;
+        }
+
         protected override void OnRefreshData()
         {
             base.OnRefreshData();
+            SnapToDataValue();
+        }
+
+        private void SnapToDataValue()
+        {
             m_Image ??= GetComponent<Image>();
             if (m_Image == null) return;
 
@@ -55,9 +83,25 @@ namespace YIUIFramework
         {
             if (m_Image == null) return;
 
+            //启用后的第一次赋值属于重新绑定 直接到位 不算数值变化
+            if (m_SnapOnFirstUpdate)
+            {
+                SnapToDataValue();
+                return;
+            }
+
             var dataValue = GetFirstValue<float>();
             if (m_TweenSpeed > 0.0f && Application.isPlaying)
             {
+                //勾选后只有所选方向播放动画，反方向直接赋值
+                if (m_OneWayTween && IsReverseDirection(dataValue))
+                {
+                    m_TargetValue      = dataValue;
+                    m_Image.fillAmount = dataValue;
+                    m_PlayingTween     = false;
+                    return;
+                }
+
                 m_TargetValue  = dataValue;
                 m_PlayingTween = true;
             }
@@ -66,6 +110,20 @@ namespace YIUIFramework
                 m_TargetValue      = dataValue;
                 m_Image.fillAmount = dataValue;
                 m_PlayingTween     = false;
+            }
+        }
+
+        /// 只增加：值变小是反方向；只减少：值变大是反方向；可双向：没有反方向
+        private bool IsReverseDirection(float dataValue)
+        {
+            switch (m_TweenType)
+            {
+                case ETweenType.IncreaseOnly:
+                    return dataValue < m_TargetValue;
+                case ETweenType.DecreaseOnly:
+                    return dataValue > m_TargetValue;
+                default:
+                    return false;
             }
         }
 
@@ -87,6 +145,14 @@ namespace YIUIFramework
 
         private void Update()
         {
+            //启用当帧再收口一次：外部通常先显示再赋值 两者先后顺序不固定
+            //这里清掉标记 之后的真实数值变化才走补间
+            if (m_SnapOnFirstUpdate)
+            {
+                m_SnapOnFirstUpdate = false;
+                SnapToDataValue();
+            }
+
             if (m_PlayingTween &&
                 m_TweenSpeed > 0.0f &&
                 !Mathf.Approximately(m_Image.fillAmount, m_TargetValue))

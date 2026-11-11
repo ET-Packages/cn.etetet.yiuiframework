@@ -16,6 +16,11 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this HashWait self)
         {
+            if (self?.Root()?.IsDisposed ?? true)
+            {
+                return;
+            }
+
             foreach (var hashCode in self.m_HashWaitTasks.Keys.ToArray())
             {
                 self.Notify(hashCode, EHashWaitError.Destroy, false);

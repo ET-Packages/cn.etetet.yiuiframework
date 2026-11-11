@@ -40,6 +40,8 @@ namespace YIUIFramework
             builder.Append(YIUIVisionTextHelper.FormatFloat(m_TweenSpeed));
             builder.Append("，tweenType=");
             builder.Append(m_TweenType);
+            builder.Append("，oneWayTween=");
+            builder.Append(YIUIVisionTextHelper.FormatBool(m_OneWayTween));
             builder.AppendLine();
             builder.Append("目标：Scrollbar=");
             builder.Append(YIUIVisionTextHelper.FormatUnityObject(m_Scrollbar));
@@ -83,6 +85,8 @@ namespace YIUIFramework
             builder.Append(YIUIVisionTextHelper.FormatFloat(m_TweenSpeed));
             builder.Append("，tweenType=");
             builder.Append(m_TweenType);
+            builder.Append("，oneWayTween=");
+            builder.Append(YIUIVisionTextHelper.FormatBool(m_OneWayTween));
             builder.AppendLine();
             builder.Append("目标：Slider=");
             builder.Append(YIUIVisionTextHelper.FormatUnityObject(m_Slider));

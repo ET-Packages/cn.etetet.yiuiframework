@@ -7,7 +7,7 @@ namespace YIUIFramework
 {
     public sealed partial class UIDataBindImageFill
     {
-        public bool EditorConfigureImageFill(float tweenSpeed, string tweenType, out string error)
+        public bool EditorConfigureImageFill(float tweenSpeed, string tweenType, bool? oneWayTween, out string error)
         {
             error = string.Empty;
             m_TweenSpeed = tweenSpeed;
@@ -21,6 +21,11 @@ namespace YIUIFramework
                 }
 
                 m_TweenType = parsedTweenType;
+            }
+
+            if (oneWayTween.HasValue)
+            {
+                m_OneWayTween = oneWayTween.Value;
             }
 
             if (m_Image == null)

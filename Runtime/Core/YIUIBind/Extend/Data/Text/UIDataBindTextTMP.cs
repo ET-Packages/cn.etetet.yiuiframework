@@ -40,7 +40,7 @@ namespace YIUIFramework
         protected override void SetText(string value)
         {
             if (m_Text == null) return;
-            m_Text.SetText(value);
+            m_Text.text = value;
         }
 
         protected override bool ExistText()

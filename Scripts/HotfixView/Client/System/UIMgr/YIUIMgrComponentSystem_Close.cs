@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using YIUIFramework;
 
 namespace ET.Client
@@ -218,13 +219,17 @@ namespace ET.Client
 
         /// <summary>
         /// 回到指定的界面 其他界面全部关闭
+        /// 默认只清理 EPanelLayer.Panel 层级 与 RemoveUIToHome 保持一致 不影响 Top/Popup 等浮层
         /// </summary>
         /// <param name="homeName">需要被打开的界面 且这个UI是存在的 否则无法打开</param>
         /// <param name="tween">动画</param>
-        /// <param name="forceHome">如果不存在则 强制打开 被强制打开的无法触发Back Home消息 只会触发常规的open close</param>
-        internal static async ETTask<bool> CloseOtherPanelsForHome(this YIUIMgrComponent self, string homeName, bool tween = true)
+        /// <param name="closeAllLayers">是否连同 Panel 以外的所有层级一起关闭 只保留 home 和标记了 IgnoreClose 的界面</param>
+        internal static async ETTask<bool> CloseOtherPanelsForHome(this YIUIMgrComponent self, string homeName, bool tween = true, bool closeAllLayers = false)
         {
             EntityRef<YIUIMgrComponent> selfRef = self;
+
+            //拒绝关闭的界面 每次重新扫描时要跳过 否则会一直扫到同一个界面
+            List<PanelInfo> ignorePanels = new List<PanelInfo>();
 
             while (true)
             {
@@ -236,9 +241,12 @@ namespace ET.Client
 
                 PanelInfo closeTarget = null;
 
-                for (var layerIndex = 0; layerIndex < (int)EPanelLayer.Count; layerIndex++)
+                //closeAllLayers 从最高层开始全清 否则只清理普通面板层
+                var firstLayer = closeAllLayers ? EPanelLayer.Top : EPanelLayer.Panel;
+                var lastLayer = closeAllLayers ? EPanelLayer.Count - 1 : EPanelLayer.Panel;
+
+                for (var currentLayer = firstLayer; currentLayer <= lastLayer; currentLayer++)
                 {
-                    var currentLayer = (EPanelLayer)layerIndex;
                     var layerList = self.GetLayerPanelInfoList(currentLayer);
 
                     for (var i = layerList.Count - 1; i >= 0; i--)
@@ -250,6 +258,11 @@ namespace ET.Client
                         }
 
                         if ((child.UIPanel.PanelOption & EPanelOption.IgnoreClose) != 0)
+                        {
+                            continue;
+                        }
+
+                        if (ignorePanels.Contains(child))
                         {
                             continue;
                         }
@@ -269,31 +282,58 @@ namespace ET.Client
                     return true;
                 }
 
-                var success = await self.ClosePanelAsync(closeTarget.Name, tween, true, true);
-                if (!success)
+                if (await self.ClosePanelAsync(closeTarget.Name, tween, true, true))
                 {
-                    return false;
+                    continue;
                 }
+
+                //拒绝关闭的界面(例如 DisClose) 只跳过它自己 不能中断其他界面的清理
+                //Log.Warning($"Home关闭界面被拒绝 已跳过并继续清理其他界面: {closeTarget.Name} -> {homeName}");
+                ignorePanels.Add(closeTarget);
             }
         }
 
-        public static async ETTask<bool> HomePanel(this YIUIMgrComponent self, string homeName, bool tween = true, Scene forceHome = null)
+        /// <summary>
+        /// 回到指定的界面 其他界面全部关闭
+        /// 默认只清理 Panel 层 与 RemoveUIToHome 保持一致 不影响 Top/Popup 等浮层
+        /// </summary>
+        /// <param name="homeName">需要被打开的界面 且这个UI是存在的 否则无法打开</param>
+        /// <param name="tween">动画</param>
+        /// <param name="forceHome">home界面不存在时 从哪个场景重新打开它</param>
+        /// <param name="closeAllLayers">是否连同 Panel 以外的所有层级一起关闭 只保留 home 和标记了 IgnoreClose 的界面</param>
+        public static async ETTask<bool> HomePanel(this YIUIMgrComponent self, string homeName, bool tween = true, Scene forceHome = null, bool closeAllLayers = false)
         {
             #if YIUIMACRO_PANEL_OPENCLOSE
             Debug.Log($"<color=yellow> Home关闭其他所有Panel UI: {homeName} </color>");
             #endif
 
+            EntityRef<YIUIMgrComponent> selfRef = self;
             self.m_PanelCfgMap.TryGetValue(homeName, out var homeInfo);
             if (homeInfo?.UIBase != null)
             {
-                return await self.RemoveUIToHome(homeInfo, tween);
+                if (!await self.RemoveUIToHome(homeInfo, tween))
+                {
+                    return false;
+                }
+
+                if (!closeAllLayers)
+                {
+                    return true;
+                }
+
+                self = selfRef;
+                if (self == null)
+                {
+                    return false;
+                }
+
+                return await self.CloseOtherPanelsForHome(homeName, tween, true);
             }
             else
             {
                 if (forceHome != null)
                 {
-                    EntityRef<YIUIMgrComponent> selfRef = self;
-                    var result = await EventSystem.Instance?.YIUIInvokeEntityAsync<YIUIInvokeEntity_SceneOpenPanel, ETTask<bool>>(forceHome, new YIUIInvokeEntity_SceneOpenPanel
+                    var result = await EventSystem.Instance.YIUIInvokeEntityAsync<YIUIInvokeEntity_SceneOpenPanel, ETTask<bool>>(forceHome, new YIUIInvokeEntity_SceneOpenPanel
                     {
                         PanelName = homeName
                     });
@@ -303,16 +343,17 @@ namespace ET.Client
                     }
 
                     self = selfRef;
-                    return await self.CloseOtherPanelsForHome(homeName, tween);
+                    return await self.CloseOtherPanelsForHome(homeName, tween, closeAllLayers);
                 }
             }
 
+            //Log.Error($"目标界面不存在,需要重新打开,必须传入forceHome");
             return false;
         }
 
-        public static async ETTask<bool> HomePanel<T>(this YIUIMgrComponent self, bool tween = true, Scene forceHome = null) where T : Entity
+        public static async ETTask<bool> HomePanel<T>(this YIUIMgrComponent self, bool tween = true, Scene forceHome = null, bool closeAllLayers = false) where T : Entity
         {
-            return await self.HomePanel(typeof(T).Name, tween, forceHome);
+            return await self.HomePanel(typeof(T).Name, tween, forceHome, closeAllLayers);
         }
     }
 }

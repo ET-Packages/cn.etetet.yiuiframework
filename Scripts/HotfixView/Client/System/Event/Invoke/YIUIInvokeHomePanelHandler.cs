@@ -5,7 +5,7 @@
     {
         public override void Handle(Entity entity, YIUIInvokeEntity_HomePanel args)
         {
-            entity.YIUIMgr().HomePanel(args.PanelName, args.Tween, args.ForceHome).NoContext();
+            entity.YIUIMgr().HomePanel(args.PanelName, args.Tween, args.ForceHome, args.CloseAllLayers).NoContext();
         }
     }
 
@@ -16,7 +16,7 @@
         {
             var yiuiMgr = entity.YIUIMgr();
             if (yiuiMgr == null) return false;
-            return await yiuiMgr.HomePanel(args.PanelName, args.Tween, args.ForceHome);
+            return await yiuiMgr.HomePanel(args.PanelName, args.Tween, args.ForceHome, args.CloseAllLayers);
         }
     }
 }

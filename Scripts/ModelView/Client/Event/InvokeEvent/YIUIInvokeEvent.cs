@@ -33,6 +33,7 @@ namespace ET.Client
         public string PanelName;
         public bool Tween;
         public EntityRef<Scene> ForceHome;
+        public bool CloseAllLayers;
     }
 
     /// <summary>
